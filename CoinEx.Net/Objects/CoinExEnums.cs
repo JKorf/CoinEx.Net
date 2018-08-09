@@ -55,4 +55,11 @@
         Maker,
         Taker
     }
+
+    public enum UpdateType
+    {
+        New,
+        Update,
+        Done
+    }
 }

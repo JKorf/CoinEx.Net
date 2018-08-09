@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CryptoExchange.Net.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace CoinEx.Net.Objects
     {
         public string Message { get; set; }
         public int Code { get; set; }
+        [JsonOptionalProperty]
         public T Data { get; set; }
     }
 }

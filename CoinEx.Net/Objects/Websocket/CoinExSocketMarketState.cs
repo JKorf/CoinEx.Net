@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    public class CoinExMarketStatus
+    public class CoinExSocketMarketState
     {
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Close { get; set; }

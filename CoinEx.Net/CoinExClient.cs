@@ -1,14 +1,11 @@
 ﻿using CoinEx.Net.Converters;
 using CoinEx.Net.Objects;
 using CryptoExchange.Net;
-using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +29,8 @@ namespace CoinEx.Net
 
         private const string AccountInfoEndpoint = "/balance/info";
         private const string WithdrawalHistoryEndpoint = "/balance/coin/withdraw";
+        private const string WithdrawEndpoint = "/balance/coin/withdraw";
+        private const string CancelWithdrawalEndpoint = "/balance/coin/withdraw";
 
         private const string PlaceLimitOrderEndpoint = "/order/limit";
         private const string PlaceMarketOrderEndpoint = "/order/market";
@@ -45,13 +44,24 @@ namespace CoinEx.Net
         private const string CancelOrderEndpoint = "/order/pending";
         private const string MiningDifficultyEndpoint = "/order/mining/difficulty";
 
+        private const string GetMethod = "GET";
+        private const string PostMethod = "POST";
+        private const string DeleteMethod = "DELETE";
+
         #endregion
 
         #region ctor
+        /// <summary>
+        /// Create a new instance of CoinExClient with default options
+        /// </summary>
         public CoinExClient() : this(defaultOptions)
         {
         }
 
+        /// <summary>
+        /// Create a new instance of CoinExClient using provided options
+        /// </summary>
+        /// <param name="options">The options to use for this client</param>
         public CoinExClient(CoinExClientOptions options): base(options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
         {
             Configure(options);
@@ -59,19 +69,41 @@ namespace CoinEx.Net
         #endregion
 
         #region methods
+        #region public
+        /// <summary>
+        /// Set the default options to be used when creating new socket clients
+        /// </summary>
+        /// <param name="options">The options to use for new clients</param>
         public static void SetDefaultOptions(CoinExClientOptions options)
         {
             defaultOptions = options;
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetMarketListAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<string[]> GetMarketList() => GetMarketListAsync().Result;
+        /// <summary>
+        /// Gets a list of markets active on CoinEx
+        /// </summary>
+        /// <returns>List of market names</returns>
         public async Task<CallResult<string[]>> GetMarketListAsync()
         {
             return await Execute<string[]>(GetUrl(MarketListEndpoint)).ConfigureAwait(false);
         }
 
-        public CallResult<CoinExMarketState> GetMarketStatistics(string market) => GetMarketStatisticsAsync(market).Result;
-        public async Task<CallResult<CoinExMarketState>> GetMarketStatisticsAsync(string market)
+        /// <summary>
+        /// Synchronized version of the <see cref="GetMarketStatesAsync"/> method
+        /// </summary>
+        /// <returns></returns>
+        public CallResult<CoinExMarketState> GetMarketStatistics(string market) => GetMarketStatesAsync(market).Result;
+        /// <summary>
+        /// Gets the state of a specific market
+        /// </summary>
+        /// <param name="market">The market to retrieve state for</param>
+        /// <returns>The state of the market</returns>
+        public async Task<CallResult<CoinExMarketState>> GetMarketStatesAsync(string market)
         {
             var parameters = new Dictionary<string, object>
             {
@@ -81,13 +113,32 @@ namespace CoinEx.Net
             return await Execute<CoinExMarketState>(GetUrl(MarketStatisticsEndpoint), parameters:parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetMarketStatesAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExMarketStatesList> GetMarketStates() => GetMarketStatesAsync().Result;
+        /// <summary>
+        /// Gets the states of all markets
+        /// </summary>
+        /// <returns>List of states for all markets</returns>
         public async Task<CallResult<CoinExMarketStatesList>> GetMarketStatesAsync()
         {
             return await Execute<CoinExMarketStatesList>(GetUrl(MarketStatisticsListEndpoint)).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetMarketDepthAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExMarketDepth> GetMarketDepth(string market, int mergeDepth, int? limit = null) => GetMarketDepthAsync(market, mergeDepth, limit).Result;
+        /// <summary>
+        /// Gets the depth data for a market
+        /// </summary>
+        /// <param name="market">The market to retrieve depth data for</param>
+        /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+        /// <param name="limit">The limit of results returned</param>
+        /// <returns>Depth data for a market</returns>
         public async Task<CallResult<CoinExMarketDepth>> GetMarketDepthAsync(string market, int mergeDepth, int? limit = null)
         {
             if (mergeDepth < 0 || mergeDepth > 8)
@@ -95,28 +146,29 @@ namespace CoinEx.Net
 
             if (limit.HasValue && limit != 5 && limit != 10 && limit != 20)
                 return new CallResult<CoinExMarketDepth>(null, new ArgumentError("Limit should be 5 / 10 / 20"));
-
-            string merge = "0";
-            if (mergeDepth != 8)
-            {
-                merge += ".";
-                for (int i = 0; i < 7 - mergeDepth; i++)
-                    merge += "0";
-                merge += "1";
-            }
-
+            
             var parameters = new Dictionary<string, object>
             {
                 { "market", market },
-                { "merge", merge }
+                { "merge", CoinExHelpers.MergeDepthIntToString(mergeDepth) }
             };
             parameters.AddOptionalParameter("limit", limit);
 
             return await Execute<CoinExMarketDepth>(GetUrl(MarketDepthEndpoint), parameters: parameters).ConfigureAwait(false);
         }
 
-        public CallResult<CoinExMarketTransaction[]> GetLatestTransactionData(string market, long? lastId = null) => GetLatestTransactionDataAsync(market, lastId).Result;
-        public async Task<CallResult<CoinExMarketTransaction[]>> GetLatestTransactionDataAsync(string market, long? lastId = null)
+        /// <summary>
+        /// Synchronized version of the <see cref="GetLatestTransactionsAsync"/> method
+        /// </summary>
+        /// <returns></returns>
+        public CallResult<CoinExMarketTransaction[]> GetLatestTransactions(string market, long? lastId = null) => GetLatestTransactionsAsync(market, lastId).Result;
+        /// <summary>
+        /// Gets the latest transactions for a market
+        /// </summary>
+        /// <param name="market">The market to retrieve data for</param>
+        /// <param name="lastId">The id from which on to return transactions</param>
+        /// <returns>List of transactions for a market</returns>
+        public async Task<CallResult<CoinExMarketTransaction[]>> GetLatestTransactionsAsync(string market, long? lastId = null)
         {
             var parameters = new Dictionary<string, object>
             {
@@ -127,7 +179,18 @@ namespace CoinEx.Net
             return await Execute<CoinExMarketTransaction[]>(GetUrl(MarketDealsEndpoint), parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetKlinesAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExKline[]> GetKlines(string market, KlineInterval interval, int? limit = null) => GetKlinesAsync(market, interval, limit).Result;
+        /// <summary>
+        /// Retrieves kline data for a specific market
+        /// </summary>
+        /// <param name="market">The market to retrieve klines for</param>
+        /// <param name="interval">The interval of the candles</param>
+        /// <param name="limit">Limit of the number of results</param>
+        /// <returns>List of klines for a market</returns>
         public async Task<CallResult<CoinExKline[]>> GetKlinesAsync(string market, KlineInterval interval, int? limit = null)
         {
             var parameters = new Dictionary<string, object>
@@ -140,14 +203,34 @@ namespace CoinEx.Net
             return await Execute<CoinExKline[]>(GetUrl(MarketKlinesEndpoint), parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetBalancesAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<Dictionary<string, CoinExBalance>> GetBalances() => GetBalancesAsync().Result;
+        /// <summary>
+        /// Retrieves a list of balances. Requires API credentials
+        /// </summary>
+        /// <returns>List of balances</returns>
         public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync()
         {
             return await Execute<Dictionary<string, CoinExBalance>>(GetUrl(AccountInfoEndpoint), signed: true).ConfigureAwait(false);
         }
 
-        public CallResult<Dictionary<string, CoinExWithdrawal[]>> GetWitdrawalHistory(string coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null) => GetWitdrawalHistoryAsync(coin, coinWithdrawId, page, limit).Result;
-        public async Task<CallResult<Dictionary<string, CoinExWithdrawal[]>>> GetWitdrawalHistoryAsync(string coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null)
+        /// <summary>
+        /// Synchronized version of the <see cref="GetWitdrawalHistoryAsync"/> method
+        /// </summary>
+        /// <returns></returns>
+        public CallResult<CoinExWithdrawal[]> GetWitdrawalHistory(string coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null) => GetWitdrawalHistoryAsync(coin, coinWithdrawId, page, limit).Result;
+        /// <summary>
+        /// Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
+        /// </summary>
+        /// <param name="coin">The coin to get history for</param>
+        /// <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
+        /// <param name="page">The page in the results to retrieve</param>
+        /// <param name="limit">The number of results to return per page</param>
+        /// <returns></returns>
+        public async Task<CallResult<CoinExWithdrawal[]>> GetWitdrawalHistoryAsync(string coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null)
         {
             var parameters = new Dictionary<string, object>();
             parameters.AddOptionalParameter("coin", coin);
@@ -155,10 +238,70 @@ namespace CoinEx.Net
             parameters.AddOptionalParameter("page", page);
             parameters.AddOptionalParameter("limit", limit);
 
-            return await Execute<Dictionary<string, CoinExWithdrawal[]>>(GetUrl(WithdrawalHistoryEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExWithdrawal[]>(GetUrl(WithdrawalHistoryEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="WithdrawAsync"/> method
+        /// </summary>
+        /// <returns></returns>
+        public CallResult<CoinExWithdrawal> Withdraw(string coin, string coinAddress, decimal amount) => WithdrawAsync(coin, coinAddress, amount).Result;
+        /// <summary>
+        /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
+        /// </summary>
+        /// <param name="coin">The coin to withdraw</param>
+        /// <param name="coinAddress">The address to withdraw to</param>
+        /// <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
+        /// <returns>The withdrawal object</returns>
+        public async Task<CallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, decimal amount)
+        {
+            var parameters = new Dictionary<string, object>()
+            {
+                { "coin_type", coin },
+                { "coin_address", coinAddress },
+                { "actual_amount", amount.ToString(CultureInfo.InvariantCulture) },
+            };
+
+            return await Execute<CoinExWithdrawal>(GetUrl(WithdrawEndpoint), method: PostMethod, signed: true, parameters: parameters).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Synchronized version of the <see cref="CancelWithdrawalAsync"/> method
+        /// </summary>
+        /// <returns></returns>
+        public CallResult<bool> CancelWithdrawal(long coinWithdrawId) => CancelWithdrawalAsync(coinWithdrawId).Result;
+        /// <summary>
+        /// Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
+        /// </summary>
+        /// <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
+        /// <returns>True if successful, false otherwise</returns>
+        public async Task<CallResult<bool>> CancelWithdrawalAsync(long coinWithdrawId)
+        {
+            var parameters = new Dictionary<string, object>()
+            {
+                { "coin_withdraw_id", coinWithdrawId },
+            };
+
+            var result = await Execute<object>(GetUrl(WithdrawEndpoint), method: DeleteMethod, signed: true, parameters: parameters).ConfigureAwait(false);
+            if (!result.Success)
+                return new CallResult<bool>(false, result.Error);
+            return new CallResult<bool>(true, null);
+        }
+
+        /// <summary>
+        /// Synchronized version of the <see cref="PlaceLimitOrderAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExOrder> PlaceLimitOrder(string market, TransactionType type, decimal amount, decimal price, string sourceId = null) => PlaceLimitOrderAsync(market, type, amount, price, sourceId).Result;
+        /// <summary>
+        /// Places a limit order. Requires API credentials
+        /// </summary>
+        /// <param name="market">The market to place the order for</param>
+        /// <param name="type">Type of transaction</param>
+        /// <param name="amount">The amount of the order</param>
+        /// <param name="price">The price of a single unit of the order</param>
+        /// <param name="sourceId">Client id which can be used to match the order</param>
+        /// <returns>Details of the order that was placed</returns>
         public async Task<CallResult<CoinExOrder>> PlaceLimitOrderAsync(string market, TransactionType type, decimal amount, decimal price, string sourceId = null)
         {
             var parameters = new Dictionary<string, object>()
@@ -170,10 +313,22 @@ namespace CoinEx.Net
             };
             parameters.AddOptionalParameter("source_id", sourceId);
 
-            return await Execute<CoinExOrder>(GetUrl(PlaceLimitOrderEndpoint), method: "POST", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExOrder>(GetUrl(PlaceLimitOrderEndpoint), method: PostMethod, signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="PlaceMarketOrderAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExOrder> PlaceMarketOrder(string market, TransactionType type, decimal amount, string sourceId = null) => PlaceMarketOrderAsync(market, type, amount, sourceId).Result;
+        /// <summary>
+        /// Places a market order. Requires API credentials
+        /// </summary>
+        /// <param name="market">The market to place the order for</param>
+        /// <param name="type">Type of transaction</param>
+        /// <param name="amount">The amount of the order</param>
+        /// <param name="sourceId">Client id which can be used to match the order</param>
+        /// <returns>Details of the order that was placed</returns>
         public async Task<CallResult<CoinExOrder>> PlaceMarketOrderAsync(string market, TransactionType type, decimal amount, string sourceId = null)
         {
             var parameters = new Dictionary<string, object>()
@@ -184,10 +339,23 @@ namespace CoinEx.Net
             };
             parameters.AddOptionalParameter("source_id", sourceId);
 
-            return await Execute<CoinExOrder>(GetUrl(PlaceMarketOrderEndpoint), method: "POST", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExOrder>(GetUrl(PlaceMarketOrderEndpoint), method: PostMethod, signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="PlaceImmediateOrCancelOrderAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExOrder> PlaceImmediateOrCancelOrder(string market, TransactionType type, decimal amount, decimal price, string sourceId = null) => PlaceImmediateOrCancelOrderAsync(market, type, amount, price, sourceId).Result;
+        /// <summary>
+        /// Places an order which should be filled immediately uppon placing, otherwise it will be canceled. Requires API credentials
+        /// </summary>
+        /// <param name="market">The market to place the order for</param>
+        /// <param name="type">Type of transaction</param>
+        /// <param name="amount">The amount of the order</param>
+        /// <param name="price">The price of a single unit of the order</param>
+        /// <param name="sourceId">Client id which can be used to match the order</param>
+        /// <returns></returns>
         public async Task<CallResult<CoinExOrder>> PlaceImmediateOrCancelOrderAsync(string market, TransactionType type, decimal amount, decimal price, string sourceId = null)
         {
             var parameters = new Dictionary<string, object>()
@@ -199,10 +367,21 @@ namespace CoinEx.Net
             };
             parameters.AddOptionalParameter("source_id", sourceId);
 
-            return await Execute<CoinExOrder>(GetUrl(PlaceImmediateOrCancelOrderEndpoint), method: "POST", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExOrder>(GetUrl(PlaceImmediateOrCancelOrderEndpoint), method: PostMethod, signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetOpenOrdersAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExPagedResult<CoinExOrder[]>> GetOpenOrders(string market, int page, int limit) => GetOpenOrdersAsync(market, page, limit).Result;
+        /// <summary>
+        /// Retrieves a list of open orders for a market. Requires API credentials
+        /// </summary>
+        /// <param name="market">The market to retrieve the open orders for</param>
+        /// <param name="page">The page of the resulting list</param>
+        /// <param name="limit">The number of results per page</param>
+        /// <returns>List of open orders for a market</returns>
         public async Task<CallResult<CoinExPagedResult<CoinExOrder[]>>> GetOpenOrdersAsync(string market, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
@@ -212,10 +391,21 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrder[]>(GetUrl(OpenOrdersEndpoint), method: "GET", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrder[]>(GetUrl(OpenOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetExecutedOrdersAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExPagedResult<CoinExOrder[]>> GetExecutedOrders(string market, int page, int limit) => GetExecutedOrdersAsync(market, page, limit).Result;
+        /// <summary>
+        /// Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
+        /// </summary>
+        /// <param name="market">The market to retrieve the open orders for</param>
+        /// <param name="page">The page of the resulting list</param>
+        /// <param name="limit">The number of results per page</param>
+        /// <returns>List of executed orders for a market</returns>
         public async Task<CallResult<CoinExPagedResult<CoinExOrder[]>>> GetExecutedOrdersAsync(string market, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
@@ -225,10 +415,20 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrder[]>(GetUrl(FinishedOrdersEndpoint), method: "GET", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrder[]>(GetUrl(FinishedOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetOrderStatusAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExOrder> GetOrderStatus(long orderId, string market) => GetOrderStatusAsync(orderId, market).Result;
+        /// <summary>
+        /// Retrieves details of an order. Requires API credentials
+        /// </summary>
+        /// <param name="orderId">The id of the order to retrieve</param>
+        /// <param name="market">The market the order is for</param>
+        /// <returns>Details of the order</returns>
         public async Task<CallResult<CoinExOrder>> GetOrderStatusAsync(long orderId, string market)
         {
             var parameters = new Dictionary<string, object>()
@@ -237,10 +437,21 @@ namespace CoinEx.Net
                 { "id", orderId },
             };
 
-            return await Execute<CoinExOrder>(GetUrl(OrderStatusEndpoint), method: "GET", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExOrder>(GetUrl(OrderStatusEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetExecutedOrderDetailsAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExPagedResult<CoinExOrderTransaction[]>> GetExecutedOrderDetails(long orderId, int page, int limit) => GetExecutedOrderDetailsAsync(orderId, page, limit).Result;
+        /// <summary>
+        /// Retrieves execution details of a specific order. Requires API credentials
+        /// </summary>
+        /// <param name="orderId">The id of the order</param>
+        /// <param name="page">The page of the resulting list</param>
+        /// <param name="limit">The number of results per page</param>
+        /// <returns>Details of an executed order</returns>
         public async Task<CallResult<CoinExPagedResult<CoinExOrderTransaction[]>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
@@ -250,11 +461,22 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrderTransaction[]>(GetUrl(OrderDetailsEndpoint), method: "GET", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTransaction[]>(GetUrl(OrderDetailsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
-        public CallResult<CoinExPagedResult<CoinExOrderTransactionExtended[]>> GetTransactions(string market, int page, int limit) => GetTransactionsAsync(market, page, limit).Result;
-        public async Task<CallResult<CoinExPagedResult<CoinExOrderTransactionExtended[]>>> GetTransactionsAsync(string market, int page, int limit)
+        /// <summary>
+        /// Synchronized version of the <see cref="GetExecutedTransactionsAsync"/> method
+        /// </summary>
+        /// <returns></returns>
+        public CallResult<CoinExPagedResult<CoinExOrderTransactionExtended[]>> GetExecutedTransactions(string market, int page, int limit) => GetExecutedTransactionsAsync(market, page, limit).Result;
+        /// <summary>
+        /// Gets a list of transactions you executed on a specific market. Requires API credentials
+        /// </summary>
+        /// <param name="market">The market to retriece transactions for</param>
+        /// <param name="page">The page of the resulting list</param>
+        /// <param name="limit">The number of results per page</param>
+        /// <returns>List of transaction for a market</returns>
+        public async Task<CallResult<CoinExPagedResult<CoinExOrderTransactionExtended[]>>> GetExecutedTransactionsAsync(string market, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
             {
@@ -263,10 +485,20 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrderTransactionExtended[]>(GetUrl(UserTransactionsEndpoint), method: "GET", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTransactionExtended[]>(GetUrl(UserTransactionsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="CancelOrderAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExOrder> CancelOrder(string market, long orderId) => CancelOrderAsync(market, orderId).Result;
+        /// <summary>
+        /// Cancels an order. Requires API credentials
+        /// </summary>
+        /// <param name="market">The market the order is on</param>
+        /// <param name="orderId">The id of the order to cancel</param>
+        /// <returns>Details of the canceled order</returns>
         public async Task<CallResult<CoinExOrder>> CancelOrderAsync(string market, long orderId)
         {
             var parameters = new Dictionary<string, object>()
@@ -275,21 +507,31 @@ namespace CoinEx.Net
                 { "id", orderId }
             };
 
-            return await Execute<CoinExOrder>(GetUrl(CancelOrderEndpoint), method: "DELETE", signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExOrder>(GetUrl(CancelOrderEndpoint), method: DeleteMethod, signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Synchronized version of the <see cref="GetMiningDifficultyAsync"/> method
+        /// </summary>
+        /// <returns></returns>
         public CallResult<CoinExMiningDifficulty> GetMiningDifficulty() => GetMiningDifficultyAsync().Result;
+        /// <summary>
+        /// Retrieve the mining difficulty. Requires API credentials
+        /// </summary>
+        /// <returns></returns>
         public async Task<CallResult<CoinExMiningDifficulty>> GetMiningDifficultyAsync()
         {
             return await Execute<CoinExMiningDifficulty>(GetUrl(MiningDifficultyEndpoint), signed: true).ConfigureAwait(false);
         }
+        #endregion
 
+        #region private
         protected override IRequest ConstructRequest(Uri uri, string method, Dictionary<string, object> parameters, bool signed)
         {
             var uriString = uri.ToString();
             var paramString = GetParamString(signed, parameters);
 
-            if (method == "GET" || method == "DELETE")
+            if (method == GetMethod || method == DeleteMethod)
                 uriString += "?" + paramString;
 
             var request = RequestFactory.Create(uriString);
@@ -301,9 +543,9 @@ namespace CoinEx.Net
                 request.Headers.Add("authorization", GetSignData(paramString));
             }
 
-            if (parameters != null && method == "POST")
+            if (parameters != null && method == PostMethod)
             {
-                var stringData = JsonConvert.SerializeObject(parameters);
+                var stringData = JsonConvert.SerializeObject(parameters.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value));
                 var data = Encoding.UTF8.GetBytes(stringData);
                 request.ContentLength = data.Length;
 
@@ -325,7 +567,7 @@ namespace CoinEx.Net
                     parameters = new Dictionary<string, object>();
 
                 parameters.Add("access_id", authProvider.Credentials.Key.GetString());
-                parameters.Add("tonce", GetTimestamp());
+                parameters.Add("tonce", (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds);
                 parameters = parameters.OrderBy(p => p.Key).ToDictionary(k => k.Key, v => v.Value);
             }
 
@@ -338,12 +580,12 @@ namespace CoinEx.Net
             return authProvider.Sign(signString);            
         }
 
-        private async Task<CallResult<T>> Execute<T>(Uri uri, bool signed = false, string method = "GET", Dictionary<string, object> parameters = null) where T : class
+        private async Task<CallResult<T>> Execute<T>(Uri uri, bool signed = false, string method = GetMethod, Dictionary<string, object> parameters = null) where T : class
         {
             return GetResult(await ExecuteRequest<CoinExApiResult<T>>(uri, method, parameters, signed).ConfigureAwait(false));
         }
 
-        private async Task<CallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, bool signed = false, string method = "GET", Dictionary<string, object> parameters = null) where T : class
+        private async Task<CallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, bool signed = false, string method = GetMethod, Dictionary<string, object> parameters = null) where T : class
         {
             return GetResult(await ExecuteRequest<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, parameters, signed).ConfigureAwait(false));
         }
@@ -362,17 +604,13 @@ namespace CoinEx.Net
             return new Uri(baseAddress + endpoint);
         }
 
-        private long GetTimestamp()
-        {
-            return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
-        }
-
         private void Configure(CoinExClientOptions options)
         {
             base.Configure(options);
             baseAddress = options.BaseAddress;
             userAgent = options.UserAgent;
         }
+        #endregion
         #endregion
     }
 }
