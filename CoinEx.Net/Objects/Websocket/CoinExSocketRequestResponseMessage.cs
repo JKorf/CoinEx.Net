@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoinEx.Net.Objects.Websocket
+﻿namespace CoinEx.Net.Objects.Websocket
 {
-    public class CoinExSocketRequestResponseMessage
+    internal class CoinExSocketRequestResponseMessage
     {
         public string Status { get; set; }
     }

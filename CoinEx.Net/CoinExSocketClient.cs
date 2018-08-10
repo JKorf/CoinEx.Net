@@ -243,7 +243,7 @@ namespace CoinEx.Net
         public async Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketStateUpdatesAsync(string market, Action<string, CoinExSocketMarketState> onMessage)
         {
             var sub = new CoinExStateSubscription() { Market = market, Handler = onMessage };
-            return await Subscribe(sub, new CoinExSocketRequest(StateSubject, SubscribeAction, market), false).ConfigureAwait(false);
+            return await Subscribe(sub, new CoinExSocketRequest(StateSubject, SubscribeAction, market)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace CoinEx.Net
         public async Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketStateUpdatesAsync(Action<Dictionary<string, CoinExSocketMarketState>> onMessage)
         {
             var sub = new CoinExStateMultiSubscription() { Handler = onMessage };
-            return await Subscribe(sub, new CoinExSocketRequest(StateSubject, SubscribeAction), false).ConfigureAwait(false);
+            return await Subscribe(sub, new CoinExSocketRequest(StateSubject, SubscribeAction)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace CoinEx.Net
                 return new CallResult<CoinExStreamSubscription>(null, new ArgumentError("Limit should be 5 / 10 / 20"));
 
             var sub = new CoinExDepthSubscription() { Handler = onMessage, Market = market };
-            return await Subscribe(sub, new CoinExSocketRequest(DepthSubject, SubscribeAction, market, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
+            return await Subscribe(sub, new CoinExSocketRequest(DepthSubject, SubscribeAction, market, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth))).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace CoinEx.Net
         public async Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage)
         {
             var sub = new CoinExTransactionsSubscription() { Handler = onMessage, Market = market };
-            return await Subscribe(sub, new CoinExSocketRequest(TransactionSubject, SubscribeAction, market), false).ConfigureAwait(false);
+            return await Subscribe(sub, new CoinExSocketRequest(TransactionSubject, SubscribeAction, market)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace CoinEx.Net
         public async Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage)
         {
             var sub = new CoinExKlineSubscription() { Handler = onMessage, Market = market };
-            return await Subscribe(sub, new CoinExSocketRequest(KlineSubject, SubscribeAction, market, interval.ToSeconds()), false).ConfigureAwait(false);
+            return await Subscribe(sub, new CoinExSocketRequest(KlineSubject, SubscribeAction, market, interval.ToSeconds())).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace CoinEx.Net
             if (authProvider == null)
                 return new CallResult<bool>(false, new NoApiCredentialsError());
 
-            var result = await Query<CoinExSocketRequestResponseMessage>(stream.Socket, new CoinExSocketRequest(ServerSubject, AuthenticateAction, GetAuthParameters())).ConfigureAwait(false);
+            var result = await Query<CoinExSocketRequestResponseMessage>(stream, new CoinExSocketRequest(ServerSubject, AuthenticateAction, GetAuthParameters())).ConfigureAwait(false);
             if (!result.Success)
             {
                 log.Write(LogVerbosity.Debug, "Failed to authenticate: " + result.Error);
@@ -450,12 +450,12 @@ namespace CoinEx.Net
                     return new CallResult<T>(default(T), auth.Error);
             }
 
-            var result = await Query<T>(con.Data.Socket, request).ConfigureAwait(false);
+            var result = await Query<T>(con.Data, request).ConfigureAwait(false);
             var closeTask = con.Data.Close().ConfigureAwait(false); // let it close in background
             return result;
         }
 
-        private async Task<CallResult<T>> Query<T>(IWebsocket socket, CoinExSocketRequest request)
+        private async Task<CallResult<T>> Query<T>(CoinExStream stream, CoinExSocketRequest request)
         {
             return await Task.Run(() =>
             {
@@ -484,12 +484,12 @@ namespace CoinEx.Net
                     }
                 });
 
-                socket.OnMessage += onMessageAction;
+                stream.Socket.OnMessage += onMessageAction;
                 var data = JsonConvert.SerializeObject(request);
                 log.Write(LogVerbosity.Debug, "Sending data: " + data);
-                socket.Send(data);
+                stream.Socket.Send(data);
                 evnt.WaitOne(subResponseTimeout);
-                socket.OnMessage -= onMessageAction;
+                stream.Socket.OnMessage -= onMessageAction;
                 evnt.Dispose();
                 if (result == null)
                     return new CallResult<T>(default(T), new ServerError("No response from server"));
@@ -501,35 +501,48 @@ namespace CoinEx.Net
                 return new CallResult<T>(result.Data.Result, null);
             }).ConfigureAwait(false);
         }
-
-        private async Task<CallResult<CoinExStreamSubscription>> Subscribe(CoinExSubscription subscription, CoinExSocketRequest request, bool authenticated)
+        
+        private async Task<CallResult<CoinExStreamSubscription>> Subscribe(CoinExSubscription subscription, CoinExSocketRequest request, bool authenticated = false)
         {
             var con = ConnectNewSocket();
             if (!con.Success)
                 return new CallResult<CoinExStreamSubscription>(null, con.Error);
 
-            if (authenticated)
+            con.Data.Authenticated = authenticated;
+            con.Data.Subscription = subscription;
+            return await Subscribe(con.Data, request, false).ConfigureAwait(false);
+        }
+
+        private async Task<CallResult<CoinExStreamSubscription>> Subscribe(CoinExStream stream, CoinExSocketRequest request, bool resubscribing)
+        {
+            if (stream.Authenticated)
             {
-                var auth = await Authenticate(con.Data).ConfigureAwait(false);
+                var auth = await Authenticate(stream).ConfigureAwait(false);
                 if (!auth.Success)
                     return new CallResult<CoinExStreamSubscription>(null, auth.Error);
             }
 
-            con.Data.Socket.OnMessage += (msg) => OnMessage(con.Data.StreamResult.StreamId, msg);
-            var subConfirm = await Query<CoinExSocketRequestResponseMessage>(con.Data.Socket, request).ConfigureAwait(false);
+            if(!resubscribing) // Only add the message handler once, is already done if resubscribing
+                stream.Socket.OnMessage += (msg) => OnMessage(stream.StreamResult.StreamId, msg);
+
+            var subConfirm = await Query<CoinExSocketRequestResponseMessage>(stream, request).ConfigureAwait(false);
             if (subConfirm.Success)
             {
-                subscription.StreamId = con.Data.StreamResult.StreamId;
-                subscriptions.Add(subscription);
-                log.Write(LogVerbosity.Info, $"Subscription {subscription.StreamId} successful");
+                stream.Request = request;
+                stream.Subscription.StreamId = stream.StreamResult.StreamId;
+                stream.TryReconnect = true;
+                lock(subscriptions)
+                    if (!subscriptions.Contains(stream.Subscription))
+                        subscriptions.Add(stream.Subscription);
+                log.Write(LogVerbosity.Info, $"Subscription {stream.Subscription.StreamId} successful");
             }
             else
             {
-                log.Write(LogVerbosity.Info, $"Failed to subscribe {subscription.StreamId}: {subConfirm.Error}");
-                await con.Data.Close().ConfigureAwait(false);
+                log.Write(LogVerbosity.Info, $"Failed to subscribe {stream.Subscription.StreamId}: {subConfirm.Error}");
+                await stream.Close().ConfigureAwait(false);
             }
 
-            return new CallResult<CoinExStreamSubscription>(con.Data.StreamResult, subConfirm.Error);
+            return new CallResult<CoinExStreamSubscription>(stream.StreamResult, subConfirm.Error);
         }
 
         private void OnMessage(int streamId, string data)
@@ -541,10 +554,13 @@ namespace CoinEx.Net
                 return;
 
             log.Write(LogVerbosity.Debug, $"Socket {streamId} received data: " + data);
-            if (!subscriptions.Any(s => s.StreamId == streamId))
+            lock (subscriptions)
             {
-                log.Write(LogVerbosity.Warning, $"Socket {streamId} received data for unknown subscription: " + data);
-                return;
+                if (!subscriptions.Any(s => s.StreamId == streamId))
+                {
+                    log.Write(LogVerbosity.Warning, $"Socket {streamId} received data for unknown subscription: " + data);
+                    return;
+                }
             }
 
             if (token["method"] == null)
@@ -575,12 +591,17 @@ namespace CoinEx.Net
                 log.Write(LogVerbosity.Warning, "Failed to deserialize state data: " + paramData.Error);
                 return;
             }
-            foreach (var handler in subscriptions.Where(s => s.StreamId == streamId).OfType<CoinExStateMultiSubscription>())
+
+            List<CoinExSubscription> subs;
+            lock (subscriptions)
+                subs = subscriptions.ToList();
+
+            foreach (var handler in subs.Where(s => s.StreamId == streamId).OfType<CoinExStateMultiSubscription>())
                 handler.Handler(paramData.Data);
 
             if (paramData.Data.Count == 1) {
                 var first = paramData.Data.First();
-                foreach (var handler in subscriptions.Where(s => s.StreamId == streamId).OfType<CoinExStateSubscription>().Where(s => s.Market == first.Key))
+                foreach (var handler in subs.Where(s => s.StreamId == streamId).OfType<CoinExStateSubscription>().Where(s => s.Market == first.Key))
                     handler.Handler(first.Key, first.Value);
             }
         }
@@ -594,8 +615,12 @@ namespace CoinEx.Net
                 return;
             }
 
+            List<CoinExSubscription> subs;
+            lock (subscriptions)
+                subs = subscriptions.ToList();
+
             string market = (string)paramData.Data[0];
-            foreach (var handler in subscriptions.Where(s => s.StreamId == streamId).OfType<CoinExTransactionsSubscription>().Where(s => s.Market == market))
+            foreach (var handler in subs.Where(s => s.StreamId == streamId).OfType<CoinExTransactionsSubscription>().Where(s => s.Market == market))
                 handler.Handler(market, (CoinExSocketMarketTransaction[])paramData.Data[1]);
         }
 
@@ -608,7 +633,11 @@ namespace CoinEx.Net
                 return;
             }
 
-            foreach (var handler in subscriptions.Where(s => s.StreamId == streamId).OfType<CoinExDepthSubscription>())
+            List<CoinExSubscription> subs;
+            lock (subscriptions)
+                subs = subscriptions.ToList();
+
+            foreach (var handler in subs.Where(s => s.StreamId == streamId).OfType<CoinExDepthSubscription>())
                 handler.Handler((string)paramData.Data[2], (bool)paramData.Data[0], (CoinExSocketMarketDepth)paramData.Data[1]);
         }
 
@@ -621,7 +650,11 @@ namespace CoinEx.Net
                 return;
             }
 
-            foreach (var handler in subscriptions.Where(s => s.StreamId == streamId).OfType<CoinExKlineSubscription>())
+            List<CoinExSubscription> subs;
+            lock (subscriptions)
+                subs = subscriptions.ToList();
+
+            foreach (var handler in subs.Where(s => s.StreamId == streamId).OfType<CoinExKlineSubscription>())
                 handler.Handler(handler.Market, paramData.Data.Cast<CoinExKline>().ToArray());
         }
 
@@ -634,7 +667,11 @@ namespace CoinEx.Net
                 return;
             }
 
-            foreach (var handler in subscriptions.Where(s => s.StreamId == streamId).OfType<CoinExBalanceSubscription>())
+            List<CoinExSubscription> subs;
+            lock (subscriptions)
+                subs = subscriptions.ToList();
+
+            foreach (var handler in subs.Where(s => s.StreamId == streamId).OfType<CoinExBalanceSubscription>())
                 handler.Handler(paramData.Data);
         }
 
@@ -650,7 +687,11 @@ namespace CoinEx.Net
             int updateTypeInt = (int)paramData.Data[0];
             UpdateType updateType = JsonConvert.DeserializeObject<UpdateType>(updateTypeInt.ToString(), new UpdateTypeConverter(false));
 
-            foreach (var handler in subscriptions.Where(s => s.StreamId == streamId).OfType<CoinExOrderSubscription>())
+            List<CoinExSubscription> subs;
+            lock (subscriptions)
+                subs = subscriptions.ToList();
+
+            foreach (var handler in subs.Where(s => s.StreamId == streamId).OfType<CoinExOrderSubscription>())
                 handler.Handler(updateType, (CoinExSocketOrder)paramData.Data[1]);
         }
 
@@ -693,25 +734,40 @@ namespace CoinEx.Net
             log.Write(LogVerbosity.Error, $"Socket error {e?.Message}");
         }
 
-        private void SocketOnClose(CoinExStream con)
+        private void SocketOnClose(CoinExStream stream)
         {
-            if (con.TryReconnect)
+            if (stream.TryReconnect)
             {
-                log.Write(LogVerbosity.Info, "Connection lost, going to try to reconnect");
+                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} Connection lost, going to try to reconnect");
                 Task.Run(() =>
                 {
                     Thread.Sleep(reconnectInterval);
-                    if (con.Socket.Connect().Result)
-                        log.Write(LogVerbosity.Info, "Reconnected");
+                    if (stream.Socket.Connect().Result)
+                    {
+                        log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} Reconnected");
+                        if (stream.Request != null)
+                        {
+                            var resubResult = Subscribe(stream, stream.Request, true).Result;
+                            if (!resubResult.Success)
+                            {
+                                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} failed to resubscribe, closing socket and trying again");
+                                stream.Close(true).Wait();
+                            }
+                            else
+                                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} resubscribed reconnected socket");
+                        }
+                    }
                 });
             }
             else
             {
-                log.Write(LogVerbosity.Info, "Socket closed");
-                con.StreamResult.InvokeClosed();
-                con.Socket.Dispose();
+                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId}  closed");
+                lock(subscriptions)
+                    subscriptions.Remove(stream.Subscription);
+                stream.StreamResult.InvokeClosed();
+                stream.Socket.Dispose();
                 lock (sockets)
-                    sockets.Remove(con);
+                    sockets.Remove(stream);
             }
         }
 

@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace CoinEx.Net.Converters
 {
@@ -23,7 +21,7 @@ namespace CoinEx.Net.Converters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            writer.WriteValue((decimal)value);
         }
     }
 }

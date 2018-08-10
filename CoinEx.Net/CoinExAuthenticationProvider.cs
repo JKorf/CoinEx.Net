@@ -1,12 +1,11 @@
 ﻿using CryptoExchange.Net.Authentication;
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace CoinEx.Net
 {
-    public class CoinExAuthenticationProvider: AuthenticationProvider
+    internal class CoinExAuthenticationProvider: AuthenticationProvider
     {
         private readonly MD5 encryptor;
 

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    public class CoinExSocketRequestResponse<T>
+    internal class CoinExSocketRequestResponse<T>
     {
+        [JsonProperty("error")]
         public CoinExSocketError Error { get; set; }
+        [JsonProperty("result")]
         public T Result { get; set; }
+        [JsonProperty("id")]
         public int Id { get; set; }
     }
 }

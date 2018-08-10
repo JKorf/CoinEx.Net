@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    public class CoinExSocketRequest
+    internal class CoinExSocketRequest
     {
         [JsonProperty("method")]
         public string Method { get; }

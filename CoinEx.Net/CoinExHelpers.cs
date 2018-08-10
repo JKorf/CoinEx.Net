@@ -1,11 +1,8 @@
 ﻿using CoinEx.Net.Objects;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoinEx.Net
 {
-    public static class CoinExHelpers
+    internal static class CoinExHelpers
     {
         public static int ToSeconds(this KlineInterval interval)
         {

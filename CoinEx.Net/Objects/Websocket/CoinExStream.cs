@@ -3,17 +3,19 @@ using System.Threading.Tasks;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    public class CoinExStream
+    internal class CoinExStream
     {
-        internal bool TryReconnect { get; set; } = true;
+        internal bool TryReconnect { get; set; } = false;
         public IWebsocket Socket { get; set; }
         public CoinExStreamSubscription StreamResult { get; set; }
+        internal CoinExSocketRequest Request { get; set; }
+        internal CoinExSubscription Subscription { get; set; }
+        internal bool Authenticated { get; set; }
 
-        public async Task Close()
+        public async Task Close(bool reconnect = false)
         {
-            TryReconnect = false;
+            TryReconnect = reconnect;
             await Socket.Close().ConfigureAwait(false);
-            Socket.Dispose();
         }
     }
 }

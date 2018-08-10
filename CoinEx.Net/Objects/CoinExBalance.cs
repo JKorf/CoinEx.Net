@@ -1,15 +1,18 @@
 ﻿using CoinEx.Net.Converters;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoinEx.Net.Objects
 {
     public class CoinExBalance
     {
+        /// <summary>
+        /// The amount of the asset that is available
+        /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Available { get; set; }
+        /// <summary>
+        /// The amount of the asset not currently available
+        /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Frozen { get; set; }
     }

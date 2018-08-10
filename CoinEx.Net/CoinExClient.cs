@@ -94,16 +94,16 @@ namespace CoinEx.Net
         }
 
         /// <summary>
-        /// Synchronized version of the <see cref="GetMarketStatesAsync"/> method
+        /// Synchronized version of the <see cref="GetMarketStateAsync"/> method
         /// </summary>
         /// <returns></returns>
-        public CallResult<CoinExMarketState> GetMarketStatistics(string market) => GetMarketStatesAsync(market).Result;
+        public CallResult<CoinExMarketState> GetMarketState(string market) => GetMarketStateAsync(market).Result;
         /// <summary>
         /// Gets the state of a specific market
         /// </summary>
         /// <param name="market">The market to retrieve state for</param>
         /// <returns>The state of the market</returns>
-        public async Task<CallResult<CoinExMarketState>> GetMarketStatesAsync(string market)
+        public async Task<CallResult<CoinExMarketState>> GetMarketStateAsync(string market)
         {
             var parameters = new Dictionary<string, object>
             {
@@ -374,7 +374,7 @@ namespace CoinEx.Net
         /// Synchronized version of the <see cref="GetOpenOrdersAsync"/> method
         /// </summary>
         /// <returns></returns>
-        public CallResult<CoinExPagedResult<CoinExOrder[]>> GetOpenOrders(string market, int page, int limit) => GetOpenOrdersAsync(market, page, limit).Result;
+        public CallResult<CoinExPagedResult<CoinExOrder>> GetOpenOrders(string market, int page, int limit) => GetOpenOrdersAsync(market, page, limit).Result;
         /// <summary>
         /// Retrieves a list of open orders for a market. Requires API credentials
         /// </summary>
@@ -382,7 +382,7 @@ namespace CoinEx.Net
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <returns>List of open orders for a market</returns>
-        public async Task<CallResult<CoinExPagedResult<CoinExOrder[]>>> GetOpenOrdersAsync(string market, int page, int limit)
+        public async Task<CallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string market, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
             {
@@ -391,14 +391,14 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrder[]>(GetUrl(OpenOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrder>(GetUrl(OpenOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Synchronized version of the <see cref="GetExecutedOrdersAsync"/> method
         /// </summary>
         /// <returns></returns>
-        public CallResult<CoinExPagedResult<CoinExOrder[]>> GetExecutedOrders(string market, int page, int limit) => GetExecutedOrdersAsync(market, page, limit).Result;
+        public CallResult<CoinExPagedResult<CoinExOrder>> GetExecutedOrders(string market, int page, int limit) => GetExecutedOrdersAsync(market, page, limit).Result;
         /// <summary>
         /// Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
         /// </summary>
@@ -406,7 +406,7 @@ namespace CoinEx.Net
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <returns>List of executed orders for a market</returns>
-        public async Task<CallResult<CoinExPagedResult<CoinExOrder[]>>> GetExecutedOrdersAsync(string market, int page, int limit)
+        public async Task<CallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string market, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
             {
@@ -415,7 +415,7 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrder[]>(GetUrl(FinishedOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrder>(GetUrl(FinishedOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -444,7 +444,7 @@ namespace CoinEx.Net
         /// Synchronized version of the <see cref="GetExecutedOrderDetailsAsync"/> method
         /// </summary>
         /// <returns></returns>
-        public CallResult<CoinExPagedResult<CoinExOrderTransaction[]>> GetExecutedOrderDetails(long orderId, int page, int limit) => GetExecutedOrderDetailsAsync(orderId, page, limit).Result;
+        public CallResult<CoinExPagedResult<CoinExOrderTransaction>> GetExecutedOrderDetails(long orderId, int page, int limit) => GetExecutedOrderDetailsAsync(orderId, page, limit).Result;
         /// <summary>
         /// Retrieves execution details of a specific order. Requires API credentials
         /// </summary>
@@ -452,7 +452,7 @@ namespace CoinEx.Net
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <returns>Details of an executed order</returns>
-        public async Task<CallResult<CoinExPagedResult<CoinExOrderTransaction[]>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit)
+        public async Task<CallResult<CoinExPagedResult<CoinExOrderTransaction>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
             {
@@ -461,14 +461,14 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrderTransaction[]>(GetUrl(OrderDetailsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTransaction>(GetUrl(OrderDetailsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Synchronized version of the <see cref="GetExecutedTransactionsAsync"/> method
         /// </summary>
         /// <returns></returns>
-        public CallResult<CoinExPagedResult<CoinExOrderTransactionExtended[]>> GetExecutedTransactions(string market, int page, int limit) => GetExecutedTransactionsAsync(market, page, limit).Result;
+        public CallResult<CoinExPagedResult<CoinExOrderTransactionExtended>> GetExecutedTransactions(string market, int page, int limit) => GetExecutedTransactionsAsync(market, page, limit).Result;
         /// <summary>
         /// Gets a list of transactions you executed on a specific market. Requires API credentials
         /// </summary>
@@ -476,7 +476,7 @@ namespace CoinEx.Net
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <returns>List of transaction for a market</returns>
-        public async Task<CallResult<CoinExPagedResult<CoinExOrderTransactionExtended[]>>> GetExecutedTransactionsAsync(string market, int page, int limit)
+        public async Task<CallResult<CoinExPagedResult<CoinExOrderTransactionExtended>>> GetExecutedTransactionsAsync(string market, int page, int limit)
         {
             var parameters = new Dictionary<string, object>()
             {
@@ -485,7 +485,7 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrderTransactionExtended[]>(GetUrl(UserTransactionsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTransactionExtended>(GetUrl(UserTransactionsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Retrieve the mining difficulty. Requires API credentials
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Mining difficulty</returns>
         public async Task<CallResult<CoinExMiningDifficulty>> GetMiningDifficultyAsync()
         {
             return await Execute<CoinExMiningDifficulty>(GetUrl(MiningDifficultyEndpoint), signed: true).ConfigureAwait(false);

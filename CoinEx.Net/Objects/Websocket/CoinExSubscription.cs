@@ -6,46 +6,46 @@ using System.Text;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    public class CoinExSubscription
+    internal class CoinExSubscription
     {
         public int StreamId { get; set; }
     }
 
-    public class CoinExTransactionsSubscription : CoinExSubscription
+    internal class CoinExTransactionsSubscription : CoinExSubscription
     {
         public string Market { get; set; }
         public Action<string, CoinExSocketMarketTransaction[]> Handler { get; set; }
     }
 
-    public class CoinExStateSubscription : CoinExSubscription
+    internal class CoinExStateSubscription : CoinExSubscription
     {
         public string Market { get; set; }
         public Action<string, CoinExSocketMarketState> Handler { get; set; }
     }
 
-    public class CoinExStateMultiSubscription : CoinExSubscription
+    internal class CoinExStateMultiSubscription : CoinExSubscription
     {
         public Action<Dictionary<string, CoinExSocketMarketState>> Handler { get; set; }
     }
 
-    public class CoinExDepthSubscription : CoinExSubscription
+    internal class CoinExDepthSubscription : CoinExSubscription
     {
         public string Market { get; set; }
         public Action<string, bool, CoinExSocketMarketDepth> Handler { get; set; }
     }
 
-    public class CoinExBalanceSubscription : CoinExSubscription
+    internal class CoinExBalanceSubscription : CoinExSubscription
     {
         public Action<Dictionary<string, CoinExBalance>> Handler { get; set; }
     }
 
-    public class CoinExKlineSubscription : CoinExSubscription
+    internal class CoinExKlineSubscription : CoinExSubscription
     {
         public string Market { get; set; }
         public Action<string, CoinExKline[]> Handler { get; set; }
     }
 
-    public class CoinExOrderSubscription : CoinExSubscription
+    internal class CoinExOrderSubscription : CoinExSubscription
     {
         public Action<UpdateType, CoinExSocketOrder> Handler { get; set; }
     }
