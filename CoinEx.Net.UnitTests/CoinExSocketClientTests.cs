@@ -160,7 +160,7 @@ namespace CoinEx.Net.UnitTests
             TestHelpers.PublicInstancePropertiesEqual(expected, actual);
         }
 
-        [Test]
+        [Test, Order(2)]
         public void SubscribingToBalanceUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange
@@ -199,7 +199,9 @@ namespace CoinEx.Net.UnitTests
             // Arrange
             var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
             {
-                ApiCredentials = new ApiCredentials("test", "test")
+                ApiCredentials = new ApiCredentials("test", "test"),
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug
+
             }));
             var expected = new CoinExSocketOrder();
             CoinExSocketOrder actual = null;
@@ -222,7 +224,7 @@ namespace CoinEx.Net.UnitTests
             TestHelpers.PublicInstancePropertiesEqual(expected, actual);
         }
 
-        [Test]
+        [Test, Order(3)]
         public void LosingConnectionAfterSubscribing_Should_BeReconnected()
         {
             // Arrange
@@ -236,10 +238,34 @@ namespace CoinEx.Net.UnitTests
 
             // Act
             socket.Raise(r => r.OnClose += null);
-            Thread.Sleep(150);
+            Thread.Sleep(400);
 
             // Assert
             socket.Verify(s => s.Connect(), Times.AtLeast(2));
+        }
+
+        [Test, Order(1)]
+        public void LosingConnectionDuringResubscribing_Should_BeReconnected()
+        {
+            // Arrange
+            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            {
+                ReconnectionInterval = TimeSpan.FromMilliseconds(100),
+                SubscriptionResponseTimeout = TimeSpan.FromMilliseconds(100),
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug
+            }));
+            var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
+            InvokeSubResponse(socket);
+            subTask.Wait();
+
+            // Act
+            socket.Raise(r => r.OnClose += null);
+            Thread.Sleep(800);
+            socket.Raise(r => r.OnClose += null);
+            Thread.Sleep(400);
+
+            // Assert
+            socket.Verify(s => s.Connect(), Times.AtLeast(3));
         }
 
         private void InvokeSubResponse(Mock<IWebsocket> socket, int id = 2)

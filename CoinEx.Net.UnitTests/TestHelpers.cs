@@ -57,7 +57,7 @@ namespace CryptoExchange.Net.Testing
             return self == to;
         }
 
-        public static T PrepareClient<T>(string responseData) where T : ExchangeClient, new()
+        public static T PrepareClient<T>(Func<T> construct, string responseData) where T : ExchangeClient, new()
         {
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();
@@ -76,10 +76,8 @@ namespace CryptoExchange.Net.Testing
             factory.Setup(c => c.Create(It.IsAny<string>()))
                 .Returns(request.Object);
 
-            var client = new T
-            {
-                RequestFactory = factory.Object
-            };
+            var client = construct();
+            client.RequestFactory = factory.Object;
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
             log.Level = LogVerbosity.Debug;
             return client;
@@ -134,7 +132,8 @@ namespace CryptoExchange.Net.Testing
 
             var client = construct();
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
-            log.Level = LogVerbosity.Debug;
+            if(log.Level == LogVerbosity.Info)
+                log.Level = LogVerbosity.None;
             typeof(T).GetProperty("SocketFactory").SetValue(client, factory.Object);
             return (socket, client);
         }
