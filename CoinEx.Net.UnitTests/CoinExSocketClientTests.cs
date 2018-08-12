@@ -238,7 +238,7 @@ namespace CoinEx.Net.UnitTests
 
             // Act
             socket.Raise(r => r.OnClose += null);
-            Thread.Sleep(400);
+            Thread.Sleep(1000);
 
             // Assert
             socket.Verify(s => s.Connect(), Times.AtLeast(2));
