@@ -5,10 +5,11 @@ namespace CoinEx.Net.Objects
 {
     public class CoinExClientOptions: ExchangeOptions
     {
-        /// <summary>
-        /// The base address of the REST API
-        /// </summary>
-        public string BaseAddress { get; set; } = "https://api.coinex.com/v1";
+        public CoinExClientOptions()
+        {
+            BaseAddress = "https://api.coinex.com/v1";
+        }
+
         /// <summary>
         /// The user agent send in all requests
         /// </summary>
@@ -17,10 +18,11 @@ namespace CoinEx.Net.Objects
 
     public class CoinExSocketClientOptions : ExchangeOptions
     {
-        /// <summary>
-        /// The base address of the socket API
-        /// </summary>
-        public string BaseAddress { get; set; } = "wss://socket.coinex.com/";
+        public CoinExSocketClientOptions()
+        {
+            BaseAddress = "wss://socket.coinex.com/";
+        }
+
         /// <summary>
         /// The time to wait for the websocket to respond before assuming it failed
         /// </summary>

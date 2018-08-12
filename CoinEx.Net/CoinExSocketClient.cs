@@ -94,12 +94,12 @@ namespace CoinEx.Net
         /// Synchronized version of the <see cref="PingAsync"/> method
         /// </summary>
         /// <returns></returns>
-        public CallResult<bool> Ping() => PingAsync().Result;
+        public new CallResult<bool> Ping() => PingAsync().Result;
         /// <summary>
         /// Pings the server
         /// </summary>
         /// <returns>True if server responded, false otherwise</returns>
-        public async Task<CallResult<bool>> PingAsync()
+        public new async Task<CallResult<bool>> PingAsync()
         {
             var result = await QueryNewSocket<string>(new CoinExSocketRequest(ServerSubject, PingAction), false).ConfigureAwait(false);
             return new CallResult<bool>(result.Success, result.Error);
