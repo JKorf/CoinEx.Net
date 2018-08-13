@@ -17,7 +17,6 @@ namespace CoinEx.Net
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();
 
-        private string baseAddress;
         private string userAgent;
 
         private const string MarketListEndpoint = "/market/list";
