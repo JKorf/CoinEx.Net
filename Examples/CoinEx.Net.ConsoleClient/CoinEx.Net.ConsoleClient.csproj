@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CoinEx.Net" Version="0.0.1" />
+  </ItemGroup>
+
 </Project>
