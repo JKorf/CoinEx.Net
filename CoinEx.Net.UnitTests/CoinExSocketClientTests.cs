@@ -248,7 +248,7 @@ namespace CoinEx.Net.UnitTests
             });
 
             // Act
-            socket.Raise(r => r.OnClose += null);
+            Task.Run(() => socket.Raise(r => r.OnClose += null));
             evnt.WaitOne(5000);
 
             // Assert
