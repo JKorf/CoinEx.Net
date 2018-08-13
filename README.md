@@ -18,7 +18,7 @@ Also check out my other exchange API wrappers:
 <br />
 <a href="https://github.com/JKorf/Bitfinex.Net">Bitfinex</a>
 </td>
-<td><img src="https://github.com/JKorf/Binance.Net/blob/master/Resources/binance-icon.png?raw=true">
+<td><img src="https://github.com/JKorf/Binance.Net/blob/master/Resources/binance-coin.png?raw=true">
 <br />
 <a href="https://github.com/JKorf/Binance.Net">Binance</a>
 </td>

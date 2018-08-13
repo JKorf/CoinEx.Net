@@ -21,7 +21,6 @@ namespace CoinEx.Net
         #region fields
         private static CoinExSocketClientOptions defaultOptions = new CoinExSocketClientOptions();
 
-        private string baseAddress;
         private int subResponseTimeout;
         private int reconnectInterval;
         private SslProtocols protocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
