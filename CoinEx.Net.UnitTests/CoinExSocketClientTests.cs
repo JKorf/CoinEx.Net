@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -227,6 +228,35 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
+        public void SubscribingToAuthenticatedStream_Should_SendAuthentication()
+        {
+            // arrange
+            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            {
+                ApiCredentials = new ApiCredentials("TestKey", "test"),
+                SubscriptionResponseTimeout = TimeSpan.FromMilliseconds(100)
+            }));
+            var expected = new CoinExSocketRequest("server", "sign", "TestKey", "", 1 );
+            CoinExSocketRequest actual = null;
+
+            socket.Setup(s => s.Send(It.IsAny<string>())).Callback(() =>
+            {
+                var invocation = socket.Invocations.SingleOrDefault(s => s.Method == typeof(IWebsocket).GetMethod("Send"));
+                if (invocation == null)
+                    return;
+                var msg = (string)invocation.Arguments[0];
+                actual = JsonConvert.DeserializeObject<CoinExSocketRequest>(msg);
+            });
+
+            // act
+            var sub = client.SubscribeToBalanceUpdates(data => { });
+
+            // assert
+            Assert.IsTrue(expected.Method == actual.Method);
+            Assert.IsTrue((string)expected.Parameters[0] == (string)actual.Parameters[0]);
+        }
+
+        [Test]
         public void LosingConnectionAfterSubscribing_Should_BeReconnected()
         {
             // Arrange
@@ -269,14 +299,23 @@ namespace CoinEx.Net.UnitTests
             InvokeSubResponse(socket);
             subTask.Wait();
 
+            ManualResetEvent evnt = new ManualResetEvent(false);
+            int invocations = 0;
+            socket.Setup(s => s.Connect()).Callback(() =>
+            {
+                invocations++;
+                evnt.Set();
+            });
+
             // Act
             socket.Raise(r => r.OnClose += null);
-            Thread.Sleep(800);
+            evnt.WaitOne(1000);
+            evnt.Reset();
             socket.Raise(r => r.OnClose += null);
-            Thread.Sleep(400);
+            evnt.WaitOne(1000);
 
             // Assert
-            socket.Verify(s => s.Connect(), Times.AtLeast(3));
+            Assert.IsTrue(invocations == 2);
         }
 
         private Task InvokeSubResponse(Mock<IWebsocket> socket, int id = 2)

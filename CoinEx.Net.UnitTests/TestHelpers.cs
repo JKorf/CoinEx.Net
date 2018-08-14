@@ -57,7 +57,7 @@ namespace CryptoExchange.Net.Testing
             return self == to;
         }
 
-        public static T PrepareClient<T>(Func<T> construct, string responseData) where T : ExchangeClient, new()
+        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData) where T : ExchangeClient, new()
         {
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();
@@ -67,7 +67,10 @@ namespace CryptoExchange.Net.Testing
             var response = new Mock<IResponse>();
             response.Setup(c => c.GetResponseStream()).Returns(responseStream);
 
+            var requestStream = new Mock<Stream>();
+
             var request = new Mock<IRequest>();
+            request.Setup(c => c.GetRequestStream()).Returns(Task.FromResult(requestStream.Object));
             request.Setup(c => c.Headers).Returns(new WebHeaderCollection());
             request.Setup(c => c.Uri).Returns(new Uri("http://www.test.com"));
             request.Setup(c => c.GetResponse()).Returns(Task.FromResult(response.Object));
@@ -80,7 +83,13 @@ namespace CryptoExchange.Net.Testing
             client.RequestFactory = factory.Object;
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
             log.Level = LogVerbosity.Debug;
-            return client;
+            return new MockObjects<T>()
+            {
+                Client = client,
+                Request = request,
+                RequestStream = requestStream,
+                Response = response
+            };
         }
 
         public static T PrepareExceptionClient<T>(string responseData, string exceptionMessage, int statusCode) where T : ExchangeClient, new()
@@ -141,6 +150,15 @@ namespace CryptoExchange.Net.Testing
         public static void InvokeWebsocket(Mock<IWebsocket> socket, string data)
         {
             socket.Raise(r => r.OnMessage += null, data);
+        }
+
+        public class MockObjects<T> where T: ExchangeClient
+        {
+            public T Client { get; set; }
+            public Mock<IRequest> Request { get; set; }
+            public Mock<Stream> RequestStream { get; set; }
+            public Mock<IResponse> Response { get; set; }
+
         }
     }
 }
