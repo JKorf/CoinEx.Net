@@ -267,17 +267,17 @@ namespace CoinEx.Net.UnitTests
 
         [Test]
         [TestCase("TestStringToSign", "C351B1833970C30017EF9AE280A09570")]
-        [TestCase("access_id=4DA36FFC61334695A66F8D29020EB589&amount=1.0&market=BTCBCH&price=680&tonce=1513746038205&type=buy&secret_key=B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F", "C6F0DDA352101C2258F992A277397F4A")]
+        [TestCase("access_id=4DA36FFC61334695A66F8D29020EB589&amount=1.0&market=BTCBCH&price=680&tonce=1513746038205&type=buy&secret_key=B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F", "610AB90A1D31D45901D173E4F59C9384")]
         public void SigningString_Should_GiveCorrectSignResult(string input, string output)
         {
             // arrange
-            var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("TestKey", "TestSecret"));
+            var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("4DA36FFC61334695A66F8D29020EB589", "B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F"));
 
             // act
-            var sign = authProvider.Sign("TestStringToSign");
+            var sign = authProvider.Sign(input);
 
             // assert
-            Assert.AreEqual(sign, "C351B1833970C30017EF9AE280A09570");
+            Assert.AreEqual(sign, output);
         }
 
         private string CreateRequest<T>(T obj)
