@@ -23,17 +23,16 @@ namespace CoinEx.Net
 
         private int subResponseTimeout;
         private int reconnectInterval;
-        private SslProtocols protocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+        private const SslProtocols protocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
 
         private int lastStreamId;
         private readonly object streamIdLock = new object();
-        private readonly object connectionLock = new object();
-        private List<CoinExStream> sockets = new List<CoinExStream>();
+        private readonly List<CoinExStream> sockets = new List<CoinExStream>();
 
-        private JsonSerializer marketDepthSerializer = CreateJsonSerializerWithConverter(new ParamConverter(new[] { typeof(bool), typeof(CoinExSocketMarketDepth), typeof(string) }));
-        private JsonSerializer marketTransactionSerializer = CreateJsonSerializerWithConverter(new ParamConverter(new[] { typeof(string), typeof(CoinExSocketMarketTransaction[]) }));
-        private JsonSerializer marketKlineSerializer = CreateJsonSerializerWithConverter(new ParamListConverter(typeof(CoinExKline)));
-        private JsonSerializer orderSerializer = CreateJsonSerializerWithConverter(new ParamConverter(typeof(int), typeof(CoinExSocketOrder)));
+        private readonly JsonSerializer marketDepthSerializer = CreateJsonSerializerWithConverter(new ParamConverter(typeof(bool), typeof(CoinExSocketMarketDepth), typeof(string)));
+        private readonly JsonSerializer marketTransactionSerializer = CreateJsonSerializerWithConverter(new ParamConverter( typeof(string), typeof(CoinExSocketMarketTransaction[])));
+        private readonly JsonSerializer marketKlineSerializer = CreateJsonSerializerWithConverter(new ParamListConverter(typeof(CoinExKline)));
+        private readonly JsonSerializer orderSerializer = CreateJsonSerializerWithConverter(new ParamConverter(typeof(int), typeof(CoinExSocketOrder)));
 
         private List<CoinExSubscription> subscriptions = new List<CoinExSubscription>();
 
@@ -387,10 +386,7 @@ namespace CoinEx.Net
                 lock (sockets)
                     toClose = sockets.ToList();
 
-                List<Task> closeTasks = new List<Task>();
-                foreach (var socket in toClose)
-                    closeTasks.Add(socket.Close());
-                Task.WaitAll(closeTasks.ToArray());                
+                Task.WaitAll(toClose.Select(socket => socket.Close()).ToArray());                
             }).ConfigureAwait(false);
         }
 
@@ -463,24 +459,24 @@ namespace CoinEx.Net
                 request.Id = NextStreamId();
                 var onMessageAction = new Action<string>((msg) =>
                 {
-                    log.Write(LogVerbosity.Debug, $"Socket received query response: " + msg);
+                    log.Write(LogVerbosity.Debug, "Socket received query response: " + msg);
 
                     var token = JToken.Parse(msg);
-                    if ((int?)token["id"] == request.Id)
-                    {
-                        if (token["error"].Type == JTokenType.Null)
-                            result = Deserialize<CoinExSocketRequestResponse<T>>(msg, true);
-                        else
-                        {
-                            var errorResult = Deserialize<CoinExSocketError>(token["error"].ToString());
-                            if (!errorResult.Success)
-                                result = new CallResult<CoinExSocketRequestResponse<T>>(null, new ServerError("Unknown error: " + token["error"]));
-                            else
-                                result = new CallResult<CoinExSocketRequestResponse<T>>(null, new ServerError(errorResult.Data.Code, errorResult.Data.Message));
-                        }
+                    if ((int?) token["id"] != request.Id)
+                        return;
 
-                        evnt.Set();
+                    if (token["error"].Type == JTokenType.Null)
+                        result = Deserialize<CoinExSocketRequestResponse<T>>(msg);
+                    else
+                    {
+                        var errorResult = Deserialize<CoinExSocketError>(token["error"].ToString());
+                        if (!errorResult.Success)
+                            result = new CallResult<CoinExSocketRequestResponse<T>>(null, new ServerError("Unknown error: " + token["error"]));
+                        else
+                            result = new CallResult<CoinExSocketRequestResponse<T>>(null, new ServerError(errorResult.Data.Code, errorResult.Data.Message));
                     }
+
+                    evnt?.Set();
                 });
 
                 stream.Socket.OnMessage += onMessageAction;
@@ -490,6 +486,7 @@ namespace CoinEx.Net
                 evnt.WaitOne(subResponseTimeout);
                 stream.Socket.OnMessage -= onMessageAction;
                 evnt.Dispose();
+                evnt = null;
                 if (result == null)
                     return new CallResult<T>(default(T), new ServerError("No response from server"));
                 if (!result.Success)
@@ -566,20 +563,30 @@ namespace CoinEx.Net
                 return;
 
             var subjectAction = ((string)token["method"]).Split('.');
-            if (subjectAction[0] == TransactionSubject)
-                HandleTransactionUpdate(streamId, token);
-            else if (subjectAction[0] == StateSubject)
-                HandleStateUpdate(streamId, token);
-            else if (subjectAction[0] == DepthSubject)
-                HandleDepthUpdate(streamId, token);
-            else if (subjectAction[0] == KlineSubject)
-                HandleKlineUpdate(streamId, token);
-            else if (subjectAction[0] == BalanceSubject)
-                HandleBalanceUpdate(streamId, token);
-            else if (subjectAction[0] == OrderSubject)
-                HandleOrderUpdate(streamId, token);
-            else
-                log.Write(LogVerbosity.Warning, $"Socket {streamId} received unknown data: " + data);
+            switch (subjectAction[0])
+            {
+                case TransactionSubject:
+                    HandleTransactionUpdate(streamId, token);
+                    break;
+                case StateSubject:
+                    HandleStateUpdate(streamId, token);
+                    break;
+                case DepthSubject:
+                    HandleDepthUpdate(streamId, token);
+                    break;
+                case KlineSubject:
+                    HandleKlineUpdate(streamId, token);
+                    break;
+                case BalanceSubject:
+                    HandleBalanceUpdate(streamId, token);
+                    break;
+                case OrderSubject:
+                    HandleOrderUpdate(streamId, token);
+                    break;
+                default:
+                    log.Write(LogVerbosity.Warning, $"Socket {streamId} received unknown data: " + data);
+                    break;
+            }
         }
 
         private void HandleStateUpdate(int streamId, JToken token)
@@ -716,11 +723,9 @@ namespace CoinEx.Net
                     sockets.Add(stream);
                 return new CallResult<CoinExStream>(stream, null);
             }
-            else
-            {
-                socket.Dispose();
-                return new CallResult<CoinExStream>(null, new CantConnectError());
-            }
+
+            socket.Dispose();
+            return new CallResult<CoinExStream>(null, new CantConnectError());
         }
 
         private void SocketOnOpen()
@@ -741,20 +746,20 @@ namespace CoinEx.Net
                 Task.Run(() =>
                 {
                     Thread.Sleep(reconnectInterval);
-                    if (stream.Socket.Connect().Result)
+                    if (!stream.Socket.Connect().Result)
+                        return;
+
+                    log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} Reconnected");
+                    if (stream.Request != null)
                     {
-                        log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} Reconnected");
-                        if (stream.Request != null)
+                        var resubResult = Subscribe(stream, stream.Request, true).Result;
+                        if (!resubResult.Success)
                         {
-                            var resubResult = Subscribe(stream, stream.Request, true).Result;
-                            if (!resubResult.Success)
-                            {
-                                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} failed to resubscribe, closing socket and trying again");
-                                stream.Close(true).Wait();
-                            }
-                            else
-                                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} resubscribed reconnected socket");
+                            log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} failed to resubscribe, closing socket and trying again");
+                            stream.Close(true).Wait();
                         }
+                        else
+                            log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} resubscribed reconnected socket");
                     }
                 });
             }

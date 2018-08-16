@@ -1,8 +1,5 @@
-﻿using CoinEx.Net.Converters;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoinEx.Net.Objects.Websocket
 {

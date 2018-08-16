@@ -1,8 +1,6 @@
 ﻿using CoinEx.Net.Objects;
 using CryptoExchange.Net.Converters;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CoinEx.Net.Converters
 {

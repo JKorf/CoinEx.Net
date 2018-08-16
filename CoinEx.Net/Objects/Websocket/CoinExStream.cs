@@ -5,7 +5,7 @@ namespace CoinEx.Net.Objects.Websocket
 {
     internal class CoinExStream
     {
-        internal bool TryReconnect { get; set; } = false;
+        internal bool TryReconnect { get; set; };
         public IWebsocket Socket { get; set; }
         public CoinExStreamSubscription StreamResult { get; set; }
         internal CoinExSocketRequest Request { get; set; }

@@ -213,7 +213,7 @@ namespace CoinEx.Net
         /// <returns>List of balances</returns>
         public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync()
         {
-            return await Execute<Dictionary<string, CoinExBalance>>(GetUrl(AccountInfoEndpoint), signed: true).ConfigureAwait(false);
+            return await Execute<Dictionary<string, CoinExBalance>>(GetUrl(AccountInfoEndpoint), true).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace CoinEx.Net
             parameters.AddOptionalParameter("page", page);
             parameters.AddOptionalParameter("limit", limit);
 
-            return await Execute<CoinExWithdrawal[]>(GetUrl(WithdrawalHistoryEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExWithdrawal[]>(GetUrl(WithdrawalHistoryEndpoint), true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace CoinEx.Net
                 { "coin_withdraw_id", coinWithdrawId },
             };
 
-            var result = await Execute<object>(GetUrl(WithdrawEndpoint), method: DeleteMethod, signed: true, parameters: parameters).ConfigureAwait(false);
+            var result = await Execute<object>(GetUrl(CancelWithdrawalEndpoint), method: DeleteMethod, signed: true, parameters: parameters).ConfigureAwait(false);
             if (!result.Success)
                 return new CallResult<bool>(false, result.Error);
             return new CallResult<bool>(true, null);
@@ -390,7 +390,7 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrder>(GetUrl(OpenOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrder>(GetUrl(OpenOrdersEndpoint), true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -414,7 +414,7 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrder>(GetUrl(FinishedOrdersEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrder>(GetUrl(FinishedOrdersEndpoint), true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -436,7 +436,7 @@ namespace CoinEx.Net
                 { "id", orderId },
             };
 
-            return await Execute<CoinExOrder>(GetUrl(OrderStatusEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await Execute<CoinExOrder>(GetUrl(OrderStatusEndpoint), true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -460,7 +460,7 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrderTransaction>(GetUrl(OrderDetailsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTransaction>(GetUrl(OrderDetailsEndpoint), true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -484,7 +484,7 @@ namespace CoinEx.Net
                 { "limit", limit },
             };
 
-            return await ExecutePaged<CoinExOrderTransactionExtended>(GetUrl(UserTransactionsEndpoint), signed: true, parameters: parameters).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTransactionExtended>(GetUrl(UserTransactionsEndpoint), true, parameters: parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -520,7 +520,7 @@ namespace CoinEx.Net
         /// <returns>Mining difficulty</returns>
         public async Task<CallResult<CoinExMiningDifficulty>> GetMiningDifficultyAsync()
         {
-            return await Execute<CoinExMiningDifficulty>(GetUrl(MiningDifficultyEndpoint), signed: true).ConfigureAwait(false);
+            return await Execute<CoinExMiningDifficulty>(GetUrl(MiningDifficultyEndpoint), true).ConfigureAwait(false);
         }
         #endregion
 

@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CoinEx.Net.Objects.Websocket
 {
@@ -8,10 +6,6 @@ namespace CoinEx.Net.Objects.Websocket
     {
         [JsonProperty("method")]
         public string Method { get; set; }
-        [JsonIgnore]
-        public string Subject { get; }
-        [JsonIgnore]
-        public string Action { get; }
         [JsonProperty("params")]
         public object[] Parameters { get; set; }
         [JsonProperty("id")]

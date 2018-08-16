@@ -1,14 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoinEx.Net.Converters
 {
     public class ParamConverter : JsonConverter
     {
-        private Type[] types;
+        private readonly Type[] types;
 
         public ParamConverter(params Type[] types)
         {
@@ -40,7 +38,7 @@ namespace CoinEx.Net.Converters
 
     public class ParamListConverter : JsonConverter
     {
-        private Type type;
+        private readonly Type type;
 
         public ParamListConverter(Type type)
         {
