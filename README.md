@@ -154,6 +154,10 @@ client.UnsubscribeFromStream(successSub.Data);
 Additionaly, all sockets can be closed with the `UnsubscribeAllStreams` method. Beware that when a client is disposed the sockets are automatically disposed. This means that if the code is no longer in the using statement the eventhandler won't fire anymore. 
 
 ## Release notes
+* Version 0.0.3 - 16 aug 2018
+	* Added client interfaces
+	* Fixed minor Resharper warnings
+
 * Version 0.0.2 - 13 aug 2018
 	* Upped CryptoExchange.Net to fix bug
 
