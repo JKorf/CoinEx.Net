@@ -9,10 +9,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoinEx.Net.Interfaces;
 
 namespace CoinEx.Net
 {
-    public class CoinExClient : ExchangeClient
+    public class CoinExClient : ExchangeClient, ICoinExClient
     {
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();

@@ -13,10 +13,11 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
+using CoinEx.Net.Interfaces;
 
 namespace CoinEx.Net
 {
-    public class CoinExSocketClient: ExchangeClient
+    public class CoinExSocketClient: ExchangeClient, ICoinExSocketClient
     {
         #region fields
         private static CoinExSocketClientOptions defaultOptions = new CoinExSocketClientOptions();
