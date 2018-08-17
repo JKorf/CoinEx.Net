@@ -26,8 +26,8 @@ namespace CoinEx.Net
         private int reconnectInterval;
         private const SslProtocols protocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
 
-        private int lastStreamId;
-        private readonly object streamIdLock = new object();
+        private static int lastStreamId;
+        private static readonly object streamIdLock = new object();
         private readonly List<CoinExStream> sockets = new List<CoinExStream>();
 
         private readonly JsonSerializer marketDepthSerializer = CreateJsonSerializerWithConverter(new ParamConverter(typeof(bool), typeof(CoinExSocketMarketDepth), typeof(string)));
