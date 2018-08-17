@@ -141,6 +141,7 @@ namespace CryptoExchange.Net.Testing
 
             var client = construct();
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
+            typeof(T).GetField("lastStreamId", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).SetValue(client, 0);
             typeof(T).GetProperty("SocketFactory").SetValue(client, factory.Object);
             return (socket, client);
         }

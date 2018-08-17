@@ -28,9 +28,10 @@ namespace CoinEx.Net.UnitTests
             var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
             Thread.Sleep(10);
             InvokeSubResponse(socket);
-            subTask.Wait();
+            subTask.Wait(5000);
 
             // Assert
+            Assert.IsTrue(subTask.IsCompleted);
             Assert.IsTrue(subTask.Result.Success);
         }
 
