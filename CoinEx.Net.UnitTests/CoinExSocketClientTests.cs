@@ -9,7 +9,9 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -316,11 +318,14 @@ namespace CoinEx.Net.UnitTests
         public void LosingConnectionDuringResubscribing_Should_BeReconnected()
         {
             // Arrange
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
             var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
             {
                 ReconnectionInterval = TimeSpan.FromMilliseconds(100),
                 SubscriptionResponseTimeout = TimeSpan.FromMilliseconds(100),
-                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
             }));
             var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
             InvokeSubResponse(socket);
@@ -335,14 +340,14 @@ namespace CoinEx.Net.UnitTests
             });
 
             // Act
-            socket.Raise(r => r.OnClose += null);
+            socket.Object.Close();
             evnt.WaitOne(1000);
             evnt.Reset();
-            socket.Raise(r => r.OnClose += null);
+            socket.Object.Close();
             evnt.WaitOne(1000);
 
             // Assert
-            Assert.IsTrue(invocations == 2);
+            Assert.AreEqual(2, invocations, 0, sb.ToString());
         }
 
         private Task InvokeSubResponse(Mock<IWebsocket> socket, int id = 2)

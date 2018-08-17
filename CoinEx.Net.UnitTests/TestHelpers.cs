@@ -130,9 +130,13 @@ namespace CryptoExchange.Net.Testing
 
         public static (Mock<IWebsocket>, T) PrepareSocketClient<T>(Func<T> construct) where T : ExchangeClient, new()
         {
-            List<IWebsocket> sockets = new List<IWebsocket>();
+            bool open = false;
+            bool closed = true;
             var socket = new Mock<IWebsocket>();
-            socket.Setup(s => s.Close()).Returns(Task.FromResult(true));
+            socket.Setup(s => s.Close()).Returns(Task.FromResult(true)).Callback(() => {
+                open = false; closed = true;
+                socket.Raise(s => s.OnClose += null);
+            });
             socket.Setup(s => s.Connect()).Returns(Task.FromResult(true));
             socket.Setup(s => s.SetEnabledSslProtocols(It.IsAny<System.Security.Authentication.SslProtocols>()));
 
