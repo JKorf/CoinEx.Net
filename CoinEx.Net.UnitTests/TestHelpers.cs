@@ -141,8 +141,6 @@ namespace CryptoExchange.Net.Testing
 
             var client = construct();
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
-            if(log.Level == LogVerbosity.Info)
-                log.Level = LogVerbosity.None;
             typeof(T).GetProperty("SocketFactory").SetValue(client, factory.Object);
             return (socket, client);
         }

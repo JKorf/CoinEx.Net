@@ -21,11 +21,10 @@ namespace CoinEx.Net.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var array = JArray.Load(reader);
-            if (array.Count != types.Length)
-                throw new Exception("Type array mismatch in param parsing");
+            int maxParse = Math.Min(array.Count, types.Length);
+            var result = new object[maxParse];
 
-            var result = new object[array.Count];
-            for (int i = 0; i < array.Count; i++)
+            for (int i = 0; i < maxParse; i++)
                 result[i] = array[i].ToObject(types[i]);
             return result;
         }

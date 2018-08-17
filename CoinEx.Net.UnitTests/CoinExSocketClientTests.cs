@@ -107,6 +107,32 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
+        public void SubscribingToMarketTransactionUpdates_Should_InvokeUpdateMethodWithExtraReceivedParamter()
+        {
+            // Arrange
+            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
+            var expected = new CoinExSocketMarketTransaction[] {
+                new CoinExSocketMarketTransaction() { Type = TransactionType.Buy },
+                new CoinExSocketMarketTransaction() {  Type = TransactionType.Sell } };
+            CoinExSocketMarketTransaction[] actual = null;
+            var subTask = client.SubscribeToMarketTransactionUpdatesAsync("ETHBTC", (market, data) =>
+            {
+                actual = data;
+            });
+            Thread.Sleep(10);
+            InvokeSubResponse(socket).Wait();
+            subTask.Wait();
+
+            // Act
+            InvokeSubUpdate(socket, "deals.update", new object[] { "ETHBTC", expected, true }).Wait();
+
+            // Assert
+            Assert.IsTrue(subTask.Result.Success);
+            Assert.IsTrue(actual != null);
+            TestHelpers.PublicInstancePropertiesEqual(expected, actual);
+        }
+
+        [Test]
         public void SubscribingToMarketDepthUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange

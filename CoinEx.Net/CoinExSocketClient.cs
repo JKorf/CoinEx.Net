@@ -455,6 +455,7 @@ namespace CoinEx.Net
         {
             return await Task.Run(() =>
             {
+                log.Write(LogVerbosity.Debug, $"Querying socket {stream.Subscription.StreamId} for {request.Method}");
                 ManualResetEvent evnt = new ManualResetEvent(false);
                 CallResult<CoinExSocketRequestResponse<T>> result = null;
                 request.Id = NextStreamId();
@@ -501,6 +502,7 @@ namespace CoinEx.Net
         
         private async Task<CallResult<CoinExStreamSubscription>> Subscribe(CoinExSubscription subscription, CoinExSocketRequest request, bool authenticated = false)
         {
+            log.Write(LogVerbosity.Debug, $"Starting new subscription for {request.Method}");
             var con = ConnectNewSocket();
             if (!con.Success)
                 return new CallResult<CoinExStreamSubscription>(null, con.Error);
@@ -536,7 +538,8 @@ namespace CoinEx.Net
             else
             {
                 log.Write(LogVerbosity.Info, $"Failed to subscribe {stream.Subscription.StreamId}: {subConfirm.Error}");
-                await stream.Close().ConfigureAwait(false);
+                if(!resubscribing) // If we're just trying to initialy subscribe we dont need to reconnect if we failed subbing, so close it here
+                    await stream.Close().ConfigureAwait(false);
             }
 
             return new CallResult<CoinExStreamSubscription>(stream.StreamResult, subConfirm.Error);
@@ -622,6 +625,12 @@ namespace CoinEx.Net
                 return;
             }
 
+            if (paramData.Data.Length < 2)
+            {
+                log.Write(LogVerbosity.Warning, "Received unexpected data format for transaction update. Expected [string, transaction[]], received " + token["params"]);
+                return;
+            }
+
             List<CoinExSubscription> subs;
             lock (subscriptions)
                 subs = subscriptions.ToList();
@@ -637,6 +646,12 @@ namespace CoinEx.Net
             if (!paramData.Success)
             {
                 log.Write(LogVerbosity.Warning, "Failed to deserialize depth data: " + paramData.Error);
+                return;
+            }
+
+            if (paramData.Data.Length < 3)
+            {
+                log.Write(LogVerbosity.Warning, "Received unexpected data format for depth update. Expected [bool, marketdepth, string], received " + token["params"]);
                 return;
             }
 
@@ -691,6 +706,12 @@ namespace CoinEx.Net
                 return;
             }
 
+            if (paramData.Data.Length < 2)
+            {
+                log.Write(LogVerbosity.Warning, "Received unexpected data format for order update. Expected [int, order], received " + token["params"]);
+                return;
+            }
+
             int updateTypeInt = (int)paramData.Data[0];
             UpdateType updateType = JsonConvert.DeserializeObject<UpdateType>(updateTypeInt.ToString(), new UpdateTypeConverter(false));
 
@@ -741,6 +762,7 @@ namespace CoinEx.Net
 
         private void SocketOnClose(CoinExStream stream)
         {
+            log.Write(LogVerbosity.Debug, $"Socket {stream.StreamResult.StreamId} closed event");
             if (stream.TryReconnect)
             {
                 log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} Connection lost, going to try to reconnect");
@@ -748,7 +770,10 @@ namespace CoinEx.Net
                 {
                     Thread.Sleep(reconnectInterval);
                     if (!stream.Socket.Connect().Result)
-                        return;
+                    {
+                        log.Write(LogVerbosity.Debug, $"Socket {stream.StreamResult.StreamId} failed to reconnect");
+                        return; // Connect() should result in a SocketClosed event so we end up here again
+                    }
 
                     log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} Reconnected");
                     if (stream.Request != null)
@@ -766,9 +791,10 @@ namespace CoinEx.Net
             }
             else
             {
-                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId}  closed");
+                log.Write(LogVerbosity.Info, $"Socket {stream.StreamResult.StreamId} closed");
                 lock(subscriptions)
-                    subscriptions.Remove(stream.Subscription);
+                    if(subscriptions.Contains(stream.Subscription))
+                        subscriptions.Remove(stream.Subscription);
                 stream.StreamResult.InvokeClosed();
                 stream.Socket.Dispose();
                 lock (sockets)
