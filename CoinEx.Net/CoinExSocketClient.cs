@@ -14,6 +14,7 @@ using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net
 {

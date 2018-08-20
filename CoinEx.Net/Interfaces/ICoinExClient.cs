@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.Objects;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.RateLimiter;
 
 namespace CoinEx.Net.Interfaces

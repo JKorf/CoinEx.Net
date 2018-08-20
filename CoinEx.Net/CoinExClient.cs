@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net
 {

@@ -1,5 +1,6 @@
 ﻿using CryptoExchange.Net;
 using System;
+using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net.Objects
 {

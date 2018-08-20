@@ -5,6 +5,7 @@ using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Websocket;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.RateLimiter;
 
 namespace CoinEx.Net.Interfaces
