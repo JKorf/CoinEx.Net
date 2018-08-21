@@ -154,6 +154,9 @@ client.UnsubscribeFromStream(successSub.Data);
 Additionaly, all sockets can be closed with the `UnsubscribeAllStreams` method. Beware that when a client is disposed the sockets are automatically disposed. This means that if the code is no longer in the using statement the eventhandler won't fire anymore. 
 
 ## Release notes
+* Version 0.0.6 - 20 aug 2018
+	* Fix for default api credentials getting disposed
+
 * Version 0.0.5 - 20 aug 2018
 	* Updated CryptoExchange.Net for bug fix
 
