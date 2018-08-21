@@ -19,17 +19,27 @@ namespace CoinEx.Net
     {
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();
-        private static CoinExClientOptions DefaultOptions => new CoinExClientOptions
+        private static CoinExClientOptions DefaultOptions
         {
-            ApiCredentials = new ApiCredentials(defaultOptions.ApiCredentials.Key.GetString(), defaultOptions.ApiCredentials.Secret.GetString()),
-            LogVerbosity = defaultOptions.LogVerbosity,
-            BaseAddress = defaultOptions.BaseAddress,
-            LogWriters = defaultOptions.LogWriters,
-            Proxy = defaultOptions.Proxy,
-            RateLimiters = defaultOptions.RateLimiters,
-            RateLimitingBehaviour = defaultOptions.RateLimitingBehaviour,
-            UserAgent = defaultOptions.UserAgent
-        };
+            get
+            {
+                var result = new CoinExClientOptions()
+                {
+                    LogVerbosity = defaultOptions.LogVerbosity,
+                    BaseAddress = defaultOptions.BaseAddress,
+                    LogWriters = defaultOptions.LogWriters,
+                    Proxy = defaultOptions.Proxy,
+                    RateLimiters = defaultOptions.RateLimiters,
+                    RateLimitingBehaviour = defaultOptions.RateLimitingBehaviour,
+                    UserAgent = defaultOptions.UserAgent
+                };
+
+                if (defaultOptions.ApiCredentials != null)
+                    result.ApiCredentials = new ApiCredentials(defaultOptions.ApiCredentials.Key.GetString(), defaultOptions.ApiCredentials.Secret.GetString());
+
+                return result;
+            }
+        }
 
         private string userAgent;
 

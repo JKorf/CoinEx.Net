@@ -23,18 +23,28 @@ namespace CoinEx.Net
     {
         #region fields
         private static CoinExSocketClientOptions defaultOptions = new CoinExSocketClientOptions();
-        private static CoinExSocketClientOptions DefaultOptions => new CoinExSocketClientOptions
+        private static CoinExSocketClientOptions DefaultOptions
         {
-            ApiCredentials = new ApiCredentials(defaultOptions.ApiCredentials.Key.GetString(), defaultOptions.ApiCredentials.Secret.GetString()),
-            LogVerbosity = defaultOptions.LogVerbosity,
-            BaseAddress = defaultOptions.BaseAddress,
-            LogWriters = defaultOptions.LogWriters,
-            Proxy = defaultOptions.Proxy,
-            RateLimiters = defaultOptions.RateLimiters,
-            RateLimitingBehaviour = defaultOptions.RateLimitingBehaviour,
-            ReconnectionInterval = defaultOptions.ReconnectionInterval,
-            SubscriptionResponseTimeout = defaultOptions.SubscriptionResponseTimeout
-        };
+            get
+            {
+                var result = new CoinExSocketClientOptions()
+                {
+                    LogVerbosity = defaultOptions.LogVerbosity,
+                    BaseAddress = defaultOptions.BaseAddress,
+                    LogWriters = defaultOptions.LogWriters,
+                    Proxy = defaultOptions.Proxy,
+                    RateLimiters = defaultOptions.RateLimiters,
+                    RateLimitingBehaviour = defaultOptions.RateLimitingBehaviour,
+                    ReconnectionInterval = defaultOptions.ReconnectionInterval,
+                    SubscriptionResponseTimeout = defaultOptions.SubscriptionResponseTimeout
+                };
+
+                if (defaultOptions.ApiCredentials != null)
+                    result.ApiCredentials = new ApiCredentials(defaultOptions.ApiCredentials.Key.GetString(), defaultOptions.ApiCredentials.Secret.GetString());
+
+                return result;
+            }
+        }
 
         private int subResponseTimeout;
         private int reconnectInterval;
