@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net
@@ -18,6 +19,17 @@ namespace CoinEx.Net
     {
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();
+        private static CoinExClientOptions DefaultOptions => new CoinExClientOptions
+        {
+            ApiCredentials = new ApiCredentials(defaultOptions.ApiCredentials.Key.GetString(), defaultOptions.ApiCredentials.Secret.GetString()),
+            LogVerbosity = defaultOptions.LogVerbosity,
+            BaseAddress = defaultOptions.BaseAddress,
+            LogWriters = defaultOptions.LogWriters,
+            Proxy = defaultOptions.Proxy,
+            RateLimiters = defaultOptions.RateLimiters,
+            RateLimitingBehaviour = defaultOptions.RateLimitingBehaviour,
+            UserAgent = defaultOptions.UserAgent
+        };
 
         private string userAgent;
 
@@ -55,7 +67,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Create a new instance of CoinExClient with default options
         /// </summary>
-        public CoinExClient() : this(defaultOptions)
+        public CoinExClient() : this(DefaultOptions)
         {
         }
 

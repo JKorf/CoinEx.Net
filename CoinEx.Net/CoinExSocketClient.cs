@@ -14,6 +14,7 @@ using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net
@@ -22,6 +23,18 @@ namespace CoinEx.Net
     {
         #region fields
         private static CoinExSocketClientOptions defaultOptions = new CoinExSocketClientOptions();
+        private static CoinExSocketClientOptions DefaultOptions => new CoinExSocketClientOptions
+        {
+            ApiCredentials = new ApiCredentials(defaultOptions.ApiCredentials.Key.GetString(), defaultOptions.ApiCredentials.Secret.GetString()),
+            LogVerbosity = defaultOptions.LogVerbosity,
+            BaseAddress = defaultOptions.BaseAddress,
+            LogWriters = defaultOptions.LogWriters,
+            Proxy = defaultOptions.Proxy,
+            RateLimiters = defaultOptions.RateLimiters,
+            RateLimitingBehaviour = defaultOptions.RateLimitingBehaviour,
+            ReconnectionInterval = defaultOptions.ReconnectionInterval,
+            SubscriptionResponseTimeout = defaultOptions.SubscriptionResponseTimeout
+        };
 
         private int subResponseTimeout;
         private int reconnectInterval;
@@ -65,7 +78,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        public CoinExSocketClient() : this(defaultOptions)
+        public CoinExSocketClient() : this(DefaultOptions)
         {
         }
 
