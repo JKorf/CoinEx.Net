@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,12 +25,15 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingWithNormalResponse_Should_Succeed()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
-            
+            var client = TestHelpers.PrepareSocketClient(() => Construct());
+
             // Act
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
-            Thread.Sleep(10);
-            InvokeSubResponse(socket);
+            if(!sendWait.Result)
+                Assert.Fail("No sub response");
+
+            InvokeSubResponse(client);
             subTask.Wait(5000);
 
             // Assert
@@ -41,16 +45,16 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingWithErrorResponse_Should_Fail()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
+            var client = TestHelpers.PrepareSocketClient(() => Construct());
 
             // Act
             var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
             Thread.Sleep(10);
-            TestHelpers.InvokeWebsocket(socket, JsonConvert.SerializeObject(
+            TestHelpers.InvokeWebsocket(client, JsonConvert.SerializeObject(
                 new CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>()
                 {
                     Error = new CoinExSocketError() { Code = 1, Message = "Error" },
-                    Id = 2,
+                    Id = 1,
                     Result = new CoinExSocketRequestResponseMessage() { Status = "error" }
                 }));
             subTask.Wait();
@@ -63,19 +67,31 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToMarketStateUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            {
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
+            }));
+
             var expected = new Dictionary<string, CoinExSocketMarketState> { { "ETHBTC", new CoinExSocketMarketState() } };
             Dictionary<string, CoinExSocketMarketState> actual = null;
+
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketStateUpdatesAsync(data =>
             {
                 actual = data;
             });
-            Thread.Sleep(10);
-            InvokeSubResponse(socket).Wait();
+
+            if (!sendWait.Result)
+                Assert.Fail(sb.ToString());
+
+            InvokeSubResponse(client);
             subTask.Wait();
 
             // Act
-            InvokeSubUpdate(socket, "state.update", expected).Wait();
+            InvokeSubUpdate(client, "state.update", expected);
 
             // Assert
             Assert.IsTrue(subTask.Result.Success);
@@ -87,21 +103,33 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToMarketTransactionUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            {
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
+            }));
+
             var expected = new CoinExSocketMarketTransaction[] {
                 new CoinExSocketMarketTransaction() { Type = TransactionType.Buy },
                 new CoinExSocketMarketTransaction() {  Type = TransactionType.Sell } };
             CoinExSocketMarketTransaction[] actual = null;
+
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketTransactionUpdatesAsync("ETHBTC", (market, data) =>
             {
                 actual = data;
             });
-            Thread.Sleep(10);
-            InvokeSubResponse(socket).Wait();
+
+            if (!sendWait.Result)
+                Assert.Fail(sb.ToString());
+
+            InvokeSubResponse(client);
             subTask.Wait();
 
             // Act
-            InvokeSubUpdate(socket, "deals.update", new object[] { "ETHBTC", expected }).Wait();
+            InvokeSubUpdate(client, "deals.update", "ETHBTC", expected );
 
             // Assert
             Assert.IsTrue(subTask.Result.Success);
@@ -113,21 +141,32 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToMarketTransactionUpdates_Should_InvokeUpdateMethodWithExtraReceivedParamter()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            {
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
+            }));
+
             var expected = new CoinExSocketMarketTransaction[] {
                 new CoinExSocketMarketTransaction() { Type = TransactionType.Buy },
                 new CoinExSocketMarketTransaction() {  Type = TransactionType.Sell } };
             CoinExSocketMarketTransaction[] actual = null;
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketTransactionUpdatesAsync("ETHBTC", (market, data) =>
             {
                 actual = data;
             });
-            Thread.Sleep(10);
-            InvokeSubResponse(socket).Wait();
+
+            if (!sendWait.Result)
+                Assert.Fail(sb.ToString());
+
+            InvokeSubResponse(client);
             subTask.Wait();
 
             // Act
-            InvokeSubUpdate(socket, "deals.update", new object[] { "ETHBTC", expected, true }).Wait();
+            InvokeSubUpdate(client, "deals.update", "ETHBTC", expected, true);
 
             // Assert
             Assert.IsTrue(subTask.Result.Success);
@@ -139,23 +178,34 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToMarketDepthUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            {
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
+            }));
             var expected = new CoinExSocketMarketDepth()
             {
                 Asks = new CoinExDepthEntry[] { new CoinExDepthEntry() { Amount = 0.1m, Price = 0.2m } },
                 Bids = new CoinExDepthEntry[] { new CoinExDepthEntry() { Amount = 0.1m, Price = 0.2m } }
             };
             CoinExSocketMarketDepth actual = null;
+
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketDepthUpdatesAsync("ETHBTC", 10, 1, (market, full, data) =>
             {
                 actual = data;
             });
-            Thread.Sleep(10);
-            InvokeSubResponse(socket).Wait();
+            if (!sendWait.Result)
+                Assert.Fail(sb.ToString());
+
+            InvokeSubResponse(client);
             subTask.Wait();
 
             // Act
-            InvokeSubUpdate(socket, "depth.update", new object[] { true, expected, "ETHBTC" }).Wait();
+            InvokeSubUpdate(client, "depth.update", true, expected, "ETHBTC");
+            
 
             // Assert
             Assert.IsTrue(subTask.Result.Success);
@@ -167,23 +217,33 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToMarketKlineUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct());
-            var expected = new CoinExKline[] 
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            {
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
+            }));
+
+            var expected = new CoinExKline[]
             {
                 new CoinExKline(),
                 new CoinExKline(),
             };
             CoinExKline[] actual = null;
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketKlineUpdatesAsync("ETHBTC", KlineInterval.FiveMinute, (market, data) =>
             {
                 actual = data;
             });
-            Thread.Sleep(10);
-            InvokeSubResponse(socket).Wait();
+            if (!sendWait.Result)
+                Assert.Fail(sb.ToString());
+
+            InvokeSubResponse(client);
             subTask.Wait();
 
             // Act
-            InvokeSubUpdate(socket, "kline.update", expected).Wait();
+            InvokeSubUpdate(client, "kline.update", expected);
 
             // Assert
             Assert.IsTrue(subTask.Result.Success);
@@ -195,29 +255,36 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToBalanceUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
             {
-                ApiCredentials = new ApiCredentials("test", "test"),
-                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug
+                ApiCredentials = new ApiCredentials("TestKey", "test"),
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
             }));
             var expected = new Dictionary<string, CoinExBalance>
             {
                 { "ETHBTC",  new CoinExBalance() },
                 { "ETHBCH",  new CoinExBalance() }
             };
+
             Dictionary<string, CoinExBalance> actual = null;
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToBalanceUpdatesAsync((data) =>
             {
                 actual = data;
             });
+            if (!sendWait.Result)
+                Assert.Fail(sb.ToString());
+
+            InvokeSubResponse(client);
             Thread.Sleep(10);
-            InvokeSubResponse(socket).Wait();
-            Thread.Sleep(10);
-            InvokeSubResponse(socket, 3);
+            InvokeSubResponse(client);
             subTask.Wait();
 
             // Act
-            InvokeSubUpdate(socket, "asset.update", expected).Wait();
+            InvokeSubUpdate(client, "asset.update", expected);
 
             // Assert
             Assert.IsTrue(subTask.Result.Success);
@@ -229,26 +296,33 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToOrderUpdates_Should_InvokeUpdateMethod()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            var sb = new StringBuilder();
+            var testWriter = new StringWriter(sb);
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
             {
-                ApiCredentials = new ApiCredentials("test", "test"),
-                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug
-
+                ApiCredentials = new ApiCredentials("TestKey", "test"),
+                LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
+                LogWriters = new List<TextWriter> { testWriter }
             }));
+
             var expected = new CoinExSocketOrder();
             CoinExSocketOrder actual = null;
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToOrderUpdatesAsync(new[] { "ETHBTC", "ETHBCH" }, (updateType, data) =>
             {
                 actual = data;
             });
+
+            if(!sendWait.Result)
+                Assert.Fail(sb.ToString());
+
+            InvokeSubResponse(client);
             Thread.Sleep(10);
-            InvokeSubResponse(socket).Wait();
-            Thread.Sleep(10);
-            InvokeSubResponse(socket, 3);
+            InvokeSubResponse(client);
             subTask.Wait();
 
             // Act
-            InvokeSubUpdate(socket, "order.update", 1, expected).Wait();
+            InvokeSubUpdate(client, "order.update", 1, expected);
 
             // Assert
             Assert.IsTrue(subTask.Result.Success);
@@ -260,58 +334,57 @@ namespace CoinEx.Net.UnitTests
         public void SubscribingToAuthenticatedStream_Should_SendAuthentication()
         {
             // arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
             {
                 ApiCredentials = new ApiCredentials("TestKey", "test"),
                 SubscriptionResponseTimeout = TimeSpan.FromMilliseconds(100)
             }));
-            var expected = new CoinExSocketRequest("server", "sign", "TestKey", "", 1 );
+            var expected = new CoinExSocketRequest("server", "sign", "TestKey", "", 1);
             CoinExSocketRequest actual = null;
 
-            socket.Setup(s => s.Send(It.IsAny<string>())).Callback(() =>
-            {
-                var invocation = socket.Invocations.SingleOrDefault(s => s.Method == typeof(IWebsocket).GetMethod("Send"));
-                if (invocation == null)
-                    return;
-                var msg = (string)invocation.Arguments[0];
-                actual = JsonConvert.DeserializeObject<CoinExSocketRequest>(msg);
-            });
-
             // act
+            var sendWait = TestHelpers.WaitForSend(client);
             var sub = client.SubscribeToBalanceUpdates(data => { });
+            var result = sendWait.Result;
+
+            var invocations = Mock.Get(client.sockets[0].Socket).Invocations.Where(s => s.Method == typeof(IWebsocket).GetMethod("Send"));
+            foreach (var invocation in invocations)
+            {
+                var msg = (string) invocation.Arguments[0];
+                if(msg.Contains("sign"))
+                    actual = JsonConvert.DeserializeObject<CoinExSocketRequest>(msg);
+            }
 
             // assert
+            Assert.IsTrue(result);
+            Assert.IsTrue(actual != null);
             Assert.IsTrue(expected.Method == actual.Method);
-            Assert.IsTrue((string)expected.Parameters[0] == (string)actual.Parameters[0]);
+            Assert.IsTrue((string)expected.Parameters[0] == (string)actual.Parameters[0]); ;
         }
 
         [Test]
         public void LosingConnectionAfterSubscribing_Should_BeReconnected()
         {
             // Arrange
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
             {
                 ReconnectionInterval = TimeSpan.FromMilliseconds(100),
                 SubscriptionResponseTimeout = TimeSpan.FromMilliseconds(100)
             }));
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
-            InvokeSubResponse(socket);
+            if (!sendWait.Result)
+                Assert.Fail("No sub request send");
+
+            InvokeSubResponse(client);
             subTask.Wait();
 
-            var evnt = new ManualResetEvent(false);
-            bool recon = false;
-            socket.Setup(s => s.Connect()).Callback(() =>
-            {
-                recon = true;
-                evnt.Set();
-            });
-
             // Act
-            Task.Run(() => socket.Raise(r => r.OnClose += null));
-            evnt.WaitOne(5000);
+            var conWait = TestHelpers.WaitForConnect(client);
+            TestHelpers.CloseWebsocket(client);
 
             // Assert
-            Assert.IsTrue(recon);
+            Assert.IsTrue(conWait.Result);
         }
 
         [Test]
@@ -320,62 +393,70 @@ namespace CoinEx.Net.UnitTests
             // Arrange
             var sb = new StringBuilder();
             var testWriter = new StringWriter(sb);
-            var (socket, client) = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
+            var client = TestHelpers.PrepareSocketClient(() => Construct(new CoinExSocketClientOptions()
             {
                 ReconnectionInterval = TimeSpan.FromMilliseconds(100),
-                SubscriptionResponseTimeout = TimeSpan.FromMilliseconds(100),
+                SubscriptionResponseTimeout = TimeSpan.FromMilliseconds(500),
                 LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
                 LogWriters = new List<TextWriter> { testWriter }
             }));
+            var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
-            InvokeSubResponse(socket);
-            subTask.Wait();
+            if (!sendWait.Result)
+                Assert.Fail(sb.ToString());
 
-            ManualResetEvent evnt = new ManualResetEvent(false);
-            int invocations = 0;
-            socket.Setup(s => s.Connect()).Callback(() =>
-            {
-                invocations++;
-                evnt.Set();
-            });
+            InvokeSubResponse(client);
+            subTask.Wait();
+            if(!subTask.Result.Success)
+                Assert.Fail(sb.ToString());
 
             // Act
-            socket.Object.Close();
-            evnt.WaitOne(1000);
-            evnt.Reset();
-            socket.Object.Close();
-            evnt.WaitOne(1000);
+            // DC1
+            var conWait = TestHelpers.WaitForConnect(client);
+            var resubSendWait = TestHelpers.WaitForSend(client);
+            TestHelpers.CloseWebsocket(client);
+            var reconResult = conWait.Result;
+            var resubResult = resubSendWait.Result;
+            if(!reconResult)
+                Assert.Fail(sb.ToString());
+            if (!resubResult)
+                Assert.Fail(sb.ToString());
+
+            // DC2
+            conWait = TestHelpers.WaitForConnect(client);
+            resubSendWait = TestHelpers.WaitForSend(client);
+            TestHelpers.CloseWebsocket(client);
+            reconResult = conWait.Result;
+            resubResult = resubSendWait.Result;
+            if (!reconResult)
+                Assert.Fail(sb.ToString());
+            if (!resubResult)
+                Assert.Fail(sb.ToString());
 
             // Assert
-            Assert.AreEqual(2, invocations, 0, sb.ToString());
+            Assert.Pass();
         }
 
-        private Task InvokeSubResponse(Mock<IWebsocket> socket, int id = 2)
+        private void InvokeSubResponse(CoinExSocketClient client)
         {
-            return Task.Run(() =>
-            {
-                TestHelpers.InvokeWebsocket(socket, JsonConvert.SerializeObject(
-                    new CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>()
-                    {
-                        Error = null,
-                        Id = id,
-                        Result = new CoinExSocketRequestResponseMessage() { Status = "success" }
-                    }));
-            });
-        }
-
-        private Task InvokeSubUpdate(Mock<IWebsocket> socket, string method, params object[] parameters)
-        {
-            return Task.Run(() =>
-            {
-                TestHelpers.InvokeWebsocket(socket, JsonConvert.SerializeObject(new CoinExSocketResponse()
+            TestHelpers.InvokeWebsocket(client, JsonConvert.SerializeObject(
+                new CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>()
                 {
-                    Id = null,
-                    Method = method,
-                    Parameters = parameters
-                },
-                new TimestampSecondsConverter()));
-            });
+                    Error = null,
+                    Id = CoinExSocketClient.lastRequestId,
+                    Result = new CoinExSocketRequestResponseMessage() { Status = "success" }
+                }));
+        }
+
+        private void InvokeSubUpdate(CoinExSocketClient client, string method, params object[] parameters)
+        {
+            TestHelpers.InvokeWebsocket(client, JsonConvert.SerializeObject(new CoinExSocketResponse()
+            {
+                Id = null,
+                Method = method,
+                Parameters = parameters
+            },
+            new TimestampSecondsConverter()));
         }
 
         private CoinExSocketClient Construct(CoinExSocketClientOptions options = null)

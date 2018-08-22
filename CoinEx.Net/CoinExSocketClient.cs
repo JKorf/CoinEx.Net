@@ -50,9 +50,11 @@ namespace CoinEx.Net
         private int reconnectInterval;
         private const SslProtocols protocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
 
-        private static int lastStreamId;
+        internal static int lastStreamId;
+        internal static int lastRequestId;
         private static readonly object streamIdLock = new object();
-        private readonly List<CoinExStream> sockets = new List<CoinExStream>();
+        private static readonly object requestIdLock = new object();
+        internal readonly List<CoinExStream> sockets = new List<CoinExStream>();
 
         private readonly JsonSerializer marketDepthSerializer = CreateJsonSerializerWithConverter(new ParamConverter(typeof(bool), typeof(CoinExSocketMarketDepth), typeof(string)));
         private readonly JsonSerializer marketTransactionSerializer = CreateJsonSerializerWithConverter(new ParamConverter( typeof(string), typeof(CoinExSocketMarketTransaction[])));
@@ -482,7 +484,7 @@ namespace CoinEx.Net
                 log.Write(LogVerbosity.Debug, $"Querying socket {stream.Subscription.StreamId} for {request.Method}");
                 ManualResetEvent evnt = new ManualResetEvent(false);
                 CallResult<CoinExSocketRequestResponse<T>> result = null;
-                request.Id = NextStreamId();
+                request.Id = NextRequestId();
                 var onMessageAction = new Action<string>((msg) =>
                 {
                     log.Write(LogVerbosity.Debug, "Socket received query response: " + msg);
@@ -750,6 +752,7 @@ namespace CoinEx.Net
         private CallResult<CoinExStream> ConnectNewSocket()
         {
             var socket = SocketFactory.CreateWebsocket(log, baseAddress);
+            log.Write(LogVerbosity.Debug, "Created new socket");
             var id = NextStreamId();
             var stream = new CoinExStream() { Socket = socket, StreamResult = new CoinExStreamSubscription() { StreamId = id } };
 
@@ -837,6 +840,15 @@ namespace CoinEx.Net
             {
                 lastStreamId++;
                 return lastStreamId;
+            }
+        }
+
+        private int NextRequestId()
+        {
+            lock (requestIdLock)
+            {
+                lastRequestId++;
+                return lastRequestId;
             }
         }
 
