@@ -549,59 +549,6 @@ namespace CoinEx.Net
         #endregion
 
         #region private
-        protected override IRequest ConstructRequest(Uri uri, string method, Dictionary<string, object> parameters, bool signed)
-        {
-            var uriString = uri.ToString();
-            var paramString = GetParamString(signed, parameters);
-
-            if (method == GetMethod || method == DeleteMethod)
-                uriString += "?" + paramString;
-
-            var request = RequestFactory.Create(uriString);
-            request.Method = method;
-            request.ContentType = "application/json; charset=utf-8";
-
-            if (signed)
-            {
-                request.Headers.Add("authorization", GetSignData(paramString));
-            }
-
-            if (parameters != null && method == PostMethod)
-            {
-                var stringData = JsonConvert.SerializeObject(parameters.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value));
-                var data = Encoding.UTF8.GetBytes(stringData);
-                request.ContentLength = data.Length;
-
-                using (var stream = request.GetRequestStream().Result)
-                    stream.Write(data, 0, data.Length);
-            }
-
-            return request;
-        }
-
-        private string GetParamString(bool signed, Dictionary<string, object> parameters)
-        {
-            if (!signed && (parameters == null || parameters.Count == 0))
-                return "";
-
-            if (signed)
-            {
-                if (parameters == null)
-                    parameters = new Dictionary<string, object>();
-
-                parameters.Add("access_id", authProvider.Credentials.Key.GetString());
-                parameters.Add("tonce", (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds);
-                parameters = parameters.OrderBy(p => p.Key).ToDictionary(k => k.Key, v => v.Value);
-            }
-
-            return string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"));
-        }
-
-        private string GetSignData(string paramString)
-        {
-            string signString = paramString + "&secret_key=" + authProvider.Credentials.Secret.GetString();
-            return authProvider.Sign(signString);            
-        }
 
         private async Task<CallResult<T>> Execute<T>(Uri uri, bool signed = false, string method = GetMethod, Dictionary<string, object> parameters = null) where T : class
         {
