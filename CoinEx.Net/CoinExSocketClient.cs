@@ -494,7 +494,16 @@ namespace CoinEx.Net
                         return;
 
                     if (token["error"].Type == JTokenType.Null)
+                    {
                         result = Deserialize<CoinExSocketRequestResponse<T>>(msg);
+
+                        if (request.Method.EndsWith("subscribe"))
+                        {
+                            lock (subscriptions)
+                                if (!subscriptions.Contains(stream.Subscription))
+                                    subscriptions.Add(stream.Subscription);
+                        }
+                    }
                     else
                     {
                         var errorResult = Deserialize<CoinExSocketError>(token["error"].ToString());
@@ -556,9 +565,6 @@ namespace CoinEx.Net
                 stream.Request = request;
                 stream.Subscription.StreamId = stream.StreamResult.StreamId;
                 stream.TryReconnect = true;
-                lock(subscriptions)
-                    if (!subscriptions.Contains(stream.Subscription))
-                        subscriptions.Add(stream.Subscription);
                 log.Write(LogVerbosity.Info, $"Subscription {stream.Subscription.StreamId} successful");
             }
             else
@@ -580,15 +586,26 @@ namespace CoinEx.Net
                 return;
 
             log.Write(LogVerbosity.Debug, $"Socket {streamId} received data: " + data);
+            bool hasSubscription = false;
             lock (subscriptions)
+                hasSubscription = subscriptions.Any(s => s.StreamId == streamId);
+
+            if (!hasSubscription)
             {
-                if (!subscriptions.Any(s => s.StreamId == streamId))
+                // Might be that we received the data before being able to process the subscription response.
+                // Wait here for a little bit to let it process, if it then still isn't found we give an error message
+                Thread.Sleep(10);
+                lock (subscriptions)
                 {
-                    log.Write(LogVerbosity.Warning, $"Socket {streamId} received data for unknown subscription: " + data);
-                    return;
+                    if (!subscriptions.Any(s => s.StreamId == streamId))
+                    {
+                        log.Write(LogVerbosity.Warning, $"Socket {streamId} received data for unknown subscription: " + data);
+                        return;
+                    }
                 }
             }
-
+            
+    
             if (token["method"] == null)
                 return;
 

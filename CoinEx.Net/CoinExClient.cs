@@ -349,7 +349,7 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="market">The market to place the order for</param>
         /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
+        /// <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC market the value should be how much BTC should be spend to buy ETH</param>
         /// <param name="sourceId">Client id which can be used to match the order</param>
         /// <returns>Details of the order that was placed</returns>
         public async Task<CallResult<CoinExOrder>> PlaceMarketOrderAsync(string market, TransactionType type, decimal amount, string sourceId = null)
@@ -549,6 +549,13 @@ namespace CoinEx.Net
         #endregion
 
         #region private
+
+        protected override IRequest ConstructRequest(Uri uri, string method, Dictionary<string, object> parameters, bool signed)
+        {
+            var request = base.ConstructRequest(uri, method, parameters, signed);
+            request.Headers["User-Agent"] = userAgent;
+            return request;
+        }
 
         private async Task<CallResult<T>> Execute<T>(Uri uri, bool signed = false, string method = GetMethod, Dictionary<string, object> parameters = null) where T : class
         {
