@@ -1,21 +1,18 @@
 ﻿using CoinEx.Net.Converters;
 using CoinEx.Net.Objects;
 using CryptoExchange.Net;
-using CryptoExchange.Net.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CoinEx.Net.Interfaces;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
+using CoinEx.Net.Interfaces;
 
 namespace CoinEx.Net
 {
-    public class CoinExClient : RestClient//, ICoinExClient
+    public class CoinExClient : RestClient, ICoinExClient
     {
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();
@@ -576,8 +573,6 @@ namespace CoinEx.Net
 
         private void Configure(CoinExClientOptions options)
         {
-            base.Configure(options);
-            baseAddress = options.BaseAddress;
             userAgent = options.UserAgent;
         }
         #endregion

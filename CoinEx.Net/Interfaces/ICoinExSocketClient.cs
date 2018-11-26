@@ -3,29 +3,27 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Websocket;
-using CryptoExchange.Net;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.RateLimiter;
+using CryptoExchange.Net.Sockets;
 
 namespace CoinEx.Net.Interfaces
 {
     public interface ICoinExSocketClient
     {
         IWebsocketFactory SocketFactory { get; set; }
-        IRequestFactory RequestFactory { get; set; }
 
         /// <summary>
         /// Synchronized version of the <see cref="CoinExSocketClient.PingAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<long> Ping();
+        CallResult<bool> Ping();
 
         /// <summary>
         /// Pings the server
         /// </summary>
         /// <returns>True if server responded, false otherwise</returns>
-        Task<CallResult<long>> PingAsync();
+        Task<CallResult<bool>> PingAsync();
 
         /// <summary>
         /// Synchronized version of the <see cref="CoinExSocketClient.GetServerTimeAsync"/> method
@@ -130,7 +128,7 @@ namespace CoinEx.Net.Interfaces
         /// Synchronized version of the <see cref="SubscribeToMarketStateUpdatesAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<CoinExStreamSubscription> SubscribeToMarketStateUpdates(string market, Action<string, CoinExSocketMarketState> onMessage);
+        CallResult<UpdateSubscription> SubscribeToMarketStateUpdates(string market, Action<string, CoinExSocketMarketState> onMessage);
 
         /// <summary>
         /// Subscribe to market state updates for a specific market
@@ -139,13 +137,13 @@ namespace CoinEx.Net.Interfaces
         /// <param name="onMessage">Datahandler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketState]: the market state update</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is closed and can close this specific stream 
         /// using the <see cref="CoinExSocketClient.UnsubscribeFromStream"/> method</returns>
-        Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketStateUpdatesAsync(string market, Action<string, CoinExSocketMarketState> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToMarketStateUpdatesAsync(string market, Action<string, CoinExSocketMarketState> onMessage);
 
         /// <summary>
         /// Synchronized version of the <see cref="SubscribeToMarketStateUpdatesAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<CoinExStreamSubscription> SubscribeToMarketStateUpdates(Action<Dictionary<string, CoinExSocketMarketState>> onMessage);
+        CallResult<UpdateSubscription> SubscribeToMarketStateUpdates(Action<Dictionary<string, CoinExSocketMarketState>> onMessage);
 
         /// <summary>
         /// Subscribe to market state updates for all markets
@@ -153,13 +151,13 @@ namespace CoinEx.Net.Interfaces
         /// <param name="onMessage">Datahandler, receives a dictionary of market name -> market state</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is closed and can close this specific stream 
         /// using the <see cref="CoinExSocketClient.UnsubscribeFromStream"/> method</returns>
-        Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketStateUpdatesAsync(Action<Dictionary<string, CoinExSocketMarketState>> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToMarketStateUpdatesAsync(Action<Dictionary<string, CoinExSocketMarketState>> onMessage);
 
         /// <summary>
         /// Synchronized version of the <see cref="CoinExSocketClient.SubscribeToMarketDepthUpdatesAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<CoinExStreamSubscription> SubscribeToMarketDepthUpdates(string market, int limit, int mergeDepth, Action<string, bool, CoinExSocketMarketDepth> onMessage);
+        CallResult<UpdateSubscription> SubscribeToMarketDepthUpdates(string market, int limit, int mergeDepth, Action<string, bool, CoinExSocketMarketDepth> onMessage);
 
         /// <summary>
         /// Subscribe to market depth updates for a market
@@ -170,13 +168,13 @@ namespace CoinEx.Net.Interfaces
         /// <param name="onMessage">Datahandler, receives Param 1[string]: the market name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketMarketDepth]: the update data</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is closed and can close this specific stream 
         /// using the <see cref="CoinExSocketClient.UnsubscribeFromStream"/> method</returns>
-        Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketDepthUpdatesAsync(string market, int limit, int mergeDepth, Action<string, bool, CoinExSocketMarketDepth> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToMarketDepthUpdatesAsync(string market, int limit, int mergeDepth, Action<string, bool, CoinExSocketMarketDepth> onMessage);
 
         /// <summary>
         /// Synchronized version of the <see cref="CoinExSocketClient.SubscribeToMarketTransactionUpdatesAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<CoinExStreamSubscription> SubscribeToMarketTransactionUpdates(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
+        CallResult<UpdateSubscription> SubscribeToMarketTransactionUpdates(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
 
         /// <summary>
         /// Subscribe to market transaction updates for a market
@@ -185,13 +183,13 @@ namespace CoinEx.Net.Interfaces
         /// <param name="onMessage">Datahandler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is closed and can close this specific stream 
         /// using the <see cref="CoinExSocketClient.UnsubscribeFromStream"/> method</returns>
-        Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
 
         /// <summary>
         /// Synchronized version of the <see cref="CoinExSocketClient.SubscribeToMarketKlineUpdatesAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<CoinExStreamSubscription> SubscribeToMarketKlineUpdates(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
+        CallResult<UpdateSubscription> SubscribeToMarketKlineUpdates(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
 
         /// <summary>
         /// Subscribe to kline updates for a market
@@ -201,13 +199,13 @@ namespace CoinEx.Net.Interfaces
         /// <param name="onMessage">Datahandler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is closed and can close this specific stream 
         /// using the <see cref="CoinExSocketClient.UnsubscribeFromStream"/> method</returns>
-        Task<CallResult<CoinExStreamSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
 
         /// <summary>
         /// Synchronized version of the <see cref="CoinExSocketClient.SubscribeToBalanceUpdatesAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<CoinExStreamSubscription> SubscribeToBalanceUpdates(Action<Dictionary<string, CoinExBalance>> onMessage);
+        CallResult<UpdateSubscription> SubscribeToBalanceUpdates(Action<Dictionary<string, CoinExBalance>> onMessage);
 
         /// <summary>
         /// Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
@@ -215,13 +213,13 @@ namespace CoinEx.Net.Interfaces
         /// <param name="onMessage">Datahandler, receives a dictionary of ciub name -> balance</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is closed and can close this specific stream 
         /// using the <see cref="CoinExSocketClient.UnsubscribeFromStream"/> method</returns>
-        Task<CallResult<CoinExStreamSubscription>> SubscribeToBalanceUpdatesAsync(Action<Dictionary<string, CoinExBalance>> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<Dictionary<string, CoinExBalance>> onMessage);
 
         /// <summary>
         /// Synchronized version of the <see cref="CoinExSocketClient.SubscribeToOrderUpdatesAsync"/> method
         /// </summary>
         /// <returns></returns>
-        CallResult<CoinExStreamSubscription> SubscribeToOrderUpdates(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
+        CallResult<UpdateSubscription> SubscribeToOrderUpdates(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
 
         /// <summary>
         /// Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
@@ -230,25 +228,22 @@ namespace CoinEx.Net.Interfaces
         /// <param name="onMessage">Datahandler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is closed and can close this specific stream 
         /// using the <see cref="CoinExSocketClient.UnsubscribeFromStream"/> method</returns>
-        Task<CallResult<CoinExStreamSubscription>> SubscribeToOrderUpdatesAsync(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
 
         /// <summary>
         /// Unsubscribes from a stream
         /// </summary>
         /// <param name="streamSubscription">The stream subscription received by subscribing</param>
-        Task UnsubscribeFromStream(CoinExStreamSubscription streamSubscription);
+        Task Unsubscribe(UpdateSubscription streamSubscription);
 
         /// <summary>
         /// Unsubscribes from all streams
         /// </summary>
-        Task UnsubscribeAllStreams();
+        Task UnsubscribeAll();
 
         /// <summary>
         /// Dispose this instance
         /// </summary>
         void Dispose();
-
-        void AddRateLimiter(IRateLimiter limiter);
-        void RemoveRateLimiters();
     }
 }
