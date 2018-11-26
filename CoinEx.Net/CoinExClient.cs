@@ -15,7 +15,7 @@ using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net
 {
-    public class CoinExClient : ExchangeClient, ICoinExClient
+    public class CoinExClient : RestClient//, ICoinExClient
     {
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();

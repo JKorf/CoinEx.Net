@@ -4,6 +4,9 @@ namespace CoinEx.Net.Objects.Websocket
 {
     internal class CoinExSocketRequest
     {
+        [JsonIgnore]
+        public bool Signed { get; set; }
+
         [JsonProperty("method")]
         public string Method { get; set; }
         [JsonProperty("params")]
@@ -13,10 +16,11 @@ namespace CoinEx.Net.Objects.Websocket
 
         public CoinExSocketRequest() { }
 
-        public CoinExSocketRequest(string subject, string action, params object[] parameters)
+        public CoinExSocketRequest(string subject, string action, bool signed, params object[] parameters)
         {
             Method = $"{subject}.{action}";
             Parameters = parameters;
+            Signed = signed;
         }
     }
 }

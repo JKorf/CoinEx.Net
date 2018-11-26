@@ -4,7 +4,7 @@ using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net.Objects
 {
-    public class CoinExClientOptions: ExchangeOptions
+    public class CoinExClientOptions: ClientOptions
     {
         public CoinExClientOptions()
         {
@@ -17,7 +17,7 @@ namespace CoinEx.Net.Objects
         public string UserAgent { get; set; } = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
     }
 
-    public class CoinExSocketClientOptions : ExchangeOptions
+    public class CoinExSocketClientOptions : SocketClientOptions
     {
         public CoinExSocketClientOptions()
         {

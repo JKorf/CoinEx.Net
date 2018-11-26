@@ -21,7 +21,10 @@
     
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-	<PackageReference Include="CryptoExchange.Net" Version="1.0.0" />
+  </ItemGroup>
+    
+  <ItemGroup>
+    <ProjectReference Include="..\..\CryptoExchange.Net\CryptoExchange.Net\CryptoExchange.Net.csproj" />
   </ItemGroup>
       
 </Project>
