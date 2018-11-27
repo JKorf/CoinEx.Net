@@ -616,19 +616,19 @@ namespace CoinEx.Net
 
         private void DataHandlerQuery(SocketSubscription subscription, JToken data, Action<JToken[]> handler)
         {
-            var (id, evnt) = subscription.GetWaitingEvent("Data");
+            var evnt = subscription.GetWaitingEvent("Data");
             if (evnt != null)
             {
-                if ((int?)data["id"] == id)
+                if ((int?)data["id"] == evnt.WaitingId)
                 {
                     if (data["result"].Type == JTokenType.Null)
                     {
-                        subscription.SetEvent(id, false, new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
+                        subscription.SetEvent(evnt.WaitingId, false, new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
                     }
                     else
                     {
                         handler(new[] { data["result"] });
-                        subscription.SetEvent(id, true, null);
+                        subscription.SetEvent(evnt.WaitingId, true, null);
                     }
                 }
             }
@@ -636,18 +636,18 @@ namespace CoinEx.Net
 
         private void AuthenticationHandler(SocketSubscription subscription, JToken data)
         {
-            var (id, evnt) = subscription.GetWaitingEvent("Authentication");
+            var evnt = subscription.GetWaitingEvent("Authentication");
             if (evnt == null)
                 return;
 
-            if ((int?)data["id"] != id)
+            if ((int?)data["id"] != evnt.WaitingId)
                 return;
 
             var authResponse = Deserialize< CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
             if (!authResponse.Success)
             {
                 log.Write(LogVerbosity.Warning, $"Authorization failed: " + authResponse.Error);
-                subscription.SetEvent(id, false, authResponse.Error);
+                subscription.SetEvent(evnt.WaitingId, false, authResponse.Error);
                 return;
             }
 
@@ -655,46 +655,46 @@ namespace CoinEx.Net
             {
                 var error = new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message);
                 log.Write(LogVerbosity.Debug, "Failed to authenticate: " + error);
-                subscription.SetEvent(id, false, error);
+                subscription.SetEvent(evnt.WaitingId, false, error);
                 return;
             }
 
             if (authResponse.Data.Result.Status != SuccessString)
             {
                 log.Write(LogVerbosity.Debug, "Failed to authenticate: " + authResponse.Data.Result.Status);
-                subscription.SetEvent(id, false, new ServerError(authResponse.Data.Result.Status));
+                subscription.SetEvent(evnt.WaitingId, false, new ServerError(authResponse.Data.Result.Status));
                 return;
             }
 
             log.Write(LogVerbosity.Debug, $"Authorization completed");
-            subscription.SetEvent(id, true, null);
+            subscription.SetEvent(evnt.WaitingId, true, null);
         }
 
         private void SubscriptionHandler(SocketSubscription subscription, JToken data)
         {
-            var (id, evnt) = subscription.GetWaitingEvent("Subscription");
+            var evnt = subscription.GetWaitingEvent("Subscription");
             if (evnt == null)
                 return;
 
-            if ((int?)data["id"] != id)
+            if ((int?)data["id"] != evnt.WaitingId)
                 return;
 
             var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
             if (!authResponse.Success)
             {
                 log.Write(LogVerbosity.Warning, $"Subscription failed: " + authResponse.Error);
-                subscription.SetEvent(id, false, authResponse.Error);
+                subscription.SetEvent(evnt.WaitingId, false, authResponse.Error);
                 return;
             }
 
             if (authResponse.Data.Error != null)
             {
                 log.Write(LogVerbosity.Debug, $"Failed to subscribe: {authResponse.Data.Error.Code} {authResponse.Data.Error.Message}");
-                subscription.SetEvent(id, false, new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message));
+                subscription.SetEvent(evnt.WaitingId, false, new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message));
             }
 
             log.Write(LogVerbosity.Debug, $"Subscription completed");
-            subscription.SetEvent(id, true, null);
+            subscription.SetEvent(evnt.WaitingId, true, null);
         }
 
         protected override bool SocketReconnect(SocketSubscription subscription, TimeSpan disconnectedTime)

@@ -180,7 +180,6 @@ namespace CryptoExchange.Net.Testing
                 socket.Raise(s => s.OnOpen += null);
                 OnOpen?.Invoke(socket);
             });
-            socket.Setup(s => s.SetEnabledSslProtocols(It.IsAny<System.Security.Authentication.SslProtocols>()));
             return socket.Object;
         }
 
