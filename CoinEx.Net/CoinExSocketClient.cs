@@ -40,8 +40,7 @@ namespace CoinEx.Net
         private const string PingAction = "ping";
         private const string AuthenticateAction = "sign";
 
-        private const string SuccessString = "success";
-
+        private const string SuccessString = "success";        
         #endregion
 
         #region ctor
@@ -465,39 +464,39 @@ namespace CoinEx.Net
 
         private async Task<CallResult<T>> Query<T>(CoinExSocketRequest request)
         {
-            T result = default(T);
-            var internalHandler = new Action<JToken[]>(data =>
+            CallResult<T> result = null;
+            var internalHandler = new Action<JToken[]>(data => result = Deserialize<T>(data[0]));
+
+            var subscription = GetBackgroundSocket(request.Signed);
+            if (subscription == null)
             {
-                var desResult = Deserialize<T>(data[0]);
-                if (!desResult.Success)
-                {
-                    log.Write(LogVerbosity.Warning, "Received invalid query response: " + desResult.Error);
-                    return;
-                }
+                // We dont have a background socket to query, create a new one
+                var connectResult = await CreateAndConnectSocket(request.Signed, false, internalHandler);
+                if (!connectResult.Success)
+                    return new CallResult<T>(default(T), connectResult.Error);
 
-                result = desResult.Data;
-            });
+                subscription = connectResult.Data;
+                subscription.Type = request.Signed ? SocketType.BackgroundAuthenticated : SocketType.Background;
+            }
+            else
+            {
+                // Use earlier created background socket to query without having to connect again
+                subscription.Events.Single(s => s.Name == DataEvent).Reset();
+                subscription.MessageHandlers[DataHandlerName] = (subs, data) => DataHandlerQuery(subs, data, internalHandler);
+            }
 
-            var connectResult = await CreateAndConnectSocket(request.Signed, false, internalHandler);
-            if (!connectResult.Success)
-                return new CallResult<T>(default(T), connectResult.Error);
-
-            var subscription = connectResult.Data;
             request.Id = NextId();
 
-            var waitTask = subscription.WaitForEvent("Data", request.Id, subResponseTimeout);
+            var waitTask = subscription.WaitForEvent(DataEvent, request.Id, subResponseTimeout);
             Send(subscription.Socket, request);
             var dataResult = await waitTask;
-
-            var closeTask = subscription.Close();
 
             if (!dataResult.Success)
                 return new CallResult<T>(default(T), dataResult.Error);
 
-            return new CallResult<T>(result, null);
+            return result;
         }
-
-        
+               
 
         private async Task<CallResult<UpdateSubscription>> Subscribe(CoinExSocketRequest request, Action<JToken[]> onData)
         {
@@ -511,7 +510,7 @@ namespace CoinEx.Net
         private async Task<CallResult<UpdateSubscription>> Subscribe(SocketSubscription subscription, CoinExSocketRequest request)
         {
             request.Id = NextId();
-            var waitTask = subscription.WaitForEvent("Subscription", request.Id, subResponseTimeout);
+            var waitTask = subscription.WaitForEvent(SubscriptionEvent, request.Id, subResponseTimeout);
             Send(subscription.Socket, request);
 
             var subResult = await waitTask;
@@ -532,20 +531,20 @@ namespace CoinEx.Net
             var subscription = new SocketSubscription(socket);
             if (sub)
             {
-                subscription.MessageHandlers.Add((subs, data) => DataHandlerSubscription(subs, data, onMessage));
-                subscription.AddEvent("Subscription");
+                subscription.MessageHandlers.Add(DataHandlerName, (subs, data) => DataHandlerSubscription(subs, data, onMessage));
+                subscription.AddEvent(SubscriptionEvent);
             }
             else
             {
-                subscription.MessageHandlers.Add((subs, data) => DataHandlerQuery(subs, data, onMessage));
-                subscription.AddEvent("Data");
+                subscription.MessageHandlers.Add(DataHandlerName, (subs, data) => DataHandlerQuery(subs, data, onMessage));
+                subscription.AddEvent(DataEvent);
             }
 
-            subscription.MessageHandlers.Add(AuthenticationHandler);
-            subscription.MessageHandlers.Add(SubscriptionHandler);
+            subscription.MessageHandlers.Add(AuthenticationHandlerName, AuthenticationHandler);
+            subscription.MessageHandlers.Add(SubscriptionHandlerName, SubscriptionHandler);
 
             if (authenticate)
-                subscription.AddEvent("Authentication");            
+                subscription.AddEvent(AuthenticationEvent);            
 
             var connectResult = await ConnectSocket(subscription);
             if (!connectResult.Success)
@@ -566,7 +565,7 @@ namespace CoinEx.Net
             var request = new CoinExSocketRequest(ServerSubject, AuthenticateAction, true, GetAuthParameters());
             request.Id = NextId();
 
-            var waitTask = subscription.WaitForEvent("Authentication", request.Id, subResponseTimeout);
+            var waitTask = subscription.WaitForEvent(AuthenticationEvent, request.Id, subResponseTimeout);
             Send(subscription.Socket, request);
             var authResult = await waitTask;
 
@@ -598,7 +597,7 @@ namespace CoinEx.Net
 
         private bool DataHandlerQuery(SocketSubscription subscription, JToken data, Action<JToken[]> handler)
         {
-            var evnt = subscription.GetWaitingEvent("Data");
+            var evnt = subscription.GetWaitingEvent(DataEvent);
             if (evnt == null)
                 return false;
 
@@ -619,7 +618,7 @@ namespace CoinEx.Net
 
         private bool AuthenticationHandler(SocketSubscription subscription, JToken data)
         {
-            var evnt = subscription.GetWaitingEvent("Authentication");
+            var evnt = subscription.GetWaitingEvent(AuthenticationEvent);
             if (evnt == null)
                 return false;
 
@@ -656,7 +655,7 @@ namespace CoinEx.Net
 
         private bool SubscriptionHandler(SocketSubscription subscription, JToken data)
         {
-            var evnt = subscription.GetWaitingEvent("Subscription");
+            var evnt = subscription.GetWaitingEvent(SubscriptionEvent);
             if (evnt == null)
                 return false;
 
