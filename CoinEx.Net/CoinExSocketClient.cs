@@ -487,7 +487,7 @@ namespace CoinEx.Net
 
             request.Id = NextId();
 
-            var waitTask = subscription.WaitForEvent(DataEvent, request.Id, subResponseTimeout);
+            var waitTask = subscription.WaitForEvent(DataEvent, request.Id.ToString(), subResponseTimeout);
             Send(subscription.Socket, request);
             var dataResult = await waitTask;
 
@@ -510,7 +510,7 @@ namespace CoinEx.Net
         private async Task<CallResult<UpdateSubscription>> Subscribe(SocketSubscription subscription, CoinExSocketRequest request)
         {
             request.Id = NextId();
-            var waitTask = subscription.WaitForEvent(SubscriptionEvent, request.Id, subResponseTimeout);
+            var waitTask = subscription.WaitForEvent(SubscriptionEvent, request.Id.ToString(), subResponseTimeout);
             Send(subscription.Socket, request);
 
             var subResult = await waitTask;
@@ -565,7 +565,7 @@ namespace CoinEx.Net
             var request = new CoinExSocketRequest(ServerSubject, AuthenticateAction, true, GetAuthParameters());
             request.Id = NextId();
 
-            var waitTask = subscription.WaitForEvent(AuthenticationEvent, request.Id, subResponseTimeout);
+            var waitTask = subscription.WaitForEvent(AuthenticationEvent, request.Id.ToString(), subResponseTimeout);
             Send(subscription.Socket, request);
             var authResult = await waitTask;
 
@@ -601,17 +601,17 @@ namespace CoinEx.Net
             if (evnt == null)
                 return false;
 
-            if ((int?)data["id"] != evnt.WaitingId)
+            if (((int?)data["id"])?.ToString() != evnt.WaitingId)
                 return false;
             
             if (data["result"].Type == JTokenType.Null)
             {
-                subscription.SetEvent(evnt.WaitingId, false, new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
+                subscription.SetEventById(evnt.WaitingId, false, new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
             }
             else
             {
                 handler(new[] { data["result"] });
-                subscription.SetEvent(evnt.WaitingId, true, null);
+                subscription.SetEventById(evnt.WaitingId, true, null);
             }
             return true;
         }
@@ -622,14 +622,14 @@ namespace CoinEx.Net
             if (evnt == null)
                 return false;
 
-            if ((int?)data["id"] != evnt.WaitingId)
+            if (((int?)data["id"])?.ToString() != evnt.WaitingId)
                 return false;
 
             var authResponse = Deserialize< CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
             if (!authResponse.Success)
             {
                 log.Write(LogVerbosity.Warning, $"Authorization failed: " + authResponse.Error);
-                subscription.SetEvent(evnt.WaitingId, false, authResponse.Error);
+                subscription.SetEventById(evnt.WaitingId, false, authResponse.Error);
                 return true;
             }
 
@@ -637,19 +637,19 @@ namespace CoinEx.Net
             {
                 var error = new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message);
                 log.Write(LogVerbosity.Debug, "Failed to authenticate: " + error);
-                subscription.SetEvent(evnt.WaitingId, false, error);
+                subscription.SetEventById(evnt.WaitingId, false, error);
                 return true;
             }
 
             if (authResponse.Data.Result.Status != SuccessString)
             {
                 log.Write(LogVerbosity.Debug, "Failed to authenticate: " + authResponse.Data.Result.Status);
-                subscription.SetEvent(evnt.WaitingId, false, new ServerError(authResponse.Data.Result.Status));
+                subscription.SetEventById(evnt.WaitingId, false, new ServerError(authResponse.Data.Result.Status));
                 return true;
             }
 
             log.Write(LogVerbosity.Debug, $"Authorization completed");
-            subscription.SetEvent(evnt.WaitingId, true, null);
+            subscription.SetEventById(evnt.WaitingId, true, null);
             return true;
         }
 
@@ -659,26 +659,26 @@ namespace CoinEx.Net
             if (evnt == null)
                 return false;
 
-            if ((int?)data["id"] != evnt.WaitingId)
+            if (((int?)data["id"])?.ToString() != evnt.WaitingId)
                 return false;
 
             var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
             if (!authResponse.Success)
             {
                 log.Write(LogVerbosity.Warning, $"Subscription failed: " + authResponse.Error);
-                subscription.SetEvent(evnt.WaitingId, false, authResponse.Error);
+                subscription.SetEventById(evnt.WaitingId, false, authResponse.Error);
                 return true;
             }
 
             if (authResponse.Data.Error != null)
             {
                 log.Write(LogVerbosity.Debug, $"Failed to subscribe: {authResponse.Data.Error.Code} {authResponse.Data.Error.Message}");
-                subscription.SetEvent(evnt.WaitingId, false, new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message));
+                subscription.SetEventById(evnt.WaitingId, false, new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message));
                 return true;
             }
 
             log.Write(LogVerbosity.Debug, $"Subscription completed");
-            subscription.SetEvent(evnt.WaitingId, true, null);
+            subscription.SetEventById(evnt.WaitingId, true, null);
             return true;
         }
 
