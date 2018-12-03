@@ -15,7 +15,7 @@ using CryptoExchange.Net.Sockets;
 
 namespace CoinEx.Net
 {
-    public class CoinExSocketClient: SocketClient
+    public class CoinExSocketClient: SocketClient, ICoinExSocketClient
     {
         #region fields
         private static CoinExSocketClientOptions defaultOptions = new CoinExSocketClientOptions();
