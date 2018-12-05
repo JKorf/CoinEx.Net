@@ -191,7 +191,7 @@ namespace CoinEx.Net.UnitTests
             var result = objects.Client.GetBalances();
 
             // assert
-            Assert.IsTrue(objects.Request.Object.Headers.AllKeys.Any(k => k == "authorization"));
+            Assert.IsTrue(objects.Request.Object.Headers.AllKeys.Any(k => k == "Authorization"));
         }
 
         [Test]
