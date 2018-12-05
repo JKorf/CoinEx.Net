@@ -24,7 +24,7 @@ namespace CoinEx.Net
             if (!signed)
                 return result;
 
-            var paramString = parameters.CreateParamString(true).Substring(1);
+            var paramString = parameters.CreateParamString(true);
             result.Add("Authorization", Sign(paramString + "&secret_key=" + Credentials.Secret.GetString()));
             return result;
         }

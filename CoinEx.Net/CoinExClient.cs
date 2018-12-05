@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace CoinEx.Net
@@ -580,6 +581,13 @@ namespace CoinEx.Net
                 return new ServerError(error.ToString());
 
             return new ServerError((int)error["code"], (string)error["message"]);
+        }
+
+        protected override IRequest ConstructRequest(Uri uri, string method, Dictionary<string, object> parameters, bool signed)
+        {
+            var request = base.ConstructRequest(uri, method, parameters, signed);
+            request.Headers["User-Agent"] = userAgent;
+            return request;
         }
 
         private async Task<CallResult<T>> Execute<T>(Uri uri, bool signed = false, string method = Constants.GetMethod, Dictionary<string, object> parameters = null) where T : class
