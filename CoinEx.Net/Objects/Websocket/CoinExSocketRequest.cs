@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using CryptoExchange.Net.Sockets;
+using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    internal class CoinExSocketRequest
+    internal class CoinExSocketRequest: SocketRequest
     {
         [JsonProperty("method")]
         public string Method { get; set; }
@@ -13,10 +14,11 @@ namespace CoinEx.Net.Objects.Websocket
 
         public CoinExSocketRequest() { }
 
-        public CoinExSocketRequest(string subject, string action, params object[] parameters)
+        public CoinExSocketRequest(string subject, string action, bool signed, params object[] parameters)
         {
             Method = $"{subject}.{action}";
             Parameters = parameters;
+            Signed = signed;
         }
     }
 }

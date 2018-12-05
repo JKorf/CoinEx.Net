@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net;
+using CryptoExchange.Net.Sockets;
 
 namespace CryptoExchange.Net.Testing
 {
@@ -60,7 +61,7 @@ namespace CryptoExchange.Net.Testing
             return self == to;
         }
 
-        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData) where T : ExchangeClient, new()
+        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData) where T : RestClient, new()
         {
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();
@@ -95,7 +96,7 @@ namespace CryptoExchange.Net.Testing
             };
         }
 
-        public static T PrepareExceptionClient<T>(string responseData, string exceptionMessage, int statusCode) where T : ExchangeClient, new()
+        public static T PrepareExceptionClient<T>(string responseData, string exceptionMessage, int statusCode) where T : RestClient, new()
         {
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();
@@ -131,7 +132,7 @@ namespace CryptoExchange.Net.Testing
             return client;
         }
 
-        public static T PrepareSocketClient<T>(Func<T> construct) where T : ExchangeClient, new()
+        public static T PrepareSocketClient<T>(Func<T> construct) where T : SocketClient, new()
         {
             var factory = new Mock<IWebsocketFactory>();
             factory.Setup(s => s.CreateWebsocket(It.IsAny<Log>(), It.IsAny<string>())).Returns(CreateSocket);
@@ -140,7 +141,7 @@ namespace CryptoExchange.Net.Testing
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
             if (log.Level == LogVerbosity.Info)
                 log.Level = LogVerbosity.None;
-            typeof(T).GetField("lastStreamId", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).SetValue(client, 0);
+            typeof(BaseClient).GetField("lastId", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).SetValue(client, 0);
             typeof(T).GetProperty("SocketFactory").SetValue(client, factory.Object);
             return client;
         }
@@ -179,7 +180,6 @@ namespace CryptoExchange.Net.Testing
                 socket.Raise(s => s.OnOpen += null);
                 OnOpen?.Invoke(socket);
             });
-            socket.Setup(s => s.SetEnabledSslProtocols(It.IsAny<System.Security.Authentication.SslProtocols>()));
             return socket.Object;
         }
 
@@ -200,15 +200,21 @@ namespace CryptoExchange.Net.Testing
             });
         }
 
+        public static List<SocketSubscription> GetSockets(CoinExSocketClient client)
+        {            
+            return (List<SocketSubscription>)client.GetType().GetField("sockets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(client);
+        }
+
         public static async Task<bool> WaitForClose(CoinExSocketClient client, int timeout = 1000)
         {
             var evnt = new ManualResetEvent(false);
             var handler = new Action<Mock<IWebsocket>>((s) =>
             {
-                if (!client.sockets.Any())
+                var sockets = GetSockets(client);
+                if (!sockets.Any())
                     return;
 
-                var mock = Mock.Get(client.sockets[0].Socket);
+                var mock = Mock.Get(sockets[0].Socket);
                 if (s.Equals(mock))
                     evnt.Set();
             });
@@ -224,7 +230,8 @@ namespace CryptoExchange.Net.Testing
 
         public static void CloseWebsocket(CoinExSocketClient client)
         {
-            var mock = Mock.Get(client.sockets[0].Socket);
+            var sockets = GetSockets(client);
+            var mock = Mock.Get(sockets[0].Socket);
             mock.Setup(s => s.IsOpen).Returns(() => false);
             mock.Setup(s => s.IsClosed).Returns(() => true);
 
@@ -236,10 +243,11 @@ namespace CryptoExchange.Net.Testing
             var evnt = new ManualResetEvent(false);
             var handler = new Action<Mock<IWebsocket>, string>((s, data) =>
             {
-                if (!client.sockets.Any())
+                var sockets = GetSockets(client);
+                if (!sockets.Any())
                     return;
 
-                var mock = Mock.Get(client.sockets[0].Socket);
+                var mock = Mock.Get(sockets[0].Socket);
                 if (s.Equals(mock))
                 {
                     if (expectedData == null || data == expectedData)
@@ -258,10 +266,11 @@ namespace CryptoExchange.Net.Testing
 
         public static void InvokeWebsocket(CoinExSocketClient client, string data)
         {
-            var mock = Mock.Get(client.sockets[0].Socket);
+            var sockets = GetSockets(client);
+            var mock = Mock.Get(sockets[0].Socket);
             mock.Raise(r => r.OnMessage += null, data);
         }
-        public class MockObjects<T> where T: ExchangeClient
+        public class MockObjects<T> where T: RestClient
         {
             public T Client { get; set; }
             public Mock<IRequest> Request { get; set; }
