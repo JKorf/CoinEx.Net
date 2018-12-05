@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CoinEx.Net.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace CoinEx.Net
 {
@@ -568,6 +569,19 @@ namespace CoinEx.Net
 
         #region private
 
+        protected override bool IsErrorResponse(JToken data)
+        {
+            return data["code"] != null && (int)data["code"] != 0;
+        }
+
+        protected override Error ParseErrorResponse(JToken error)
+        {
+            if (error["code"] == null || error["message"] == null)
+                return new ServerError(error.ToString());
+
+            return new ServerError((int)error["code"], (string)error["message"]);
+        }
+
         private async Task<CallResult<T>> Execute<T>(Uri uri, bool signed = false, string method = Constants.GetMethod, Dictionary<string, object> parameters = null) where T : class
         {
             return GetResult(await ExecuteRequest<CoinExApiResult<T>>(uri, method, parameters, signed).ConfigureAwait(false));
@@ -583,13 +597,12 @@ namespace CoinEx.Net
             if (result.Error != null || result.Data == null)
                 return new CallResult<T>(null, result.Error);
 
-            var error = result.Data.Code != 0;
-            return new CallResult<T>(error ? null : result.Data.Data, error ? new ServerError(result.Data.Code, result.Data.Message) : null);
+            return new CallResult<T>(result.Data.Data, null);
         }
 
         private Uri GetUrl(string endpoint)
         {
-            return new Uri(baseAddress + endpoint);
+            return new Uri(BaseAddress + endpoint);
         }
 
         private void Configure(CoinExClientOptions options)

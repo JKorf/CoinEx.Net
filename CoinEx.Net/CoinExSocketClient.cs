@@ -547,7 +547,7 @@ namespace CoinEx.Net
 
         private async Task<CallResult<SocketSubscription>> CreateAndConnectSocket(bool authenticate, bool sub, Action<JToken[]> onMessage)
         {
-            var socket = CreateSocket(baseAddress);
+            var socket = CreateSocket(BaseAddress);
             var subscription = new SocketSubscription(socket);
             if (sub)
             {
