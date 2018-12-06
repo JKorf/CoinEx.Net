@@ -21,10 +21,10 @@ namespace CoinEx.Net.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var array = JArray.Load(reader);
-            int maxParse = Math.Min(array.Count, types.Length);
+            var maxParse = Math.Min(array.Count, types.Length);
             var result = new object[maxParse];
 
-            for (int i = 0; i < maxParse; i++)
+            for (var i = 0; i < maxParse; i++)
                 result[i] = array[i].ToObject(types[i]);
             return result;
         }
@@ -53,7 +53,7 @@ namespace CoinEx.Net.Converters
         {
             var array = JArray.Load(reader);
             var result = new object[array.Count];
-            for (int i = 0; i < array.Count; i++)
+            for (var i = 0; i < array.Count; i++)
                 result[i] = array[i].ToObject(type);
             return result;
         }

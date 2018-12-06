@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects
     public class CoinExWithdrawal
     {
         /// <summary>
-        /// The actual amount of the withdrawal, i.e. the amount which will be transfered to the destination address
+        /// The actual amount of the withdrawal, i.e. the amount which will be transferred to the destination address
         /// </summary>
         [JsonProperty("actual_amount"), JsonConverter(typeof(DecimalConverter))]
         public decimal ActualAmount { get; set; }

@@ -13,8 +13,8 @@ namespace CoinEx.Net.Converters
         {
             { OrderStatus.Executed, "done" },
             { OrderStatus.PartiallyExecuted, "part_deal" },
-            { OrderStatus.Unexecuted, "not_deal" },
-            { OrderStatus.Canceled, "cancel" },
+            { OrderStatus.UnExecuted, "not_deal" },
+            { OrderStatus.Canceled, "cancel" }
         };
     }
 }

@@ -18,7 +18,7 @@
         TwoHour,
         FourHour,
         SixHour,
-        TwelfHour,
+        TwelveHour,
         OneDay,
         ThreeDay,
         OneWeek
@@ -46,7 +46,7 @@
     {
         Executed,
         PartiallyExecuted,
-        Unexecuted,
+        UnExecuted,
         Canceled
     }
 

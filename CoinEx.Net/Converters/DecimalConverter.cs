@@ -13,10 +13,8 @@ namespace CoinEx.Net.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string value = reader.Value.ToString();
-            if (decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var result))
-                return result;
-            return 0m;
+            var value = reader.Value.ToString();
+            return decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var result) ? result : 0m;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

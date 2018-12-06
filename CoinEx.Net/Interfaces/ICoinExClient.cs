@@ -206,7 +206,7 @@ namespace CoinEx.Net.Interfaces
         Task<CallResult<CoinExOrder>> PlaceMarketOrderAsync(string market, TransactionType type, decimal amount, string sourceId = null);
 
         /// <summary>
-        /// Places an order which should be filled immediately uppon placing, otherwise it will be canceled. Requires API credentials
+        /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
         /// </summary>
         /// <param name="market">The market to place the order for</param>
         /// <param name="type">Type of transaction</param>
@@ -217,7 +217,7 @@ namespace CoinEx.Net.Interfaces
         CallResult<CoinExOrder> PlaceImmediateOrCancelOrder(string market, TransactionType type, decimal amount, decimal price, string sourceId = null);
 
         /// <summary>
-        /// Places an order which should be filled immediately uppon placing, otherwise it will be canceled. Requires API credentials
+        /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
         /// </summary>
         /// <param name="market">The market to place the order for</param>
         /// <param name="type">Type of transaction</param>

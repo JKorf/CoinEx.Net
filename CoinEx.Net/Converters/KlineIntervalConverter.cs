@@ -20,10 +20,10 @@ namespace CoinEx.Net.Converters
             { KlineInterval.TwoHour, "2hour" },
             { KlineInterval.FourHour, "4hour" },
             { KlineInterval.SixHour, "6hour" },
-            { KlineInterval.TwelfHour, "12hour" },
+            { KlineInterval.TwelveHour, "12hour" },
             { KlineInterval.OneDay, "1day" },
             { KlineInterval.ThreeDay, "3day" },
-            { KlineInterval.OneWeek, "1week" },
+            { KlineInterval.OneWeek, "1week" }
         };
     }
 }

@@ -201,7 +201,7 @@ namespace CoinEx.Net
             var parameters = new Dictionary<string, object>
             {
                 { "market", market },
-                { "type", JsonConvert.SerializeObject(interval, new KlineIntervalConverter(false)) },
+                { "type", JsonConvert.SerializeObject(interval, new KlineIntervalConverter(false)) }
             };
             parameters.AddOptionalParameter("limit", limit);
 
@@ -267,11 +267,11 @@ namespace CoinEx.Net
         /// <returns>The withdrawal object</returns>
         public async Task<CallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, decimal amount)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "coin_type", coin },
                 { "coin_address", coinAddress },
-                { "actual_amount", amount.ToString(CultureInfo.InvariantCulture) },
+                { "actual_amount", amount.ToString(CultureInfo.InvariantCulture) }
             };
 
             return await Execute<CoinExWithdrawal>(GetUrl(WithdrawEndpoint), method: Constants.PostMethod, signed: true, parameters: parameters).ConfigureAwait(false);
@@ -290,15 +290,13 @@ namespace CoinEx.Net
         /// <returns>True if successful, false otherwise</returns>
         public async Task<CallResult<bool>> CancelWithdrawalAsync(long coinWithdrawId)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
-                { "coin_withdraw_id", coinWithdrawId },
+                { "coin_withdraw_id", coinWithdrawId }
             };
 
             var result = await Execute<object>(GetUrl(CancelWithdrawalEndpoint), method: Constants.DeleteMethod, signed: true, parameters: parameters).ConfigureAwait(false);
-            if (!result.Success)
-                return new CallResult<bool>(false, result.Error);
-            return new CallResult<bool>(true, null);
+            return !result.Success ? new CallResult<bool>(false, result.Error) : new CallResult<bool>(true, null);
         }
 
         /// <summary>
@@ -322,7 +320,7 @@ namespace CoinEx.Net
         /// <returns>Details of the order that was placed</returns>
         public async Task<CallResult<CoinExOrder>> PlaceLimitOrderAsync(string market, TransactionType type, decimal amount, decimal price, string sourceId = null)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
                 { "type", JsonConvert.SerializeObject(type, new TransactionTypeConverter(false)) },
@@ -353,7 +351,7 @@ namespace CoinEx.Net
         /// <returns>Details of the order that was placed</returns>
         public async Task<CallResult<CoinExOrder>> PlaceMarketOrderAsync(string market, TransactionType type, decimal amount, string sourceId = null)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
                 { "type", JsonConvert.SerializeObject(type, new TransactionTypeConverter(false)) },
@@ -365,7 +363,7 @@ namespace CoinEx.Net
         }
 
         /// <summary>
-        /// Places an order which should be filled immediately uppon placing, otherwise it will be canceled. Requires API credentials
+        /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
         /// </summary>
         /// <param name="market">The market to place the order for</param>
         /// <param name="type">Type of transaction</param>
@@ -375,7 +373,7 @@ namespace CoinEx.Net
         /// <returns></returns>
         public CallResult<CoinExOrder> PlaceImmediateOrCancelOrder(string market, TransactionType type, decimal amount, decimal price, string sourceId = null) => PlaceImmediateOrCancelOrderAsync(market, type, amount, price, sourceId).Result;
         /// <summary>
-        /// Places an order which should be filled immediately uppon placing, otherwise it will be canceled. Requires API credentials
+        /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
         /// </summary>
         /// <param name="market">The market to place the order for</param>
         /// <param name="type">Type of transaction</param>
@@ -385,7 +383,7 @@ namespace CoinEx.Net
         /// <returns></returns>
         public async Task<CallResult<CoinExOrder>> PlaceImmediateOrCancelOrderAsync(string market, TransactionType type, decimal amount, decimal price, string sourceId = null)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
                 { "type", JsonConvert.SerializeObject(type, new TransactionTypeConverter(false)) },
@@ -414,11 +412,11 @@ namespace CoinEx.Net
         /// <returns>List of open orders for a market</returns>
         public async Task<CallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string market, int page, int limit)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
                 { "page", page },
-                { "limit", limit },
+                { "limit", limit }
             };
 
             return await ExecutePaged<CoinExOrder>(GetUrl(OpenOrdersEndpoint), true, parameters: parameters).ConfigureAwait(false);
@@ -441,11 +439,11 @@ namespace CoinEx.Net
         /// <returns>List of executed orders for a market</returns>
         public async Task<CallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string market, int page, int limit)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
                 { "page", page },
-                { "limit", limit },
+                { "limit", limit }
             };
 
             return await ExecutePaged<CoinExOrder>(GetUrl(FinishedOrdersEndpoint), true, parameters: parameters).ConfigureAwait(false);
@@ -466,10 +464,10 @@ namespace CoinEx.Net
         /// <returns>Details of the order</returns>
         public async Task<CallResult<CoinExOrder>> GetOrderStatusAsync(long orderId, string market)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
-                { "id", orderId },
+                { "id", orderId }
             };
 
             return await Execute<CoinExOrder>(GetUrl(OrderStatusEndpoint), true, parameters: parameters).ConfigureAwait(false);
@@ -492,11 +490,11 @@ namespace CoinEx.Net
         /// <returns>Details of an executed order</returns>
         public async Task<CallResult<CoinExPagedResult<CoinExOrderTransaction>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "id", orderId },
                 { "page", page },
-                { "limit", limit },
+                { "limit", limit }
             };
 
             return await ExecutePaged<CoinExOrderTransaction>(GetUrl(OrderDetailsEndpoint), true, parameters: parameters).ConfigureAwait(false);
@@ -519,11 +517,11 @@ namespace CoinEx.Net
         /// <returns>List of transaction for a market</returns>
         public async Task<CallResult<CoinExPagedResult<CoinExOrderTransactionExtended>>> GetExecutedTransactionsAsync(string market, int page, int limit)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
                 { "page", page },
-                { "limit", limit },
+                { "limit", limit }
             };
 
             return await ExecutePaged<CoinExOrderTransactionExtended>(GetUrl(UserTransactionsEndpoint), true, parameters: parameters).ConfigureAwait(false);
@@ -544,7 +542,7 @@ namespace CoinEx.Net
         /// <returns>Details of the canceled order</returns>
         public async Task<CallResult<CoinExOrder>> CancelOrderAsync(string market, long orderId)
         {
-            var parameters = new Dictionary<string, object>()
+            var parameters = new Dictionary<string, object>
             {
                 { "market", market },
                 { "id", orderId }

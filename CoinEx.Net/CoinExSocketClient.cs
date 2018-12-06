@@ -511,10 +511,7 @@ namespace CoinEx.Net
             Send(subscription.Socket, request);
             var dataResult = await waitTask.ConfigureAwait(false);
 
-            if (!dataResult.Success)
-                return new CallResult<T>(default(T), dataResult.Error);
-			
-            return result;
+            return !dataResult.Success ? new CallResult<T>(default(T), dataResult.Error) : result;
         }
                
 
@@ -647,7 +644,7 @@ namespace CoinEx.Net
             var authResponse = Deserialize< CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
             if (!authResponse.Success)
             {
-                log.Write(LogVerbosity.Warning, $"Authorization failed: " + authResponse.Error);
+                log.Write(LogVerbosity.Warning, "Authorization failed: " + authResponse.Error);
                 subscription.SetEventById(evnt.WaitingId, false, authResponse.Error);
                 return true;
             }
@@ -667,7 +664,7 @@ namespace CoinEx.Net
                 return true;
             }
 
-            log.Write(LogVerbosity.Debug, $"Authorization completed");
+            log.Write(LogVerbosity.Debug, "Authorization completed");
             subscription.SetEventById(evnt.WaitingId, true, null);
             return true;
         }
@@ -684,7 +681,7 @@ namespace CoinEx.Net
             var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
             if (!authResponse.Success)
             {
-                log.Write(LogVerbosity.Warning, $"Subscription failed: " + authResponse.Error);
+                log.Write(LogVerbosity.Warning, "Subscription failed: " + authResponse.Error);
                 subscription.SetEventById(evnt.WaitingId, false, authResponse.Error);
                 return true;
             }
@@ -696,7 +693,7 @@ namespace CoinEx.Net
                 return true;
             }
 
-            log.Write(LogVerbosity.Debug, $"Subscription completed");
+            log.Write(LogVerbosity.Debug, "Subscription completed");
             subscription.SetEventById(evnt.WaitingId, true, null);
             return true;
         }

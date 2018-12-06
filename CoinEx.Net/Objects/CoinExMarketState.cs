@@ -27,7 +27,7 @@ namespace CoinEx.Net.Objects
         [JsonProperty("date"), JsonConverter(typeof(TimestampConverter))]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// The data specifiec as market -> market state data
+        /// The data specified as market -> market state data
         /// </summary>
         [JsonProperty("ticker")]
         public Dictionary<string, CoinExMarketStateData> Tickers { get; set; }

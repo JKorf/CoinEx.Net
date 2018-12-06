@@ -36,7 +36,7 @@ namespace CoinEx.Net.Objects.Websocket
         [JsonProperty("fee_asset")]
         public string FeeAsset { get; set; }
         /// <summary>
-        /// The executed amount tranasction fee
+        /// The executed amount transaction fee
         /// </summary>
         [JsonProperty("deal_fee")]
         [JsonConverter(typeof(DecimalConverter))]
