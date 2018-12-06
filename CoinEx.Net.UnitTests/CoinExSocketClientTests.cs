@@ -2,19 +2,13 @@
 using CoinEx.Net.Objects.Websocket;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Converters;
-using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Testing;
-using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace CoinEx.Net.UnitTests
 {

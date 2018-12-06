@@ -491,7 +491,7 @@ namespace CoinEx.Net
             if (subscription == null)
             {
                 // We don't have a background socket to query, create a new one
-                var connectResult = await CreateAndConnectSocket(request.Signed, false, internalHandler);
+                var connectResult = await CreateAndConnectSocket(request.Signed, false, internalHandler).ConfigureAwait(false);
                 if (!connectResult.Success)
                     return new CallResult<T>(default(T), connectResult.Error);
 
@@ -509,7 +509,7 @@ namespace CoinEx.Net
 
             var waitTask = subscription.WaitForEvent(DataEvent, request.Id.ToString(), subResponseTimeout);
             Send(subscription.Socket, request);
-            var dataResult = await waitTask;
+            var dataResult = await waitTask.ConfigureAwait(false);
 
             if (!dataResult.Success)
                 return new CallResult<T>(default(T), dataResult.Error);
@@ -520,11 +520,11 @@ namespace CoinEx.Net
 
         private async Task<CallResult<UpdateSubscription>> Subscribe(CoinExSocketRequest request, Action<JToken[]> onData)
         {
-            var connectResult = await CreateAndConnectSocket(request.Signed, true, onData);
+            var connectResult = await CreateAndConnectSocket(request.Signed, true, onData).ConfigureAwait(false);
             if (!connectResult.Success)
                 return new CallResult<UpdateSubscription>(null, connectResult.Error);
 
-            return await Subscribe(connectResult.Data, request);
+            return await Subscribe(connectResult.Data, request).ConfigureAwait(false);
         }
 
         private async Task<CallResult<UpdateSubscription>> Subscribe(SocketSubscription subscription, CoinExSocketRequest request)
@@ -533,10 +533,10 @@ namespace CoinEx.Net
             var waitTask = subscription.WaitForEvent(SubscriptionEvent, request.Id.ToString(), subResponseTimeout);
             Send(subscription.Socket, request);
 
-            var subResult = await waitTask;
+            var subResult = await waitTask.ConfigureAwait(false);
             if (!subResult.Success)
             {
-                await subscription.Close();
+                await subscription.Close().ConfigureAwait(false);
                 return new CallResult<UpdateSubscription>(null, subResult.Error);
             }
 
@@ -566,13 +566,13 @@ namespace CoinEx.Net
             if (authenticate)
                 subscription.AddEvent(AuthenticationEvent);            
 
-            var connectResult = await ConnectSocket(subscription);
+            var connectResult = await ConnectSocket(subscription).ConfigureAwait(false);
             if (!connectResult.Success)
                 return new CallResult<SocketSubscription>(null, connectResult.Error);
 
             if (authenticate)
             {
-                var authResult = await Authenticate(subscription);
+                var authResult = await Authenticate(subscription).ConfigureAwait(false);
                 if (!authResult.Success)
                     return new CallResult<SocketSubscription>(null, authResult.Error);
             }
@@ -586,7 +586,7 @@ namespace CoinEx.Net
 
             var waitTask = subscription.WaitForEvent(AuthenticationEvent, request.Id.ToString(), subResponseTimeout);
             Send(subscription.Socket, request);
-            var authResult = await waitTask;
+            var authResult = await waitTask.ConfigureAwait(false);
 
             if (!authResult.Success)
             {
