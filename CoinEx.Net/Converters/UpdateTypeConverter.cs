@@ -13,7 +13,7 @@ namespace CoinEx.Net.Converters
         {
             { UpdateType.New, "1" },
             { UpdateType.Update, "2" },
-            { UpdateType.Done, "3" },
+            { UpdateType.Done, "3" }
         };
     }
 }

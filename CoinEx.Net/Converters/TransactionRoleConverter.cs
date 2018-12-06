@@ -12,7 +12,7 @@ namespace CoinEx.Net.Converters
         protected override Dictionary<TransactionRole, string> Mapping => new Dictionary<TransactionRole, string>
         {
             { TransactionRole.Maker, "maker" },
-            { TransactionRole.Taker, "taker" },
+            { TransactionRole.Taker, "taker" }
         };
     }
 }

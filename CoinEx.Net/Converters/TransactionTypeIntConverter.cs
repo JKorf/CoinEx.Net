@@ -13,7 +13,7 @@ namespace CoinEx.Net.Converters
         {
             { TransactionType.Either, "0" },
             { TransactionType.Sell, "1" },
-            { TransactionType.Buy, "2" },
+            { TransactionType.Buy, "2" }
         };
     }
 }

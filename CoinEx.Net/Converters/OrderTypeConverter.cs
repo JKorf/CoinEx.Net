@@ -12,7 +12,7 @@ namespace CoinEx.Net.Converters
         protected override Dictionary<OrderType, string> Mapping => new Dictionary<OrderType, string>
         {
             { OrderType.Limit, "limit" },
-            { OrderType.Market, "market" },
+            { OrderType.Market, "market" }
         };
     }
 }

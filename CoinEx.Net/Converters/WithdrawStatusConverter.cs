@@ -18,7 +18,7 @@ namespace CoinEx.Net.Converters
             { WithdrawStatus.Finish, "finish" },
             { WithdrawStatus.NotPass, "not_pass" },
             { WithdrawStatus.Pass, "pass" },
-            { WithdrawStatus.Processing, "processing" },
+            { WithdrawStatus.Processing, "processing" }
         };
     }
 }

@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using NUnit.Framework;
 using CoinEx.Net.Objects;
-using CoinEx.Net.Objects.Websocket;
 using System.Collections.Generic;
 using CryptoExchange.Net.Authentication;
 using Moq;

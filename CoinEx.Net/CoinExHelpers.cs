@@ -26,7 +26,7 @@ namespace CoinEx.Net
                     return 4 * 60 * 60;
                 case KlineInterval.SixHour:
                     return 6 * 60 * 60;
-                case KlineInterval.TwelfHour:
+                case KlineInterval.TwelveHour:
                     return 12 * 60 * 60;
                 case KlineInterval.OneDay:
                     return 1 * 24 * 60 * 60;

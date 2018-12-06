@@ -12,7 +12,7 @@ namespace CoinEx.Net.Converters
         protected override Dictionary<TransactionType, string> Mapping => new Dictionary<TransactionType, string>
         {
             { TransactionType.Buy, "buy" },
-            { TransactionType.Sell, "sell" },
+            { TransactionType.Sell, "sell" }
         };
     }
 }
