@@ -174,6 +174,9 @@ client.SubscribeToMarketStateUpdates((data) =>
 Additionaly, all sockets can be closed with the `UnsubscribeAllStreams` method. Beware that when a client is disposed the sockets are automatically disposed. This means that if the code is no longer in the using statement the eventhandler won't fire anymore. 
 
 ## Release notes
+* Version 2.0.2 - 06 dec 2018
+	* Fix for user-agent error on .Net framework
+
 * Version 2.0.1 - 06 dec 2018
 	* Fixed freezes if called from the UI thread
 
