@@ -579,6 +579,9 @@ namespace CoinEx.Net
 
         private async Task<CallResult<bool>> Authenticate(SocketSubscription subscription)
         {
+            if (authProvider == null)
+                return new CallResult<bool>(false, new NoApiCredentialsError());
+
             var request = new CoinExSocketRequest(ServerSubject, AuthenticateAction, true, GetAuthParameters()) {Id = NextId()};
 
             var waitTask = subscription.WaitForEvent(AuthenticationEvent, request.Id.ToString(), subResponseTimeout);
