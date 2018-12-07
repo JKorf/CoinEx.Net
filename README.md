@@ -59,9 +59,9 @@ In Visual Studio in the top menu select 'Tools' -> 'NuGet Package Manager' -> 'P
 
 After doing either of above steps you should now be ready to actually start using CoinEx.Net.
 ## Getting started
-After installing it's time to actually use it. To get started you have to add the CoinEx.Net namespace:  `using CoinEx.Net;`.
+After installing it's time to actually use it. To get started you have to add the CoinEx.Net namespace: `using CoinEx.Net;`.
 
-CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExClient`  provides all rest API calls. The  `CoinExSocketClient`  provides functions to interact with the websocket provided by the CoinEx API. Both clients are disposable and as such can be used in a  `using`statement.
+CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExClient`  provides all rest API calls. The `CoinExSocketClient` provides functions to interact with the websocket provided by the CoinEx API. Both clients are disposable and as such can be used in a `using` statement.
 
 Most API methods are available in two flavors, sync and async:
 ````C#
@@ -147,7 +147,7 @@ var successState = client.SubscribeToMarketStateUpdates((data) =>
 	// handle data
 });
 
-client.Unsubscribe(successTicker.Data);
+client.Unsubscribe(successState.Data);
 ```
 
 Additionaly, all sockets can be closed with the `UnsubscribeAll` method. Beware that when a client is disposed the sockets are automatically disposed. This means that if the code is no longer in the using statement the eventhandler won't fire anymore. To prevent this from happening make sure the code doesn't leave the using statement or don't use the socket client in a using statement:
@@ -170,8 +170,6 @@ client.SubscribeToMarketStateUpdates((data) =>
 	// handle data
 });
 ```
-
-Additionaly, all sockets can be closed with the `UnsubscribeAllStreams` method. Beware that when a client is disposed the sockets are automatically disposed. This means that if the code is no longer in the using statement the eventhandler won't fire anymore. 
 
 ## Release notes
 * Version 2.0.2 - 06 dec 2018
