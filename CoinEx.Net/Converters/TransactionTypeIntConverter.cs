@@ -9,11 +9,11 @@ namespace CoinEx.Net.Converters
         public TransactionTypeIntConverter() : this(true) { }
         public TransactionTypeIntConverter(bool quotes) : base(quotes) { }
 
-        protected override Dictionary<TransactionType, string> Mapping => new Dictionary<TransactionType, string>
+        protected override List<KeyValuePair<TransactionType, string>> Mapping => new List<KeyValuePair<TransactionType, string>>
         {
-            { TransactionType.Either, "0" },
-            { TransactionType.Sell, "1" },
-            { TransactionType.Buy, "2" }
+            new KeyValuePair<TransactionType, string>(TransactionType.Either, "0"),
+            new KeyValuePair<TransactionType, string>(TransactionType.Sell, "1"),
+            new KeyValuePair<TransactionType, string>(TransactionType.Buy, "2")
         };
     }
 }

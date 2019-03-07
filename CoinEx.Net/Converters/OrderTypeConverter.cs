@@ -9,10 +9,10 @@ namespace CoinEx.Net.Converters
         public OrderTypeConverter() : this(true) { }
         public OrderTypeConverter(bool quotes) : base(quotes) { }
 
-        protected override Dictionary<OrderType, string> Mapping => new Dictionary<OrderType, string>
+        protected override List<KeyValuePair<OrderType, string>> Mapping => new List<KeyValuePair<OrderType, string>>
         {
-            { OrderType.Limit, "limit" },
-            { OrderType.Market, "market" }
+            new KeyValuePair<OrderType, string>(OrderType.Limit, "limit"),
+            new KeyValuePair<OrderType, string>(OrderType.Market, "market")
         };
     }
 }

@@ -9,16 +9,16 @@ namespace CoinEx.Net.Converters
         public WithdrawStatusConverter() : this(true) { }
         public WithdrawStatusConverter(bool quotes) : base(quotes) { }
 
-        protected override Dictionary<WithdrawStatus, string> Mapping => new Dictionary<WithdrawStatus, string>
+        protected override List<KeyValuePair<WithdrawStatus, string>> Mapping => new List<KeyValuePair<WithdrawStatus, string>>
         {
-            { WithdrawStatus.Audit, "audit" },
-            { WithdrawStatus.Cancel, "cancel" },
-            { WithdrawStatus.Confirming, "confirming" },
-            { WithdrawStatus.Fail, "fail" },
-            { WithdrawStatus.Finish, "finish" },
-            { WithdrawStatus.NotPass, "not_pass" },
-            { WithdrawStatus.Pass, "pass" },
-            { WithdrawStatus.Processing, "processing" }
+            new KeyValuePair<WithdrawStatus, string>(WithdrawStatus.Audit, "audit"),
+            new KeyValuePair<WithdrawStatus, string>(WithdrawStatus.Cancel, "cancel"),
+            new KeyValuePair<WithdrawStatus, string>(WithdrawStatus.Confirming, "confirming"),
+            new KeyValuePair<WithdrawStatus, string>(WithdrawStatus.Fail, "fail"),
+            new KeyValuePair<WithdrawStatus, string>( WithdrawStatus.Finish, "finish"),
+            new KeyValuePair<WithdrawStatus, string>(WithdrawStatus.NotPass, "not_pass"),
+            new KeyValuePair<WithdrawStatus, string>(WithdrawStatus.Pass, "pass"),
+            new KeyValuePair<WithdrawStatus, string>(WithdrawStatus.Processing, "processing")
         };
     }
 }

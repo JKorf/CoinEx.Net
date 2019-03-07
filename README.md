@@ -181,6 +181,9 @@ client.SubscribeToMarketStateUpdates((data) =>
 ```
 
 ## Release notes
+* Version 2.0.4 - 07 mar 2019
+	* Updated to latest CryptoExchange.Net
+
 * Version 2.0.3 - 01 feb 2019
 	* Updated to latest CryptoExchange.Net
 
