@@ -181,6 +181,12 @@ client.SubscribeToMarketStateUpdates((data) =>
 ```
 
 ## Release notes
+* Version 2.0.5 - 01 may 2019
+	* Updated to latest CryptoExchange.Net
+		* Adds response header to REST call result
+		* Added rate limiter per API key
+		* Unified socket client workings
+
 * Version 2.0.4 - 07 mar 2019
 	* Updated to latest CryptoExchange.Net
 

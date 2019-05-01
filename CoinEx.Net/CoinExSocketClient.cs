@@ -19,9 +19,7 @@ namespace CoinEx.Net
     {
         #region fields
         private static CoinExSocketClientOptions defaultOptions = new CoinExSocketClientOptions();
-        private static CoinExSocketClientOptions DefaultOptions => defaultOptions.Copy();
-
-        private int subResponseTimeout;
+        private static CoinExSocketClientOptions DefaultOptions => defaultOptions.Copy<CoinExSocketClientOptions>();
         
         private const string ServerSubject = "server";
         private const string StateSubject = "state";
@@ -55,6 +53,9 @@ namespace CoinEx.Net
         public CoinExSocketClient(CoinExSocketClientOptions options) : base(options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
         {
             Configure(options);
+
+            AddGenericHandler("Pong", (connection, token) => { });
+            SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
         }
         #endregion
 
@@ -80,7 +81,7 @@ namespace CoinEx.Net
         /// <returns>True if server responded, false otherwise</returns>
         public async Task<CallResult<bool>> PingAsync()
         {
-            var result = await Query<string>(new CoinExSocketRequest(ServerSubject, PingAction, false)).ConfigureAwait(false);
+            var result = await Query<string>(new CoinExSocketRequest(NextId(), ServerSubject, PingAction), false).ConfigureAwait(false);
             return new CallResult<bool>(result.Success, result.Error);
         }
 
@@ -95,7 +96,7 @@ namespace CoinEx.Net
         /// <returns>The server time</returns>
         public async Task<CallResult<DateTime>> GetServerTimeAsync()
         {
-            var result = await Query<long>(new CoinExSocketRequest(ServerSubject, ServerTimeAction, false)).ConfigureAwait(false);
+            var result = await Query<long>(new CoinExSocketRequest(NextId(), ServerSubject, ServerTimeAction), false).ConfigureAwait(false);
             if (!result.Success)
                 return new CallResult<DateTime>(default(DateTime), result.Error);
             return new CallResult<DateTime>(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(result.Data), null);
@@ -116,7 +117,7 @@ namespace CoinEx.Net
         /// <returns>Market state</returns>
         public async Task<CallResult<CoinExSocketMarketState>> GetMarketStateAsync(string market, int cyclePeriod)
         {
-            return await Query<CoinExSocketMarketState>(new CoinExSocketRequest(StateSubject, QueryAction, false, market, cyclePeriod)).ConfigureAwait(false);
+            return await Query<CoinExSocketMarketState>(new CoinExSocketRequest(NextId(), StateSubject, QueryAction, market, cyclePeriod), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace CoinEx.Net
             if (limit != 5 && limit != 10 && limit != 20)
                 return new CallResult<CoinExSocketMarketDepth>(null, new ArgumentError("Limit should be 5 / 10 / 20"));
 
-            return await Query<CoinExSocketMarketDepth>(new CoinExSocketRequest(DepthSubject, QueryAction, false, market, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth))).ConfigureAwait(false);            
+            return await Query<CoinExSocketMarketDepth>(new CoinExSocketRequest(NextId(), DepthSubject, QueryAction, market, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -162,7 +163,7 @@ namespace CoinEx.Net
         /// <returns>List of transactions</returns>
         public async Task<CallResult<CoinExSocketMarketTransaction[]>> GetMarketTransactionsAsync(string market, int limit, int? fromId = null)
         {
-            return await Query<CoinExSocketMarketTransaction[]>(new CoinExSocketRequest(TransactionSubject, QueryAction, false, market, limit, fromId ?? 0)).ConfigureAwait(false);
+            return await Query<CoinExSocketMarketTransaction[]>(new CoinExSocketRequest(NextId(), TransactionSubject, QueryAction, market, limit, fromId ?? 0), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -180,7 +181,7 @@ namespace CoinEx.Net
         /// <returns></returns>
         public async Task<CallResult<CoinExKline>> GetMarketKlinesAsync(string market, KlineInterval interval)
         {
-            return await Query<CoinExKline>(new CoinExSocketRequest(KlineSubject, QueryAction, false, market, interval.ToSeconds())).ConfigureAwait(false);
+            return await Query<CoinExKline>(new CoinExSocketRequest(NextId(), KlineSubject, QueryAction, market, interval.ToSeconds()), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -196,7 +197,7 @@ namespace CoinEx.Net
         /// <returns>Dictionary of coins and their balances</returns>
         public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(params string[] coins)
         {
-            return await Query<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(BalanceSubject, QueryAction, true, coins)).ConfigureAwait(false);
+            return await Query<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(NextId(), BalanceSubject, QueryAction, coins), true).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -218,8 +219,8 @@ namespace CoinEx.Net
         /// <returns>List of open orders</returns>
         public async Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string market, TransactionType type, int offset, int limit)
         {
-            return await Query<CoinExSocketPagedResult<CoinExSocketOrder>> (
-                new CoinExSocketRequest(OrderSubject, QueryAction, true, market, int.Parse(JsonConvert.SerializeObject(type, new TransactionTypeIntConverter(false))), offset, limit)).ConfigureAwait(false);
+            return await Query<CoinExSocketPagedResult<CoinExSocketOrder>>(
+                new CoinExSocketRequest(NextId(), OrderSubject, QueryAction, market, int.Parse(JsonConvert.SerializeObject(type, new TransactionTypeIntConverter(false))), offset, limit), true).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -249,7 +250,7 @@ namespace CoinEx.Net
                 onMessage(market, desResult.Data.First().Value);
             });
 
-            return await Subscribe(new CoinExSocketRequest(StateSubject, SubscribeAction, false, market), internalHandler).ConfigureAwait(false);
+            return await Subscribe(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction, market), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -277,7 +278,7 @@ namespace CoinEx.Net
                 onMessage(desResult.Data);
             });
 
-            return await Subscribe(new CoinExSocketRequest(StateSubject, SubscribeAction, false), internalHandler).ConfigureAwait(false);
+            return await Subscribe(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -307,7 +308,7 @@ namespace CoinEx.Net
 
             var internalHandler = new Action<JToken[]>(data =>
             {
-                if(data.Length != 3)
+                if (data.Length != 3)
                 {
                     log.Write(LogVerbosity.Warning, $"Received unexpected data format for depth update. Expected 3 objects, received {data.Length}. Data: " + data.ToString());
                     return;
@@ -324,7 +325,7 @@ namespace CoinEx.Net
                 onMessage(market, fullUpdate, desResult.Data);
             });
 
-            return await Subscribe(new CoinExSocketRequest(DepthSubject, SubscribeAction, false, market, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), internalHandler).ConfigureAwait(false);
+            return await Subscribe(new CoinExSocketRequest(NextId(), DepthSubject, SubscribeAction, market, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -360,7 +361,7 @@ namespace CoinEx.Net
                 onMessage(market, desResult.Data);
             });
 
-            return await Subscribe(new CoinExSocketRequest(TransactionSubject, SubscribeAction, false, market), internalHandler).ConfigureAwait(false);
+            return await Subscribe(new CoinExSocketRequest(NextId(), TransactionSubject, SubscribeAction, market), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -384,7 +385,7 @@ namespace CoinEx.Net
             {
                 if (data.Length > 2)
                 {
-                    log.Write(LogVerbosity.Warning, $"Received unexpected data format for kline update. Expected 1 or 2 objects, received {data.Length}. Data: [{string.Join(",", data.Select(s=> s.ToString()))}]");
+                    log.Write(LogVerbosity.Warning, $"Received unexpected data format for kline update. Expected 1 or 2 objects, received {data.Length}. Data: [{string.Join(",", data.Select(s => s.ToString()))}]");
                     return;
                 }
 
@@ -398,7 +399,7 @@ namespace CoinEx.Net
                 onMessage(market, desResult.Data);
             });
 
-            return await Subscribe(new CoinExSocketRequest(KlineSubject, SubscribeAction, false, market, interval.ToSeconds()), internalHandler).ConfigureAwait(false);
+            return await Subscribe(new CoinExSocketRequest(NextId(), KlineSubject, SubscribeAction, market, interval.ToSeconds()), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -432,7 +433,7 @@ namespace CoinEx.Net
                 onMessage(desResult.Data);
             });
 
-            return await Subscribe(new CoinExSocketRequest(BalanceSubject, SubscribeAction, true), internalHandler).ConfigureAwait(false);
+            return await Subscribe(new CoinExSocketRequest(NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -469,7 +470,7 @@ namespace CoinEx.Net
                 onMessage(updateResult, desResult.Data);
             });
 
-            return await Subscribe(new CoinExSocketRequest(OrderSubject, SubscribeAction, true, markets), internalHandler).ConfigureAwait(false);
+            return await Subscribe(new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, markets), null, true, internalHandler).ConfigureAwait(false);
         }
         #endregion
 
@@ -481,243 +482,146 @@ namespace CoinEx.Net
             var auth = authProvider.Sign(parameterString);
             return new object[] { authProvider.Credentials.Key.GetString(), auth, tonce };
         }
+        #endregion
+        #endregion
 
-        private async Task<CallResult<T>> Query<T>(CoinExSocketRequest request)
+        protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T> callResult)
         {
-            CallResult<T> result = null;
-            var internalHandler = new Action<JToken[]>(data => result = Deserialize<T>(data[0]));
+            callResult = null;
+            var cRequest = (CoinExSocketRequest) request;
+            var idField = data["id"];
+            if (idField == null)
+                return false;
 
-            var subscription = GetBackgroundSocket(request.Signed);
-            if (subscription == null)
+            if ((int)idField != cRequest.Id)
+                return false;
+
+            if (data["error"].Type != JTokenType.Null)
             {
-                // We don't have a background socket to query, create a new one
-                var connectResult = await CreateAndConnectSocket(request.Signed, false, internalHandler).ConfigureAwait(false);
-                if (!connectResult.Success)
-                    return new CallResult<T>(default(T), connectResult.Error);
-
-                subscription = connectResult.Data;
-                subscription.Type = request.Signed ? SocketType.BackgroundAuthenticated : SocketType.Background;
+                callResult = new CallResult<T>(default(T), new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
+                return true;
             }
             else
             {
-                // Use earlier created background socket to query without having to connect again
-                subscription.Events.Single(s => s.Name == DataEvent).Reset();
-                subscription.MessageHandlers[DataHandlerName] = (subs, data) => DataHandlerQuery(subs, data, internalHandler);
+                var desResult = Deserialize<T>(data["result"]);
+                if (!desResult.Success)
+                {
+                    callResult = new CallResult<T>(default(T), desResult.Error);
+                    return true;
+                }
+
+                callResult = new CallResult<T>(desResult.Data, null);
+                return true;
             }
-
-            request.Id = NextId();
-
-            var waitTask = subscription.WaitForEvent(DataEvent, request.Id.ToString(), subResponseTimeout);
-            Send(subscription.Socket, request);
-            var dataResult = await waitTask.ConfigureAwait(false);
-
-            return !dataResult.Success ? new CallResult<T>(default(T), dataResult.Error) : result;
-        }
-               
-
-        private async Task<CallResult<UpdateSubscription>> Subscribe(CoinExSocketRequest request, Action<JToken[]> onData)
-        {
-            var connectResult = await CreateAndConnectSocket(request.Signed, true, onData).ConfigureAwait(false);
-            if (!connectResult.Success)
-                return new CallResult<UpdateSubscription>(null, connectResult.Error);
-
-            return await Subscribe(connectResult.Data, request).ConfigureAwait(false);
         }
 
-        private async Task<CallResult<UpdateSubscription>> Subscribe(SocketSubscription subscription, CoinExSocketRequest request)
+        protected override bool HandleSubscriptionResponse(SocketConnection s, SocketSubscription subscription, object request, JToken message, out CallResult<object> callResult)
         {
-            request.Id = NextId();
-            var waitTask = subscription.WaitForEvent(SubscriptionEvent, request.Id.ToString(), subResponseTimeout);
-            Send(subscription.Socket, request);
-
-            var subResult = await waitTask.ConfigureAwait(false);
-            if (!subResult.Success)
-            {
-                await subscription.Close().ConfigureAwait(false);
-                return new CallResult<UpdateSubscription>(null, subResult.Error);
-            }
-
-            subscription.Request = request;
-            subscription.Socket.ShouldReconnect = true;
-            return new CallResult<UpdateSubscription>(new UpdateSubscription(subscription), null);
-        }
-
-        private async Task<CallResult<SocketSubscription>> CreateAndConnectSocket(bool authenticate, bool sub, Action<JToken[]> onMessage)
-        {
-            var socket = CreateSocket(BaseAddress);
-            var subscription = new SocketSubscription(socket);
-            if (sub)
-            {
-                subscription.MessageHandlers.Add(DataHandlerName, (subs, data) => DataHandlerSubscription(data, onMessage));
-                subscription.AddEvent(SubscriptionEvent);
-            }
-            else
-            {
-                subscription.MessageHandlers.Add(DataHandlerName, (subs, data) => DataHandlerQuery(subs, data, onMessage));
-                subscription.AddEvent(DataEvent);
-            }
-
-            subscription.MessageHandlers.Add(AuthenticationHandlerName, AuthenticationHandler);
-            subscription.MessageHandlers.Add(SubscriptionHandlerName, SubscriptionHandler);
-
-            if (authenticate)
-                subscription.AddEvent(AuthenticationEvent);            
-
-            var connectResult = await ConnectSocket(subscription).ConfigureAwait(false);
-            if (!connectResult.Success)
-                return new CallResult<SocketSubscription>(null, connectResult.Error);
-
-            if (authenticate)
-            {
-                var authResult = await Authenticate(subscription).ConfigureAwait(false);
-                if (!authResult.Success)
-                    return new CallResult<SocketSubscription>(null, authResult.Error);
-            }
-
-            return new CallResult<SocketSubscription>(subscription, null);
-        }
-
-        private async Task<CallResult<bool>> Authenticate(SocketSubscription subscription)
-        {
-            if (authProvider == null)
-                return new CallResult<bool>(false, new NoApiCredentialsError());
-
-            var request = new CoinExSocketRequest(ServerSubject, AuthenticateAction, true, GetAuthParameters()) {Id = NextId()};
-
-            var waitTask = subscription.WaitForEvent(AuthenticationEvent, request.Id.ToString(), subResponseTimeout);
-            Send(subscription.Socket, request);
-            var authResult = await waitTask.ConfigureAwait(false);
-
-            if (!authResult.Success)
-            {
-                var closeTask = subscription.Close();
-                return new CallResult<bool>(false, authResult.Error);
-            }
-
-            return new CallResult<bool>(true, null);
-        }
-
-        private bool DataHandlerSubscription(JToken data, Action<JToken[]> handler)
-        {
-            var notifyData = data["params"] != null && ((string)data["method"]).EndsWith(".update");
-            if (!notifyData)
+            callResult = null;
+            if (message.Type != JTokenType.Object)
                 return false;
-            
-            var desResult = Deserialize<CoinExSocketResponse>(data, false);
-            if (!desResult.Success)
+
+            var idField = message["id"];
+            if (idField == null || idField.Type == JTokenType.Null)
+                return false;
+
+            var cRequest = (CoinExSocketRequest) request;
+            if ((int) idField != cRequest.Id)
+                return false;
+
+            var subResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(message, false);
+            if (!subResponse.Success)
             {
-                log.Write(LogVerbosity.Warning, $"Failed to deserialize data: {desResult.Error}. Data: {data}");
+                log.Write(LogVerbosity.Warning, "Subscription failed: " + subResponse.Error);
+                callResult = new CallResult<object>(null, subResponse.Error);
                 return true;
             }
 
-            handler(data["params"].ToArray());
-            return true;
-        }
-
-        private bool DataHandlerQuery(SocketSubscription subscription, JToken data, Action<JToken[]> handler)
-        {
-            var evnt = subscription.GetWaitingEvent(DataEvent);
-            if (evnt == null)
-                return false;
-
-            if (((int?)data["id"])?.ToString() != evnt.WaitingId)
-                return false;
-            
-            if (data["result"].Type == JTokenType.Null)
+            if (subResponse.Data.Error != null)
             {
-                subscription.SetEventById(evnt.WaitingId, false, new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
-            }
-            else
-            {
-                handler(new[] { data["result"] });
-                subscription.SetEventById(evnt.WaitingId, true, null);
-            }
-            return true;
-        }
-
-        private bool AuthenticationHandler(SocketSubscription subscription, JToken data)
-        {
-            var evnt = subscription.GetWaitingEvent(AuthenticationEvent);
-            if (evnt == null)
-                return false;
-
-            if (((int?)data["id"])?.ToString() != evnt.WaitingId)
-                return false;
-
-            var authResponse = Deserialize< CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
-            if (!authResponse.Success)
-            {
-                log.Write(LogVerbosity.Warning, "Authorization failed: " + authResponse.Error);
-                subscription.SetEventById(evnt.WaitingId, false, authResponse.Error);
-                return true;
-            }
-
-            if(authResponse.Data.Error != null)
-            {
-                var error = new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message);
-                log.Write(LogVerbosity.Debug, "Failed to authenticate: " + error);
-                subscription.SetEventById(evnt.WaitingId, false, error);
-                return true;
-            }
-
-            if (authResponse.Data.Result.Status != SuccessString)
-            {
-                log.Write(LogVerbosity.Debug, "Failed to authenticate: " + authResponse.Data.Result.Status);
-                subscription.SetEventById(evnt.WaitingId, false, new ServerError(authResponse.Data.Result.Status));
-                return true;
-            }
-
-            log.Write(LogVerbosity.Debug, "Authorization completed");
-            subscription.SetEventById(evnt.WaitingId, true, null);
-            return true;
-        }
-
-        private bool SubscriptionHandler(SocketSubscription subscription, JToken data)
-        {
-            var evnt = subscription.GetWaitingEvent(SubscriptionEvent);
-            if (evnt == null)
-                return false;
-
-            if (((int?)data["id"])?.ToString() != evnt.WaitingId)
-                return false;
-
-            var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
-            if (!authResponse.Success)
-            {
-                log.Write(LogVerbosity.Warning, "Subscription failed: " + authResponse.Error);
-                subscription.SetEventById(evnt.WaitingId, false, authResponse.Error);
-                return true;
-            }
-
-            if (authResponse.Data.Error != null)
-            {
-                log.Write(LogVerbosity.Debug, $"Failed to subscribe: {authResponse.Data.Error.Code} {authResponse.Data.Error.Message}");
-                subscription.SetEventById(evnt.WaitingId, false, new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message));
+                log.Write(LogVerbosity.Debug, $"Failed to subscribe: {subResponse.Data.Error.Code} {subResponse.Data.Error.Message}");
+                callResult = new CallResult<object>(null, new ServerError(subResponse.Data.Error.Code, subResponse.Data.Error.Message));
                 return true;
             }
 
             log.Write(LogVerbosity.Debug, "Subscription completed");
-            subscription.SetEventById(evnt.WaitingId, true, null);
+            callResult = new CallResult<object>(subResponse, null);
             return true;
         }
 
-        protected override bool SocketReconnect(SocketSubscription subscription, TimeSpan disconnectedTime)
+        protected override JToken ProcessTokenData(JToken data)
         {
-            var request = (CoinExSocketRequest)subscription.Request;
-            if (request.Signed)
-            {
-                if (!Authenticate(subscription).Result.Success)
-                    return false;
-            }
+            return data["params"];
+        }
 
-            return Subscribe(subscription, request).Result.Success;
-        }
-       
-        private void Configure(CoinExSocketClientOptions options)
+        protected override bool MessageMatchesHandler(JToken message, object request)
         {
-            subResponseTimeout = (int)Math.Round(options.SubscriptionResponseTimeout.TotalMilliseconds);
+            var cRequest = (CoinExSocketRequest)request;
+            var method = message["method"];
+            if (method == null)
+                return false;
+
+            var subject = ((string) method).Split(new [] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
+            return cRequest.Subject == subject;
         }
-        #endregion
-        #endregion
+
+        protected override bool MessageMatchesHandler(JToken message, string identifier)
+        {
+            if (message.Type != JTokenType.Object)
+                return false;
+            return identifier == "Pong" && (string) message["result"] == "pong";
+        }
+
+        protected override async Task<CallResult<bool>> AuthenticateSocket(SocketConnection s)
+        {
+            if (authProvider == null)
+                return new CallResult<bool>(false, new NoApiCredentialsError());
+
+            var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters());
+            CallResult<bool> result = new CallResult<bool>(false, new ServerError("No response from server"));
+            await s.SendAndWait(request, ResponseTimeout, data =>
+            {
+                var idField = data["id"];
+                if (idField == null)
+                    return false;
+
+                if ((int)idField != request.Id)
+                    return false; // Not for this request
+
+                var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
+                if (!authResponse.Success)
+                {
+                    log.Write(LogVerbosity.Warning, "Authorization failed: " + authResponse.Error);
+                    result = new CallResult<bool>(false, authResponse.Error);
+                    return true;
+                }
+
+                if (authResponse.Data.Error != null)
+                {
+                    var error = new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message);
+                    log.Write(LogVerbosity.Debug, "Failed to authenticate: " + error);
+                    result = new CallResult<bool>(false, error);
+                    return true;
+                }
+
+                if (authResponse.Data.Result.Status != SuccessString)
+                {
+                    log.Write(LogVerbosity.Debug, "Failed to authenticate: " + authResponse.Data.Result.Status);
+                    result = new CallResult<bool>(false, new ServerError(authResponse.Data.Result.Status));
+                    return true;
+                }
+
+                log.Write(LogVerbosity.Debug, "Authorization completed");
+                result = new CallResult<bool>(true, null);
+                return true;
+            });
+
+            return result;
+        }
+
+        protected override Task<bool> Unsubscribe(SocketConnection connection, SocketSubscription s)
+        {
+            return Task.FromResult(true);
+        }
     }
 }

@@ -274,7 +274,7 @@ namespace CoinEx.Net.UnitTests
 
             InvokeSubResponse(client);
             Thread.Sleep(10);
-            InvokeSubResponse(client);
+            InvokeSubResponse(client, true);
             subTask.Wait();
 
             // Act
@@ -312,7 +312,7 @@ namespace CoinEx.Net.UnitTests
 
             InvokeSubResponse(client);
             Thread.Sleep(10);
-            InvokeSubResponse(client);
+            InvokeSubResponse(client, true);
             subTask.Wait();
 
             // Act
@@ -405,13 +405,13 @@ namespace CoinEx.Net.UnitTests
             //Assert.Pass();
         }
 
-        private void InvokeSubResponse(CoinExSocketClient client)
+        private void InvokeSubResponse(CoinExSocketClient client, bool previousId = false)
         {
             TestHelpers.InvokeWebsocket(client, JsonConvert.SerializeObject(
                 new CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>()
                 {
                     Error = null,
-                    Id = CoinExSocketClient.LastId,
+                    Id = previousId ? CoinExSocketClient.LastId - 1: CoinExSocketClient.LastId,
                     Result = new CoinExSocketRequestResponseMessage() { Status = "success" }
                 }));
         }

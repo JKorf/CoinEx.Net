@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 using Newtonsoft.Json.Linq;
 
@@ -73,6 +74,16 @@ namespace CoinEx.Net
         public static void SetDefaultOptions(CoinExClientOptions options)
         {
             defaultOptions = options;
+        }
+
+        /// <summary>
+        /// Set the API key and secret
+        /// </summary>
+        /// <param name="apiKey">The api key</param>
+        /// <param name="apiSecret">The api secret</param>
+        public void SetApiCredentials(string apiKey, string apiSecret)
+        {
+            SetAuthenticationProvider(new CoinExAuthenticationProvider(new ApiCredentials(apiKey, apiSecret)));
         }
 
         /// <summary>
@@ -142,10 +153,10 @@ namespace CoinEx.Net
         public async Task<WebCallResult<CoinExMarketDepth>> GetMarketDepthAsync(string market, int mergeDepth, int? limit = null)
         {
             if (mergeDepth < 0 || mergeDepth > 8)
-                return new WebCallResult<CoinExMarketDepth>(null, null, new ArgumentError("Merge depth needs to be between 0 - 8"));
+                return WebCallResult<CoinExMarketDepth>.CreateErrorResult(new ArgumentError("Merge depth needs to be between 0 - 8"));
 
             if (limit.HasValue && limit != 5 && limit != 10 && limit != 20)
-                return new WebCallResult<CoinExMarketDepth>(null, null, new ArgumentError("Limit should be 5 / 10 / 20"));
+                return WebCallResult<CoinExMarketDepth>.CreateErrorResult(new ArgumentError("Limit should be 5 / 10 / 20"));
             
             var parameters = new Dictionary<string, object>
             {
@@ -296,7 +307,7 @@ namespace CoinEx.Net
             };
 
             var result = await Execute<object>(GetUrl(CancelWithdrawalEndpoint), method: Constants.DeleteMethod, signed: true, parameters: parameters).ConfigureAwait(false);
-            return !result.Success ? new WebCallResult<bool>(result.ResponseStatusCode, false, result.Error) : new WebCallResult<bool>(result.ResponseStatusCode, true, null);
+            return !result.Success ? new WebCallResult<bool>(result.ResponseStatusCode, result.ResponseHeaders, false, result.Error) : new WebCallResult<bool>(result.ResponseStatusCode, result.ResponseHeaders, true, null);
         }
 
         /// <summary>
@@ -594,9 +605,9 @@ namespace CoinEx.Net
         private static WebCallResult<T> GetResult<T>(WebCallResult<CoinExApiResult<T>> result) where T : class
         {
             if (result.Error != null || result.Data == null)
-                return new WebCallResult<T>(result.ResponseStatusCode, null, result.Error);
+                return WebCallResult<T>.CreateErrorResult(result.ResponseStatusCode, result.ResponseHeaders, result.Error);
 
-            return new WebCallResult<T>(result.ResponseStatusCode, result.Data.Data, null);
+            return new WebCallResult<T>(result.ResponseStatusCode, result.ResponseHeaders, result.Data.Data, null);
         }
 
         private Uri GetUrl(string endpoint)

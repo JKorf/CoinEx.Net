@@ -4,6 +4,7 @@ using CryptoExchange.Net.Logging;
 using Moq;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -200,9 +201,9 @@ namespace CryptoExchange.Net.Testing
             });
         }
 
-        public static List<SocketSubscription> GetSockets(CoinExSocketClient client)
+        public static List<SocketConnection> GetSockets(CoinExSocketClient client)
         {            
-            return (List<SocketSubscription>)client.GetType().GetField("sockets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(client);
+            return ((ConcurrentDictionary<int, SocketConnection>)client.GetType().GetField("sockets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(client)).Values.ToList();
         }
 
         public static async Task<bool> WaitForClose(CoinExSocketClient client, int timeout = 1000)

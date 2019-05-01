@@ -10,6 +10,13 @@ namespace CoinEx.Net.Interfaces
     public interface ICoinExClient
     {
         /// <summary>
+        /// Set the API key and secret
+        /// </summary>
+        /// <param name="apiKey">The api key</param>
+        /// <param name="apiSecret">The api secret</param>
+        void SetApiCredentials(string apiKey, string apiSecret);
+
+        /// <summary>
         /// Gets a list of markets active on CoinEx
         /// </summary>
         /// <returns>List of market names</returns>

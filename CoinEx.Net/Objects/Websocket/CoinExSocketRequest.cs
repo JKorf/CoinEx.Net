@@ -3,10 +3,12 @@ using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    internal class CoinExSocketRequest: SocketRequest
+    internal class CoinExSocketRequest
     {
         [JsonProperty("method")]
         public string Method { get; set; }
+        [JsonIgnore]
+        public string Subject { get; set; }
         [JsonProperty("params")]
         public object[] Parameters { get; set; }
         [JsonProperty("id")]
@@ -14,11 +16,12 @@ namespace CoinEx.Net.Objects.Websocket
 
         public CoinExSocketRequest() { }
 
-        public CoinExSocketRequest(string subject, string action, bool signed, params object[] parameters)
+        public CoinExSocketRequest(int id, string subject, string action, params object[] parameters)
         {
+            Id = id;
+            Subject = subject;
             Method = $"{subject}.{action}";
             Parameters = parameters;
-            Signed = signed;
         }
     }
 }
