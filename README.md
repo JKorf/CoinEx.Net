@@ -185,6 +185,10 @@ client.SubscribeToMarketStateUpdates((data) =>
 ```
 
 ## Release notes
+* Version 2.0.6 - 14 may 2019
+	* Added an order book implementation for easily keeping an updated order book
+	* Added additional constructor to ApiCredentials to be able to read from file
+
 * Version 2.0.5 - 01 may 2019
 	* Updated to latest CryptoExchange.Net
 		* Adds response header to REST call result
