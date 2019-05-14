@@ -181,8 +181,8 @@ namespace CoinEx.Net.UnitTests
             }));
             var expected = new CoinExSocketMarketDepth()
             {
-                Asks = new List<CoinExDepthEntry> { new CoinExDepthEntry() { Amount = 0.1m, Price = 0.2m } },
-                Bids = new List<CoinExDepthEntry> { new CoinExDepthEntry() { Amount = 0.1m, Price = 0.2m } }
+                Asks = new List<CoinExDepthEntry> { new CoinExDepthEntry() { Quantity = 0.1m, Price = 0.2m } },
+                Bids = new List<CoinExDepthEntry> { new CoinExDepthEntry() { Quantity = 0.1m, Price = 0.2m } }
             };
             CoinExSocketMarketDepth actual = null;
 

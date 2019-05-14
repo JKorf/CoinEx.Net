@@ -1,5 +1,6 @@
 ﻿using CoinEx.Net.Converters;
 using CryptoExchange.Net.Converters;
+using CryptoExchange.Net.OrderBook;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects
@@ -22,7 +23,7 @@ namespace CoinEx.Net.Objects
     }
 
     [JsonConverter(typeof(ArrayConverter))]
-    public class CoinExDepthEntry
+    public class CoinExDepthEntry: ISymbolOrderBookEntry
     {
         /// <summary>
         /// The price per unit of the entry
@@ -30,9 +31,9 @@ namespace CoinEx.Net.Objects
         [ArrayProperty(0)]
         public decimal Price { get; set; }
         /// <summary>
-        /// The amount of the entry
+        /// The quantity of the entry
         /// </summary>
         [ArrayProperty(1)]
-        public decimal Amount { get; set; }
+        public decimal Quantity { get; set; }
     }
 }
