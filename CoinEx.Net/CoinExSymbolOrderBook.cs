@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Websocket;
-using CryptoExchange.Net.Logging;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.OrderBook;
 using CryptoExchange.Net.Sockets;
@@ -16,7 +15,12 @@ namespace CoinEx.Net
         private readonly CoinExSocketClient socketClient;
         private bool updateReceived;
 
-        public CoinExSymbolOrderBook(string symbol, LogVerbosity logVerbosity = LogVerbosity.Info, IEnumerable<TextWriter> logWriters = null) : base("CoinEx", symbol, false, logVerbosity, logWriters)
+        /// <summary>
+        /// Create a new order book instance
+        /// </summary>
+        /// <param name="symbol">The symbol of the order book</param>
+        /// <param name="options">The options for the order book</param>
+        public CoinExSymbolOrderBook(string symbol, CoinExOrderBookOptions options = null) : base(symbol, options ?? new CoinExOrderBookOptions())
         {
             socketClient = new CoinExSocketClient();
         }

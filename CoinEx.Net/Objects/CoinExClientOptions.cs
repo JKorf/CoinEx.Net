@@ -3,7 +3,7 @@ using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net.Objects
 {
-    public class CoinExClientOptions: ClientOptions
+    public class CoinExClientOptions: RestClientOptions
     {
         /// <summary>
         /// The user agent send in all requests
@@ -43,6 +43,13 @@ namespace CoinEx.Net.Objects
         public CoinExSocketClientOptions()
         {
             BaseAddress = "wss://socket.coinex.com/";
+        }
+    }
+
+    public class CoinExOrderBookOptions : OrderBookOptions
+    {
+        public CoinExOrderBookOptions() : base("CoinEx", false)
+        {
         }
     }
 }
