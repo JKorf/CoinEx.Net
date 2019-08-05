@@ -82,6 +82,9 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 2.0.8 - 05 Aug 2019
+    * Added xml for code docs
+
 * Version 2.0.7 - 09 jul 2019
 	* Updated CoinExSymbolOrderBook
 

@@ -1,27 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
-    
   <PropertyGroup>
     <PackageId>CoinEx.Net</PackageId>
-	<Authors>JKorf</Authors>
-    <PackageVersion>2.0.7</PackageVersion>
-	<Description>CoinEx.Net is a .Net wrapper for the CoinEx API. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
+    <Authors>JKorf</Authors>
+    <PackageVersion>2.0.8</PackageVersion>
+    <Description>CoinEx.Net is a .Net wrapper for the CoinEx API. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>CoinEx CoinEx.Net C# .Net CryptoCurrency Exchange API wrapper</PackageTags>
     <PackageProjectUrl>https://github.com/JKorf/CoinEx.Net</PackageProjectUrl>
-	<PackageIconUrl>https://raw.githubusercontent.com/JKorf/CoinEx.Net/master/Resources/icon.png</PackageIconUrl>
-	<PackageLicenseUrl>https://github.com/JKorf/CoinEx.Net/blob/master/LICENSE</PackageLicenseUrl>
-	<NeutralLanguage>en</NeutralLanguage>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageReleaseNotes>2.0.7 - Updated CoinExSymbolOrderBook</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/JKorf/CoinEx.Net/master/Resources/icon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/JKorf/CoinEx.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes>2.0.8 - Added xml for code docs</PackageReleaseNotes>
   </PropertyGroup>
-    
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>CoinEx.Net.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-	<PackageReference Include="CryptoExchange.Net" Version="2.1.5" />
+    <PackageReference Include="CryptoExchange.Net" Version="2.1.5" />
   </ItemGroup>
-    
 </Project>

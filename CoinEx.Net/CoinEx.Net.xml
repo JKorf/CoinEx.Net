@@ -1,0 +1,1856 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoinEx.Net</name>
+    </assembly>
+    <members>
+        <member name="M:CoinEx.Net.CoinExClient.#ctor">
+            <summary>
+            Create a new instance of CoinExClient with default options
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.#ctor(CoinEx.Net.Objects.CoinExClientOptions)">
+            <summary>
+            Create a new instance of CoinExClient using provided options
+            </summary>
+            <param name="options">The options to use for this client</param>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.SetDefaultOptions(CoinEx.Net.Objects.CoinExClientOptions)">
+            <summary>
+            Set the default options to be used when creating new socket clients
+            </summary>
+            <param name="options">The options to use for new clients</param>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.SetApiCredentials(System.String,System.String)">
+            <summary>
+            Set the API key and secret
+            </summary>
+            <param name="apiKey">The api key</param>
+            <param name="apiSecret">The api secret</param>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketList">
+            <summary>
+            Gets a list of markets active on CoinEx
+            </summary>
+            <returns>List of market names</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketListAsync">
+            <summary>
+            Gets a list of markets active on CoinEx
+            </summary>
+            <returns>List of market names</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketState(System.String)">
+            <summary>
+            Gets the state of a specific market
+            </summary>
+            <param name="market">The market to retrieve state for</param>
+            <returns>The state of the market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketStateAsync(System.String)">
+            <summary>
+            Gets the state of a specific market
+            </summary>
+            <param name="market">The market to retrieve state for</param>
+            <returns>The state of the market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketStates">
+            <summary>
+            Gets the states of all markets
+            </summary>
+            <returns>List of states for all markets</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketStatesAsync">
+            <summary>
+            Gets the states of all markets
+            </summary>
+            <returns>List of states for all markets</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketDepth(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the depth data for a market
+            </summary>
+            <param name="market">The market to retrieve depth data for</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="limit">The limit of results returned</param>
+            <returns>Depth data for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketDepthAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the depth data for a market
+            </summary>
+            <param name="market">The market to retrieve depth data for</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="limit">The limit of results returned</param>
+            <returns>Depth data for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetLatestTransactions(System.String,System.Nullable{System.Int64})">
+            <summary>
+            Gets the latest transactions for a market
+            </summary>
+            <param name="market">The market to retrieve data for</param>
+            <param name="fromId">The id from which on to return transactions</param>
+            <returns>List of transactions for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetLatestTransactionsAsync(System.String,System.Nullable{System.Int64})">
+            <summary>
+            Gets the latest transactions for a market
+            </summary>
+            <param name="market">The market to retrieve data for</param>
+            <param name="fromId">The id from which on to return transactions</param>
+            <returns>List of transactions for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetKlines(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32})">
+            <summary>
+            Retrieves kline data for a specific market
+            </summary>
+            <param name="market">The market to retrieve klines for</param>
+            <param name="interval">The interval of the candles</param>
+            <param name="limit">Limit of the number of results</param>
+            <returns>List of klines for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32})">
+            <summary>
+            Retrieves kline data for a specific market
+            </summary>
+            <param name="market">The market to retrieve klines for</param>
+            <param name="interval">The interval of the candles</param>
+            <param name="limit">Limit of the number of results</param>
+            <returns>List of klines for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetBalances">
+            <summary>
+            Retrieves a list of balances. Requires API credentials
+            </summary>
+            <returns>List of balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetBalancesAsync">
+            <summary>
+            Retrieves a list of balances. Requires API credentials
+            </summary>
+            <returns>List of balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetWithdrawalHistory(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.Withdraw(System.String,System.String,System.Decimal)">
+            <summary>
+            Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to withdraw</param>
+            <param name="coinAddress">The address to withdraw to</param>
+            <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
+            <returns>The withdrawal object</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.WithdrawAsync(System.String,System.String,System.Decimal)">
+            <summary>
+            Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to withdraw</param>
+            <param name="coinAddress">The address to withdraw to</param>
+            <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
+            <returns>The withdrawal object</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.CancelWithdrawal(System.Int64)">
+            <summary>
+            Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
+            <returns>True if successful, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.CancelWithdrawalAsync(System.Int64)">
+            <summary>
+            Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
+            <returns>True if successful, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceLimitOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places a limit order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceLimitOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places a limit order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceMarketOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String)">
+            <summary>
+            Places a market order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceMarketOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String)">
+            <summary>
+            Places a market order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC market the value should be how much BTC should be spend to buy ETH</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceImmediateOrCancelOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceImmediateOrCancelOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetOpenOrders(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of open orders for a market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of open orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetOpenOrdersAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of open orders for a market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of open orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrders(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of executed orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrdersAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of executed orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetOrderStatus(System.Int64,System.String)">
+            <summary>
+            Retrieves details of an order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order to retrieve</param>
+            <param name="market">The market the order is for</param>
+            <returns>Details of the order</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetOrderStatusAsync(System.Int64,System.String)">
+            <summary>
+            Retrieves details of an order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order to retrieve</param>
+            <param name="market">The market the order is for</param>
+            <returns>Details of the order</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrderDetails(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Retrieves execution details of a specific order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>Details of an executed order</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrderDetailsAsync(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Retrieves execution details of a specific order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>Details of an executed order</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetExecutedTransactions(System.String,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of transactions you executed on a specific market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve transactions for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of transaction for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetExecutedTransactionsAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of transactions you executed on a specific market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve transactions for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of transaction for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.CancelOrder(System.String,System.Int64)">
+            <summary>
+            Cancels an order. Requires API credentials
+            </summary>
+            <param name="market">The market the order is on</param>
+            <param name="orderId">The id of the order to cancel</param>
+            <returns>Details of the canceled order</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.CancelOrderAsync(System.String,System.Int64)">
+            <summary>
+            Cancels an order. Requires API credentials
+            </summary>
+            <param name="market">The market the order is on</param>
+            <param name="orderId">The id of the order to cancel</param>
+            <returns>Details of the canceled order</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMiningDifficulty">
+            <summary>
+            Retrieve the mining difficulty. Requires API credentials
+            </summary>
+            <returns>Mining difficulty</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMiningDifficultyAsync">
+            <summary>
+            Retrieve the mining difficulty. Requires API credentials
+            </summary>
+            <returns>Mining difficulty</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.#ctor">
+            <summary>
+            Create a new instance of CoinExSocketClient with default options
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.#ctor(CoinEx.Net.Objects.CoinExSocketClientOptions)">
+            <summary>
+            Create a new instance of CoinExSocketClient using provided options
+            </summary>
+            <param name="options">The options to use for this client</param>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SetDefaultOptions(CoinEx.Net.Objects.CoinExSocketClientOptions)">
+            <summary>
+            Set the default options to be used when creating new socket clients
+            </summary>
+            <param name="options">The options to use for new clients</param>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.Ping">
+            <summary>
+            Pings the server
+            </summary>
+            <returns>True if server responded, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.PingAsync">
+            <summary>
+            Pings the server
+            </summary>
+            <returns>True if server responded, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetServerTime">
+            <summary>
+            Gets the server time
+            </summary>
+            <returns>The server time</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetServerTimeAsync">
+            <summary>
+            Gets the server time
+            </summary>
+            <returns>The server time</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketState(System.String,System.Int32)">
+            <summary>
+            Get the market state
+            </summary>
+            <param name="market">The market to get the state for</param>
+            <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
+            <returns>Market state</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketStateAsync(System.String,System.Int32)">
+            <summary>
+            Get the market state
+            </summary>
+            <param name="market">The market to get the state for</param>
+            <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
+            <returns>Market state</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketDepth(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get a market depth overview
+            </summary>
+            <param name="market">The market to get depth for</param>
+            <param name="limit">The limit of results returned</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <returns>Depth overview for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketDepthAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get a market depth overview
+            </summary>
+            <param name="market">The market to get depth for</param>
+            <param name="limit">The limit of results returned</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <returns>Depth overview for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketTransactions(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the latest transactions on a market
+            </summary>
+            <param name="market">The market to get the transactions for</param>
+            <param name="limit">The limit of transactions</param>
+            <param name="fromId">Return transactions since this id</param>
+            <returns>List of transactions</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketTransactionsAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the latest transactions on a market
+            </summary>
+            <param name="market">The market to get the transactions for</param>
+            <param name="limit">The limit of transactions</param>
+            <param name="fromId">Return transactions since this id</param>
+            <returns>List of transactions</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketKlines(System.String,CoinEx.Net.Objects.KlineInterval)">
+            <summary>
+            Gets market kline data
+            </summary>
+            <param name="market">The market to get the data for</param>
+            <param name="interval">The interval of the candles</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetMarketKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval)">
+            <summary>
+            Gets market kline data
+            </summary>
+            <param name="market">The market to get the data for</param>
+            <param name="interval">The interval of the candles</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetBalances(System.String[])">
+            <summary>
+            Get balances of coins. Requires API credentials
+            </summary>
+            <param name="coins">The coins to get the balances for, empty for all</param>
+            <returns>Dictionary of coins and their balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetBalancesAsync(System.String[])">
+            <summary>
+            Get balances of coins. Requires API credentials
+            </summary>
+            <param name="coins">The coins to get the balances for, empty for all</param>
+            <returns>Dictionary of coins and their balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetOpenOrders(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of open orders for a market
+            </summary>
+            <param name="market">Market to get open orders for</param>
+            <param name="type">The type of orders to get</param>
+            <param name="offset">The offset in the list</param>
+            <param name="limit">The limit of results</param>
+            <returns>List of open orders</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetOpenOrdersAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of open orders for a market
+            </summary>
+            <param name="market">Market to get open orders for</param>
+            <param name="type">The type of orders to get</param>
+            <param name="offset">The offset in the list</param>
+            <param name="limit">The limit of results</param>
+            <returns>List of open orders</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketStateUpdates(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState})">
+            <summary>
+            Subscribe to market state updates for a specific market
+            </summary>
+            <param name="market">Market to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketState]: the market state update</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketStateUpdatesAsync(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState})">
+            <summary>
+            Subscribe to market state updates for a specific market
+            </summary>
+            <param name="market">Market to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketState]: the market state update</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketStateUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState}})">
+            <summary>
+            Subscribe to market state updates for all markets
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of market name -> market state</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketStateUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState}})">
+            <summary>
+            Subscribe to market state updates for all markets
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of market name -> market state</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketDepthUpdates(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth})">
+            <summary>
+            Subscribe to market depth updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="limit">The limit of results to receive in a update</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketMarketDepth]: the update data</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketDepthUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth})">
+            <summary>
+            Subscribe to market depth updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="limit">The limit of results to receive in a update</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketMarketDepth]: the update data</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketTransactionUpdates(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction[]})">
+            <summary>
+            Subscribe to market transaction updates for a market
+            </summary>
+            <param name="market">The market to receive updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketTransactionUpdatesAsync(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction[]})">
+            <summary>
+            Subscribe to market transaction updates for a market
+            </summary>
+            <param name="market">The market to receive updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketKlineUpdates(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,CoinEx.Net.Objects.CoinExKline[]})">
+            <summary>
+            Subscribe to kline updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="interval">The interval of the candle to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToMarketKlineUpdatesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,CoinEx.Net.Objects.CoinExKline[]})">
+            <summary>
+            Subscribe to kline updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="interval">The interval of the candle to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToBalanceUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
+            <summary>
+            Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToBalanceUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
+            <summary>
+            Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderUpdates(System.String[],System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
+            <summary>
+            Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
+            </summary>
+            <param name="markets">The markets to receive order updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderUpdatesAsync(System.String[],System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
+            <summary>
+            Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
+            </summary>
+            <param name="markets">The markets to receive order updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSymbolOrderBook.#ctor(System.String,CoinEx.Net.Objects.CoinExOrderBookOptions)">
+            <summary>
+            Create a new order book instance
+            </summary>
+            <param name="symbol">The symbol of the order book</param>
+            <param name="options">The options for the order book</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.SetApiCredentials(System.String,System.String)">
+            <summary>
+            Set the API key and secret
+            </summary>
+            <param name="apiKey">The api key</param>
+            <param name="apiSecret">The api secret</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketList">
+            <summary>
+            Gets a list of markets active on CoinEx
+            </summary>
+            <returns>List of market names</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketListAsync">
+            <summary>
+            Gets a list of markets active on CoinEx
+            </summary>
+            <returns>List of market names</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketState(System.String)">
+            <summary>
+            Gets the state of a specific market
+            </summary>
+            <param name="market">The market to retrieve state for</param>
+            <returns>The state of the market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketStateAsync(System.String)">
+            <summary>
+            Gets the state of a specific market
+            </summary>
+            <param name="market">The market to retrieve state for</param>
+            <returns>The state of the market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketStates">
+            <summary>
+            Gets the states of all markets
+            </summary>
+            <returns>List of states for all markets</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketStatesAsync">
+            <summary>
+            Gets the states of all markets
+            </summary>
+            <returns>List of states for all markets</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketDepth(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the depth data for a market
+            </summary>
+            <param name="market">The market to retrieve depth data for</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="limit">The limit of results returned</param>
+            <returns>Depth data for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketDepthAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the depth data for a market
+            </summary>
+            <param name="market">The market to retrieve depth data for</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="limit">The limit of results returned</param>
+            <returns>Depth data for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetLatestTransactions(System.String,System.Nullable{System.Int64})">
+            <summary>
+            Gets the latest transactions for a market
+            </summary>
+            <param name="market">The market to retrieve data for</param>
+            <param name="fromId">The id from which on to return transactions</param>
+            <returns>List of transactions for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetLatestTransactionsAsync(System.String,System.Nullable{System.Int64})">
+            <summary>
+            Gets the latest transactions for a market
+            </summary>
+            <param name="market">The market to retrieve data for</param>
+            <param name="fromId">The id from which on to return transactions</param>
+            <returns>List of transactions for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetKlines(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32})">
+            <summary>
+            Retrieves kline data for a specific market
+            </summary>
+            <param name="market">The market to retrieve klines for</param>
+            <param name="interval">The interval of the candles</param>
+            <param name="limit">Limit of the number of results</param>
+            <returns>List of klines for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32})">
+            <summary>
+            Retrieves kline data for a specific market
+            </summary>
+            <param name="market">The market to retrieve klines for</param>
+            <param name="interval">The interval of the candles</param>
+            <param name="limit">Limit of the number of results</param>
+            <returns>List of klines for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetBalances">
+            <summary>
+            Retrieves a list of balances. Requires API credentials
+            </summary>
+            <returns>List of balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetBalancesAsync">
+            <summary>
+            Retrieves a list of balances. Requires API credentials
+            </summary>
+            <returns>List of balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetWithdrawalHistory(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.Withdraw(System.String,System.String,System.Decimal)">
+            <summary>
+            Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to withdraw</param>
+            <param name="coinAddress">The address to withdraw to</param>
+            <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
+            <returns>The withdrawal object</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.WithdrawAsync(System.String,System.String,System.Decimal)">
+            <summary>
+            Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to withdraw</param>
+            <param name="coinAddress">The address to withdraw to</param>
+            <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
+            <returns>The withdrawal object</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelWithdrawal(System.Int64)">
+            <summary>
+            Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
+            <returns>True if successful, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelWithdrawalAsync(System.Int64)">
+            <summary>
+            Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
+            <returns>True if successful, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceLimitOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places a limit order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceLimitOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places a limit order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceMarketOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String)">
+            <summary>
+            Places a market order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceMarketOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String)">
+            <summary>
+            Places a market order. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC market the value should be how much BTC should be spend to buy ETH</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceImmediateOrCancelOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceImmediateOrCancelOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String)">
+            <summary>
+            Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
+            </summary>
+            <param name="market">The market to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="sourceId">Client id which can be used to match the order</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOpenOrders(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of open orders for a market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of open orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOpenOrdersAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of open orders for a market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of open orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrders(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of executed orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrdersAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of executed orders for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderStatus(System.Int64,System.String)">
+            <summary>
+            Retrieves details of an order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order to retrieve</param>
+            <param name="market">The market the order is for</param>
+            <returns>Details of the order</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderStatusAsync(System.Int64,System.String)">
+            <summary>
+            Retrieves details of an order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order to retrieve</param>
+            <param name="market">The market the order is for</param>
+            <returns>Details of the order</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrderDetails(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Retrieves execution details of a specific order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>Details of an executed order</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrderDetailsAsync(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Retrieves execution details of a specific order. Requires API credentials
+            </summary>
+            <param name="orderId">The id of the order</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>Details of an executed order</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedTransactions(System.String,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of transactions you executed on a specific market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve transactions for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of transaction for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedTransactionsAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of transactions you executed on a specific market. Requires API credentials
+            </summary>
+            <param name="market">The market to retrieve transactions for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <returns>List of transaction for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelOrder(System.String,System.Int64)">
+            <summary>
+            Cancels an order. Requires API credentials
+            </summary>
+            <param name="market">The market the order is on</param>
+            <param name="orderId">The id of the order to cancel</param>
+            <returns>Details of the canceled order</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelOrderAsync(System.String,System.Int64)">
+            <summary>
+            Cancels an order. Requires API credentials
+            </summary>
+            <param name="market">The market the order is on</param>
+            <param name="orderId">The id of the order to cancel</param>
+            <returns>Details of the canceled order</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMiningDifficulty">
+            <summary>
+            Retrieve the mining difficulty. Requires API credentials
+            </summary>
+            <returns>Mining difficulty</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMiningDifficultyAsync">
+            <summary>
+            Retrieve the mining difficulty. Requires API credentials
+            </summary>
+            <returns>Mining difficulty</returns>
+        </member>
+        <member name="P:CoinEx.Net.Interfaces.ICoinExClient.RequestFactory">
+            <summary>
+            The factory for creating requests. Used for unit testing
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.AddRateLimiter(CryptoExchange.Net.Interfaces.IRateLimiter)">
+            <summary>
+            Adds a rate limiter to the client. There are 2 choices, the <see cref="T:CryptoExchange.Net.RateLimiter.RateLimiterTotal"/> and the <see cref="T:CryptoExchange.Net.RateLimiter.RateLimiterPerEndpoint"/>.
+            </summary>
+            <param name="limiter">The limiter to add</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.RemoveRateLimiters">
+            <summary>
+            Removes all rate limiters from this client
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.Ping">
+            <summary>
+            Ping to see if the server is reachable
+            </summary>
+            <returns>The roundtrip time of the ping request</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PingAsync">
+            <summary>
+            Ping to see if the server is reachable
+            </summary>
+            <returns>The roundtrip time of the ping request</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.Ping">
+            <summary>
+            Pings the server
+            </summary>
+            <returns>True if server responded, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.PingAsync">
+            <summary>
+            Pings the server
+            </summary>
+            <returns>True if server responded, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetServerTime">
+            <summary>
+            Gets the server time
+            </summary>
+            <returns>The server time</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetServerTimeAsync">
+            <summary>
+            Gets the server time
+            </summary>
+            <returns>The server time</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketState(System.String,System.Int32)">
+            <summary>
+            Get the market state
+            </summary>
+            <param name="market">The market to get the state for</param>
+            <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
+            <returns>Market state</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketStateAsync(System.String,System.Int32)">
+            <summary>
+            Get the market state
+            </summary>
+            <param name="market">The market to get the state for</param>
+            <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
+            <returns>Market state</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketDepth(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get a market depth overview
+            </summary>
+            <param name="market">The market to get depth for</param>
+            <param name="limit">The limit of results returned</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <returns>Depth overview for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketDepthAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get a market depth overview
+            </summary>
+            <param name="market">The market to get depth for</param>
+            <param name="limit">The limit of results returned</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <returns>Depth overview for a market</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketTransactions(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the latest transactions on a market
+            </summary>
+            <param name="market">The market to get the transactions for</param>
+            <param name="limit">The limit of transactions</param>
+            <param name="fromId">Return transactions since this id</param>
+            <returns>List of transactions</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketTransactionsAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Gets the latest transactions on a market
+            </summary>
+            <param name="market">The market to get the transactions for</param>
+            <param name="limit">The limit of transactions</param>
+            <param name="fromId">Return transactions since this id</param>
+            <returns>List of transactions</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketKlines(System.String,CoinEx.Net.Objects.KlineInterval)">
+            <summary>
+            Gets market kline data
+            </summary>
+            <param name="market">The market to get the data for</param>
+            <param name="interval">The interval of the candles</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetMarketKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval)">
+            <summary>
+            Gets market kline data
+            </summary>
+            <param name="market">The market to get the data for</param>
+            <param name="interval">The interval of the candles</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetBalances(System.String[])">
+            <summary>
+            Get balances of coins. Requires API credentials
+            </summary>
+            <param name="coins">The coins to get the balances for, empty for all</param>
+            <returns>Dictionary of coins and their balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetBalancesAsync(System.String[])">
+            <summary>
+            Get balances of coins. Requires API credentials
+            </summary>
+            <param name="coins">The coins to get the balances for, empty for all</param>
+            <returns>Dictionary of coins and their balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetOpenOrders(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of open orders for a market
+            </summary>
+            <param name="market">Market to get open orders for</param>
+            <param name="type">The type of orders to get</param>
+            <param name="offset">The offset in the list</param>
+            <param name="limit">The limit of results</param>
+            <returns>List of open orders</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetOpenOrdersAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
+            <summary>
+            Gets a list of open orders for a market
+            </summary>
+            <param name="market">Market to get open orders for</param>
+            <param name="type">The type of orders to get</param>
+            <param name="offset">The offset in the list</param>
+            <param name="limit">The limit of results</param>
+            <returns>List of open orders</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketStateUpdates(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState})">
+            <summary>
+            Subscribe to market state updates for a specific market
+            </summary>
+            <param name="market">Market to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketState]: the market state update</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketStateUpdatesAsync(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState})">
+            <summary>
+            Subscribe to market state updates for a specific market
+            </summary>
+            <param name="market">Market to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketState]: the market state update</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketStateUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState}})">
+            <summary>
+            Subscribe to market state updates for all markets
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of market name -> market state</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketStateUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketState}})">
+            <summary>
+            Subscribe to market state updates for all markets
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of market name -> market state</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketDepthUpdates(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth})">
+            <summary>
+            Subscribe to market depth updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="limit">The limit of results to receive in a update</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketMarketDepth]: the update data</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketDepthUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth})">
+            <summary>
+            Subscribe to market depth updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="limit">The limit of results to receive in a update</param>
+            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketMarketDepth]: the update data</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketTransactionUpdates(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction[]})">
+            <summary>
+            Subscribe to market transaction updates for a market
+            </summary>
+            <param name="market">The market to receive updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketTransactionUpdatesAsync(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction[]})">
+            <summary>
+            Subscribe to market transaction updates for a market
+            </summary>
+            <param name="market">The market to receive updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketKlineUpdates(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,CoinEx.Net.Objects.CoinExKline[]})">
+            <summary>
+            Subscribe to kline updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="interval">The interval of the candle to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToMarketKlineUpdatesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,CoinEx.Net.Objects.CoinExKline[]})">
+            <summary>
+            Subscribe to kline updates for a market
+            </summary>
+            <param name="market">The market to receive updates for</param>
+            <param name="interval">The interval of the candle to receive updates for</param>
+            <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToBalanceUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
+            <summary>
+            Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToBalanceUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
+            <summary>
+            Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
+            </summary>
+            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderUpdates(System.String[],System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
+            <summary>
+            Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
+            </summary>
+            <param name="markets">The markets to receive order updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderUpdatesAsync(System.String[],System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
+            <summary>
+            Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
+            </summary>
+            <param name="markets">The markets to receive order updates from</param>
+            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExBalance.Available">
+            <summary>
+            The amount of the asset that is available
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExBalance.Frozen">
+            <summary>
+            The amount of the asset not currently available
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExClientOptions.UserAgent">
+            <summary>
+            The user agent send in all requests
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.SocketSubscriptionsCombineTarget">
+            <summary>
+            The amount of subscriptions that should be made on a single socket connection. Not all exchanges support multiple subscriptions on a single socket.
+            Setting this to a higher number increases subscription speed, but having more subscriptions on a single connection will also increase the amount of traffic on that single connection.
+            Not supported on CoinEx
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.Timestamp">
+            <summary>
+            The open time of this kline
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.Open">
+            <summary>
+            The price of the market when this kline started
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.Close">
+            <summary>
+            The price of the market when this kline ended
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.High">
+            <summary>
+            The highest price of the market during this kline
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.Low">
+            <summary>
+            The lowest price of the market during this kline
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.Volume">
+            <summary>
+            The volume of the market asset. i.e. for market ETHBTC this is the volume in ETH
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.Amount">
+            <summary>
+            The volume of the base asset. i.e. for market ETHBTC this is the volume in BTC
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExKline.Market">
+            <summary>
+            The market for this kline
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketDepth.Last">
+            <summary>
+            The price of the last transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketDepth.Asks">
+            <summary>
+            The asks on this market
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketDepth.Bids">
+            <summary>
+            The bids on this market
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDepthEntry.Price">
+            <summary>
+            The price per unit of the entry
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDepthEntry.Quantity">
+            <summary>
+            The quantity of the entry
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketState.Timestamp">
+            <summary>
+            The timestamp of the data
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketState.Ticker">
+            <summary>
+            The market state data
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStatesList.Timestamp">
+            <summary>
+            The timestamp of the data
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStatesList.Tickers">
+            <summary>
+            The data specified as market -> market state data
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.BestBuyPrice">
+            <summary>
+            The best buy price available on the market
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.BestBuyAmount">
+            <summary>
+            The amount of the best buy price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.BestSellPrice">
+            <summary>
+            The best sell price available on the market
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.BestSellAmount">
+            <summary>
+            The amount of the best sell price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.Open">
+            <summary>
+            The open price based on a 24H ticker
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.High">
+            <summary>
+            The high price based on a 24H ticker
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.Low">
+            <summary>
+            The low price based on a 24H ticker
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.Last">
+            <summary>
+            The price of the last transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketStateData.Volume">
+            <summary>
+            The volume of the market asset. i.e. for market ETHBTC this is the volume in ETH
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketTransaction.Amount">
+            <summary>
+            The amount of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketTransaction.Timestamp">
+            <summary>
+            The timestamp of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketTransaction.Id">
+            <summary>
+            The id of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketTransaction.Price">
+            <summary>
+            The price per unit of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarketTransaction.Type">
+            <summary>
+            The type of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMiningDifficulty.Difficulty">
+            <summary>
+            The difficulty in CET/Hour
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMiningDifficulty.Prediction">
+            <summary>
+            Estimated hourly mining yield to distribute
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMiningDifficulty.UpdateTime">
+            <summary>
+            The update time of the Prediction field
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.Amount">
+            <summary>
+            The amount of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.AssetFee">
+            <summary>
+            The fee of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.FeeAsset">
+            <summary>
+            The asset of the fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.FeeDiscount">
+            <summary>
+            The fee discount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.AveragePrice">
+            <summary>
+            Average price of the executed order for market orders
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.CreateTime">
+            <summary>
+            The time the order was created
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.FinishTime">
+            <summary>
+            The time the order was finished
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.ExecutedAmount">
+            <summary>
+            The executed amount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.OrderFee">
+            <summary>
+            The fee of the executed amount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.ExecutedValue">
+            <summary>
+            The value of the executed amount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.Id">
+            <summary>
+            The id of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.Left">
+            <summary>
+            The amount still left to execute
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.MakerFeeRate">
+            <summary>
+            The maker fee rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.Market">
+            <summary>
+            The market of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.OrderType">
+            <summary>
+            The type of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.Price">
+            <summary>
+            The price per unit of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.SourceId">
+            <summary>
+            The source id optionally specified by the client
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.Status">
+            <summary>
+            The status of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.TakerFeeRate">
+            <summary>
+            The taker fee rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrder.Type">
+            <summary>
+            The transaction type of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.Amount">
+            <summary>
+            The amount of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.CreateTime">
+            <summary>
+            The time the transaction was created
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.Value">
+            <summary>
+            The value of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.Fee">
+            <summary>
+            The fee of the transactions
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.FeeAsset">
+            <summary>
+            The asset of the fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.TransactionId">
+            <summary>
+            The id of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.OrderId">
+            <summary>
+            The id of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.Price">
+            <summary>
+            The price per unit of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransaction.Role">
+            <summary>
+            The role of the transaction, maker or taker
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransactionExtended.Market">
+            <summary>
+            The market of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExOrderTransactionExtended.Type">
+            <summary>
+            The type of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExPagedResult`1.Count">
+            <summary>
+            The total number of results
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExPagedResult`1.CurrentPage">
+            <summary>
+            The page currently returned
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExPagedResult`1.Data">
+            <summary>
+            The results
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExPagedResult`1.HasNext">
+            <summary>
+            Whether there is a next page
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.ActualAmount">
+            <summary>
+            The actual amount of the withdrawal, i.e. the amount which will be transferred to the destination address
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.Amount">
+            <summary>
+            The total amount of the withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.CoinAddress">
+            <summary>
+            The destination address of the withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.CoinType">
+            <summary>
+            The name of the coin of the withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.CoinWithdrawalId">
+            <summary>
+            The id of this withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.Confirmations">
+            <summary>
+            The current number of confirmations
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.CreateTime">
+            <summary>
+            The time the withdrawal was created
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.Status">
+            <summary>
+            The status of the withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.TransactionFee">
+            <summary>
+            The fee for the withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExWithdrawal.TransactionId">
+            <summary>
+            The transaction id of the withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth.Last">
+            <summary>
+            The price of the last trade. Only filled on a full update.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth.Timestamp">
+            <summary>
+            The timestamp of the data. Only filled on a full update.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth.Asks">
+            <summary>
+            The asks on the market
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketDepth.Bids">
+            <summary>
+            The bids on the market
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.Close">
+            <summary>
+            The close price of the period
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.Value">
+            <summary>
+            The volume of the base asset. i.e. for market ETHBTC this is the volume in BTC
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.High">
+            <summary>
+            The highest market price in the period
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.Last">
+            <summary>
+            The last market place in the period
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.Low">
+            <summary>
+            The lowest market price in the period
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.Open">
+            <summary>
+            The open price of the period
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.Period">
+            <summary>
+            The period the data is over in seconds
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketState.Volume">
+            <summary>
+            The volume of the market asset. i.e. for market ETHBTC this is the volume in ETH
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction.Type">
+            <summary>
+            The type of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction.Timestamp">
+            <summary>
+            The timestamp of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction.Price">
+            <summary>
+            The price per unit of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction.OrderId">
+            <summary>
+            The order id of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketMarketTransaction.Amount">
+            <summary>
+            The amount of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.Amount">
+            <summary>
+            The total amount of the oder
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.CreateTime">
+            <summary>
+            The time the order was created
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.AssetFee">
+            <summary>
+            The fee of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.FeeDiscount">
+            <summary>
+            The fee discount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.FeeAsset">
+            <summary>
+            The asset the fee is on
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.TransactionFee">
+            <summary>
+            The executed amount transaction fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.TransactionValue">
+            <summary>
+            The executed value
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.ExecutedAmount">
+            <summary>
+            The executed amount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.OrderId">
+            <summary>
+            The order id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.Left">
+            <summary>
+            Amount of order left to execute
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.MakerFee">
+            <summary>
+            Maker fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.ModifyTime">
+            <summary>
+            The last update time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.Price">
+            <summary>
+            The price per unit of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.TransactionType">
+            <summary>
+            The transaction type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.Source">
+            <summary>
+            The source of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.TakerFee">
+            <summary>
+            Taker fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.Type">
+            <summary>
+            The type of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.UserId">
+            <summary>
+            The id of the user that placed the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.Market">
+            <summary>
+            The market of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketPagedResult`1.Limit">
+            <summary>
+            The number of results
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketPagedResult`1.Offset">
+            <summary>
+            The offset in the list
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketPagedResult`1.Total">
+            <summary>
+            The total number of results
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketPagedResult`1.Data">
+            <summary>
+            The data
+            </summary>
+        </member>
+    </members>
+</doc>
