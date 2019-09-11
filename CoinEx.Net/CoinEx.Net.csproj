@@ -21,6 +21,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="CryptoExchange.Net" Version="2.1.7" />
+    <PackageReference Include="CryptoExchange.Net" Version="2.1.8" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net
 {
@@ -24,7 +25,7 @@ namespace CoinEx.Net
             if (!signed)
                 return result;
 
-            var paramString = parameters.CreateParamString(true);
+            var paramString = parameters.CreateParamString(true, ArrayParametersSerialization.MultipleValues);
             result.Add("Authorization", Sign(paramString + "&secret_key=" + Credentials.Secret.GetString()));
             return result;
         }
