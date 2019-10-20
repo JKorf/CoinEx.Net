@@ -43,7 +43,8 @@ namespace CoinEx.Net.UnitTests
 
             // assert
             Assert.AreEqual(true, result.Success);
-            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+            TestHelpers.PublicInstancePropertiesEqual(expected[0], result.Data.ToList()[0]);
+            TestHelpers.PublicInstancePropertiesEqual(expected[1], result.Data.ToList()[1]);
         }
 
         [Test]
@@ -59,7 +60,7 @@ namespace CoinEx.Net.UnitTests
             // assert
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Error);
-            Assert.IsTrue(result.Error.Message.Contains("Some error"));
+            Assert.IsTrue(result.Error.ToString().Contains("Some error"));
         }
 
         [Test]
@@ -77,7 +78,8 @@ namespace CoinEx.Net.UnitTests
 
             // assert
             Assert.AreEqual(true, result.Success);
-            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+            TestHelpers.PublicInstancePropertiesEqual(expected[0], result.Data.ToList()[0]);
+            TestHelpers.PublicInstancePropertiesEqual(expected[1], result.Data.ToList()[1]);
         }
 
         [Test]
@@ -190,7 +192,7 @@ namespace CoinEx.Net.UnitTests
             var result = objects.Client.GetBalances();
 
             // assert
-            Assert.IsTrue(objects.Request.Object.Headers.AllKeys.Any(k => k == "Authorization"));
+            objects.Request.Verify(r => r.AddHeader("Authorization", It.IsAny<string>()));
         }
 
         [Test]
@@ -206,7 +208,7 @@ namespace CoinEx.Net.UnitTests
             var result = objects.Client.PlaceLimitOrder("BTCETH", TransactionType.Buy, 1, 1);
 
             // assert
-            objects.RequestStream.Verify(r => r.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()));
+            objects.Request.Verify(r => r.SetContent(It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [Test]
@@ -235,23 +237,7 @@ namespace CoinEx.Net.UnitTests
             Assert.AreEqual(true, result.Success);
             TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
         }
-
-
-        [Test]
-        public void ReceivingServerError_Should_ReturnServerErrorAndNotSuccess()
-        {
-            // arrange
-            var client = TestHelpers.PrepareExceptionClient<CoinExClient>("", "Unavailable", 504);
-
-            // act
-            var result = client.GetMarketList();
-
-            // assert
-            Assert.IsFalse(result.Success);
-            Assert.IsNotNull(result.Error);
-            Assert.IsTrue(result.Error.Message.Contains("Unavailable"));
-        }
-
+        
         [Test]
         public void ProvidingApiCredentials_Should_SaveApiCredentials()
         {

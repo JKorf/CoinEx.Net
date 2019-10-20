@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Objects.Websocket
 {
+    /// <summary>
+    /// Market depth info
+    /// </summary>
     public class CoinExSocketMarketDepth
     {
         /// <summary>
@@ -20,16 +23,10 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// The asks on the market
         /// </summary>
-        public List<CoinExDepthEntry> Asks { get; set; }
+        public IEnumerable<CoinExDepthEntry> Asks { get; set; } = new List<CoinExDepthEntry>();
         /// <summary>
         /// The bids on the market
         /// </summary>
-        public List<CoinExDepthEntry> Bids { get; set; }
-
-        public CoinExSocketMarketDepth()
-        {
-            Asks = new List<CoinExDepthEntry>();
-            Bids = new List<CoinExDepthEntry>();
-        }
+        public IEnumerable<CoinExDepthEntry> Bids { get; set; } = new List<CoinExDepthEntry>();
     }
 }

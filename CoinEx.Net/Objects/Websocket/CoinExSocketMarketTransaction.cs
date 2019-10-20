@@ -5,6 +5,9 @@ using System;
 
 namespace CoinEx.Net.Objects.Websocket
 {
+    /// <summary>
+    /// Transaction data
+    /// </summary>
     public class CoinExSocketMarketTransaction
     {
         /// <summary>

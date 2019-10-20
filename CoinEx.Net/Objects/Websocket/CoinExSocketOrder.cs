@@ -5,6 +5,9 @@ using System;
 
 namespace CoinEx.Net.Objects.Websocket
 {
+    /// <summary>
+    /// Order info
+    /// </summary>
     public class CoinExSocketOrder
     {
         /// <summary>
@@ -34,7 +37,7 @@ namespace CoinEx.Net.Objects.Websocket
         /// The asset the fee is on
         /// </summary>
         [JsonProperty("fee_asset")]
-        public string FeeAsset { get; set; }
+        public string FeeAsset { get; set; } = "";
         /// <summary>
         /// The executed amount transaction fee
         /// </summary>
@@ -89,7 +92,7 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// The source of the order
         /// </summary>
-        public string Source { get; set; }
+        public string Source { get; set; } = "";
         /// <summary>
         /// Taker fee
         /// </summary>
@@ -109,6 +112,6 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// The market of the order
         /// </summary>
-        public string Market { get; set; }
+        public string Market { get; set; } = "";
     }
 }

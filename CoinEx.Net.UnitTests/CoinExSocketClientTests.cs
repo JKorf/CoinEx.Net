@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -113,7 +114,7 @@ namespace CoinEx.Net.UnitTests
             var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketTransactionUpdatesAsync("ETHBTC", (market, data) =>
             {
-                actual = data;
+                actual = data.ToArray();
             });
 
             if (!sendWait.Result)
@@ -150,7 +151,7 @@ namespace CoinEx.Net.UnitTests
             var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketTransactionUpdatesAsync("ETHBTC", (market, data) =>
             {
-                actual = data;
+                actual = data.ToArray();
             });
 
             if (!sendWait.Result)
@@ -228,7 +229,7 @@ namespace CoinEx.Net.UnitTests
             var sendWait = TestHelpers.WaitForSend(client);
             var subTask = client.SubscribeToMarketKlineUpdatesAsync("ETHBTC", KlineInterval.FiveMinute, (market, data) =>
             {
-                actual = data;
+                actual = data.ToArray();
             });
             if (!sendWait.Result)
                 Assert.Fail(sb.ToString());

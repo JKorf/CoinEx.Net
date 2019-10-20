@@ -14,7 +14,7 @@ namespace CoinEx.Net
                     return 3 * 60;
                 case KlineInterval.FiveMinute:
                     return 5 * 60;
-                case KlineInterval.FiveteenMinute:
+                case KlineInterval.FifteenMinute:
                     return 15 * 60;
                 case KlineInterval.ThirtyMinute:
                     return 30 * 60;

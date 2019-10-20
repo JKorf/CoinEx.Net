@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Balance info
+    /// </summary>
     public class CoinExBalance
     {
         /// <summary>

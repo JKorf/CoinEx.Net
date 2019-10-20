@@ -10,6 +10,9 @@ using CryptoExchange.Net.Sockets;
 
 namespace CoinEx.Net
 {
+    /// <summary>
+    /// Symbol order book implementation
+    /// </summary>
     public class CoinExSymbolOrderBook: SymbolOrderBook
     {
         private readonly CoinExSocketClient socketClient;
@@ -20,15 +23,16 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="symbol">The symbol of the order book</param>
         /// <param name="options">The options for the order book</param>
-        public CoinExSymbolOrderBook(string symbol, CoinExOrderBookOptions options = null) : base(symbol, options ?? new CoinExOrderBookOptions())
+        public CoinExSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base(symbol, options ?? new CoinExOrderBookOptions())
         {
             socketClient = new CoinExSocketClient();
         }
 
+        /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStart()
         {
             var result = await socketClient.SubscribeToMarketDepthUpdatesAsync(Symbol, 20, 0, HandleUpdate).ConfigureAwait(false);
-            if (!result.Success)
+            if (!result)
                 return result;
 
             Status = OrderBookStatus.Syncing;
@@ -39,6 +43,7 @@ namespace CoinEx.Net
             return result;
         }
 
+        /// <inheritdoc />
         protected override async Task<CallResult<bool>> DoResync()
         {
             while (!updateReceived)
@@ -47,6 +52,7 @@ namespace CoinEx.Net
             return new CallResult<bool>(true, null);
         }
 
+        /// <inheritdoc />
         protected override void DoReset()
         {
             updateReceived = false;
@@ -68,6 +74,7 @@ namespace CoinEx.Net
             }
         }
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             processBuffer.Clear();

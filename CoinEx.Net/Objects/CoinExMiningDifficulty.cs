@@ -4,16 +4,19 @@ using System;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Mining difficulty info
+    /// </summary>
     public class CoinExMiningDifficulty
     {
         /// <summary>
         /// The difficulty in CET/Hour
         /// </summary>
-        public string Difficulty { get; set; }
+        public string Difficulty { get; set; } = "";
         /// <summary>
         /// Estimated hourly mining yield to distribute
         /// </summary>
-        public string Prediction { get; set; }
+        public string Prediction { get; set; } = "";
         /// <summary>
         /// The update time of the Prediction field
         /// </summary>

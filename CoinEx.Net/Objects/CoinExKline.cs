@@ -5,6 +5,9 @@ using System;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Kline data
+    /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
     public class CoinExKline
     {
@@ -50,10 +53,11 @@ namespace CoinEx.Net.Objects
         [JsonConverter(typeof(DecimalConverter))]
         [ArrayProperty(6)]
         public decimal Amount { get; set; }
+
         /// <summary>
         /// The market for this kline
         /// </summary>
         [ArrayProperty(7)]
-        public string Market { get; set; }
+        public string Market { get; set; } = "";
     }
 }

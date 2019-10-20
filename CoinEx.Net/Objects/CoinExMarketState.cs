@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Market state info
+    /// </summary>
     public class CoinExMarketState
     {
         /// <summary>
@@ -13,12 +16,16 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [JsonProperty("date"), JsonConverter(typeof(TimestampConverter))]
         public DateTime Timestamp { get; set; }
+
         /// <summary>
         /// The market state data
         /// </summary>
-        public CoinExMarketStateData Ticker { get; set; }
+        public CoinExMarketStateData Ticker { get; set; } = default!;
     }
 
+    /// <summary>
+    /// Market state list
+    /// </summary>
     public class CoinExMarketStatesList
     {
         /// <summary>
@@ -30,9 +37,12 @@ namespace CoinEx.Net.Objects
         /// The data specified as market -> market state data
         /// </summary>
         [JsonProperty("ticker")]
-        public Dictionary<string, CoinExMarketStateData> Tickers { get; set; }
+        public Dictionary<string, CoinExMarketStateData> Tickers { get; set; } = new Dictionary<string, CoinExMarketStateData>();
     }
 
+    /// <summary>
+    /// Market state data
+    /// </summary>
     public class CoinExMarketStateData
     {
         /// <summary>

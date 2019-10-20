@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class WithdrawStatusConverter: BaseConverter<WithdrawStatus>
+    internal class WithdrawStatusConverter: BaseConverter<WithdrawStatus>
     {
         public WithdrawStatusConverter() : this(true) { }
         public WithdrawStatusConverter(bool quotes) : base(quotes) { }

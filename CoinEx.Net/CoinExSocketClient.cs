@@ -15,6 +15,9 @@ using CryptoExchange.Net.Sockets;
 
 namespace CoinEx.Net
 {
+    /// <summary>
+    /// Client for the CoinEx socket API
+    /// </summary>
     public class CoinExSocketClient: SocketClient, ICoinExSocketClient
     {
         #region fields
@@ -52,8 +55,6 @@ namespace CoinEx.Net
         /// <param name="options">The options to use for this client</param>
         public CoinExSocketClient(CoinExSocketClientOptions options) : base(options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
         {
-            Configure(options);
-
             AddGenericHandler("Pong", (connection, token) => { });
             SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
         }
@@ -97,8 +98,8 @@ namespace CoinEx.Net
         public async Task<CallResult<DateTime>> GetServerTimeAsync()
         {
             var result = await Query<long>(new CoinExSocketRequest(NextId(), ServerSubject, ServerTimeAction), false).ConfigureAwait(false);
-            if (!result.Success)
-                return new CallResult<DateTime>(default(DateTime), result.Error);
+            if (!result)
+                return new CallResult<DateTime>(default, result.Error);
             return new CallResult<DateTime>(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(result.Data), null);
         }
 
@@ -153,7 +154,7 @@ namespace CoinEx.Net
         /// <param name="limit">The limit of transactions</param>
         /// <param name="fromId">Return transactions since this id</param>
         /// <returns>List of transactions</returns>
-        public CallResult<CoinExSocketMarketTransaction[]> GetMarketTransactions(string market, int limit, int? fromId = null) => GetMarketTransactionsAsync(market, limit, fromId).Result;
+        public CallResult<IEnumerable<CoinExSocketMarketTransaction>> GetMarketTransactions(string market, int limit, int? fromId = null) => GetMarketTransactionsAsync(market, limit, fromId).Result;
         /// <summary>
         /// Gets the latest transactions on a market
         /// </summary>
@@ -161,9 +162,9 @@ namespace CoinEx.Net
         /// <param name="limit">The limit of transactions</param>
         /// <param name="fromId">Return transactions since this id</param>
         /// <returns>List of transactions</returns>
-        public async Task<CallResult<CoinExSocketMarketTransaction[]>> GetMarketTransactionsAsync(string market, int limit, int? fromId = null)
+        public async Task<CallResult<IEnumerable<CoinExSocketMarketTransaction>>> GetMarketTransactionsAsync(string market, int limit, int? fromId = null)
         {
-            return await Query<CoinExSocketMarketTransaction[]>(new CoinExSocketRequest(NextId(), TransactionSubject, QueryAction, market, limit, fromId ?? 0), false).ConfigureAwait(false);
+            return await Query<IEnumerable<CoinExSocketMarketTransaction>>(new CoinExSocketRequest(NextId(), TransactionSubject, QueryAction, market, limit, fromId ?? 0), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -241,7 +242,7 @@ namespace CoinEx.Net
             var internalHandler = new Action<JToken[]>(data =>
             {
                 var desResult = Deserialize<Dictionary<string, CoinExSocketMarketState>>(data[0]);
-                if (!desResult.Success)
+                if (!desResult)
                 {
                     log.Write(LogVerbosity.Warning, "Received invalid state update: " + desResult.Error);
                     return;
@@ -269,7 +270,7 @@ namespace CoinEx.Net
             var internalHandler = new Action<JToken[]>(data =>
             {
                 var desResult = Deserialize<Dictionary<string, CoinExSocketMarketState>>(data[0]);
-                if (!desResult.Success)
+                if (!desResult)
                 {
                     log.Write(LogVerbosity.Warning, "Received invalid state update: " + desResult.Error);
                     return;
@@ -316,7 +317,7 @@ namespace CoinEx.Net
 
                 var fullUpdate = (bool)data[0];
                 var desResult = Deserialize<CoinExSocketMarketDepth>(data[1], false);
-                if (!desResult.Success)
+                if (!desResult)
                 {
                     log.Write(LogVerbosity.Warning, "Received invalid depth update: " + desResult.Error);
                     return;
@@ -334,14 +335,14 @@ namespace CoinEx.Net
         /// <param name="market">The market to receive updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        public CallResult<UpdateSubscription> SubscribeToMarketTransactionUpdates(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage) => SubscribeToMarketTransactionUpdatesAsync(market, onMessage).Result;
+        public CallResult<UpdateSubscription> SubscribeToMarketTransactionUpdates(string market, Action<string, IEnumerable<CoinExSocketMarketTransaction>> onMessage) => SubscribeToMarketTransactionUpdatesAsync(market, onMessage).Result;
         /// <summary>
         /// Subscribe to market transaction updates for a market
         /// </summary>
         /// <param name="market">The market to receive updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        public async Task<CallResult<UpdateSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, IEnumerable<CoinExSocketMarketTransaction>> onMessage)
         {
             var internalHandler = new Action<JToken[]>(data =>
             {
@@ -351,8 +352,8 @@ namespace CoinEx.Net
                     return;
                 }
 
-                var desResult = Deserialize<CoinExSocketMarketTransaction[]>(data[1], false);
-                if (!desResult.Success)
+                var desResult = Deserialize<IEnumerable<CoinExSocketMarketTransaction>>(data[1], false);
+                if (!desResult)
                 {
                     log.Write(LogVerbosity.Warning, "Received invalid order update: " + desResult.Error);
                     return;
@@ -371,7 +372,7 @@ namespace CoinEx.Net
         /// <param name="interval">The interval of the candle to receive updates for</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        public CallResult<UpdateSubscription> SubscribeToMarketKlineUpdates(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage) => SubscribeToMarketKlineUpdatesAsync(market, interval, onMessage).Result;
+        public CallResult<UpdateSubscription> SubscribeToMarketKlineUpdates(string market, KlineInterval interval, Action<string, IEnumerable<CoinExKline>> onMessage) => SubscribeToMarketKlineUpdatesAsync(market, interval, onMessage).Result;
         /// <summary>
         /// Subscribe to kline updates for a market
         /// </summary>
@@ -379,7 +380,7 @@ namespace CoinEx.Net
         /// <param name="interval">The interval of the candle to receive updates for</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        public async Task<CallResult<UpdateSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, IEnumerable<CoinExKline>> onMessage)
         {
             var internalHandler = new Action<JToken[]>(data =>
             {
@@ -389,8 +390,8 @@ namespace CoinEx.Net
                     return;
                 }
 
-                var desResult = Deserialize<CoinExKline[]>(new JArray(data), false);
-                if (!desResult.Success)
+                var desResult = Deserialize<IEnumerable<CoinExKline>>(new JArray(data), false);
+                if (!desResult)
                 {
                     log.Write(LogVerbosity.Warning, "Received invalid market kline update: " + desResult.Error);
                     return;
@@ -424,7 +425,7 @@ namespace CoinEx.Net
                 }
 
                 var desResult = Deserialize<Dictionary<string, CoinExBalance>>(data[0], false);
-                if (!desResult.Success)
+                if (!desResult)
                 {
                     log.Write(LogVerbosity.Warning, "Received invalid balance update: " + desResult.Error);
                     return;
@@ -442,14 +443,14 @@ namespace CoinEx.Net
         /// <param name="markets">The markets to receive order updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        public CallResult<UpdateSubscription> SubscribeToOrderUpdates(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage) => SubscribeToOrderUpdatesAsync(markets, onMessage).Result;
+        public CallResult<UpdateSubscription> SubscribeToOrderUpdates(IEnumerable<string> markets, Action<UpdateType, CoinExSocketOrder> onMessage) => SubscribeToOrderUpdatesAsync(markets, onMessage).Result;
         /// <summary>
         /// Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
         /// </summary>
         /// <param name="markets">The markets to receive order updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(IEnumerable<string> markets, Action<UpdateType, CoinExSocketOrder> onMessage)
         {
             var internalHandler = new Action<JToken[]>(data =>
             {
@@ -461,7 +462,7 @@ namespace CoinEx.Net
 
                 var updateResult = JsonConvert.DeserializeObject<UpdateType>((string)data[0], new UpdateTypeConverter(false));
                 var desResult = Deserialize<CoinExSocketOrder>(data[1], false);
-                if (!desResult.Success)
+                if (!desResult)
                 {
                     log.Write(LogVerbosity.Warning, "Received invalid order update: " + desResult.Error);
                     return;
@@ -477,6 +478,9 @@ namespace CoinEx.Net
         #region private
         private object[] GetAuthParameters()
         {
+            if(authProvider!.Credentials.Key == null || authProvider.Credentials.Secret == null)
+                throw new ArgumentException("ApiKey/Secret not provided");
+
             var tonce = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             var parameterString = $"access_id={authProvider.Credentials.Key.GetString()}&tonce={tonce}&secret_key={authProvider.Credentials.Secret.GetString()}";
             var auth = authProvider.Sign(parameterString);
@@ -485,7 +489,8 @@ namespace CoinEx.Net
         #endregion
         #endregion
 
-        protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T> callResult)
+        /// <inheritdoc />
+        protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T>? callResult)
         {
             callResult = null;
             var cRequest = (CoinExSocketRequest) request;
@@ -498,15 +503,15 @@ namespace CoinEx.Net
 
             if (data["error"].Type != JTokenType.Null)
             {
-                callResult = new CallResult<T>(default(T), new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
+                callResult = new CallResult<T>(default, new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
                 return true;
             }
             else
             {
                 var desResult = Deserialize<T>(data["result"]);
-                if (!desResult.Success)
+                if (!desResult)
                 {
-                    callResult = new CallResult<T>(default(T), desResult.Error);
+                    callResult = new CallResult<T>(default, desResult.Error);
                     return true;
                 }
 
@@ -515,7 +520,8 @@ namespace CoinEx.Net
             }
         }
 
-        protected override bool HandleSubscriptionResponse(SocketConnection s, SocketSubscription subscription, object request, JToken message, out CallResult<object> callResult)
+        /// <inheritdoc />
+        protected override bool HandleSubscriptionResponse(SocketConnection s, SocketSubscription subscription, object request, JToken message, out CallResult<object>? callResult)
         {
             callResult = null;
             if (message.Type != JTokenType.Object)
@@ -530,7 +536,7 @@ namespace CoinEx.Net
                 return false;
 
             var subResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(message, false);
-            if (!subResponse.Success)
+            if (!subResponse)
             {
                 log.Write(LogVerbosity.Warning, "Subscription failed: " + subResponse.Error);
                 callResult = new CallResult<object>(null, subResponse.Error);
@@ -549,11 +555,13 @@ namespace CoinEx.Net
             return true;
         }
 
+        /// <inheritdoc />
         protected override JToken ProcessTokenData(JToken data)
         {
             return data["params"];
         }
 
+        /// <inheritdoc />
         protected override bool MessageMatchesHandler(JToken message, object request)
         {
             var cRequest = (CoinExSocketRequest)request;
@@ -565,6 +573,7 @@ namespace CoinEx.Net
             return cRequest.Subject == subject;
         }
 
+        /// <inheritdoc />
         protected override bool MessageMatchesHandler(JToken message, string identifier)
         {
             if (message.Type != JTokenType.Object)
@@ -572,13 +581,14 @@ namespace CoinEx.Net
             return identifier == "Pong" && (string) message["result"] == "pong";
         }
 
+        /// <inheritdoc />
         protected override async Task<CallResult<bool>> AuthenticateSocket(SocketConnection s)
         {
             if (authProvider == null)
                 return new CallResult<bool>(false, new NoApiCredentialsError());
 
             var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters());
-            CallResult<bool> result = new CallResult<bool>(false, new ServerError("No response from server"));
+            var result = new CallResult<bool>(false, new ServerError("No response from server"));
             await s.SendAndWait(request, ResponseTimeout, data =>
             {
                 var idField = data["id"];
@@ -589,7 +599,7 @@ namespace CoinEx.Net
                     return false; // Not for this request
 
                 var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
-                if (!authResponse.Success)
+                if (!authResponse)
                 {
                     log.Write(LogVerbosity.Warning, "Authorization failed: " + authResponse.Error);
                     result = new CallResult<bool>(false, authResponse.Error);
@@ -619,6 +629,7 @@ namespace CoinEx.Net
             return result;
         }
 
+        /// <inheritdoc />
         protected override Task<bool> Unsubscribe(SocketConnection connection, SocketSubscription s)
         {
             return Task.FromResult(true);

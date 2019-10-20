@@ -5,6 +5,9 @@ using System;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Order transaction info
+    /// </summary>
     public class CoinExOrderTransaction
     {
         /// <summary>
@@ -33,7 +36,7 @@ namespace CoinEx.Net.Objects
         /// The asset of the fee
         /// </summary>
         [JsonProperty("fee_asset")]
-        public string FeeAsset { get; set; }
+        public string FeeAsset { get; set; } = "";
         /// <summary>
         /// The id of the transaction
         /// </summary>
@@ -56,12 +59,15 @@ namespace CoinEx.Net.Objects
         public TransactionRole Role { get; set; }
     }
 
+    /// <summary>
+    /// Order transaction info
+    /// </summary>
     public class CoinExOrderTransactionExtended: CoinExOrderTransaction
     {
         /// <summary>
         /// The market of the transaction
         /// </summary>
-        public string Market { get; set; }
+        public string Market { get; set; } = "";
         /// <summary>
         /// The type of the transaction
         /// </summary>

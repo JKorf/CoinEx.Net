@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Websocket
 {
+    /// <summary>
+    /// Market state info
+    /// </summary>
     public class CoinExSocketMarketState
     {
         /// <summary>

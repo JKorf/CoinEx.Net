@@ -5,6 +5,9 @@ using System;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Market transaction info
+    /// </summary>
     public class CoinExMarketTransaction
     {
         /// <summary>

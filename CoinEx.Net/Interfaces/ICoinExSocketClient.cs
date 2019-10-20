@@ -9,6 +9,9 @@ using CryptoExchange.Net.Sockets;
 
 namespace CoinEx.Net.Interfaces
 {
+    /// <summary>
+    /// Interface for the CoinEx socket client
+    /// </summary>
     public interface ICoinExSocketClient: ISocketClient
     {
         /// <summary>
@@ -76,7 +79,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The limit of transactions</param>
         /// <param name="fromId">Return transactions since this id</param>
         /// <returns>List of transactions</returns>
-        CallResult<CoinExSocketMarketTransaction[]> GetMarketTransactions(string market, int limit, int? fromId = null);
+        CallResult<IEnumerable<CoinExSocketMarketTransaction>> GetMarketTransactions(string market, int limit, int? fromId = null);
 
         /// <summary>
         /// Gets the latest transactions on a market
@@ -85,7 +88,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The limit of transactions</param>
         /// <param name="fromId">Return transactions since this id</param>
         /// <returns>List of transactions</returns>
-        Task<CallResult<CoinExSocketMarketTransaction[]>> GetMarketTransactionsAsync(string market, int limit, int? fromId = null);
+        Task<CallResult<IEnumerable<CoinExSocketMarketTransaction>>> GetMarketTransactionsAsync(string market, int limit, int? fromId = null);
 
         /// <summary>
         /// Gets market kline data
@@ -193,7 +196,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="market">The market to receive updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToMarketTransactionUpdates(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
+        CallResult<UpdateSubscription> SubscribeToMarketTransactionUpdates(string market, Action<string, IEnumerable<CoinExSocketMarketTransaction>> onMessage);
 
         /// <summary>
         /// Subscribe to market transaction updates for a market
@@ -201,7 +204,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="market">The market to receive updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, IEnumerable<CoinExSocketMarketTransaction>> onMessage);
 
         /// <summary>
         /// Subscribe to kline updates for a market
@@ -210,7 +213,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="interval">The interval of the candle to receive updates for</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToMarketKlineUpdates(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
+        CallResult<UpdateSubscription> SubscribeToMarketKlineUpdates(string market, KlineInterval interval, Action<string, IEnumerable<CoinExKline>> onMessage);
 
         /// <summary>
         /// Subscribe to kline updates for a market
@@ -219,7 +222,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="interval">The interval of the candle to receive updates for</param>
         /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, IEnumerable<CoinExKline>> onMessage);
 
         /// <summary>
         /// Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
@@ -241,7 +244,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="markets">The markets to receive order updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToOrderUpdates(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
+        CallResult<UpdateSubscription> SubscribeToOrderUpdates(IEnumerable<string> markets, Action<UpdateType, CoinExSocketOrder> onMessage);
 
         /// <summary>
         /// Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
@@ -249,7 +252,6 @@ namespace CoinEx.Net.Interfaces
         /// <param name="markets">The markets to receive order updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
-        
+        Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(IEnumerable<string> markets, Action<UpdateType, CoinExSocketOrder> onMessage);
     }
 }
