@@ -7,6 +7,8 @@ using CryptoExchange.Net.Authentication;
 using Moq;
 using System.Linq;
 using CryptoExchange.Net;
+using System.Net;
+using System;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -61,6 +63,21 @@ namespace CoinEx.Net.UnitTests
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Error);
             Assert.IsTrue(result.Error.ToString().Contains("Some error"));
+        }
+
+        [Test]
+        public void ReceivingHttpError_Should_ReturnErrorAndNotSuccess()
+        {
+            // arrange
+            var objects = TestHelpers.PrepareClient(() => Construct(), "Error request", HttpStatusCode.BadRequest);
+
+            // act
+            var result = objects.Client.GetMarketList();
+
+            // assert
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Error);
+            Assert.IsTrue(result.Error.ToString().Contains("Error request"));
         }
 
         [Test]
@@ -275,6 +292,22 @@ namespace CoinEx.Net.UnitTests
             if (options != null)
                 return new CoinExClient(options);
             return new CoinExClient();
+        }
+
+        [TestCase("BTCUSDT", true)]
+        [TestCase("NANOUSDT", true)]
+        [TestCase("NANOBTC", true)]
+        [TestCase("ETHBTC", true)]
+        [TestCase("BEETC", false)]
+        [TestCase("NANOUSDTD", false)]
+        [TestCase("BTC-USDT", false)]
+        [TestCase("BTC-USD", false)]
+        public void CheckValidCoinExSymbol(string symbol, bool isValid)
+        {
+            if (isValid)
+                Assert.DoesNotThrow(() => symbol.ValidateCoinExSymbol());
+            else
+                Assert.Throws(typeof(ArgumentException), () => symbol.ValidateCoinExSymbol());
         }
     }
 }

@@ -25,6 +25,7 @@ namespace CoinEx.Net
         /// <param name="options">The options for the order book</param>
         public CoinExSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base(symbol, options ?? new CoinExOrderBookOptions())
         {
+            symbol.ValidateCoinExSymbol();
             socketClient = new CoinExSocketClient();
         }
 

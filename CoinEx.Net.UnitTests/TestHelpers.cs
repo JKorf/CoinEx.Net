@@ -62,7 +62,7 @@ namespace CryptoExchange.Net.Testing
             return self == to;
         }
 
-        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData) where T : RestClient, new()
+        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData, HttpStatusCode code = HttpStatusCode.OK) where T : RestClient, new()
         {
             var client = construct();
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
@@ -71,7 +71,8 @@ namespace CryptoExchange.Net.Testing
             responseStream.Seek(0, SeekOrigin.Begin);
 
             var response = new Mock<IResponse>();
-            response.Setup(c => c.IsSuccessStatusCode).Returns(true);
+            response.Setup(c => c.IsSuccessStatusCode).Returns(code == HttpStatusCode.OK);
+            response.Setup(c => c.StatusCode).Returns(code);
             response.Setup(c => c.GetResponseStream()).Returns(Task.FromResult((Stream)responseStream));
 
             var request = new Mock<IRequest>();

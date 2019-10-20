@@ -49,7 +49,7 @@
             <summary>
             Gets the state of a specific market
             </summary>
-            <param name="market">The market to retrieve state for</param>
+            <param name="symbol">The market to retrieve state for</param>
             <param name="ct">Cancellation token</param>
             <returns>The state of the market</returns>
         </member>
@@ -57,7 +57,7 @@
             <summary>
             Gets the state of a specific market
             </summary>
-            <param name="market">The market to retrieve state for</param>
+            <param name="symbol">The market to retrieve state for</param>
             <param name="ct">Cancellation token</param>
             <returns>The state of the market</returns>
         </member>
@@ -79,7 +79,7 @@
             <summary>
             Gets the depth data for a market
             </summary>
-            <param name="market">The market to retrieve depth data for</param>
+            <param name="symbol">The market to retrieve depth data for</param>
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <param name="limit">The limit of results returned</param>
             <param name="ct">Cancellation token</param>
@@ -89,7 +89,7 @@
             <summary>
             Gets the depth data for a market
             </summary>
-            <param name="market">The market to retrieve depth data for</param>
+            <param name="symbol">The market to retrieve depth data for</param>
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <param name="limit">The limit of results returned</param>
             <param name="ct">Cancellation token</param>
@@ -99,7 +99,7 @@
             <summary>
             Gets the latest transactions for a market
             </summary>
-            <param name="market">The market to retrieve data for</param>
+            <param name="symbol">The market to retrieve data for</param>
             <param name="fromId">The id from which on to return transactions</param>
             <param name="ct">Cancellation token</param>
             <returns>List of transactions for a market</returns>
@@ -108,7 +108,7 @@
             <summary>
             Gets the latest transactions for a market
             </summary>
-            <param name="market">The market to retrieve data for</param>
+            <param name="symbol">The market to retrieve data for</param>
             <param name="fromId">The id from which on to return transactions</param>
             <param name="ct">Cancellation token</param>
             <returns>List of transactions for a market</returns>
@@ -117,7 +117,7 @@
             <summary>
             Retrieves kline data for a specific market
             </summary>
-            <param name="market">The market to retrieve klines for</param>
+            <param name="symbol">The market to retrieve klines for</param>
             <param name="interval">The interval of the candles</param>
             <param name="limit">Limit of the number of results</param>
             <param name="ct">Cancellation token</param>
@@ -127,7 +127,7 @@
             <summary>
             Retrieves kline data for a specific market
             </summary>
-            <param name="market">The market to retrieve klines for</param>
+            <param name="symbol">The market to retrieve klines for</param>
             <param name="interval">The interval of the candles</param>
             <param name="limit">Limit of the number of results</param>
             <param name="ct">Cancellation token</param>
@@ -209,7 +209,7 @@
             <summary>
             Places a limit order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -221,7 +221,7 @@
             <summary>
             Places a limit order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -233,7 +233,7 @@
             <summary>
             Places a market order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="sourceId">Client id which can be used to match the order</param>
@@ -244,7 +244,7 @@
             <summary>
             Places a market order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC market the value should be how much BTC should be spend to buy ETH</param>
             <param name="sourceId">Client id which can be used to match the order</param>
@@ -255,7 +255,7 @@
             <summary>
             Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -267,7 +267,7 @@
             <summary>
             Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -279,7 +279,7 @@
             <summary>
             Retrieves a list of open orders for a market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -289,7 +289,7 @@
             <summary>
             Retrieves a list of open orders for a market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -299,7 +299,7 @@
             <summary>
             Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -309,7 +309,7 @@
             <summary>
             Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -320,7 +320,7 @@
             Retrieves details of an order. Requires API credentials
             </summary>
             <param name="orderId">The id of the order to retrieve</param>
-            <param name="market">The market the order is for</param>
+            <param name="symbol">The market the order is for</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
         </member>
@@ -329,7 +329,7 @@
             Retrieves details of an order. Requires API credentials
             </summary>
             <param name="orderId">The id of the order to retrieve</param>
-            <param name="market">The market the order is for</param>
+            <param name="symbol">The market the order is for</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
         </member>
@@ -357,7 +357,7 @@
             <summary>
             Gets a list of transactions you executed on a specific market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve transactions for</param>
+            <param name="symbol">The market to retrieve transactions for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -367,7 +367,7 @@
             <summary>
             Gets a list of transactions you executed on a specific market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve transactions for</param>
+            <param name="symbol">The market to retrieve transactions for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -377,7 +377,7 @@
             <summary>
             Cancels an order. Requires API credentials
             </summary>
-            <param name="market">The market the order is on</param>
+            <param name="symbol">The market the order is on</param>
             <param name="orderId">The id of the order to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
@@ -386,7 +386,7 @@
             <summary>
             Cancels an order. Requires API credentials
             </summary>
-            <param name="market">The market the order is on</param>
+            <param name="symbol">The market the order is on</param>
             <param name="orderId">The id of the order to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
@@ -407,6 +407,12 @@
         </member>
         <member name="M:CoinEx.Net.CoinExClient.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.CoinExHelpers.ValidateCoinExSymbol(System.String)">
+            <summary>
+            Validate the string is a valid CoinEx symbol.
+            </summary>
+            <param name="symbolString">string to validate</param>
         </member>
         <member name="T:CoinEx.Net.CoinExSocketClient">
             <summary>
@@ -743,7 +749,7 @@
             <summary>
             Gets the state of a specific market
             </summary>
-            <param name="market">The market to retrieve state for</param>
+            <param name="symbol">The market to retrieve state for</param>
             <param name="ct">Cancellation token</param>
             <returns>The state of the market</returns>
         </member>
@@ -751,7 +757,7 @@
             <summary>
             Gets the state of a specific market
             </summary>
-            <param name="market">The market to retrieve state for</param>
+            <param name="symbol">The market to retrieve state for</param>
             <param name="ct">Cancellation token</param>
             <returns>The state of the market</returns>
         </member>
@@ -773,7 +779,7 @@
             <summary>
             Gets the depth data for a market
             </summary>
-            <param name="market">The market to retrieve depth data for</param>
+            <param name="symbol">The market to retrieve depth data for</param>
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <param name="limit">The limit of results returned</param>
             <param name="ct">Cancellation token</param>
@@ -783,7 +789,7 @@
             <summary>
             Gets the depth data for a market
             </summary>
-            <param name="market">The market to retrieve depth data for</param>
+            <param name="symbol">The market to retrieve depth data for</param>
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <param name="limit">The limit of results returned</param>
             <param name="ct">Cancellation token</param>
@@ -793,7 +799,7 @@
             <summary>
             Gets the latest transactions for a market
             </summary>
-            <param name="market">The market to retrieve data for</param>
+            <param name="symbol">The market to retrieve data for</param>
             <param name="fromId">The id from which on to return transactions</param>
             <param name="ct">Cancellation token</param>
             <returns>List of transactions for a market</returns>
@@ -802,7 +808,7 @@
             <summary>
             Gets the latest transactions for a market
             </summary>
-            <param name="market">The market to retrieve data for</param>
+            <param name="symbol">The market to retrieve data for</param>
             <param name="fromId">The id from which on to return transactions</param>
             <param name="ct">Cancellation token</param>
             <returns>List of transactions for a market</returns>
@@ -811,7 +817,7 @@
             <summary>
             Retrieves kline data for a specific market
             </summary>
-            <param name="market">The market to retrieve klines for</param>
+            <param name="symbol">The market to retrieve klines for</param>
             <param name="interval">The interval of the candles</param>
             <param name="limit">Limit of the number of results</param>
             <param name="ct">Cancellation token</param>
@@ -821,7 +827,7 @@
             <summary>
             Retrieves kline data for a specific market
             </summary>
-            <param name="market">The market to retrieve klines for</param>
+            <param name="symbol">The market to retrieve klines for</param>
             <param name="interval">The interval of the candles</param>
             <param name="limit">Limit of the number of results</param>
             <param name="ct">Cancellation token</param>
@@ -903,7 +909,7 @@
             <summary>
             Places a limit order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -915,7 +921,7 @@
             <summary>
             Places a limit order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -927,7 +933,7 @@
             <summary>
             Places a market order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="sourceId">Client id which can be used to match the order</param>
@@ -938,7 +944,7 @@
             <summary>
             Places a market order. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC market the value should be how much BTC should be spend to buy ETH</param>
             <param name="sourceId">Client id which can be used to match the order</param>
@@ -949,7 +955,7 @@
             <summary>
             Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -961,7 +967,7 @@
             <summary>
             Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
             </summary>
-            <param name="market">The market to place the order for</param>
+            <param name="symbol">The market to place the order for</param>
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
@@ -973,7 +979,7 @@
             <summary>
             Retrieves a list of open orders for a market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -983,7 +989,7 @@
             <summary>
             Retrieves a list of open orders for a market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -993,7 +999,7 @@
             <summary>
             Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -1003,7 +1009,7 @@
             <summary>
             Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve the open orders for</param>
+            <param name="symbol">The market to retrieve the open orders for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -1014,7 +1020,7 @@
             Retrieves details of an order. Requires API credentials
             </summary>
             <param name="orderId">The id of the order to retrieve</param>
-            <param name="market">The market the order is for</param>
+            <param name="symbol">The market the order is for</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
         </member>
@@ -1023,7 +1029,7 @@
             Retrieves details of an order. Requires API credentials
             </summary>
             <param name="orderId">The id of the order to retrieve</param>
-            <param name="market">The market the order is for</param>
+            <param name="symbol">The market the order is for</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
         </member>
@@ -1051,7 +1057,7 @@
             <summary>
             Gets a list of transactions you executed on a specific market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve transactions for</param>
+            <param name="symbol">The market to retrieve transactions for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -1061,7 +1067,7 @@
             <summary>
             Gets a list of transactions you executed on a specific market. Requires API credentials
             </summary>
-            <param name="market">The market to retrieve transactions for</param>
+            <param name="symbol">The market to retrieve transactions for</param>
             <param name="page">The page of the resulting list</param>
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
@@ -1071,7 +1077,7 @@
             <summary>
             Cancels an order. Requires API credentials
             </summary>
-            <param name="market">The market the order is on</param>
+            <param name="symbol">The market the order is on</param>
             <param name="orderId">The id of the order to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
@@ -1080,7 +1086,7 @@
             <summary>
             Cancels an order. Requires API credentials
             </summary>
-            <param name="market">The market the order is on</param>
+            <param name="symbol">The market the order is on</param>
             <param name="orderId">The id of the order to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
