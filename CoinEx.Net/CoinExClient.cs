@@ -162,13 +162,9 @@ namespace CoinEx.Net
         public async Task<WebCallResult<CoinExMarketDepth>> GetMarketDepthAsync(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
+            mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
+            limit?.ValidateIntValues(nameof(limit), 5, 10, 20);
 
-            if (mergeDepth < 0 || mergeDepth > 8)
-                return WebCallResult<CoinExMarketDepth>.CreateErrorResult(new ArgumentError("Merge depth needs to be between 0 - 8"));
-
-            if (limit.HasValue && limit != 5 && limit != 10 && limit != 20)
-                return WebCallResult<CoinExMarketDepth>.CreateErrorResult(new ArgumentError("Limit should be 5 / 10 / 20"));
-            
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -228,6 +224,7 @@ namespace CoinEx.Net
         public async Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
+            limit?.ValidateIntBetween(nameof(limit), 1, 1000);
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -276,6 +273,7 @@ namespace CoinEx.Net
         /// <returns></returns>
         public async Task<WebCallResult<IEnumerable<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default)
         {
+            limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>();
             parameters.AddOptionalParameter("coin", coin);
             parameters.AddOptionalParameter("coin_withdraw_id", coinWithdrawId);
@@ -304,6 +302,8 @@ namespace CoinEx.Net
         /// <returns>The withdrawal object</returns>
         public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, decimal amount, CancellationToken ct = default)
         {
+            coin.ValidateNotNull(nameof(coin));
+            coinAddress.ValidateNotNull(nameof(coinAddress));
             var parameters = new Dictionary<string, object>
             {
                 { "coin_type", coin },
@@ -467,6 +467,7 @@ namespace CoinEx.Net
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
+            limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -498,6 +499,7 @@ namespace CoinEx.Net
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
+            limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -555,6 +557,7 @@ namespace CoinEx.Net
         /// <returns>Details of an executed order</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTransaction>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit, CancellationToken ct = default)
         {
+            limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
                 { "id", orderId },
@@ -586,6 +589,7 @@ namespace CoinEx.Net
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTransactionExtended>>> GetExecutedTransactionsAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
+            limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -613,6 +617,7 @@ namespace CoinEx.Net
         /// <returns>Details of the canceled order</returns>
         public async Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, long orderId, CancellationToken ct = default)
         {
+            symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },

@@ -140,11 +140,8 @@ namespace CoinEx.Net
         public async Task<CallResult<CoinExSocketMarketDepth>> GetMarketDepthAsync(string symbol, int limit, int mergeDepth)
         {
             symbol.ValidateCoinExSymbol();
-            if (mergeDepth < 0 || mergeDepth > 8)
-                return new CallResult<CoinExSocketMarketDepth>(null, new ArgumentError("Merge depth needs to be between 0 - 8"));
-
-            if (limit != 5 && limit != 10 && limit != 20)
-                return new CallResult<CoinExSocketMarketDepth>(null, new ArgumentError("Limit should be 5 / 10 / 20"));
+            mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
+            limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
             return await Query<CoinExSocketMarketDepth>(new CoinExSocketRequest(NextId(), DepthSubject, QueryAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
         }
@@ -310,11 +307,8 @@ namespace CoinEx.Net
         public async Task<CallResult<UpdateSubscription>> SubscribeToMarketDepthUpdatesAsync(string symbol, int limit, int mergeDepth, Action<string, bool, CoinExSocketMarketDepth> onMessage)
         {
             symbol.ValidateCoinExSymbol();
-            if (mergeDepth < 0 || mergeDepth > 8)
-                return new CallResult<UpdateSubscription>(null, new ArgumentError("Merge depth needs to be between 0 - 8"));
-
-            if (limit != 5 && limit != 10 && limit != 20)
-                return new CallResult<UpdateSubscription>(null, new ArgumentError("Limit should be 5 / 10 / 20"));
+            mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
+            limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
             var internalHandler = new Action<JToken[]>(data =>
             {
