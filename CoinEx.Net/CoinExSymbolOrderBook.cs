@@ -68,10 +68,7 @@ namespace CoinEx.Net
             }
             else
             {
-                var processEntries = new List<ProcessEntry>();
-                processEntries.AddRange(data.Asks.Select(a => new ProcessEntry(OrderBookEntryType.Ask, a)));
-                processEntries.AddRange(data.Bids.Select(b => new ProcessEntry(OrderBookEntryType.Bid, b)));
-                UpdateOrderBook(DateTime.UtcNow.Ticks, DateTime.UtcNow.Ticks, processEntries);
+                UpdateOrderBook(DateTime.UtcNow.Ticks, DateTime.UtcNow.Ticks, data.Bids, data.Asks);
             }
         }
 

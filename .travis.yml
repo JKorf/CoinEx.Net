@@ -1,8 +1,7 @@
 language: csharp
 mono: none
 solution: CoinEx.Net.sln
-dotnet: 2.0.0
-dist: xenial
+dotnet: 3.0
 script:
- - dotnet build CoinEx.Net/CoinEx.Net.csproj --framework "netstandard2.0"
+ - dotnet build CoinEx.Net/CoinEx.Net.csproj --framework "netstandard2.1"
  - dotnet test CoinEx.Net.UnitTests/CoinEx.Net.UnitTests.csproj
