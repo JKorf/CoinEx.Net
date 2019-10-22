@@ -23,7 +23,7 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketList();
+            var result = objects.Client.GetSymbols();
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -57,7 +57,7 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), response);
 
             // act
-            var result = objects.Client.GetMarketList();
+            var result = objects.Client.GetSymbols();
 
             // assert
             Assert.IsFalse(result.Success);
@@ -72,7 +72,7 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), "Error request", HttpStatusCode.BadRequest);
 
             // act
-            var result = objects.Client.GetMarketList();
+            var result = objects.Client.GetSymbols();
 
             // assert
             Assert.IsFalse(result.Success);
@@ -84,14 +84,14 @@ namespace CoinEx.Net.UnitTests
         public void GetLatestTransactions_Should_RespondWithTransactionList()
         {
             // arrange
-            CoinExMarketTransaction[] expected = new CoinExMarketTransaction[] {
-                new CoinExMarketTransaction() { Type = TransactionType.Buy },
-                new CoinExMarketTransaction() { Type = TransactionType.Buy },
+            CoinExSymbolTrade[] expected = new CoinExSymbolTrade[] {
+                new CoinExSymbolTrade() { Type = TransactionType.Buy },
+                new CoinExSymbolTrade() { Type = TransactionType.Buy },
             };
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetLatestTransactions("ETHBTC");
+            var result = objects.Client.GetSymbolTrades("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -103,11 +103,11 @@ namespace CoinEx.Net.UnitTests
         public void GetMarketDepth_Should_RespondWithMarketDepth()
         {
             // arrange
-            CoinExMarketDepth expected = new CoinExMarketDepth();
+            CoinExOrderBook expected = new CoinExOrderBook();
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketDepth("ETHBTC", 1);
+            var result = objects.Client.GetOrderBook("ETHBTC", 1);
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -118,11 +118,11 @@ namespace CoinEx.Net.UnitTests
         public void GetMarketState_Should_RespondWithMarketState()
         {
             // arrange
-            CoinExMarketState expected = new CoinExMarketState();
+            CoinExSymbolState expected = new CoinExSymbolState();
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketState("ETHBTC");
+            var result = objects.Client.GetSymbolState("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -232,14 +232,14 @@ namespace CoinEx.Net.UnitTests
         public void GetExecutedOrderDetails_Should_RespondWithExecutedOrderResults()
         {
             // arrange
-            CoinExPagedResult<CoinExOrderTransaction> expected = new CoinExPagedResult<CoinExOrderTransaction>()
+            CoinExPagedResult<CoinExOrderTrade> expected = new CoinExPagedResult<CoinExOrderTrade>()
             {
                 Count = 1,
                 CurrentPage = 1,
                 HasNext = false,
-                Data = new CoinExOrderTransaction[]
+                Data = new CoinExOrderTrade[]
                 {
-                    new CoinExOrderTransaction()
+                    new CoinExOrderTrade()
                 }
             };
             var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()

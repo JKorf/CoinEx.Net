@@ -8,8 +8,8 @@ using System.Globalization;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CryptoExchange.Net.Objects;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using Newtonsoft.Json.Linq;
 
@@ -545,7 +545,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of an executed order</returns>
-        public WebCallResult<CoinExPagedResult<CoinExOrderTransaction>> GetExecutedOrderDetails(long orderId, int page, int limit, CancellationToken ct = default) => 
+        public WebCallResult<CoinExPagedResult<CoinExOrderTrade>> GetExecutedOrderDetails(long orderId, int page, int limit, CancellationToken ct = default) => 
             GetExecutedOrderDetailsAsync(orderId, page, limit, ct).Result;
         /// <summary>
         /// Retrieves execution details of a specific order. Requires API credentials
@@ -555,7 +555,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of an executed order</returns>
-        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTransaction>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTrade>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit, CancellationToken ct = default)
         {
             limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
@@ -565,7 +565,7 @@ namespace CoinEx.Net
                 { "limit", limit }
             };
 
-            return await ExecutePaged<CoinExOrderTransaction>(GetUrl(OrderDetailsEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTrade>(GetUrl(OrderDetailsEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -576,7 +576,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        public WebCallResult<CoinExPagedResult<CoinExOrderTransactionExtended>> GetTrades(string symbol, int page, int limit, CancellationToken ct = default) => 
+        public WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>> GetTrades(string symbol, int page, int limit, CancellationToken ct = default) => 
             GetTradesAsync(symbol, page, limit, ct).Result;
         /// <summary>
         /// Gets a list of trades you executed on a specific symbol. Requires API credentials
@@ -586,7 +586,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTransactionExtended>>> GetTradesAsync(string symbol, int page, int limit, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetTradesAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             limit.ValidateIntBetween(nameof(limit), 1, 100);
@@ -597,7 +597,7 @@ namespace CoinEx.Net
                 { "limit", limit }
             };
 
-            return await ExecutePaged<CoinExOrderTransactionExtended>(GetUrl(UserTransactionsEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            return await ExecutePaged<CoinExOrderTradeExtended>(GetUrl(UserTransactionsEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Websocket
     /// <summary>
     /// Transaction data
     /// </summary>
-    public class CoinExSocketMarketTransaction
+    public class CoinExSocketSymbolTrade
     {
         /// <summary>
         /// The type of the transaction
