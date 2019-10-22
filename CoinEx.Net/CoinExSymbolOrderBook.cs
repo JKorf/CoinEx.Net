@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Websocket;
@@ -16,7 +14,6 @@ namespace CoinEx.Net
     public class CoinExSymbolOrderBook: SymbolOrderBook
     {
         private readonly CoinExSocketClient socketClient;
-        private bool updateReceived;
 
         /// <summary>
         /// Create a new order book instance
@@ -32,43 +29,36 @@ namespace CoinEx.Net
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStart()
         {
-            var result = await socketClient.SubscribeToMarketDepthUpdatesAsync(Symbol, 20, 0, HandleUpdate).ConfigureAwait(false);
+            var result = await socketClient.SubscribeToOrderBookUpdatesAsync(Symbol, 20, 0, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 
             Status = OrderBookStatus.Syncing;
 
-            while (!updateReceived)
-                await Task.Delay(10).ConfigureAwait(false); // Wait for first update to fill the order book
-
-            return result;
+            var setResult = await WaitForSetOrderBook(10000).ConfigureAwait(false);
+            return setResult ? result : new CallResult<UpdateSubscription>(null, setResult.Error);
         }
 
         /// <inheritdoc />
         protected override async Task<CallResult<bool>> DoResync()
         {
-            while (!updateReceived)
-                await Task.Delay(10).ConfigureAwait(false); // Wait for first update to fill the order book
-
-            return new CallResult<bool>(true, null);
+            return await WaitForSetOrderBook(10000).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         protected override void DoReset()
         {
-            updateReceived = false;
         }
 
-        private void HandleUpdate(string market, bool full, CoinExSocketMarketDepth data)
+        private void HandleUpdate(string symbol, bool full, CoinExSocketOrderBook data)
         {
-            updateReceived = true;
             if (full)
             { 
-                SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Asks, data.Bids);
+                SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Bids, data.Asks);
             }
             else
             {
-                UpdateOrderBook(DateTime.UtcNow.Ticks, DateTime.UtcNow.Ticks, data.Bids, data.Asks);
+                UpdateOrderBook(DateTime.UtcNow.Ticks, data.Bids, data.Asks);
             }
         }
 

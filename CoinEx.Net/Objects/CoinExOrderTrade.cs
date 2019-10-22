@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Order transaction info
     /// </summary>
-    public class CoinExOrderTransaction
+    public class CoinExOrderTrade
     {
         /// <summary>
         /// The amount of the transaction
@@ -62,12 +62,13 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Order transaction info
     /// </summary>
-    public class CoinExOrderTransactionExtended: CoinExOrderTransaction
+    public class CoinExOrderTradeExtended: CoinExOrderTrade
     {
         /// <summary>
-        /// The market of the transaction
+        /// The symbol of the transaction
         /// </summary>
-        public string Market { get; set; } = "";
+        [JsonProperty("market")]
+        public string Symbol { get; set; } = "";
         /// <summary>
         /// The type of the transaction
         /// </summary>

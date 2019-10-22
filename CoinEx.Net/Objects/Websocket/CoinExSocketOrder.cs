@@ -110,8 +110,9 @@ namespace CoinEx.Net.Objects.Websocket
         [JsonProperty("user")]
         public long UserId { get; set; }
         /// <summary>
-        /// The market of the order
+        /// The symbol of the order
         /// </summary>
-        public string Market { get; set; } = "";
+        [JsonProperty("market")]
+        public string Symbol { get; set; } = "";
     }
 }

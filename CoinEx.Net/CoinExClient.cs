@@ -88,33 +88,33 @@ namespace CoinEx.Net
         }
 
         /// <summary>
-        /// Gets a list of markets active on CoinEx
+        /// Gets a list of symbols active on CoinEx
         /// </summary>
-        /// <returns>List of market names</returns>
-        public WebCallResult<IEnumerable<string>> GetMarketList(CancellationToken ct = default) => GetMarketListAsync(ct).Result;
+        /// <returns>List of symbol names</returns>
+        public WebCallResult<IEnumerable<string>> GetSymbols(CancellationToken ct = default) => GetSymbolsAsync(ct).Result;
         /// <summary>
-        /// Gets a list of markets active on CoinEx
+        /// Gets a list of symbols active on CoinEx
         /// </summary>
-        /// <returns>List of market names</returns>
-        public async Task<WebCallResult<IEnumerable<string>>> GetMarketListAsync(CancellationToken ct = default)
+        /// <returns>List of symbol names</returns>
+        public async Task<WebCallResult<IEnumerable<string>>> GetSymbolsAsync(CancellationToken ct = default)
         {
             return await Execute<IEnumerable<string>>(GetUrl(MarketListEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the state of a specific market
+        /// Gets the state of a specific symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve state for</param>
+        /// <param name="symbol">The symbol to retrieve state for</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>The state of the market</returns>
-        public WebCallResult<CoinExMarketState> GetMarketState(string symbol, CancellationToken ct = default) => GetMarketStateAsync(symbol, ct).Result;
+        /// <returns>The state of the symbol</returns>
+        public WebCallResult<CoinExSymbolState> GetSymbolState(string symbol, CancellationToken ct = default) => GetSymbolStateAsync(symbol, ct).Result;
         /// <summary>
-        /// Gets the state of a specific market
+        /// Gets the state of a specific symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve state for</param>
+        /// <param name="symbol">The symbol to retrieve state for</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>The state of the market</returns>
-        public async Task<WebCallResult<CoinExMarketState>> GetMarketStateAsync(string symbol, CancellationToken ct = default)
+        /// <returns>The state of the symbol</returns>
+        public async Task<WebCallResult<CoinExSymbolState>> GetSymbolStateAsync(string symbol, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
@@ -122,44 +122,44 @@ namespace CoinEx.Net
                 { "market", symbol }
             };
 
-            return await Execute<CoinExMarketState>(GetUrl(MarketStatisticsEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            return await Execute<CoinExSymbolState>(GetUrl(MarketStatisticsEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the states of all markets
+        /// Gets the states of all symbols
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of states for all markets</returns>
-        public WebCallResult<CoinExMarketStatesList> GetMarketStates(CancellationToken ct = default) => GetMarketStatesAsync(ct).Result;
+        /// <returns>List of states for all symbols</returns>
+        public WebCallResult<CoinExSymbolStatesList> GetSymbolStates(CancellationToken ct = default) => GetSymbolStatesAsync(ct).Result;
         /// <summary>
-        /// Gets the states of all markets
+        /// Gets the states of all symbols
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of states for all markets</returns>
-        public async Task<WebCallResult<CoinExMarketStatesList>> GetMarketStatesAsync(CancellationToken ct = default)
+        /// <returns>List of states for all symbols</returns>
+        public async Task<WebCallResult<CoinExSymbolStatesList>> GetSymbolStatesAsync(CancellationToken ct = default)
         {
-            return await Execute<CoinExMarketStatesList>(GetUrl(MarketStatisticsListEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+            return await Execute<CoinExSymbolStatesList>(GetUrl(MarketStatisticsListEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the depth data for a market
+        /// Gets the order book for a symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve depth data for</param>
+        /// <param name="symbol">The symbol to retrieve depth data for</param>
         /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
         /// <param name="limit">The limit of results returned</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>Depth data for a market</returns>
-        public WebCallResult<CoinExMarketDepth> GetMarketDepth(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default) => 
-            GetMarketDepthAsync(symbol, mergeDepth, limit, ct).Result;
+        /// <returns>Order book for a symbol</returns>
+        public WebCallResult<CoinExOrderBook> GetOrderBook(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default) => 
+            GetOrderBookAsync(symbol, mergeDepth, limit, ct).Result;
         /// <summary>
-        /// Gets the depth data for a market
+        /// Gets the order book for a symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve depth data for</param>
+        /// <param name="symbol">The symbol to retrieve depth data for</param>
         /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
         /// <param name="limit">The limit of results returned</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>Depth data for a market</returns>
-        public async Task<WebCallResult<CoinExMarketDepth>> GetMarketDepthAsync(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default)
+        /// <returns>Order book for a symbol</returns>
+        public async Task<WebCallResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
@@ -172,26 +172,26 @@ namespace CoinEx.Net
             };
             parameters.AddOptionalParameter("limit", limit);
 
-            return await Execute<CoinExMarketDepth>(GetUrl(MarketDepthEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            return await Execute<CoinExOrderBook>(GetUrl(MarketDepthEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the latest transactions for a market
+        /// Gets the latest trades for a symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve data for</param>
-        /// <param name="fromId">The id from which on to return transactions</param>
+        /// <param name="symbol">The symbol to retrieve data for</param>
+        /// <param name="fromId">The id from which on to return trades</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of transactions for a market</returns>
-        public WebCallResult<IEnumerable<CoinExMarketTransaction>> GetLatestTransactions(string symbol, long? fromId = null, CancellationToken ct = default) => 
-            GetLatestTransactionsAsync(symbol, fromId, ct).Result;
+        /// <returns>List of trades for a symbol</returns>
+        public WebCallResult<IEnumerable<CoinExSymbolTrade>> GetSymbolTrades(string symbol, long? fromId = null, CancellationToken ct = default) => 
+            GetSymbolTradesAsync(symbol, fromId, ct).Result;
         /// <summary>
-        /// Gets the latest transactions for a market
+        /// Gets the latest trades for a symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve data for</param>
-        /// <param name="fromId">The id from which on to return transactions</param>
+        /// <param name="symbol">The symbol to retrieve data for</param>
+        /// <param name="fromId">The id from which on to return trades</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of transactions for a market</returns>
-        public async Task<WebCallResult<IEnumerable<CoinExMarketTransaction>>> GetLatestTransactionsAsync(string symbol, long? fromId = null, CancellationToken ct = default)
+        /// <returns>List of trades for a symbol</returns>
+        public async Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetSymbolTradesAsync(string symbol, long? fromId = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
 
@@ -201,26 +201,26 @@ namespace CoinEx.Net
             };
             parameters.AddOptionalParameter("last_id", fromId);
 
-            return await Execute<IEnumerable<CoinExMarketTransaction>>(GetUrl(MarketDealsEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            return await Execute<IEnumerable<CoinExSymbolTrade>>(GetUrl(MarketDealsEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Retrieves kline data for a specific market
+        /// Retrieves kline data for a specific symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve klines for</param>
+        /// <param name="symbol">The symbol to retrieve klines for</param>
         /// <param name="interval">The interval of the candles</param>
         /// <param name="limit">Limit of the number of results</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of klines for a market</returns>
+        /// <returns>List of klines for a symbol</returns>
         public WebCallResult<IEnumerable<CoinExKline>> GetKlines(string symbol, KlineInterval interval, int? limit = null, CancellationToken ct = default) => GetKlinesAsync(symbol, interval, limit, ct).Result;
         /// <summary>
-        /// Retrieves kline data for a specific market
+        /// Retrieves kline data for a specific symbol
         /// </summary>
-        /// <param name="symbol">The market to retrieve klines for</param>
+        /// <param name="symbol">The symbol to retrieve klines for</param>
         /// <param name="interval">The interval of the candles</param>
         /// <param name="limit">Limit of the number of results</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of klines for a market</returns>
+        /// <returns>List of klines for a symbol</returns>
         public async Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -341,7 +341,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Places a limit order. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to place the order for</param>
+        /// <param name="symbol">The symbol to place the order for</param>
         /// <param name="type">Type of transaction</param>
         /// <param name="amount">The amount of the order</param>
         /// <param name="price">The price of a single unit of the order</param>
@@ -353,7 +353,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Places a limit order. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to place the order for</param>
+        /// <param name="symbol">The symbol to place the order for</param>
         /// <param name="type">Type of transaction</param>
         /// <param name="amount">The amount of the order</param>
         /// <param name="price">The price of a single unit of the order</param>
@@ -378,7 +378,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Places a market order. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to place the order for</param>
+        /// <param name="symbol">The symbol to place the order for</param>
         /// <param name="type">Type of transaction</param>
         /// <param name="amount">The amount of the order</param>
         /// <param name="sourceId">Client id which can be used to match the order</param>
@@ -389,9 +389,9 @@ namespace CoinEx.Net
         /// <summary>
         /// Places a market order. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to place the order for</param>
+        /// <param name="symbol">The symbol to place the order for</param>
         /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC market the value should be how much BTC should be spend to buy ETH</param>
+        /// <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC symbol the value should be how much BTC should be spend to buy ETH</param>
         /// <param name="sourceId">Client id which can be used to match the order</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order that was placed</returns>
@@ -412,7 +412,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to place the order for</param>
+        /// <param name="symbol">The symbol to place the order for</param>
         /// <param name="type">Type of transaction</param>
         /// <param name="amount">The amount of the order</param>
         /// <param name="price">The price of a single unit of the order</param>
@@ -424,7 +424,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to place the order for</param>
+        /// <param name="symbol">The symbol to place the order for</param>
         /// <param name="type">Type of transaction</param>
         /// <param name="amount">The amount of the order</param>
         /// <param name="price">The price of a single unit of the order</param>
@@ -447,23 +447,23 @@ namespace CoinEx.Net
         }
 
         /// <summary>
-        /// Retrieves a list of open orders for a market. Requires API credentials
+        /// Retrieves a list of open orders for a symbol. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to retrieve the open orders for</param>
+        /// <param name="symbol">The symbol to retrieve the open orders for</param>
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of open orders for a market</returns>
+        /// <returns>List of open orders for a symbol</returns>
         public WebCallResult<CoinExPagedResult<CoinExOrder>> GetOpenOrders(string symbol, int page, int limit, CancellationToken ct = default) => 
             GetOpenOrdersAsync(symbol, page, limit, ct).Result;
         /// <summary>
-        /// Retrieves a list of open orders for a market. Requires API credentials
+        /// Retrieves a list of open orders for a symbol. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to retrieve the open orders for</param>
+        /// <param name="symbol">The symbol to retrieve the open orders for</param>
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of open orders for a market</returns>
+        /// <returns>List of open orders for a symbol</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -479,23 +479,23 @@ namespace CoinEx.Net
         }
 
         /// <summary>
-        /// Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
+        /// Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to retrieve the open orders for</param>
+        /// <param name="symbol">The symbol to retrieve the open orders for</param>
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of executed orders for a market</returns>
+        /// <returns>List of executed orders for a symbol</returns>
         public WebCallResult<CoinExPagedResult<CoinExOrder>> GetExecutedOrders(string symbol, int page, int limit, CancellationToken ct = default) =>
             GetExecutedOrdersAsync(symbol, page, limit, ct).Result;
         /// <summary>
-        /// Retrieves a list of executed orders for a market in the last 2 days. Requires API credentials
+        /// Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to retrieve the open orders for</param>
+        /// <param name="symbol">The symbol to retrieve the open orders for</param>
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of executed orders for a market</returns>
+        /// <returns>List of executed orders for a symbol</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -514,7 +514,7 @@ namespace CoinEx.Net
         /// Retrieves details of an order. Requires API credentials
         /// </summary>
         /// <param name="orderId">The id of the order to retrieve</param>
-        /// <param name="symbol">The market the order is for</param>
+        /// <param name="symbol">The symbol the order is for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order</returns>
         public WebCallResult<CoinExOrder> GetOrderStatus(long orderId, string symbol, CancellationToken ct = default) => GetOrderStatusAsync(orderId, symbol, ct).Result;
@@ -522,7 +522,7 @@ namespace CoinEx.Net
         /// Retrieves details of an order. Requires API credentials
         /// </summary>
         /// <param name="orderId">The id of the order to retrieve</param>
-        /// <param name="symbol">The market the order is for</param>
+        /// <param name="symbol">The symbol the order is for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order</returns>
         public async Task<WebCallResult<CoinExOrder>> GetOrderStatusAsync(long orderId, string symbol, CancellationToken ct = default)
@@ -569,24 +569,24 @@ namespace CoinEx.Net
         }
 
         /// <summary>
-        /// Gets a list of transactions you executed on a specific market. Requires API credentials
+        /// Gets a list of trades you executed on a specific symbol. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to retrieve transactions for</param>
+        /// <param name="symbol">The symbol to retrieve trades for</param>
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of transaction for a market</returns>
-        public WebCallResult<CoinExPagedResult<CoinExOrderTransactionExtended>> GetExecutedTransactions(string symbol, int page, int limit, CancellationToken ct = default) => 
-            GetExecutedTransactionsAsync(symbol, page, limit, ct).Result;
+        /// <returns>List of trades for a symbol</returns>
+        public WebCallResult<CoinExPagedResult<CoinExOrderTransactionExtended>> GetTrades(string symbol, int page, int limit, CancellationToken ct = default) => 
+            GetTradesAsync(symbol, page, limit, ct).Result;
         /// <summary>
-        /// Gets a list of transactions you executed on a specific market. Requires API credentials
+        /// Gets a list of trades you executed on a specific symbol. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market to retrieve transactions for</param>
+        /// <param name="symbol">The symbol to retrieve trades for</param>
         /// <param name="page">The page of the resulting list</param>
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns>List of transaction for a market</returns>
-        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTransactionExtended>>> GetExecutedTransactionsAsync(string symbol, int page, int limit, CancellationToken ct = default)
+        /// <returns>List of trades for a symbol</returns>
+        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTransactionExtended>>> GetTradesAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             limit.ValidateIntBetween(nameof(limit), 1, 100);
@@ -603,7 +603,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Cancels an order. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market the order is on</param>
+        /// <param name="symbol">The symbol the order is on</param>
         /// <param name="orderId">The id of the order to cancel</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the canceled order</returns>
@@ -611,7 +611,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Cancels an order. Requires API credentials
         /// </summary>
-        /// <param name="symbol">The market the order is on</param>
+        /// <param name="symbol">The symbol the order is on</param>
         /// <param name="orderId">The id of the order to cancel</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the canceled order</returns>
