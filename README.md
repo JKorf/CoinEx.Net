@@ -1,4 +1,4 @@
-# ![Icon](https://github.com/JKorf/CoinEx.Net/blob/master/Resources/icon.png?raw=true) CoinEx.Net 
+# ![Icon](https://github.com/JKorf/CoinEx.Net/blob/master/CoinEx.Net/Icon/icon.png?raw=true) CoinEx.Net 
 
 ![Build status](https://travis-ci.org/JKorf/CoinEx.Net.svg?branch=master)
 
@@ -86,6 +86,15 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.0.0 - 23 Oct 2019
+	* See CryptoExchange.Net 3.0 release notes
+	* Added input validation
+	* Added CancellationToken support to all requests
+	* Now using IEnumerable<> for collections
+	* Renamed Market -> Symbol
+	* Renamed MarketDepth -> OrderBook
+	* Renamed Transaction -> Trade
+	
 * Version 2.0.10 - 11 Sep 2019
     * Updated CryptoExchange.Net
 
