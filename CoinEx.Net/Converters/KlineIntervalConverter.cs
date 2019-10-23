@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class KlineIntervalConverter : BaseConverter<KlineInterval>
+    internal class KlineIntervalConverter : BaseConverter<KlineInterval>
     {
         public KlineIntervalConverter() : this(true) { }
         public KlineIntervalConverter(bool quotes) : base(quotes) { }
@@ -14,7 +14,7 @@ namespace CoinEx.Net.Converters
             new KeyValuePair<KlineInterval, string>( KlineInterval.OneMinute, "1min"),
             new KeyValuePair<KlineInterval, string>(KlineInterval.ThreeMinute, "3min"),
             new KeyValuePair<KlineInterval, string>(KlineInterval.FiveMinute, "5min"),
-            new KeyValuePair<KlineInterval, string>( KlineInterval.FiveteenMinute, "15min"),
+            new KeyValuePair<KlineInterval, string>( KlineInterval.FifteenMinute, "15min"),
             new KeyValuePair<KlineInterval, string>(KlineInterval.ThirtyMinute, "30min"),
             new KeyValuePair<KlineInterval, string>( KlineInterval.OneHour, "1hour"),
             new KeyValuePair<KlineInterval, string>(KlineInterval.TwoHour, "2hour"),

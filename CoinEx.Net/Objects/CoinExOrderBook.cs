@@ -1,11 +1,15 @@
-﻿using CoinEx.Net.Converters;
+﻿using System.Collections.Generic;
+using CoinEx.Net.Converters;
 using CryptoExchange.Net.Converters;
-using CryptoExchange.Net.OrderBook;
+using CryptoExchange.Net.Interfaces;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects
 {
-    public class CoinExMarketDepth
+    /// <summary>
+    /// Order book
+    /// </summary>
+    public class CoinExOrderBook
     {
         /// <summary>
         /// The price of the last transaction
@@ -13,15 +17,18 @@ namespace CoinEx.Net.Objects
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Last { get; set; }
         /// <summary>
-        /// The asks on this market
+        /// The asks on this symbol
         /// </summary>
-        public CoinExDepthEntry[] Asks { get; set; }
+        public IEnumerable<CoinExDepthEntry> Asks { get; set; } = new List<CoinExDepthEntry>();
         /// <summary>
-        /// The bids on this market
+        /// The bids on this symbol
         /// </summary>
-        public CoinExDepthEntry[] Bids { get; set; }
+        public IEnumerable<CoinExDepthEntry> Bids { get; set; } = new List<CoinExDepthEntry>();
     }
 
+    /// <summary>
+    /// Depth info
+    /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
     public class CoinExDepthEntry: ISymbolOrderBookEntry
     {

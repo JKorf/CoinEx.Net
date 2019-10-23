@@ -3,26 +3,22 @@ using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Client options
+    /// </summary>
     public class CoinExClientOptions: RestClientOptions
     {
         /// <summary>
-        /// The user agent send in all requests
+        /// ctor
         /// </summary>
-        public string UserAgent { get; set; } = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
-
-        public CoinExClientOptions()
+        public CoinExClientOptions(): base("https://api.coinex.com/v1")
         {
-            BaseAddress = "https://api.coinex.com/v1";
-        }
-
-        public CoinExClientOptions Copy()
-        {
-            var copy = Copy<CoinExClientOptions>();
-            copy.UserAgent = UserAgent;
-            return copy;
         }
     }
 
+    /// <summary>
+    /// Socket client options
+    /// </summary>
     public class CoinExSocketClientOptions : SocketClientOptions
     {
         /// <summary>
@@ -40,14 +36,22 @@ namespace CoinEx.Net.Objects
             }
         }
 
-        public CoinExSocketClientOptions()
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public CoinExSocketClientOptions(): base("wss://socket.coinex.com/")
         {
-            BaseAddress = "wss://socket.coinex.com/";
         }
     }
 
+    /// <summary>
+    /// Order book options
+    /// </summary>
     public class CoinExOrderBookOptions : OrderBookOptions
     {
+        /// <summary>
+        /// ctor
+        /// </summary>
         public CoinExOrderBookOptions() : base("CoinEx", false)
         {
         }

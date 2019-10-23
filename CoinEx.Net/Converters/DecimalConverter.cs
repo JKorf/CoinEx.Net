@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace CoinEx.Net.Converters
 {
-    public class DecimalConverter : JsonConverter
+    internal class DecimalConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -23,7 +24,7 @@ namespace CoinEx.Net.UnitTests
 
             // Act
             var sendWait = TestHelpers.WaitForSend(client);
-            var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
+            var subTask = client.SubscribeToSymbolStateUpdatesAsync(data => { });
             if(!sendWait.Result)
                 Assert.Fail("No sub response");
 
@@ -42,7 +43,7 @@ namespace CoinEx.Net.UnitTests
             var client = TestHelpers.PrepareSocketClient(() => Construct());
 
             // Act
-            var subTask = client.SubscribeToMarketStateUpdatesAsync(data => { });
+            var subTask = client.SubscribeToSymbolStateUpdatesAsync(data => { });
             Thread.Sleep(10);
             TestHelpers.InvokeWebsocket(client, JsonConvert.SerializeObject(
                 new CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>()
@@ -69,11 +70,11 @@ namespace CoinEx.Net.UnitTests
                 LogWriters = new List<TextWriter> { testWriter }
             }));
 
-            var expected = new Dictionary<string, CoinExSocketMarketState> { { "ETHBTC", new CoinExSocketMarketState() } };
-            Dictionary<string, CoinExSocketMarketState> actual = null;
+            var expected = new Dictionary<string, CoinExSocketSymbolState> { { "ETHBTC", new CoinExSocketSymbolState() } };
+            Dictionary<string, CoinExSocketSymbolState> actual = null;
 
             var sendWait = TestHelpers.WaitForSend(client);
-            var subTask = client.SubscribeToMarketStateUpdatesAsync(data =>
+            var subTask = client.SubscribeToSymbolStateUpdatesAsync(data =>
             {
                 actual = data;
             });
@@ -105,15 +106,15 @@ namespace CoinEx.Net.UnitTests
                 LogWriters = new List<TextWriter> { testWriter }
             }));
 
-            var expected = new CoinExSocketMarketTransaction[] {
-                new CoinExSocketMarketTransaction() { Type = TransactionType.Buy },
-                new CoinExSocketMarketTransaction() {  Type = TransactionType.Sell } };
-            CoinExSocketMarketTransaction[] actual = null;
+            var expected = new CoinExSocketSymbolTrade[] {
+                new CoinExSocketSymbolTrade() { Type = TransactionType.Buy },
+                new CoinExSocketSymbolTrade() {  Type = TransactionType.Sell } };
+            CoinExSocketSymbolTrade[] actual = null;
 
             var sendWait = TestHelpers.WaitForSend(client);
-            var subTask = client.SubscribeToMarketTransactionUpdatesAsync("ETHBTC", (market, data) =>
+            var subTask = client.SubscribeToSymbolTradeUpdatesAsync("ETHBTC", (market, data) =>
             {
-                actual = data;
+                actual = data.ToArray();
             });
 
             if (!sendWait.Result)
@@ -143,14 +144,14 @@ namespace CoinEx.Net.UnitTests
                 LogWriters = new List<TextWriter> { testWriter }
             }));
 
-            var expected = new CoinExSocketMarketTransaction[] {
-                new CoinExSocketMarketTransaction() { Type = TransactionType.Buy },
-                new CoinExSocketMarketTransaction() {  Type = TransactionType.Sell } };
-            CoinExSocketMarketTransaction[] actual = null;
+            var expected = new CoinExSocketSymbolTrade[] {
+                new CoinExSocketSymbolTrade() { Type = TransactionType.Buy },
+                new CoinExSocketSymbolTrade() {  Type = TransactionType.Sell } };
+            CoinExSocketSymbolTrade[] actual = null;
             var sendWait = TestHelpers.WaitForSend(client);
-            var subTask = client.SubscribeToMarketTransactionUpdatesAsync("ETHBTC", (market, data) =>
+            var subTask = client.SubscribeToSymbolTradeUpdatesAsync("ETHBTC", (market, data) =>
             {
-                actual = data;
+                actual = data.ToArray();
             });
 
             if (!sendWait.Result)
@@ -179,15 +180,15 @@ namespace CoinEx.Net.UnitTests
                 LogVerbosity = CryptoExchange.Net.Logging.LogVerbosity.Debug,
                 LogWriters = new List<TextWriter> { testWriter }
             }));
-            var expected = new CoinExSocketMarketDepth()
+            var expected = new CoinExSocketOrderBook()
             {
                 Asks = new List<CoinExDepthEntry> { new CoinExDepthEntry() { Quantity = 0.1m, Price = 0.2m } },
                 Bids = new List<CoinExDepthEntry> { new CoinExDepthEntry() { Quantity = 0.1m, Price = 0.2m } }
             };
-            CoinExSocketMarketDepth actual = null;
+            CoinExSocketOrderBook actual = null;
 
             var sendWait = TestHelpers.WaitForSend(client);
-            var subTask = client.SubscribeToMarketDepthUpdatesAsync("ETHBTC", 10, 1, (market, full, data) =>
+            var subTask = client.SubscribeToOrderBookUpdatesAsync("ETHBTC", 10, 1, (market, full, data) =>
             {
                 actual = data;
             });
@@ -226,9 +227,9 @@ namespace CoinEx.Net.UnitTests
             };
             CoinExKline[] actual = null;
             var sendWait = TestHelpers.WaitForSend(client);
-            var subTask = client.SubscribeToMarketKlineUpdatesAsync("ETHBTC", KlineInterval.FiveMinute, (market, data) =>
+            var subTask = client.SubscribeToKlineUpdatesAsync("ETHBTC", KlineInterval.FiveMinute, (market, data) =>
             {
-                actual = data;
+                actual = data.ToArray();
             });
             if (!sendWait.Result)
                 Assert.Fail(sb.ToString());

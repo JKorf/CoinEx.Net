@@ -1,7 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Websocket
 {
+    /// <summary>
+    /// Paged result
+    /// </summary>
+    /// <typeparam name="T">Type of data</typeparam>
     public class CoinExSocketPagedResult<T>
     {
         /// <summary>
@@ -20,6 +25,6 @@ namespace CoinEx.Net.Objects.Websocket
         /// The data
         /// </summary>
         [JsonProperty("records")]
-        public T[] Data { get; set; }
+        public IEnumerable<T> Data { get; set; } = new List<T>();
     }
 }

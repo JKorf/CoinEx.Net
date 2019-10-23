@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class TransactionTypeConverter : BaseConverter<TransactionType>
+    internal class TransactionTypeConverter : BaseConverter<TransactionType>
     {
         public TransactionTypeConverter() : this(true) { }
         public TransactionTypeConverter(bool quotes) : base(quotes) { }

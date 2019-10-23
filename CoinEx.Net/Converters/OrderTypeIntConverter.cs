@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class OrderTypeIntConverter : BaseConverter<OrderType>
+    internal class OrderTypeIntConverter : BaseConverter<OrderType>
     {
         public OrderTypeIntConverter() : this(true) { }
         public OrderTypeIntConverter(bool quotes) : base(quotes) { }

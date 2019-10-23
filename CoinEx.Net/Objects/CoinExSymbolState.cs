@@ -6,20 +6,27 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Objects
 {
-    public class CoinExMarketState
+    /// <summary>
+    /// Symbol state info
+    /// </summary>
+    public class CoinExSymbolState
     {
         /// <summary>
         /// The timestamp of the data
         /// </summary>
         [JsonProperty("date"), JsonConverter(typeof(TimestampConverter))]
         public DateTime Timestamp { get; set; }
+
         /// <summary>
-        /// The market state data
+        /// The symbol state data
         /// </summary>
-        public CoinExMarketStateData Ticker { get; set; }
+        public CoinExSymbolStateData Ticker { get; set; } = default!;
     }
 
-    public class CoinExMarketStatesList
+    /// <summary>
+    /// Symbol state list
+    /// </summary>
+    public class CoinExSymbolStatesList
     {
         /// <summary>
         /// The timestamp of the data
@@ -27,16 +34,19 @@ namespace CoinEx.Net.Objects
         [JsonProperty("date"), JsonConverter(typeof(TimestampConverter))]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// The data specified as market -> market state data
+        /// The data specified as symbol -> symbol state data
         /// </summary>
         [JsonProperty("ticker")]
-        public Dictionary<string, CoinExMarketStateData> Tickers { get; set; }
+        public Dictionary<string, CoinExSymbolStateData> Tickers { get; set; } = new Dictionary<string, CoinExSymbolStateData>();
     }
 
-    public class CoinExMarketStateData
+    /// <summary>
+    /// Symbol state data
+    /// </summary>
+    public class CoinExSymbolStateData
     {
         /// <summary>
-        /// The best buy price available on the market
+        /// The best buy price available on the symbol
         /// </summary>
         [JsonProperty("buy"), JsonConverter(typeof(DecimalConverter))]
         public decimal BestBuyPrice { get; set; }
@@ -46,7 +56,7 @@ namespace CoinEx.Net.Objects
         [JsonProperty("buy_amount"), JsonConverter(typeof(DecimalConverter))]
         public decimal BestBuyAmount { get; set; }
         /// <summary>
-        /// The best sell price available on the market
+        /// The best sell price available on the symbol
         /// </summary>
         [JsonProperty("sell"), JsonConverter(typeof(DecimalConverter))]
         public decimal BestSellPrice { get; set; }
@@ -71,12 +81,12 @@ namespace CoinEx.Net.Objects
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Low { get; set; }
         /// <summary>
-        /// The price of the last transaction
+        /// The price of the last trade
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Last { get; set; }
         /// <summary>
-        /// The volume of the market asset. i.e. for market ETHBTC this is the volume in ETH
+        /// The volume of the quote asset. i.e. for symbol ETHBTC this is the volume in ETH
         /// </summary>
         [JsonProperty("vol"), JsonConverter(typeof(DecimalConverter))]
         public decimal Volume { get; set; }

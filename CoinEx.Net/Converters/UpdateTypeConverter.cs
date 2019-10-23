@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class UpdateTypeConverter: BaseConverter<UpdateType>
+    internal class UpdateTypeConverter: BaseConverter<UpdateType>
     {
         public UpdateTypeConverter() : this(true) { }
         public UpdateTypeConverter(bool quotes) : base(quotes) { }
