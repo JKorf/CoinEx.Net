@@ -305,9 +305,9 @@ namespace CoinEx.Net.UnitTests
         public void CheckValidCoinExSymbol(string symbol, bool isValid)
         {
             if (isValid)
-                Assert.DoesNotThrow(() => symbol.ValidateCoinExSymbol());
+                Assert.DoesNotThrow(symbol.ValidateCoinExSymbol);
             else
-                Assert.Throws(typeof(ArgumentException), () => symbol.ValidateCoinExSymbol());
+                Assert.Throws(typeof(ArgumentException), symbol.ValidateCoinExSymbol);
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net.Interfaces;
+﻿using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Logging;
 using Moq;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

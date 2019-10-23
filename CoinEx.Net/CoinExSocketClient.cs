@@ -314,7 +314,7 @@ namespace CoinEx.Net
             {
                 if (data.Length != 3)
                 {
-                    log.Write(LogVerbosity.Warning, $"Received unexpected data format for depth update. Expected 3 objects, received {data.Length}. Data: " + data.ToString());
+                    log.Write(LogVerbosity.Warning, $"Received unexpected data format for depth update. Expected 3 objects, received {data.Length}. Data: " + data);
                     return;
                 }
 
