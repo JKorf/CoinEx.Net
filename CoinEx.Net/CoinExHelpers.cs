@@ -4,8 +4,16 @@ using System.Text.RegularExpressions;
 
 namespace CoinEx.Net
 {
-    internal static class CoinExHelpers
+    /// <summary>
+    /// CoinEx helpers
+    /// </summary>
+    public static class CoinExHelpers
     {
+        /// <summary>
+        /// Kline interval to seconds
+        /// </summary>
+        /// <param name="interval"></param>
+        /// <returns></returns>
         public static int ToSeconds(this KlineInterval interval)
         {
             switch (interval)
@@ -63,7 +71,7 @@ namespace CoinEx.Net
             if (string.IsNullOrEmpty(symbolString))
                 throw new ArgumentException("Symbol is not provided");
 
-            if (!Regex.IsMatch(symbolString, "^([A-Z]{5,8})$"))
+            if (!Regex.IsMatch(symbolString, "^([A-Z]{5,9})$"))
                 throw new ArgumentException($"{symbolString} is not a valid CoinEx symbol. Should be [QuoteCurrency][BaseCurrency], e.g. ETHBTC");
         }
     }

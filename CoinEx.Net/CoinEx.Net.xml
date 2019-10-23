@@ -408,6 +408,18 @@
         <member name="M:CoinEx.Net.CoinExClient.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
+        <member name="T:CoinEx.Net.CoinExHelpers">
+            <summary>
+            CoinEx helpers
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.CoinExHelpers.ToSeconds(CoinEx.Net.Objects.KlineInterval)">
+            <summary>
+            Kline interval to seconds
+            </summary>
+            <param name="interval"></param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExHelpers.ValidateCoinExSymbol(System.String)">
             <summary>
             Validate the string is a valid CoinEx symbol.

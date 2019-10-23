@@ -295,12 +295,12 @@ namespace CoinEx.Net.UnitTests
         }
 
         [TestCase("BTCUSDT", true)]
-        [TestCase("NANOUSDT", true)]
+        [TestCase("NANOUSDTA", true)]
+        [TestCase("NANOUSDTAD", false)]
         [TestCase("NANOBTC", true)]
         [TestCase("ETHBTC", true)]
         [TestCase("BEETC", true)]
         [TestCase("BETC", false)]
-        [TestCase("NANOUSDTD", false)]
         [TestCase("BTC-USDT", false)]
         [TestCase("BTC-USD", false)]
         public void CheckValidCoinExSymbol(string symbol, bool isValid)
