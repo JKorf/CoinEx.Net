@@ -86,6 +86,9 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.0.1 - 23 Oct 2019
+	* Fixed validation length symbols
+
 * Version 3.0.0 - 23 Oct 2019
 	* See CryptoExchange.Net 3.0 release notes
 	* Added input validation
