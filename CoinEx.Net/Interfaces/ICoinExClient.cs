@@ -119,6 +119,38 @@ namespace CoinEx.Net.Interfaces
         /// <returns>List of klines for a symbol</returns>
         Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, CancellationToken ct = default);
 
+
+        /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="symbol">The symbol to retrieve data for</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        WebCallResult<Dictionary<string, CoinExMarket>>GetMarketInfo(string symbol, CancellationToken ct = default);
+
+        /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="symbol">The symbol to retrieve data for</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        Task<WebCallResult<Dictionary<string, CoinExMarket>>> GetMarketInfoAsync(string symbol, CancellationToken ct = default);
+
+        /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        WebCallResult<Dictionary<string, CoinExMarket>> GetMarketInfo(CancellationToken ct = default);
+
+        /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        Task<WebCallResult<Dictionary<string, CoinExMarket>>> GetMarketInfoAsync(CancellationToken ct = default);
+       
+        
         /// <summary>
         /// Retrieves a list of balances. Requires API credentials
         /// </summary>
@@ -132,6 +164,28 @@ namespace CoinEx.Net.Interfaces
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of balances</returns>
         Task<WebCallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(CancellationToken ct = default);
+
+
+        /// <summary>
+        /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+        /// </summary>
+        /// <param name="coin">The coin to get history for</param>
+        /// <param name="page">The page in the results to retrieve</param>
+        /// <param name="limit">The number of results to return per page</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        WebCallResult<IEnumerable<CoinExDeposit>> GetDepositHistory(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+        /// </summary>
+        /// <param name="coin">The coin to get history for</param>
+        /// <param name="page">The page in the results to retrieve</param>
+        /// <param name="limit">The number of results to return per page</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExDeposit>>> GetDepositHistoryHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
+
 
         /// <summary>
         /// Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key

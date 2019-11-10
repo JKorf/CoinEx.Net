@@ -30,9 +30,11 @@ namespace CoinEx.Net
         private const string MarketDepthEndpoint = "/market/depth";
         private const string MarketDealsEndpoint = "/market/deals";
         private const string MarketKlinesEndpoint = "/market/kline";
+        private const string MarketInfoEndpoint = "/market/info";
 
         private const string AccountInfoEndpoint = "/balance/info";
         private const string WithdrawalHistoryEndpoint = "/balance/coin/withdraw";
+        private const string DepositHistoryEndpoint = "/balance/coin/deposit";
         private const string WithdrawEndpoint = "/balance/coin/withdraw";
         private const string CancelWithdrawalEndpoint = "/balance/coin/withdraw";
 
@@ -205,6 +207,44 @@ namespace CoinEx.Net
         }
 
         /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="symbol">The symbol to retrieve data for</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        public WebCallResult<Dictionary<string, CoinExMarket>> GetMarketInfo(string symbol, CancellationToken ct = default) => GetMarketInfoAsync(symbol, ct).Result;
+        /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="symbol">The symbol to retrieve data for</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        public async Task<WebCallResult<Dictionary<string, CoinExMarket>>> GetMarketInfoAsync(string symbol, CancellationToken ct = default)
+        {
+            var parameters = new Dictionary<string, object>
+            {
+                { "market", symbol }
+            };
+            return await Execute<Dictionary<string, CoinExMarket>>(GetUrl(MarketInfoEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        public WebCallResult<Dictionary<string, CoinExMarket>> GetMarketInfo(CancellationToken ct = default) => GetMarketInfoAsync(ct).Result;
+        /// <summary>
+        /// Retrieves market data for the exchange
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of market data for the exchange</returns>
+        public async Task<WebCallResult<Dictionary<string, CoinExMarket>>> GetMarketInfoAsync(CancellationToken ct = default)
+        {
+            return await Execute<Dictionary<string, CoinExMarket>>(GetUrl(MarketInfoEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Retrieves kline data for a specific symbol
         /// </summary>
         /// <param name="symbol">The symbol to retrieve klines for</param>
@@ -252,6 +292,35 @@ namespace CoinEx.Net
         }
 
         /// <summary>
+        /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+        /// </summary>
+        /// <param name="coin">The coin to get history for</param>
+        /// <param name="page">The page in the results to retrieve</param>
+        /// <param name="limit">The number of results to return per page</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        public WebCallResult<IEnumerable<CoinExDeposit>> GetDepositHistory(string? coin = null,  int? page = null, int? limit = null, CancellationToken ct = default) =>
+            GetDepositHistoryHistoryAsync(coin, page, limit, ct).Result;
+        /// <summary>
+        /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+        /// </summary>
+        /// <param name="coin">The coin to get history for</param>
+        /// <param name="page">The page in the results to retrieve</param>
+        /// <param name="limit">The number of results to return per page</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        public async Task<WebCallResult<IEnumerable<CoinExDeposit>>> GetDepositHistoryHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default)
+        {
+            limit?.ValidateIntBetween(nameof(limit), 1, 100);
+            var parameters = new Dictionary<string, object>();
+            parameters.AddOptionalParameter("coin_type", coin);
+            parameters.AddOptionalParameter("page", page);
+            parameters.AddOptionalParameter("limit", limit);
+
+            return await Execute<IEnumerable<CoinExDeposit>>(GetUrl(DepositHistoryEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
         /// </summary>
         /// <param name="coin">The coin to get history for</param>
@@ -275,7 +344,7 @@ namespace CoinEx.Net
         {
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>();
-            parameters.AddOptionalParameter("coin", coin);
+            parameters.AddOptionalParameter("coin_type", coin);
             parameters.AddOptionalParameter("coin_withdraw_id", coinWithdrawId);
             parameters.AddOptionalParameter("page", page);
             parameters.AddOptionalParameter("limit", limit);

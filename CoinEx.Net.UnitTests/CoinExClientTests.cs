@@ -31,6 +31,46 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
+        public void GetMarketInfo_Should_RespondWithMarketInfo()
+        {
+            Dictionary<string, CoinExMarket> expected = new Dictionary<string, CoinExMarket>()
+            {
+                { "ETHBTC", new CoinExMarket() },
+                { "ETHBCH", new CoinExMarket() },
+            };
+            var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
+            {
+            }), CreateRequest(expected));
+
+            // act
+            var result = objects.Client.GetMarketInfo();
+
+            // assert
+            Assert.AreEqual(true, result.Success);
+            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+        }
+
+        [Test]
+        public void GetMarketInfoBySymbol_Should_RespondWithMarketInfo()
+        {
+            
+            Dictionary<string, CoinExMarket> expected = new Dictionary<string, CoinExMarket>()
+            {
+                { "ETHBTC", new CoinExMarket() },
+            };
+            var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
+            {
+            }), CreateRequest(expected));
+
+            // act
+            var result = objects.Client.GetMarketInfo("ETHBTC");
+
+            // assert
+            Assert.AreEqual(true, result.Success);
+            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+        }
+
+        [Test]
         public void GetKlines_Should_RespondWithKlines()
         {
             // arrange
@@ -190,6 +230,29 @@ namespace CoinEx.Net.UnitTests
 
             // act
             var result = objects.Client.GetBalances();
+
+            // assert
+            Assert.AreEqual(true, result.Success);
+            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+        }
+
+
+        [Test]
+        public void WithdrawalHistory_Should_RespondWithdrawalHistory()
+        {
+            // arrange
+            IEnumerable<CoinExWithdrawal> expected = new List<CoinExWithdrawal>
+            {
+                 new CoinExWithdrawal(),
+                 new CoinExWithdrawal()
+            };
+            var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
+            {
+                ApiCredentials = new ApiCredentials("test", "test")
+            }), CreateRequest(expected));
+
+            // act
+            var result = objects.Client.GetWithdrawalHistory();
 
             // assert
             Assert.AreEqual(true, result.Success);
