@@ -113,6 +113,36 @@
             <param name="ct">Cancellation token</param>
             <returns>List of trades for a symbol</returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketInfo(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="symbol">The symbol to retrieve data for</param>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketInfoAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="symbol">The symbol to retrieve data for</param>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketInfo(System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetMarketInfoAsync(System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetKlines(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Retrieves kline data for a specific symbol
@@ -146,6 +176,26 @@
             </summary>
             <param name="ct">Cancellation token</param>
             <returns>List of balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetDepositHistory(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetDepositHistoryHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetWithdrawalHistory(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
@@ -845,6 +895,36 @@
             <param name="ct">Cancellation token</param>
             <returns>List of klines for a symbol</returns>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketInfo(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="symbol">The symbol to retrieve data for</param>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketInfoAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="symbol">The symbol to retrieve data for</param>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketInfo(System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketInfoAsync(System.Threading.CancellationToken)">
+            <summary>
+            Retrieves market data for the exchange
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns>List of market data for the exchange</returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetBalances(System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of balances. Requires API credentials
@@ -858,6 +938,26 @@
             </summary>
             <param name="ct">Cancellation token</param>
             <returns>List of balances</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetDepositHistory(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetDepositHistoryHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+            </summary>
+            <param name="coin">The coin to get history for</param>
+            <param name="page">The page in the results to retrieve</param>
+            <param name="limit">The number of results to return per page</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetWithdrawalHistory(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
@@ -1414,6 +1514,101 @@
             ctor
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.CoinExDeposit">
+            <summary>
+            Deposit info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.ActualAmount">
+            <summary>
+            The actual amount of the deposit
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.ActualAmountDisplay">
+            <summary>
+            The display for the deposit
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.AddExplorer">
+            <summary>
+            Depositor
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.Amount">
+            <summary>
+            The total amount of the deposit
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.AmountDisplay">
+            <summary>
+            The display for the amount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.CoinAddress">
+            <summary>
+            Deposit add displayed
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.CoinAddressDisplay">
+            <summary>
+            Deposit add displayed
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.CoinDepositId">
+            <summary>
+            Deposit ID
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.CoinType">
+            <summary>
+            Deposit ID
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.Confirmations">
+            <summary>
+            Deposit ID
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.CreateTime">
+            <summary>
+            Deposit ID
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.Explorer">
+            <summary>
+            Explorer
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.Remark">
+            <summary>
+            Remarks
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.StatusDisplay">
+            <summary>
+            Status Displayed
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.TransferMethod">
+            <summary>
+            transfer method
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.TxId">
+            <summary>
+            The transaction id of the withdrawal
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDeposit.TxIdDisplay">
+            <summary>
+            The transaction id of the withdrawal
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.TransactionType">
             <summary>
             Transaction type
@@ -1667,6 +1862,51 @@
         <member name="P:CoinEx.Net.Objects.CoinExKline.Symbol">
             <summary>
             The symbol for this kline
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.CoinExMarket">
+            <summary>
+            Market Info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.Name">
+            <summary>
+            The name of the market
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.MinAmount">
+            <summary>
+            The minimum amount that can be traded
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.MakerFeeRate">
+            <summary>
+            The fee for the maker
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.TakerFeeRate">
+            <summary>
+            The fee for the taker
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.PricingName">
+            <summary>
+            The coin being that is being traded against
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.PricingDecimal">
+            <summary>
+            The number of decimals for the price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.TradingName">
+            <summary>
+            The coin being traded
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExMarket.TradingDecimal">
+            <summary>
+            The number of decimals for the price
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExMiningDifficulty">
