@@ -256,7 +256,7 @@ namespace CoinEx.Net.UnitTests
 
             // assert
             Assert.AreEqual(true, result.Success);
-            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+            TestHelpers.PublicInstancePropertiesEqual(expected.First(), result.Data.First());
         }
 
         [Test]
