@@ -359,7 +359,6 @@ namespace CoinEx.Net.UnitTests
 
         [TestCase("BTCUSDT", true)]
         [TestCase("NANOUSDTA", true)]
-        [TestCase("NANOUSDTAD", false)]
         [TestCase("NANOBTC", true)]
         [TestCase("ETHBTC", true)]
         [TestCase("BEETC", true)]
