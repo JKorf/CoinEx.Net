@@ -52,7 +52,7 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// ctor
         /// </summary>
-        public CoinExOrderBookOptions() : base("CoinEx", false)
+        public CoinExOrderBookOptions() : base("CoinEx", false, false)
         {
         }
     }

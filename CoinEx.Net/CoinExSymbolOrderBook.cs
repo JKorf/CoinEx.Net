@@ -24,12 +24,13 @@ namespace CoinEx.Net
         {
             symbol.ValidateCoinExSymbol();
             socketClient = new CoinExSocketClient();
+            Levels = 20;
         }
 
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStart()
         {
-            var result = await socketClient.SubscribeToOrderBookUpdatesAsync(Symbol, 20, 0, HandleUpdate).ConfigureAwait(false);
+            var result = await socketClient.SubscribeToOrderBookUpdatesAsync(Symbol, Levels.Value, 0, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 
