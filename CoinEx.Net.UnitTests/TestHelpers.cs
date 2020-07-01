@@ -1,9 +1,8 @@
-﻿using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net.Interfaces;
+﻿using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Logging;
 using Moq;
-using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -61,75 +60,36 @@ namespace CryptoExchange.Net.Testing
             return self == to;
         }
 
-        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData) where T : RestClient, new()
+        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData, HttpStatusCode code = HttpStatusCode.OK) where T : RestClient, new()
         {
+            var client = construct();
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();
             responseStream.Write(expectedBytes, 0, expectedBytes.Length);
             responseStream.Seek(0, SeekOrigin.Begin);
 
             var response = new Mock<IResponse>();
-            response.Setup(c => c.GetResponseStream()).Returns(responseStream);
-
-            var requestStream = new Mock<Stream>();
+            response.Setup(c => c.IsSuccessStatusCode).Returns(code == HttpStatusCode.OK);
+            response.Setup(c => c.StatusCode).Returns(code);
+            response.Setup(c => c.GetResponseStream()).Returns(Task.FromResult((Stream)responseStream));
 
             var request = new Mock<IRequest>();
-            request.Setup(c => c.GetRequestStream()).Returns(Task.FromResult(requestStream.Object));
-            request.Setup(c => c.Headers).Returns(new WebHeaderCollection());
             request.Setup(c => c.Uri).Returns(new Uri("http://www.test.com"));
-            request.Setup(c => c.GetResponse()).Returns(Task.FromResult(response.Object));
+            request.Setup(c => c.GetResponse(It.IsAny<CancellationToken>())).Returns(Task.FromResult(response.Object));
 
             var factory = new Mock<IRequestFactory>();
-            factory.Setup(c => c.Create(It.IsAny<string>()))
+            factory.Setup(c => c.Create(It.IsAny<HttpMethod>(), It.IsAny<string>()))
                 .Returns(request.Object);
-
-            var client = construct();
             client.RequestFactory = factory.Object;
+
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
             log.Level = LogVerbosity.Debug;
             return new MockObjects<T>()
             {
                 Client = client,
                 Request = request,
-                RequestStream = requestStream,
                 Response = response
             };
-        }
-
-        public static T PrepareExceptionClient<T>(string responseData, string exceptionMessage, int statusCode) where T : RestClient, new()
-        {
-            var expectedBytes = Encoding.UTF8.GetBytes(responseData);
-            var responseStream = new MemoryStream();
-            responseStream.Write(expectedBytes, 0, expectedBytes.Length);
-            responseStream.Seek(0, SeekOrigin.Begin);
-
-            var we = new WebException();
-            var r = Activator.CreateInstance<HttpWebResponse>();
-            var re = new HttpResponseMessage();
-
-            typeof(HttpResponseMessage).GetField("_statusCode", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue(re, (HttpStatusCode)statusCode);
-            typeof(HttpWebResponse).GetField("_httpResponseMessage", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue(r, re);
-            typeof(WebException).GetField("_message", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue(we, exceptionMessage);
-            typeof(WebException).GetField("_response", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue(we, r);
-
-            var response = new Mock<IResponse>();
-            response.Setup(c => c.GetResponseStream()).Throws(we);
-
-            var request = new Mock<IRequest>();
-            request.Setup(c => c.Headers).Returns(new WebHeaderCollection());
-            request.Setup(c => c.GetResponse()).Returns(Task.FromResult(response.Object));
-
-            var factory = new Mock<IRequestFactory>();
-            factory.Setup(c => c.Create(It.IsAny<string>()))
-                .Returns(request.Object);
-
-            var client = new T
-            {
-                RequestFactory = factory.Object
-            };
-            var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
-            log.Level = LogVerbosity.Debug;
-            return client;
         }
 
         public static T PrepareSocketClient<T>(Func<T> construct) where T : SocketClient, new()
@@ -200,9 +160,9 @@ namespace CryptoExchange.Net.Testing
             });
         }
 
-        public static List<SocketSubscription> GetSockets(CoinExSocketClient client)
+        public static List<SocketConnection> GetSockets(CoinExSocketClient client)
         {            
-            return (List<SocketSubscription>)client.GetType().GetField("sockets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(client);
+            return ((ConcurrentDictionary<int, SocketConnection>)client.GetType().GetField("sockets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(client)).Values.ToList();
         }
 
         public static async Task<bool> WaitForClose(CoinExSocketClient client, int timeout = 1000)
@@ -274,7 +234,6 @@ namespace CryptoExchange.Net.Testing
         {
             public T Client { get; set; }
             public Mock<IRequest> Request { get; set; }
-            public Mock<Stream> RequestStream { get; set; }
             public Mock<IResponse> Response { get; set; }
 
         }

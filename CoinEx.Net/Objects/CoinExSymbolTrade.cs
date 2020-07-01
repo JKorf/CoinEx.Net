@@ -5,7 +5,10 @@ using System;
 
 namespace CoinEx.Net.Objects
 {
-    public class CoinExMarketTransaction
+    /// <summary>
+    /// Symbol trade info
+    /// </summary>
+    public class CoinExSymbolTrade
     {
         /// <summary>
         /// The amount of the transaction

@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class TransactionTypeConverter : BaseConverter<TransactionType>
+    internal class TransactionTypeConverter : BaseConverter<TransactionType>
     {
         public TransactionTypeConverter() : this(true) { }
         public TransactionTypeConverter(bool quotes) : base(quotes) { }
 
-        protected override Dictionary<TransactionType, string> Mapping => new Dictionary<TransactionType, string>
+        protected override List<KeyValuePair<TransactionType, string>> Mapping => new List<KeyValuePair<TransactionType, string>>
         {
-            { TransactionType.Buy, "buy" },
-            { TransactionType.Sell, "sell" }
+            new KeyValuePair<TransactionType, string>(TransactionType.Buy, "buy"),
+            new KeyValuePair<TransactionType, string>(TransactionType.Sell, "sell")
         };
     }
 }

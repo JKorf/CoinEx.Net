@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class OrderTypeConverter: BaseConverter<OrderType>
+    internal class OrderTypeConverter: BaseConverter<OrderType>
     {
         public OrderTypeConverter() : this(true) { }
         public OrderTypeConverter(bool quotes) : base(quotes) { }
 
-        protected override Dictionary<OrderType, string> Mapping => new Dictionary<OrderType, string>
+        protected override List<KeyValuePair<OrderType, string>> Mapping => new List<KeyValuePair<OrderType, string>>
         {
-            { OrderType.Limit, "limit" },
-            { OrderType.Market, "market" }
+            new KeyValuePair<OrderType, string>(OrderType.Limit, "limit"),
+            new KeyValuePair<OrderType, string>(OrderType.Market, "market")
         };
     }
 }

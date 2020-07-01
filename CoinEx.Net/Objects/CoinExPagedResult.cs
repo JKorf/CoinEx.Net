@@ -1,7 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Paged result
+    /// </summary>
+    /// <typeparam name="T">Type of data</typeparam>
     public class CoinExPagedResult<T>
     {
         /// <summary>
@@ -16,7 +21,7 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// The results
         /// </summary>
-        public T[] Data { get; set; }
+        public IEnumerable<T> Data { get; set; } = new List<T>();
         /// <summary>
         /// Whether there is a next page
         /// </summary>

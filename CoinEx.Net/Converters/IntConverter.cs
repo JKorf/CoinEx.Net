@@ -4,22 +4,22 @@ using System.Globalization;
 
 namespace CoinEx.Net.Converters
 {
-    internal class DecimalConverter : JsonConverter
+    internal class IntConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(decimal);
+            return objectType == typeof(int);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var value = reader.Value.ToString();
-            return decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var result) ? result : 0m;
+            return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var result) ? result : 0;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteValue((decimal)value);
+            writer.WriteValue((int)value);
         }
     }
 }

@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class OrderStatusConverter: BaseConverter<OrderStatus>
+    internal class OrderStatusConverter: BaseConverter<OrderStatus>
     {
         public OrderStatusConverter() : this(true) { }
         public OrderStatusConverter(bool quotes) : base(quotes) { }
 
-        protected override Dictionary<OrderStatus, string> Mapping => new Dictionary<OrderStatus, string>
+        protected override List<KeyValuePair<OrderStatus, string>> Mapping => new List<KeyValuePair<OrderStatus, string>>
         {
-            { OrderStatus.Executed, "done" },
-            { OrderStatus.PartiallyExecuted, "part_deal" },
-            { OrderStatus.UnExecuted, "not_deal" },
-            { OrderStatus.Canceled, "cancel" }
+            new KeyValuePair<OrderStatus, string>(OrderStatus.Executed, "done"),
+            new KeyValuePair<OrderStatus, string>(OrderStatus.PartiallyExecuted, "part_deal"),
+            new KeyValuePair<OrderStatus, string>(OrderStatus.UnExecuted, "not_deal"),
+            new KeyValuePair<OrderStatus, string>(OrderStatus.Canceled, "cancel")
         };
     }
 }

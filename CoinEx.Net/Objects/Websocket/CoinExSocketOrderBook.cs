@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Objects.Websocket
 {
-    public class CoinExSocketMarketDepth
+    /// <summary>
+    /// Order book
+    /// </summary>
+    public class CoinExSocketOrderBook
     {
         /// <summary>
         /// The price of the last trade. Only filled on a full update.
@@ -18,18 +21,12 @@ namespace CoinEx.Net.Objects.Websocket
         [JsonProperty("time"), JsonConverter(typeof(TimestampConverter))]
         public DateTime? Timestamp { get; set; }
         /// <summary>
-        /// The asks on the market
+        /// The asks on the symbol
         /// </summary>
-        public List<CoinExDepthEntry> Asks { get; set; }
+        public IEnumerable<CoinExDepthEntry> Asks { get; set; } = new List<CoinExDepthEntry>();
         /// <summary>
-        /// The bids on the market
+        /// The bids on the symbol
         /// </summary>
-        public List<CoinExDepthEntry> Bids { get; set; }
-
-        public CoinExSocketMarketDepth()
-        {
-            Asks = new List<CoinExDepthEntry>();
-            Bids = new List<CoinExDepthEntry>();
-        }
+        public IEnumerable<CoinExDepthEntry> Bids { get; set; } = new List<CoinExDepthEntry>();
     }
 }

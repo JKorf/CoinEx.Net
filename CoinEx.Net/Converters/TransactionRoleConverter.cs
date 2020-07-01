@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace CoinEx.Net.Converters
 {
-    public class TransactionRoleConverter: BaseConverter<TransactionRole>
+    internal class TransactionRoleConverter: BaseConverter<TransactionRole>
     {
         public TransactionRoleConverter() : this(true) { }
         public TransactionRoleConverter(bool quotes) : base(quotes) { }
 
-        protected override Dictionary<TransactionRole, string> Mapping => new Dictionary<TransactionRole, string>
+        protected override List<KeyValuePair<TransactionRole, string>> Mapping => new List<KeyValuePair<TransactionRole, string>>
         {
-            { TransactionRole.Maker, "maker" },
-            { TransactionRole.Taker, "taker" }
+            new KeyValuePair<TransactionRole, string>(TransactionRole.Maker, "maker"),
+            new KeyValuePair<TransactionRole, string>(TransactionRole.Taker, "taker")
         };
     }
 }

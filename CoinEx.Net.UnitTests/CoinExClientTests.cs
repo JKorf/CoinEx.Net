@@ -7,6 +7,8 @@ using CryptoExchange.Net.Authentication;
 using Moq;
 using System.Linq;
 using CryptoExchange.Net;
+using System.Net;
+using System;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -21,11 +23,51 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketList();
+            var result = objects.Client.GetSymbols();
 
             // assert
             Assert.AreEqual(true, result.Success);
             Assert.AreEqual(expected, result.Data);
+        }
+
+        [Test]
+        public void GetMarketInfo_Should_RespondWithMarketInfo()
+        {
+            Dictionary<string, CoinExMarket> expected = new Dictionary<string, CoinExMarket>()
+            {
+                { "ETHBTC", new CoinExMarket() },
+                { "ETHBCH", new CoinExMarket() },
+            };
+            var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
+            {
+            }), CreateRequest(expected));
+
+            // act
+            var result = objects.Client.GetMarketInfo();
+
+            // assert
+            Assert.AreEqual(true, result.Success);
+            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+        }
+
+        [Test]
+        public void GetMarketInfoBySymbol_Should_RespondWithMarketInfo()
+        {
+            
+            Dictionary<string, CoinExMarket> expected = new Dictionary<string, CoinExMarket>()
+            {
+                { "ETHBTC", new CoinExMarket() },
+            };
+            var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
+            {
+            }), CreateRequest(expected));
+
+            // act
+            var result = objects.Client.GetMarketInfo("ETHBTC");
+
+            // assert
+            Assert.AreEqual(true, result.Success);
+            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
         }
 
         [Test]
@@ -43,7 +85,8 @@ namespace CoinEx.Net.UnitTests
 
             // assert
             Assert.AreEqual(true, result.Success);
-            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+            TestHelpers.PublicInstancePropertiesEqual(expected[0], result.Data.ToList()[0]);
+            TestHelpers.PublicInstancePropertiesEqual(expected[1], result.Data.ToList()[1]);
         }
 
         [Test]
@@ -54,41 +97,57 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), response);
 
             // act
-            var result = objects.Client.GetMarketList();
+            var result = objects.Client.GetSymbols();
 
             // assert
             Assert.IsFalse(result.Success);
             Assert.IsNotNull(result.Error);
-            Assert.IsTrue(result.Error.Message.Contains("Some error"));
+            Assert.IsTrue(result.Error.ToString().Contains("Some error"));
+        }
+
+        [Test]
+        public void ReceivingHttpError_Should_ReturnErrorAndNotSuccess()
+        {
+            // arrange
+            var objects = TestHelpers.PrepareClient(() => Construct(), "Error request", HttpStatusCode.BadRequest);
+
+            // act
+            var result = objects.Client.GetSymbols();
+
+            // assert
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Error);
+            Assert.IsTrue(result.Error.ToString().Contains("Error request"));
         }
 
         [Test]
         public void GetLatestTransactions_Should_RespondWithTransactionList()
         {
             // arrange
-            CoinExMarketTransaction[] expected = new CoinExMarketTransaction[] {
-                new CoinExMarketTransaction() { Type = TransactionType.Buy },
-                new CoinExMarketTransaction() { Type = TransactionType.Buy },
+            CoinExSymbolTrade[] expected = new CoinExSymbolTrade[] {
+                new CoinExSymbolTrade() { Type = TransactionType.Buy },
+                new CoinExSymbolTrade() { Type = TransactionType.Buy },
             };
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetLatestTransactions("ETHBTC");
+            var result = objects.Client.GetSymbolTrades("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
-            TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
+            TestHelpers.PublicInstancePropertiesEqual(expected[0], result.Data.ToList()[0]);
+            TestHelpers.PublicInstancePropertiesEqual(expected[1], result.Data.ToList()[1]);
         }
 
         [Test]
         public void GetMarketDepth_Should_RespondWithMarketDepth()
         {
             // arrange
-            CoinExMarketDepth expected = new CoinExMarketDepth();
+            CoinExOrderBook expected = new CoinExOrderBook();
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketDepth("ETHBTC", 1);
+            var result = objects.Client.GetOrderBook("ETHBTC", 1);
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -99,11 +158,11 @@ namespace CoinEx.Net.UnitTests
         public void GetMarketState_Should_RespondWithMarketState()
         {
             // arrange
-            CoinExMarketState expected = new CoinExMarketState();
+            CoinExSymbolState expected = new CoinExSymbolState();
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketState("ETHBTC");
+            var result = objects.Client.GetSymbolState("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -177,6 +236,29 @@ namespace CoinEx.Net.UnitTests
             TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
         }
 
+
+        [Test]
+        public void WithdrawalHistory_Should_RespondWithdrawalHistory()
+        {
+            // arrange
+            IEnumerable<CoinExWithdrawal> expected = new List<CoinExWithdrawal>
+            {
+                 new CoinExWithdrawal(),
+                 new CoinExWithdrawal()
+            };
+            var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
+            {
+                ApiCredentials = new ApiCredentials("test", "test")
+            }), CreateRequest(expected));
+
+            // act
+            var result = objects.Client.GetWithdrawalHistory();
+
+            // assert
+            Assert.AreEqual(true, result.Success);
+            TestHelpers.PublicInstancePropertiesEqual(expected.First(), result.Data.First());
+        }
+
         [Test]
         public void AuthenticatedRequests_Should_HaveAuthenticationHeader()
         {
@@ -190,7 +272,7 @@ namespace CoinEx.Net.UnitTests
             var result = objects.Client.GetBalances();
 
             // assert
-            Assert.IsTrue(objects.Request.Object.Headers.AllKeys.Any(k => k == "Authorization"));
+            objects.Request.Verify(r => r.AddHeader("Authorization", It.IsAny<string>()));
         }
 
         [Test]
@@ -206,21 +288,21 @@ namespace CoinEx.Net.UnitTests
             var result = objects.Client.PlaceLimitOrder("BTCETH", TransactionType.Buy, 1, 1);
 
             // assert
-            objects.RequestStream.Verify(r => r.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()));
+            objects.Request.Verify(r => r.SetContent(It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [Test]
         public void GetExecutedOrderDetails_Should_RespondWithExecutedOrderResults()
         {
             // arrange
-            CoinExPagedResult<CoinExOrderTransaction> expected = new CoinExPagedResult<CoinExOrderTransaction>()
+            CoinExPagedResult<CoinExOrderTrade> expected = new CoinExPagedResult<CoinExOrderTrade>()
             {
                 Count = 1,
                 CurrentPage = 1,
                 HasNext = false,
-                Data = new CoinExOrderTransaction[]
+                Data = new CoinExOrderTrade[]
                 {
-                    new CoinExOrderTransaction()
+                    new CoinExOrderTrade()
                 }
             };
             var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
@@ -235,23 +317,7 @@ namespace CoinEx.Net.UnitTests
             Assert.AreEqual(true, result.Success);
             TestHelpers.PublicInstancePropertiesEqual(expected, result.Data);
         }
-
-
-        [Test]
-        public void ReceivingServerError_Should_ReturnServerErrorAndNotSuccess()
-        {
-            // arrange
-            var client = TestHelpers.PrepareExceptionClient<CoinExClient>("", "Unavailable", 504);
-
-            // act
-            var result = client.GetMarketList();
-
-            // assert
-            Assert.IsFalse(result.Success);
-            Assert.IsNotNull(result.Error);
-            Assert.IsTrue(result.Error.Message.Contains("Unavailable"));
-        }
-
+        
         [Test]
         public void ProvidingApiCredentials_Should_SaveApiCredentials()
         {
@@ -289,6 +355,22 @@ namespace CoinEx.Net.UnitTests
             if (options != null)
                 return new CoinExClient(options);
             return new CoinExClient();
+        }
+
+        [TestCase("BTCUSDT", true)]
+        [TestCase("NANOUSDTA", true)]
+        [TestCase("NANOBTC", true)]
+        [TestCase("ETHBTC", true)]
+        [TestCase("BEETC", true)]
+        [TestCase("BETC", false)]
+        [TestCase("BTC-USDT", false)]
+        [TestCase("BTC-USD", false)]
+        public void CheckValidCoinExSymbol(string symbol, bool isValid)
+        {
+            if (isValid)
+                Assert.DoesNotThrow(symbol.ValidateCoinExSymbol);
+            else
+                Assert.Throws(typeof(ArgumentException), symbol.ValidateCoinExSymbol);
         }
     }
 }

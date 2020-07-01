@@ -9,7 +9,10 @@ using CryptoExchange.Net.Sockets;
 
 namespace CoinEx.Net.Interfaces
 {
-    public interface ICoinExSocketClient
+    /// <summary>
+    /// Interface for the CoinEx socket client
+    /// </summary>
+    public interface ICoinExSocketClient: ISocketClient
     {
         /// <summary>
         /// Pings the server
@@ -36,72 +39,72 @@ namespace CoinEx.Net.Interfaces
         Task<CallResult<DateTime>> GetServerTimeAsync();
 
         /// <summary>
-        /// Get the market state
+        /// Get the symbol state
         /// </summary>
-        /// <param name="market">The market to get the state for</param>
+        /// <param name="symbol">The symbol to get the state for</param>
         /// <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
-        /// <returns>Market state</returns>
-        CallResult<CoinExSocketMarketState> GetMarketState(string market, int cyclePeriod);
+        /// <returns>Symbol state</returns>
+        CallResult<CoinExSocketSymbolState> GetSymbolState(string symbol, int cyclePeriod);
 
         /// <summary>
-        /// Get the market state
+        /// Get the symbol state
         /// </summary>
-        /// <param name="market">The market to get the state for</param>
+        /// <param name="symbol">The symbol to get the state for</param>
         /// <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
-        /// <returns>Market state</returns>
-        Task<CallResult<CoinExSocketMarketState>> GetMarketStateAsync(string market, int cyclePeriod);
+        /// <returns>Symbol state</returns>
+        Task<CallResult<CoinExSocketSymbolState>> GetSymbolStateAsync(string symbol, int cyclePeriod);
 
         /// <summary>
-        /// Get a market depth overview
+        /// Get an order book
         /// </summary>
-        /// <param name="market">The market to get depth for</param>
+        /// <param name="symbol">The symbol to get the order book for</param>
         /// <param name="limit">The limit of results returned</param>
         /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-        /// <returns>Depth overview for a market</returns>
-        CallResult<CoinExSocketMarketDepth> GetMarketDepth(string market, int limit, int mergeDepth);
+        /// <returns>Order book for a symbol</returns>
+        CallResult<CoinExSocketOrderBook> GetOrderBook(string symbol, int limit, int mergeDepth);
 
         /// <summary>
-        /// Get a market depth overview
+        /// Get an order book
         /// </summary>
-        /// <param name="market">The market to get depth for</param>
+        /// <param name="symbol">The symbol to get the order book for</param>
         /// <param name="limit">The limit of results returned</param>
         /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-        /// <returns>Depth overview for a market</returns>
-        Task<CallResult<CoinExSocketMarketDepth>> GetMarketDepthAsync(string market, int limit, int mergeDepth);
+        /// <returns>Order book of a symbol</returns>
+        Task<CallResult<CoinExSocketOrderBook>> GetOrderBookAsync(string symbol, int limit, int mergeDepth);
 
         /// <summary>
-        /// Gets the latest transactions on a market
+        /// Gets the latest trades on a symbol
         /// </summary>
-        /// <param name="market">The market to get the transactions for</param>
-        /// <param name="limit">The limit of transactions</param>
-        /// <param name="fromId">Return transactions since this id</param>
-        /// <returns>List of transactions</returns>
-        CallResult<CoinExSocketMarketTransaction[]> GetMarketTransactions(string market, int limit, int? fromId = null);
+        /// <param name="symbol">The symbol to get the trades for</param>
+        /// <param name="limit">The limit of trades</param>
+        /// <param name="fromId">Return trades since this id</param>
+        /// <returns>List of trades</returns>
+        CallResult<IEnumerable<CoinExSocketSymbolTrade>> GetSymbolTrades(string symbol, int limit, int? fromId = null);
 
         /// <summary>
-        /// Gets the latest transactions on a market
+        /// Gets the latest trades on a symbol
         /// </summary>
-        /// <param name="market">The market to get the transactions for</param>
-        /// <param name="limit">The limit of transactions</param>
-        /// <param name="fromId">Return transactions since this id</param>
-        /// <returns>List of transactions</returns>
-        Task<CallResult<CoinExSocketMarketTransaction[]>> GetMarketTransactionsAsync(string market, int limit, int? fromId = null);
+        /// <param name="symbol">The symbol to get the trades for</param>
+        /// <param name="limit">The limit of trades</param>
+        /// <param name="fromId">Return trades since this id</param>
+        /// <returns>List of trades</returns>
+        Task<CallResult<IEnumerable<CoinExSocketSymbolTrade>>> GetSymbolTradesAsync(string symbol, int limit, int? fromId = null);
 
         /// <summary>
-        /// Gets market kline data
+        /// Gets symbol kline data
         /// </summary>
-        /// <param name="market">The market to get the data for</param>
+        /// <param name="symbol">The symbol to get the data for</param>
         /// <param name="interval">The interval of the candles</param>
         /// <returns></returns>
-        CallResult<CoinExKline> GetMarketKlines(string market, KlineInterval interval);
+        CallResult<CoinExKline> GetKlines(string symbol, KlineInterval interval);
 
         /// <summary>
-        /// Gets market kline data
+        /// Gets symbol kline data
         /// </summary>
-        /// <param name="market">The market to get the data for</param>
+        /// <param name="symbol">The symbol to get the data for</param>
         /// <param name="interval">The interval of the candles</param>
         /// <returns></returns>
-        Task<CallResult<CoinExKline>> GetMarketKlinesAsync(string market, KlineInterval interval);
+        Task<CallResult<CoinExKline>> GetKlinesAsync(string symbol, KlineInterval interval);
 
         /// <summary>
         /// Get balances of coins. Requires API credentials
@@ -118,108 +121,108 @@ namespace CoinEx.Net.Interfaces
         Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(params string[] coins);
 
         /// <summary>
-        /// Gets a list of open orders for a market
+        /// Gets a list of open orders for a symbol
         /// </summary>
-        /// <param name="market">Market to get open orders for</param>
+        /// <param name="symbol">Symbol to get open orders for</param>
         /// <param name="type">The type of orders to get</param>
         /// <param name="offset">The offset in the list</param>
         /// <param name="limit">The limit of results</param>
         /// <returns>List of open orders</returns>
-        CallResult<CoinExSocketPagedResult<CoinExSocketOrder>> GetOpenOrders(string market, TransactionType type, int offset, int limit);
+        CallResult<CoinExSocketPagedResult<CoinExSocketOrder>> GetOpenOrders(string symbol, TransactionType type, int offset, int limit);
 
         /// <summary>
-        /// Gets a list of open orders for a market
+        /// Gets a list of open orders for a symbol
         /// </summary>
-        /// <param name="market">Market to get open orders for</param>
+        /// <param name="symbol">Symbol to get open orders for</param>
         /// <param name="type">The type of orders to get</param>
         /// <param name="offset">The offset in the list</param>
         /// <param name="limit">The limit of results</param>
         /// <returns>List of open orders</returns>
-        Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string market, TransactionType type, int offset, int limit);
+        Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string symbol, TransactionType type, int offset, int limit);
 
         /// <summary>
-        /// Subscribe to market state updates for a specific market
+        /// Subscribe to symbol state updates for a specific symbol
         /// </summary>
-        /// <param name="market">Market to receive updates for</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketState]: the market state update</param>
+        /// <param name="symbol">Symbol to receive updates for</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolState]: the symbol state update</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToMarketStateUpdates(string market, Action<string, CoinExSocketMarketState> onMessage);
+        CallResult<UpdateSubscription> SubscribeToSymbolStateUpdates(string symbol, Action<string, CoinExSocketSymbolState> onMessage);
 
         /// <summary>
-        /// Subscribe to market state updates for a specific market
+        /// Subscribe to symbol state updates for a specific symbol
         /// </summary>
-        /// <param name="market">Market to receive updates for</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketState]: the market state update</param>
+        /// <param name="symbol">Symbol to receive updates for</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolState]: the symbol state update</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarketStateUpdatesAsync(string market, Action<string, CoinExSocketMarketState> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToSymbolStateUpdatesAsync(string symbol, Action<string, CoinExSocketSymbolState> onMessage);
 
         /// <summary>
-        /// Subscribe to market state updates for all markets
+        /// Subscribe to symbol state updates for all symbols
         /// </summary>
-        /// <param name="onMessage">Data handler, receives a dictionary of market name -> market state</param>
+        /// <param name="onMessage">Data handler, receives a dictionary of symbol name -> symbol state</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToMarketStateUpdates(Action<Dictionary<string, CoinExSocketMarketState>> onMessage);
+        CallResult<UpdateSubscription> SubscribeToSymbolStateUpdates(Action<Dictionary<string, CoinExSocketSymbolState>> onMessage);
 
         /// <summary>
-        /// Subscribe to market state updates for all markets
+        /// Subscribe to symbol state updates for all symbols
         /// </summary>
-        /// <param name="onMessage">Data handler, receives a dictionary of market name -> market state</param>
+        /// <param name="onMessage">Data handler, receives a dictionary of symbol name -> symbol state</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarketStateUpdatesAsync(Action<Dictionary<string, CoinExSocketMarketState>> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToSymbolStateUpdatesAsync(Action<Dictionary<string, CoinExSocketSymbolState>> onMessage);
 
         /// <summary>
-        /// Subscribe to market depth updates for a market
+        /// Subscribe to order book updates
         /// </summary>
-        /// <param name="market">The market to receive updates for</param>
+        /// <param name="symbol">The symbol to receive updates for</param>
         /// <param name="limit">The limit of results to receive in a update</param>
         /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketMarketDepth]: the update data</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketOrderBook]: the update data</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToMarketDepthUpdates(string market, int limit, int mergeDepth, Action<string, bool, CoinExSocketMarketDepth> onMessage);
+        CallResult<UpdateSubscription> SubscribeToOrderBookUpdates(string symbol, int limit, int mergeDepth, Action<string, bool, CoinExSocketOrderBook> onMessage);
 
         /// <summary>
-        /// Subscribe to market depth updates for a market
+        /// Subscribe to order book updates
         /// </summary>
-        /// <param name="market">The market to receive updates for</param>
+        /// <param name="symbol">The symbol to receive updates for</param>
         /// <param name="limit">The limit of results to receive in a update</param>
         /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketMarketDepth]: the update data</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketOrderBook]: the update data</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarketDepthUpdatesAsync(string market, int limit, int mergeDepth, Action<string, bool, CoinExSocketMarketDepth> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<string, bool, CoinExSocketOrderBook> onMessage);
 
         /// <summary>
-        /// Subscribe to market transaction updates for a market
+        /// Subscribe to symbol trade updates for a symbol
         /// </summary>
-        /// <param name="market">The market to receive updates from</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
+        /// <param name="symbol">The symbol to receive updates from</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolTrade[]]: list of trades</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToMarketTransactionUpdates(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
+        CallResult<UpdateSubscription> SubscribeToSymbolTradeUpdates(string symbol, Action<string, IEnumerable<CoinExSocketSymbolTrade>> onMessage);
 
         /// <summary>
-        /// Subscribe to market transaction updates for a market
+        /// Subscribe to symbol trade updates for a symbol
         /// </summary>
-        /// <param name="market">The market to receive updates from</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExSocketMarketTransaction[]]: list of transactions</param>
+        /// <param name="symbol">The symbol to receive updates from</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolTrade[]]: list of trades</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarketTransactionUpdatesAsync(string market, Action<string, CoinExSocketMarketTransaction[]> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToSymbolTradeUpdatesAsync(string symbol, Action<string, IEnumerable<CoinExSocketSymbolTrade>> onMessage);
 
         /// <summary>
-        /// Subscribe to kline updates for a market
+        /// Subscribe to kline updates for a symbol
         /// </summary>
-        /// <param name="market">The market to receive updates for</param>
+        /// <param name="symbol">The symbol to receive updates for</param>
         /// <param name="interval">The interval of the candle to receive updates for</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExKline[]]: list of klines updated klines</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToMarketKlineUpdates(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
+        CallResult<UpdateSubscription> SubscribeToKlineUpdates(string symbol, KlineInterval interval, Action<string, IEnumerable<CoinExKline>> onMessage);
 
         /// <summary>
-        /// Subscribe to kline updates for a market
+        /// Subscribe to kline updates for a symbol
         /// </summary>
-        /// <param name="market">The market to receive updates for</param>
+        /// <param name="symbol">The symbol to receive updates for</param>
         /// <param name="interval">The interval of the candle to receive updates for</param>
-        /// <param name="onMessage">Data handler, receives Param 1[string]: the market name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+        /// <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExKline[]]: list of klines updated klines</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToMarketKlineUpdatesAsync(string market, KlineInterval interval, Action<string, CoinExKline[]> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<string, IEnumerable<CoinExKline>> onMessage);
 
         /// <summary>
         /// Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
@@ -238,37 +241,18 @@ namespace CoinEx.Net.Interfaces
         /// <summary>
         /// Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
         /// </summary>
-        /// <param name="markets">The markets to receive order updates from</param>
+        /// <param name="symbols">The symbols to receive order updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        CallResult<UpdateSubscription> SubscribeToOrderUpdates(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
+        CallResult<UpdateSubscription> SubscribeToOrderUpdates(IEnumerable<string> symbols, Action<UpdateType, CoinExSocketOrder> onMessage);
 
         /// <summary>
         /// Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
         /// </summary>
-        /// <param name="markets">The markets to receive order updates from</param>
+        /// <param name="symbols">The symbols to receive order updates from</param>
         /// <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(string[] markets, Action<UpdateType, CoinExSocketOrder> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(IEnumerable<string> symbols, Action<UpdateType, CoinExSocketOrder> onMessage);
 
-        /// <summary>
-        /// The factory for creating sockets. Used for unit testing
-        /// </summary>
-        IWebsocketFactory SocketFactory { get; set; }
-
-        /// <summary>
-        /// Unsubscribe from a stream
-        /// </summary>
-        /// <param name="subscription">The subscription to unsubscribe</param>
-        /// <returns></returns>
-        Task Unsubscribe(UpdateSubscription subscription);
-
-        /// <summary>
-        /// Unsubscribe all subscriptions
-        /// </summary>
-        /// <returns></returns>
-        Task UnsubscribeAll();
-
-        void Dispose();
     }
 }

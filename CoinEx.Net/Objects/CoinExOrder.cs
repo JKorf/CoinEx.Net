@@ -6,6 +6,9 @@ using System;
 
 namespace CoinEx.Net.Objects
 {
+    /// <summary>
+    /// Order info
+    /// </summary>
     public class CoinExOrder
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace CoinEx.Net.Objects
         /// The asset of the fee
         /// </summary>
         [JsonProperty("fee_asset")]
-        public string FeeAsset { get; set; }
+        public string FeeAsset { get; set; } = "";
         /// <summary>
         /// The fee discount
         /// </summary>
@@ -83,9 +86,10 @@ namespace CoinEx.Net.Objects
         [JsonProperty("maker_fee_rate")]
         public decimal MakerFeeRate { get; set; }
         /// <summary>
-        /// The market of the order
+        /// The symbol of the order
         /// </summary>
-        public string Market { get; set; }
+        [JsonProperty("market")]
+        public string Symbol { get; set; } = "";
         /// <summary>
         /// The type of the order
         /// </summary>

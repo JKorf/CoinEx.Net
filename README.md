@@ -1,4 +1,4 @@
-# ![Icon](https://github.com/JKorf/CoinEx.Net/blob/master/Resources/icon.png?raw=true) CoinEx.Net 
+# ![Icon](https://github.com/JKorf/CoinEx.Net/blob/master/CoinEx.Net/Icon/icon.png?raw=true) CoinEx.Net 
 
 ![Build status](https://travis-ci.org/JKorf/CoinEx.Net.svg?branch=master)
 
@@ -6,30 +6,40 @@ A .Net wrapper for the CoinEX API as described on [CoinEx](https://github.com/co
 
 **If you think something is broken, something is missing or have any questions, please open an [Issue](https://github.com/JKorf/CoinEx.Net/issues)**
 
----
-Also check out my other exchange API wrappers:
+## CryptoExchange.Net
+Implementation is build upon the CryptoExchange.Net library, make sure to also check out the documentation on that: [docs](https://github.com/JKorf/CryptoExchange.Net)
+
+Other CryptoExchange.Net implementations:
 <table>
 <tr>
-<td><a href="https://github.com/JKorf/Bittrex.Net"><img src="https://github.com/JKorf/Bittrex.Net/blob/master/Resources/icon.png?raw=true"></a>
+<td><a href="https://github.com/JKorf/Bittrex.Net"><img src="https://github.com/JKorf/Bittrex.Net/blob/master/Bittrex.Net/Icon/icon.png?raw=true"></a>
 <br />
 <a href="https://github.com/JKorf/Bittrex.Net">Bittrex</a>
 </td>
-<td><a href="https://github.com/JKorf/Bitfinex.Net"><img src="https://github.com/JKorf/Bitfinex.Net/blob/master/Resources/icon.png?raw=true"></a>
+<td><a href="https://github.com/JKorf/Bitfinex.Net"><img src="https://github.com/JKorf/Bitfinex.Net/blob/master/Bitfinex.Net/Icon/icon.png?raw=true"></a>
 <br />
 <a href="https://github.com/JKorf/Bitfinex.Net">Bitfinex</a>
 </td>
-<td><a href="https://github.com/JKorf/Binance.Net"><img src="https://github.com/JKorf/Binance.Net/blob/master/Resources/binance-coin.png?raw=true"></a>
+<td><a href="https://github.com/JKorf/Binance.Net"><img src="https://github.com/JKorf/Binance.Net/blob/master/Binance.Net/Icon/icon.png?raw=true"></a>
 <br />
 <a href="https://github.com/JKorf/Binance.Net">Binance</a>
 </td>
-<td><a href="https://github.com/JKorf/Huobi.Net"><img src="https://github.com/JKorf/Huobi.Net/blob/master/Resources/icon.png?raw=true"></a>
+<td><a href="https://github.com/JKorf/Huobi.Net"><img src="https://github.com/JKorf/Huobi.Net/blob/master/Huobi.Net/Icon/icon.png?raw=true"></a>
 <br />
 <a href="https://github.com/JKorf/Huobi.Net">Huobi</a>
+</td>
+<td><a href="https://github.com/JKorf/Kucoin.Net"><img src="https://github.com/JKorf/Kucoin.Net/blob/master/Kucoin.Net/Icon/icon.png?raw=true"></a>
+<br />
+<a href="https://github.com/JKorf/Kucoin.Net">Kucoin</a>
+</td>
+<td><a href="https://github.com/JKorf/Kraken.Net"><img src="https://github.com/JKorf/Kraken.Net/blob/master/Kraken.Net/Icon/icon.png?raw=true"></a>
+<br />
+<a href="https://github.com/JKorf/Kraken.Net">Kraken</a>
 </td>
 </tr>
 </table>
 
-And other API wrappers based on CryptoExchange.Net:
+Implementations from third parties
 <table>
 <tr>
 <td><a href="https://github.com/Zaliro/Switcheo.Net"><img src="https://github.com/Zaliro/Switcheo.Net/blob/master/Resources/switcheo-coin.png?raw=true"></a>
@@ -39,6 +49,10 @@ And other API wrappers based on CryptoExchange.Net:
 	<td><a href="https://github.com/ridicoulous/LiquidQuoine.Net"><img src="https://github.com/ridicoulous/LiquidQuoine.Net/blob/master/Resources/icon.png?raw=true"></a>
 <br />
 <a href="https://github.com/ridicoulous/LiquidQuoine.Net">Liquid</a>
+</td>
+<td><a href="https://github.com/burakoner/OKEx.Net"><img src="https://raw.githubusercontent.com/burakoner/OKEx.Net/master/Okex.Net/Icon/icon.png"></a>
+<br />
+<a href="https://github.com/burakoner/OKEx.Net">OKEx</a>
 </td>
 </tr>
 </table>
@@ -72,115 +86,71 @@ After installing it's time to actually use it. To get started you have to add th
 
 CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExClient`  provides all rest API calls. The `CoinExSocketClient` provides functions to interact with the websocket provided by the CoinEx API. Both clients are disposable and as such can be used in a `using` statement.
 
-Most API methods are available in two flavors, sync and async:
-````C#
-public void NonAsyncMethod()
-{
-    using(var client = new CoinExClient())
-    {
-        var result = client.GetMarketList();
-    }
-}
-
-public async Task AsyncMethod()
-{
-    using(var client = new CoinExClient())
-    {
-        var result2 = await client.GetMarketListAsync();
-    }
-}
-````
-
 ## Examples
 Examples can be found in the Examples folder.
 
-
-## Response handling
-All API requests will respond with an CallResult object. This object contains whether the call was successful, the data returned from the call and an error if the call wasn't successful. As such, one should always check the Success flag when processing a response.
-For example:
-```C#
-using(var client = new CoinExClient())
-{
-	var result = client.GetMarketList();
-	if (result.Success)
-		Console.WriteLine($"# markets: {result.Data.Length}");
-	else
-		Console.WriteLine($"Error: {result.Error.Message}");
-}
-```
-## Options & Authentication
-The default behavior of the clients can be changed by providing options to the constructor, or using the `SetDefaultOptions` before creating a new client. Api credentials can be provided in the options.
-
-## Websockets
-The CoinEx.Net socket client provides several socket endpoint to which can be subscribed and follow this function structure
-
-```C#
-var client = new CoinExSocketClient();
-
-var subscribeResult = client.SubscribeToMarketState("ETHBTC", (market, stateData) =>
-{
-	// handle data
-});
-```
-
-**Handling socket events**
-
-Subscribing to a socket stream returns a UpdateSubscription object. This object can be used to be notified when a socket is disconnected or reconnected:
-````C#
-var subscriptionResult = client.SubscribeToMarketStateUpdates(data =>
-{
-	Console.WriteLine("Received summaries update");
-});
-
-if(subscriptionResult.Success){
-	sub.Data.Disconnected += () =>
-	{
-		Console.WriteLine("Socket disconnected");
-	};
-
-	sub.Data.Reconnected += (e) =>
-	{
-		Console.WriteLine("Socket reconnected after " + e);
-	};
-}
-````
-
-**Unsubscribing from socket endpoints:**
-
-Sockets streams can be unsubscribed by using the `client.Unsubscribe` method in combination with the stream subscription received from subscribing:
-```C#
-var client = new CoinExSocketClient();
-
-var successState = client.SubscribeToMarketStateUpdates((data) =>
-{
-	// handle data
-});
-
-client.Unsubscribe(successState.Data);
-```
-
-Additionaly, all sockets can be closed with the `UnsubscribeAll` method. Beware that when a client is disposed the sockets are automatically disposed. This means that if the code is no longer in the using statement the eventhandler won't fire anymore. To prevent this from happening make sure the code doesn't leave the using statement or don't use the socket client in a using statement:
-```C#
-// Doesn't leave the using block
-using(var client = new CoinExSocketClient())
-{
-	var successState = client.SubscribeToMarketStateUpdates((data) =>
-	{
-		// handle data
-	});
-
-	Console.ReadLine();
-}
-
-// Without using block
-var client = new CoinExSocketClient();
-client.SubscribeToMarketStateUpdates((data) =>
-{
-	// handle data
-});
-```
-
 ## Release notes
+* Version 3.0.9 - 21 Jun 2020
+    * Updated CryptoExchange
+
+* Version 3.0.8 - 16 Jun 2020
+    * Updated CryptoExchange.Net
+
+* Version 3.0.7 - 07 Jun 2020
+    * Updated CryptoExchange
+	
+* Version 3.0.6 - 03 Mar 2020
+    * Updated CryptoExchange
+
+* Version 3.0.5 - 03 Mar 2020
+    * Updated CryptoExchange
+
+* Version 3.0.4 - 27 Jan 2020
+    * Updated CryptoExchange.Net
+
+* Version 3.0.3 - 12 Nov 2019
+    * Added DepositHistory and GetMarketInfo endpoints
+
+* Version 3.0.2 - 23 Oct 2019
+	* Fixed validation length symbols again
+
+* Version 3.0.1 - 23 Oct 2019
+	* Fixed validation length symbols
+
+* Version 3.0.0 - 23 Oct 2019
+	* See CryptoExchange.Net 3.0 release notes
+	* Added input validation
+	* Added CancellationToken support to all requests
+	* Now using IEnumerable<> for collections
+	* Renamed Market -> Symbol
+	* Renamed MarketDepth -> OrderBook
+	* Renamed Transaction -> Trade
+	
+* Version 2.0.10 - 11 Sep 2019
+    * Updated CryptoExchange.Net
+
+* Version 2.0.9 - 07 Aug 2019
+    * Updated CryptoExchange.Net
+
+* Version 2.0.8 - 05 Aug 2019
+    * Added xml for code docs
+
+* Version 2.0.7 - 09 jul 2019
+	* Updated CoinExSymbolOrderBook
+
+* Version 2.0.6 - 14 may 2019
+	* Added an order book implementation for easily keeping an updated order book
+	* Added additional constructor to ApiCredentials to be able to read from file
+
+* Version 2.0.5 - 01 may 2019
+	* Updated to latest CryptoExchange.Net
+		* Adds response header to REST call result
+		* Added rate limiter per API key
+		* Unified socket client workings
+
+* Version 2.0.4 - 07 mar 2019
+	* Updated to latest CryptoExchange.Net
+
 * Version 2.0.3 - 01 feb 2019
 	* Updated to latest CryptoExchange.Net
 
