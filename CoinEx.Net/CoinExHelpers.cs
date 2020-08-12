@@ -49,6 +49,11 @@ namespace CoinEx.Net
             }
         }
 
+        /// <summary>
+        /// Merge depth to string parameter
+        /// </summary>
+        /// <param name="depth"></param>
+        /// <returns></returns>
         public static string MergeDepthIntToString(int depth)
         {
             var merge = "0";

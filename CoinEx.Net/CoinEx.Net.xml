@@ -470,6 +470,13 @@
             <param name="interval"></param>
             <returns></returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExHelpers.MergeDepthIntToString(System.Int32)">
+            <summary>
+            Merge depth to string parameter
+            </summary>
+            <param name="depth"></param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExHelpers.ValidateCoinExSymbol(System.String)">
             <summary>
             Validate the string is a valid CoinEx symbol.
