@@ -78,7 +78,7 @@ namespace CryptoExchange.Net.Testing
             request.Setup(c => c.GetResponse(It.IsAny<CancellationToken>())).Returns(Task.FromResult(response.Object));
 
             var factory = new Mock<IRequestFactory>();
-            factory.Setup(c => c.Create(It.IsAny<HttpMethod>(), It.IsAny<string>()))
+            factory.Setup(c => c.Create(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(request.Object);
             client.RequestFactory = factory.Object;
 

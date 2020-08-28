@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net.Objects
@@ -9,10 +10,28 @@ namespace CoinEx.Net.Objects
     public class CoinExClientOptions: RestClientOptions
     {
         /// <summary>
-        /// ctor
+        /// Create new client options
         /// </summary>
-        public CoinExClientOptions(): base("https://api.coinex.com/v1")
+        public CoinExClientOptions() : this(null, "https://api.coinex.com/v1")
         {
+        }
+
+        /// <summary>
+        /// Create new client options
+        /// </summary>
+        /// <param name="client">HttpClient to use for requests from this client</param>
+        public CoinExClientOptions(HttpClient client) : this(client, "https://api.coinex.com/v1")
+        {
+        }
+
+        /// <summary>
+        /// Create new client options
+        /// </summary>
+        /// <param name="apiAddress">Custom API address to use</param>
+        /// <param name="client">HttpClient to use for requests from this client</param>
+        public CoinExClientOptions(HttpClient? client, string apiAddress) : base(apiAddress)
+        {
+            HttpClient = client;
         }
     }
 
