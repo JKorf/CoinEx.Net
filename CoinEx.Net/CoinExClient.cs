@@ -24,31 +24,31 @@ namespace CoinEx.Net
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();
         private static CoinExClientOptions DefaultOptions => defaultOptions.Copy<CoinExClientOptions>();
         
-        private const string MarketListEndpoint = "/market/list";
-        private const string MarketStatisticsEndpoint = "/market/ticker";
-        private const string MarketStatisticsListEndpoint = "/market/ticker/all";
-        private const string MarketDepthEndpoint = "/market/depth";
-        private const string MarketDealsEndpoint = "/market/deals";
-        private const string MarketKlinesEndpoint = "/market/kline";
-        private const string MarketInfoEndpoint = "/market/info";
+        private const string MarketListEndpoint = "market/list";
+        private const string MarketStatisticsEndpoint = "market/ticker";
+        private const string MarketStatisticsListEndpoint = "market/ticker/all";
+        private const string MarketDepthEndpoint = "market/depth";
+        private const string MarketDealsEndpoint = "market/deals";
+        private const string MarketKlinesEndpoint = "market/kline";
+        private const string MarketInfoEndpoint = "market/info";
 
-        private const string AccountInfoEndpoint = "/balance/info";
-        private const string WithdrawalHistoryEndpoint = "/balance/coin/withdraw";
-        private const string DepositHistoryEndpoint = "/balance/coin/deposit";
-        private const string WithdrawEndpoint = "/balance/coin/withdraw";
-        private const string CancelWithdrawalEndpoint = "/balance/coin/withdraw";
+        private const string AccountInfoEndpoint = "balance/info";
+        private const string WithdrawalHistoryEndpoint = "balance/coin/withdraw";
+        private const string DepositHistoryEndpoint = "balance/coin/deposit";
+        private const string WithdrawEndpoint = "balance/coin/withdraw";
+        private const string CancelWithdrawalEndpoint = "balance/coin/withdraw";
 
-        private const string PlaceLimitOrderEndpoint = "/order/limit";
-        private const string PlaceMarketOrderEndpoint = "/order/market";
-        private const string PlaceImmediateOrCancelOrderEndpoint = "/order/ioc";
+        private const string PlaceLimitOrderEndpoint = "order/limit";
+        private const string PlaceMarketOrderEndpoint = "order/market";
+        private const string PlaceImmediateOrCancelOrderEndpoint = "order/ioc";
 
-        private const string FinishedOrdersEndpoint = "/order/finished";
-        private const string OpenOrdersEndpoint = "/order/pending";
-        private const string OrderStatusEndpoint = "/order/status";
-        private const string OrderDetailsEndpoint = "/order/deals";
-        private const string UserTransactionsEndpoint = "/order/user/deals";
-        private const string CancelOrderEndpoint = "/order/pending";
-        private const string MiningDifficultyEndpoint = "/order/mining/difficulty";
+        private const string FinishedOrdersEndpoint = "order/finished";
+        private const string OpenOrdersEndpoint = "order/pending";
+        private const string OrderStatusEndpoint = "order/status";
+        private const string OrderDetailsEndpoint = "order/deals";
+        private const string UserTransactionsEndpoint = "order/user/deals";
+        private const string CancelOrderEndpoint = "order/pending";
+        private const string MiningDifficultyEndpoint = "order/mining/difficulty";
         #endregion
 
         #region ctor
