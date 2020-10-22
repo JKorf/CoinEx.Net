@@ -51,7 +51,7 @@ namespace CoinEx.Net.Objects
         [JsonConverter(typeof(TimestampSecondsConverter))]
         [JsonProperty("finished_time")]
         [JsonOptionalProperty]
-        public DateTime FinishTime { get; set; }
+        public DateTime? FinishTime { get; set; }
         /// <summary>
         /// The executed amount
         /// </summary>
