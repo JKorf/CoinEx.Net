@@ -95,6 +95,9 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.0.12 - 22 okt 2020
+    * Fixed parsing of orders
+
 * Version 3.0.11 - 28 Aug 2020
     * Updated CrytpoExchange.Net
 
