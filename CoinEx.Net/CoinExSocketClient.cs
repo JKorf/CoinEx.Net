@@ -495,7 +495,9 @@ namespace CoinEx.Net
         #endregion
 
         /// <inheritdoc />
+#pragma warning disable 8765
         protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T>? callResult)
+#pragma warning disable 8765
         {
             callResult = null;
             var cRequest = (CoinExSocketRequest) request;
