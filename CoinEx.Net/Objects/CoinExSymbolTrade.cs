@@ -2,13 +2,14 @@
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
+using CryptoExchange.Net.ExchangeInterfaces;
 
 namespace CoinEx.Net.Objects
 {
     /// <summary>
     /// Symbol trade info
     /// </summary>
-    public class CoinExSymbolTrade
+    public class CoinExSymbolTrade: ICommonRecentTrade
     {
         /// <summary>
         /// The amount of the transaction
@@ -34,5 +35,9 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [JsonConverter(typeof(TransactionTypeConverter))]
         public TransactionType Type { get; set; }
+
+        decimal ICommonRecentTrade.CommonPrice => Price;
+        decimal ICommonRecentTrade.CommonQuantity => Amount;
+        DateTime ICommonRecentTrade.CommonTradeTime => Timestamp;
     }
 }

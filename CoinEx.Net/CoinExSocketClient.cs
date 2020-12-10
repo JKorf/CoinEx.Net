@@ -53,7 +53,7 @@ namespace CoinEx.Net
         /// Create a new instance of CoinExSocketClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExSocketClient(CoinExSocketClientOptions options) : base(options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
+        public CoinExSocketClient(CoinExSocketClientOptions options) : base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
         {
             AddGenericHandler("Pong", (connection, token) => { });
             SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));

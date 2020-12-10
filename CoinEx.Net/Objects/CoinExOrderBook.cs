@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CoinEx.Net.Converters;
 using CryptoExchange.Net.Converters;
+using CryptoExchange.Net.ExchangeInterfaces;
 using CryptoExchange.Net.Interfaces;
 using Newtonsoft.Json;
 
@@ -9,7 +10,7 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Order book
     /// </summary>
-    public class CoinExOrderBook
+    public class CoinExOrderBook: ICommonOrderBook
     {
         /// <summary>
         /// The price of the last transaction
@@ -24,6 +25,9 @@ namespace CoinEx.Net.Objects
         /// The bids on this symbol
         /// </summary>
         public IEnumerable<CoinExDepthEntry> Bids { get; set; } = new List<CoinExDepthEntry>();
+
+        IEnumerable<ISymbolOrderBookEntry> ICommonOrderBook.CommonBids => Bids;
+        IEnumerable<ISymbolOrderBookEntry> ICommonOrderBook.CommonAsks => Asks;
     }
 
     /// <summary>

@@ -3,13 +3,15 @@ using CryptoExchange.Net.Attributes;
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
+using CryptoExchange.Net.ExchangeInterfaces;
 
 namespace CoinEx.Net.Objects
 {
     /// <summary>
     /// Order info
     /// </summary>
-    public class CoinExOrder
+    public class CoinExOrder: ICommonOrderId, ICommonOrder
     {
         /// <summary>
         /// The amount of the order
@@ -124,5 +126,26 @@ namespace CoinEx.Net.Objects
         [JsonConverter(typeof(TransactionTypeConverter))]
         public TransactionType Type { get; set; }
 
+        string ICommonOrderId.CommonId => Id.ToString(CultureInfo.InvariantCulture);
+        string ICommonOrder.CommonSymbol => Symbol;
+        decimal ICommonOrder.CommonPrice => Price;
+        decimal ICommonOrder.CommonQuantity => Amount;
+        string ICommonOrder.CommonStatus => Status.ToString();
+        bool ICommonOrder.IsActive => Status == OrderStatus.UnExecuted;
+
+        IExchangeClient.OrderSide ICommonOrder.CommonSide => Type == TransactionType.Buy
+            ? IExchangeClient.OrderSide.Sell
+            : IExchangeClient.OrderSide.Buy;
+
+        IExchangeClient.OrderType ICommonOrder.CommonType
+        {
+            get
+            {
+                if (OrderType == OrderType.Market)
+                    return IExchangeClient.OrderType.Market;
+                else
+                    return IExchangeClient.OrderType.Limit;
+            }
+        }
     }
 }

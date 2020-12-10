@@ -455,6 +455,9 @@
             <param name="ct">Cancellation token</param>
             <returns>Mining difficulty</returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.TryParseError(Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
@@ -2213,6 +2216,11 @@
         <member name="T:CoinEx.Net.Objects.CoinExSymbolStateData">
             <summary>
             Symbol state data
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExSymbolStateData.Symbol">
+            <summary>
+            Symbol
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.CoinExSymbolStateData.BestBuyPrice">

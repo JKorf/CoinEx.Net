@@ -5,12 +5,14 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.ExchangeInterfaces;
 using Newtonsoft.Json.Linq;
 
 namespace CoinEx.Net
@@ -18,7 +20,7 @@ namespace CoinEx.Net
     /// <summary>
     /// Client for the CoinEx REST API
     /// </summary>
-    public class CoinExClient : RestClient, ICoinExClient
+    public class CoinExClient : RestClient, ICoinExClient, IExchangeClient
     {
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();
@@ -63,8 +65,9 @@ namespace CoinEx.Net
         /// Create a new instance of CoinExClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExClient(CoinExClientOptions options): base(options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
+        public CoinExClient(CoinExClientOptions options): base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
         {
+            manualParseError = true;
         }
         #endregion
 
@@ -140,7 +143,14 @@ namespace CoinEx.Net
         /// <returns>List of states for all symbols</returns>
         public async Task<WebCallResult<CoinExSymbolStatesList>> GetSymbolStatesAsync(CancellationToken ct = default)
         {
-            return await Execute<CoinExSymbolStatesList>(GetUrl(MarketStatisticsListEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+            var data = await Execute<CoinExSymbolStatesList>(GetUrl(MarketStatisticsListEndpoint), HttpMethod.Get, ct)
+                .ConfigureAwait(false);
+            if (!data)
+                return data;
+
+            foreach (var item in data.Data.Tickers)
+                item.Value.Symbol = item.Key;
+            return data;
         }
 
         /// <summary>
@@ -714,13 +724,28 @@ namespace CoinEx.Net
         #endregion
 
         #region private
+
+        /// <inheritdoc />
+        protected override Task<ServerError?> TryParseError(JToken data)
+        {
+            if (data["code"] != null && data["message"] != null)
+            {
+                if ((int)data["code"] != 0)
+                {
+                    return Task.FromResult((ServerError?)ParseErrorResponse(data));
+                }
+            }
+
+            return Task.FromResult((ServerError?) null);
+        }
+
         /// <inheritdoc />
         protected override Error ParseErrorResponse(JToken error)
         {
             if (error["code"] == null || error["message"] == null)
                 return new ServerError(error.ToString());
 
-            return new ServerError((int)error["code"], (string)error["message"]);
+            return new ServerError((int)error["code"]!, (string)error["message"]!);
         }
 
         private async Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
@@ -746,6 +771,113 @@ namespace CoinEx.Net
             return new Uri(BaseAddress + endpoint);
         }
         #endregion
+        #endregion
+
+        #region common interface
+
+        public string GetSymbolName(string baseAsset, string quoteAsset) => (baseAsset + quoteAsset).ToUpperInvariant();
+
+        async Task<WebCallResult<IEnumerable<ICommonSymbol>>> IExchangeClient.GetSymbolsAsync()
+        {
+            var symbols = await GetMarketInfoAsync();
+            return new WebCallResult<IEnumerable<ICommonSymbol>>(symbols.ResponseStatusCode, symbols.ResponseHeaders, symbols.Data?.Select(d => d.Value), symbols.Error);
+        }
+
+        async Task<WebCallResult<IEnumerable<ICommonTicker>>> IExchangeClient.GetTickersAsync()
+        {
+            var tickers = await GetSymbolStatesAsync();
+            return new WebCallResult<IEnumerable<ICommonTicker>>(tickers.ResponseStatusCode, tickers.ResponseHeaders,
+                tickers.Data?.Tickers.Select(d => d.Value), tickers.Error);
+        }
+
+        async Task<WebCallResult<IEnumerable<ICommonKline>>> IExchangeClient.GetKlinesAsync(string symbol, TimeSpan timespan)
+        {
+            var klines = await GetKlinesAsync(symbol, GetKlineIntervalFromTimespan(timespan));
+            return WebCallResult<IEnumerable<ICommonKline>>.CreateFrom(klines);
+        }
+
+        async Task<WebCallResult<ICommonOrderBook>> IExchangeClient.GetOrderBookAsync(string symbol)
+        {
+            var book = await GetOrderBookAsync(symbol, 0);
+            return WebCallResult<ICommonOrderBook>.CreateFrom(book);
+        }
+
+        async Task<WebCallResult<IEnumerable<ICommonRecentTrade>>> IExchangeClient.GetRecentTradesAsync(string symbol)
+        {
+            var trades = await GetSymbolTradesAsync(symbol);
+            return WebCallResult<IEnumerable<ICommonRecentTrade>>.CreateFrom(trades);
+        }
+
+        async Task<WebCallResult<ICommonOrderId>> IExchangeClient.PlaceOrderAsync(string symbol, IExchangeClient.OrderSide side, IExchangeClient.OrderType type, decimal quantity, decimal? price = null, string? accountId = null)
+        {
+            WebCallResult<CoinExOrder> result;
+            if(type == IExchangeClient.OrderType.Limit)
+                result = await PlaceLimitOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell: TransactionType.Buy, quantity, price.Value);
+            else
+                result = await PlaceMarketOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell : TransactionType.Buy, quantity);
+
+            return WebCallResult<ICommonOrderId>.CreateFrom(result);
+        }
+
+        async Task<WebCallResult<ICommonOrder>> IExchangeClient.GetOrderAsync(string orderId, string? symbol = null)
+        {
+            if (string.IsNullOrEmpty(symbol))
+                return WebCallResult<ICommonOrder>.CreateErrorResult(new ArgumentError($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOrderAsync)}"));
+
+            var order = await GetOrderStatusAsync(long.Parse(orderId), symbol);
+            return WebCallResult<ICommonOrder>.CreateFrom(order);
+        }
+
+        async Task<WebCallResult<IEnumerable<ICommonTrade>>> IExchangeClient.GetTradesAsync(string orderId, string? symbol = null)
+        {
+            var result = await GetExecutedOrderDetailsAsync(long.Parse(orderId), 1, 100);
+            return new WebCallResult<IEnumerable<ICommonTrade>>(result.ResponseStatusCode, result.ResponseHeaders, result.Data?.Data, result.Error);
+        }
+
+        async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetOpenOrdersAsync(string? symbol)
+        {
+            if (string.IsNullOrEmpty(symbol))
+                throw new ArgumentException($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOpenOrdersAsync)}");
+
+            var openOrders = await GetOpenOrdersAsync(symbol, 1, 100);
+            return new WebCallResult<IEnumerable<ICommonOrder>>(openOrders.ResponseStatusCode, openOrders.ResponseHeaders, openOrders.Data?.Data, openOrders.Error);
+        }
+
+        async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetClosedOrdersAsync(string? symbol)
+        {
+            var result = await GetExecutedOrdersAsync(symbol, 1, 100);
+            return new WebCallResult<IEnumerable<ICommonOrder>>(result.ResponseStatusCode, result.ResponseHeaders, result.Data?.Data, result.Error);
+        }
+
+        async Task<WebCallResult<ICommonOrderId>> IExchangeClient.CancelOrderAsync(string orderId, string? symbol)
+        {
+            if (symbol == null)
+                return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError(nameof(symbol) + " required for CoinEx " + nameof(IExchangeClient.CancelOrderAsync)));
+
+            var result = await CancelOrderAsync(symbol, long.Parse(orderId));
+
+
+            return WebCallResult<ICommonOrderId>.CreateFrom(result);
+        }
+
+        private static KlineInterval GetKlineIntervalFromTimespan(TimeSpan timeSpan)
+        {
+            if (timeSpan == TimeSpan.FromMinutes(1)) return KlineInterval.OneMinute;
+            if (timeSpan == TimeSpan.FromMinutes(3)) return KlineInterval.ThreeMinute;
+            if (timeSpan == TimeSpan.FromMinutes(5)) return KlineInterval.FiveMinute;
+            if (timeSpan == TimeSpan.FromMinutes(15)) return KlineInterval.FiveMinute;
+            if (timeSpan == TimeSpan.FromMinutes(30)) return KlineInterval.ThirtyMinute;
+            if (timeSpan == TimeSpan.FromHours(1)) return KlineInterval.OneHour;
+            if (timeSpan == TimeSpan.FromHours(2)) return KlineInterval.TwoHour;
+            if (timeSpan == TimeSpan.FromHours(4)) return KlineInterval.FourHour;
+            if (timeSpan == TimeSpan.FromHours(6)) return KlineInterval.SixHour;
+            if (timeSpan == TimeSpan.FromHours(12)) return KlineInterval.TwelveHour;
+            if (timeSpan == TimeSpan.FromDays(1)) return KlineInterval.OneDay;
+            if (timeSpan == TimeSpan.FromDays(3)) return KlineInterval.ThreeDay;
+            if (timeSpan == TimeSpan.FromDays(7)) return KlineInterval.OneWeek;
+
+            throw new ArgumentException("Unsupported timespan for CoinEx Klines, check supported intervals using CoinEx.Net.Objects.KlineInterval");
+        }
         #endregion
     }
 }

@@ -2,6 +2,7 @@
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
+using CryptoExchange.Net.ExchangeInterfaces;
 
 namespace CoinEx.Net.Objects
 {
@@ -9,7 +10,7 @@ namespace CoinEx.Net.Objects
     /// Kline data
     /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
-    public class CoinExKline
+    public class CoinExKline: ICommonKline
     {
         /// <summary>
         /// The open time of this kline
@@ -59,5 +60,10 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [ArrayProperty(7)]
         public string Symbol { get; set; } = "";
+
+        decimal ICommonKline.CommonHigh => High;
+        decimal ICommonKline.CommonLow => Low;
+        decimal ICommonKline.CommonOpen => Open;
+        decimal ICommonKline.CommonClose => Close;
     }
 }

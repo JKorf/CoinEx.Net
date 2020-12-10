@@ -2,13 +2,14 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using CryptoExchange.Net.ExchangeInterfaces;
 
 namespace CoinEx.Net.Objects
 {
     /// <summary>
     /// Market Info
     /// </summary>
-    public class CoinExMarket
+    public class CoinExMarket: ICommonSymbol
     {
         /// <summary>
         /// The name of the market
@@ -62,6 +63,8 @@ namespace CoinEx.Net.Objects
         [JsonProperty("trading_decimal")]
         //[JsonConverter(typeof(IntConverter))]
         public int TradingDecimal { get; set; }
-        
+
+        string ICommonSymbol.CommonName => Name;
+        decimal ICommonSymbol.CommonMinimumTradeSize => MinAmount;
     }
 }

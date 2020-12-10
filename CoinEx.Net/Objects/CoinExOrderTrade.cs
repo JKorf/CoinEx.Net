@@ -2,13 +2,15 @@
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
+using CryptoExchange.Net.ExchangeInterfaces;
 
 namespace CoinEx.Net.Objects
 {
     /// <summary>
     /// Order transaction info
     /// </summary>
-    public class CoinExOrderTrade
+    public class CoinExOrderTrade:ICommonTrade
     {
         /// <summary>
         /// The amount of the transaction
@@ -57,6 +59,12 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [JsonConverter(typeof(TransactionRoleConverter))]
         public TransactionRole Role { get; set; }
+
+        string ICommonTrade.CommonId => TransactionId.ToString(CultureInfo.InvariantCulture);
+        decimal ICommonTrade.CommonPrice => Price;
+        decimal ICommonTrade.CommonQuantity => Amount;
+        decimal ICommonTrade.CommonFee => Fee;
+        string ICommonTrade.CommonFeeAsset => FeeAsset;
     }
 
     /// <summary>
