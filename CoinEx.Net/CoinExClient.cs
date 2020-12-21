@@ -298,7 +298,14 @@ namespace CoinEx.Net
         /// <returns>List of balances</returns>
         public async Task<WebCallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(CancellationToken ct = default)
         {
-            return await Execute<Dictionary<string, CoinExBalance>>(GetUrl(AccountInfoEndpoint), HttpMethod.Get, ct, null, true).ConfigureAwait(false);
+            var result = await Execute<Dictionary<string, CoinExBalance>>(GetUrl(AccountInfoEndpoint), HttpMethod.Get, ct, null, true).ConfigureAwait(false);
+            if (result)
+            {
+                foreach (var b in result.Data)
+                    b.Value.Symbol = b.Key;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -783,6 +790,13 @@ namespace CoinEx.Net
             return new WebCallResult<IEnumerable<ICommonSymbol>>(symbols.ResponseStatusCode, symbols.ResponseHeaders, symbols.Data?.Select(d => d.Value), symbols.Error);
         }
 
+        async Task<WebCallResult<ICommonTicker>> IExchangeClient.GetTickerAsync(string symbol)
+        {
+            var tickers = await GetSymbolStateAsync(symbol);
+            return new WebCallResult<ICommonTicker>(tickers.ResponseStatusCode, tickers.ResponseHeaders,
+                tickers.Data?.Ticker, tickers.Error);
+        }
+
         async Task<WebCallResult<IEnumerable<ICommonTicker>>> IExchangeClient.GetTickersAsync()
         {
             var tickers = await GetSymbolStatesAsync();
@@ -790,9 +804,12 @@ namespace CoinEx.Net
                 tickers.Data?.Tickers.Select(d => d.Value), tickers.Error);
         }
 
-        async Task<WebCallResult<IEnumerable<ICommonKline>>> IExchangeClient.GetKlinesAsync(string symbol, TimeSpan timespan)
+        async Task<WebCallResult<IEnumerable<ICommonKline>>> IExchangeClient.GetKlinesAsync(string symbol, TimeSpan timespan, DateTime? startTime = null, DateTime? endTime = null, int? limit = null)
         {
-            var klines = await GetKlinesAsync(symbol, GetKlineIntervalFromTimespan(timespan));
+            if(startTime != null || endTime != null)
+                return WebCallResult<IEnumerable<ICommonKline>>.CreateErrorResult(new ArgumentError($"CoinEx does not support the {nameof(startTime)}/{nameof(endTime)} parameters for the method {nameof(IExchangeClient.GetKlinesAsync)}"));
+
+            var klines = await GetKlinesAsync(symbol, GetKlineIntervalFromTimespan(timespan), limit);
             return WebCallResult<IEnumerable<ICommonKline>>.CreateFrom(klines);
         }
 
@@ -855,9 +872,13 @@ namespace CoinEx.Net
                 return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError(nameof(symbol) + " required for CoinEx " + nameof(IExchangeClient.CancelOrderAsync)));
 
             var result = await CancelOrderAsync(symbol, long.Parse(orderId));
-
-
             return WebCallResult<ICommonOrderId>.CreateFrom(result);
+        }
+
+        async Task<WebCallResult<IEnumerable<ICommonBalance>>> IExchangeClient.GetBalancesAsync(string? accountId = null)
+        {
+            var balances = await GetBalancesAsync();
+            return new WebCallResult<IEnumerable<ICommonBalance>>(balances.ResponseStatusCode, balances.ResponseHeaders, balances.Data?.Select(d => d.Value), balances.Error);
         }
 
         private static KlineInterval GetKlineIntervalFromTimespan(TimeSpan timeSpan)

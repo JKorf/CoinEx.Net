@@ -1477,6 +1477,11 @@
             Balance info
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.CoinExBalance.Symbol">
+            <summary>
+            The symbol
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Objects.CoinExBalance.Available">
             <summary>
             The amount of the asset that is available

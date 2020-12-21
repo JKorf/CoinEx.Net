@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net.Converters;
+using CryptoExchange.Net.ExchangeInterfaces;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects
@@ -6,8 +7,12 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Balance info
     /// </summary>
-    public class CoinExBalance
+    public class CoinExBalance: ICommonBalance
     {
+        /// <summary>
+        /// The symbol
+        /// </summary>
+        public string Symbol { get; set; }
         /// <summary>
         /// The amount of the asset that is available
         /// </summary>
@@ -18,5 +23,9 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Frozen { get; set; }
+
+        string ICommonBalance.CommonAsset => Symbol;
+        decimal ICommonBalance.CommonAvailable => Available;
+        decimal ICommonBalance.CommonTotal => Available + Frozen;
     }
 }
