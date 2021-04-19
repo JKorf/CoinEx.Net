@@ -219,21 +219,23 @@
             <param name="ct">Cancellation token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.Withdraw(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.CoinExClient.Withdraw(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
             </summary>
             <param name="coin">The coin to withdraw</param>
+            <param name="localTransfer">Is it a local transfer between users or onchain</param>
             <param name="coinAddress">The address to withdraw to</param>
             <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
             <param name="ct">Cancellation token</param>
             <returns>The withdrawal object</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.WithdrawAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.CoinExClient.WithdrawAsync(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
             </summary>
             <param name="coin">The coin to withdraw</param>
+            <param name="localTransfer">Is it a local transfer between users or onchain</param>
             <param name="coinAddress">The address to withdraw to</param>
             <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
             <param name="ct">Cancellation token</param>
@@ -991,21 +993,23 @@
             <param name="ct">Cancellation token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.Withdraw(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.Withdraw(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
             </summary>
             <param name="coin">The coin to withdraw</param>
+            <param name="localTransfer">Is it a local transfer between users or onchain</param>
             <param name="coinAddress">The address to withdraw to</param>
             <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
             <param name="ct">Cancellation token</param>
             <returns>The withdrawal object</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.WithdrawAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.WithdrawAsync(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
             </summary>
             <param name="coin">The coin to withdraw</param>
+            <param name="localTransfer">Is it a local transfer between users or onchain</param>
             <param name="coinAddress">The address to withdraw to</param>
             <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
             <param name="ct">Cancellation token</param>

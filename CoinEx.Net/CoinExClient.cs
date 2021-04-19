@@ -373,20 +373,22 @@ namespace CoinEx.Net
         /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
         /// </summary>
         /// <param name="coin">The coin to withdraw</param>
+        /// <param name="localTransfer">Is it a local transfer between users or onchain</param>
         /// <param name="coinAddress">The address to withdraw to</param>
         /// <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>The withdrawal object</returns>
-        public WebCallResult<CoinExWithdrawal> Withdraw(string coin, string coinAddress, decimal amount, CancellationToken ct = default) => WithdrawAsync(coin, coinAddress, amount, ct).Result;
+        public WebCallResult<CoinExWithdrawal> Withdraw(string coin, string coinAddress, bool localTransfer, decimal amount, CancellationToken ct = default) => WithdrawAsync(coin, coinAddress, localTransfer, amount, ct).Result;
         /// <summary>
         /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
         /// </summary>
         /// <param name="coin">The coin to withdraw</param>
+        /// <param name="localTransfer">Is it a local transfer between users or onchain</param>
         /// <param name="coinAddress">The address to withdraw to</param>
         /// <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>The withdrawal object</returns>
-        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, decimal amount, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, bool localTransfer, decimal amount, CancellationToken ct = default)
         {
             coin.ValidateNotNull(nameof(coin));
             coinAddress.ValidateNotNull(nameof(coinAddress));
@@ -394,6 +396,7 @@ namespace CoinEx.Net
             {
                 { "coin_type", coin },
                 { "coin_address", coinAddress },
+                { "tranfer_method", localTransfer ? "local": "onchain" },
                 { "actual_amount", amount.ToString(CultureInfo.InvariantCulture) }
             };
 
