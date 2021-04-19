@@ -476,7 +476,8 @@ namespace CoinEx.Net
                 onMessage(updateResult, desResult.Data);
             });
 
-            return await Subscribe(new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols), null, true, internalHandler).ConfigureAwait(false);
+            var request = new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols);
+            return await Subscribe(request, null, true, internalHandler).ConfigureAwait(false);
         }
         #endregion
 
