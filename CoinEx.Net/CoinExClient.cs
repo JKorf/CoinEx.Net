@@ -717,6 +717,29 @@ namespace CoinEx.Net
         }
 
         /// <summary>
+        /// Cancels all orders. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol the orders are on</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Execution statut</returns>
+        public WebCallResult CancelAllOrders(string symbol, CancellationToken ct = default) => CancelAllOrdersAsync(symbol, ct).Result;
+        /// <summary>
+        /// Cancels all orders. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol the orders are on</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Execution statut</returns>
+        public async Task<WebCallResult> CancelAllOrdersAsync(string symbol, CancellationToken ct = default)
+        {
+            symbol.ValidateCoinExSymbol();
+            var parameters = new Dictionary<string, object>
+            {
+                { "market", symbol },
+            };
+
+            return await Execute(GetUrl(CancelOrderEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
+        }
+        /// <summary>
         /// Retrieve the mining difficulty. Requires API credentials
         /// </summary>
         /// <param name="ct">Cancellation token</param>
@@ -762,6 +785,10 @@ namespace CoinEx.Net
         {
             return GetResult(await SendRequest<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
+        private async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) 
+        {
+            return GetResult(await SendRequest<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        }
 
         private async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
@@ -776,6 +803,13 @@ namespace CoinEx.Net
             return new WebCallResult<T>(result.ResponseStatusCode, result.ResponseHeaders, result.Data.Data, null);
         }
 
+        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result) 
+        {
+            if (result.Error != null || result.Data == null)
+                return WebCallResult.CreateErrorResult(result.ResponseStatusCode, result.ResponseHeaders, result.Error ?? new UnknownError("No data received"));
+
+            return new WebCallResult(result.ResponseStatusCode, result.ResponseHeaders, null);
+        }
         private Uri GetUrl(string endpoint)
         {
             return new Uri(BaseAddress + endpoint);
