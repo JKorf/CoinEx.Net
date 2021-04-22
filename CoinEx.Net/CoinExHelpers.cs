@@ -76,7 +76,7 @@ namespace CoinEx.Net
             if (string.IsNullOrEmpty(symbolString))
                 throw new ArgumentException("Symbol is not provided");
 
-            if (!Regex.IsMatch(symbolString, "^([A-Z]{5,})$"))
+            if (!Regex.IsMatch(symbolString, "^([0-9A-Z]{5,})$"))
                 throw new ArgumentException($"{symbolString} is not a valid CoinEx symbol. Should be [QuoteCurrency][BaseCurrency], e.g. ETHBTC");
         }
     }
