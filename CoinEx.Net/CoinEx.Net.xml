@@ -443,6 +443,22 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.CancelAllOrders(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Cancels all orders. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol the orders are on</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Execution statut</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.CancelAllOrdersAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Cancels all orders. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol the orders are on</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Execution statut</returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetMiningDifficulty(System.Threading.CancellationToken)">
             <summary>
             Retrieve the mining difficulty. Requires API credentials

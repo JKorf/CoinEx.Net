@@ -425,8 +425,11 @@ namespace CoinEx.Net
             {
                 if (data.Length != 1)
                 {
-                    log.Write(LogVerbosity.Warning, $"Received unexpected data format for order update. Expected 1 objects, received {data.Length}. Data: [{string.Join(",", data.Select(s => s.ToString()))}]");
-                    return;
+                    if (data.Length != 2 || (data.Length == 2 && data[1].ToString().Trim() != "0"))
+                    {
+                        log.Write(LogVerbosity.Warning, $"Received unexpected data format for balance update. Expected 1 objects, received {data.Length}. Data: [{string.Join(",", data.Select(s => s.ToString()))}]");
+                        return;
+                    }
                 }
 
                 var desResult = Deserialize<Dictionary<string, CoinExBalance>>(data[0], false);
