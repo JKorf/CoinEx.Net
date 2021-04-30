@@ -118,6 +118,9 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.3.0-beta1 - 30 apr 2021
+    * Updated to CryptoExchange.Net 4.0.0-beta1, new websocket implementation
+
 * Version 3.2.5 - 28 apr 2021
     * Fix trade deserialization without order id
     * Allow symbols starting with numeric character
