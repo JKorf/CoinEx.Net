@@ -7,9 +7,9 @@
   <PropertyGroup>
     <PackageId>CoinEx.Net</PackageId>
     <Authors>JKorf</Authors>
-    <PackageVersion>3.2.5</PackageVersion>
+    <PackageVersion>3.2.6</PackageVersion>
     <AssemblyVersion>3.2.0</AssemblyVersion>
-    <FileVersion>3.2.5</FileVersion>
+    <FileVersion>3.2.6</FileVersion>
     <Description>CoinEx.Net is a .Net wrapper for the CoinEx API. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>CoinEx CoinEx.Net C# .Net CryptoCurrency Exchange API wrapper</PackageTags>
@@ -20,7 +20,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>3.2.5 - Fix trade deserialization without order id, Allow symbols starting with numeric character, Update CryptoExchange.Net, Fixed check in socket balance update</PackageReleaseNotes>
+    <PackageReleaseNotes>3.2.6 - Fix for trades subscription deserialization when extra array item is received, Fix parameter type in Withdraw method</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <DocumentationFile>CoinEx.Net.xml</DocumentationFile>

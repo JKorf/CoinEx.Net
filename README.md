@@ -118,6 +118,10 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.2.6 - 04 mei 2021
+    * Fix for trades subscription deserialization when extra array item is received
+    * Fix parameter type in Withdraw method
+
 * Version 3.2.5 - 28 apr 2021
     * Fix trade deserialization without order id
     * Allow symbols starting with numeric character
