@@ -635,7 +635,7 @@ namespace CoinEx.Net
                 log.Write(LogVerbosity.Debug, "Authorization completed");
                 result = new CallResult<bool>(true, null);
                 return true;
-            });
+            }).ConfigureAwait(false);
 
             return result;
         }
