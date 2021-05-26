@@ -51,15 +51,15 @@ namespace CoinEx.Net
         {
         }
 
-        private void HandleUpdate(string symbol, bool full, CoinExSocketOrderBook data)
+        private void HandleUpdate(DataEvent<CoinExSocketOrderBook> data)
         {
-            if (full)
+            if (data.Data.FullUpdate)
             { 
-                SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Bids, data.Asks);
+                SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Data.Bids, data.Data.Asks);
             }
             else
             {
-                UpdateOrderBook(DateTime.UtcNow.Ticks, data.Bids, data.Asks);
+                UpdateOrderBook(DateTime.UtcNow.Ticks, data.Data.Bids, data.Data.Asks);
             }
         }
 

@@ -9,6 +9,7 @@ using System.Linq;
 using CryptoExchange.Net;
 using System.Net;
 using System;
+using System.Threading.Tasks;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -16,14 +17,14 @@ namespace CoinEx.Net.UnitTests
     public class CoinExClientTests
     {
         [Test]
-        public void GetMarketList_Should_RespondWithMarketList()
+        public async Task GetMarketList_Should_RespondWithMarketList()
         {
             // arrange
             string[] expected = new string[] { "ETHBTC", "BTCBCH", "ETHBCH" };
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetSymbols();
+            var result = await objects.Client.GetSymbolsAsync();
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -31,7 +32,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetMarketInfo_Should_RespondWithMarketInfo()
+        public async Task GetMarketInfo_Should_RespondWithMarketInfo()
         {
             Dictionary<string, CoinExMarket> expected = new Dictionary<string, CoinExMarket>()
             {
@@ -43,7 +44,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketInfo();
+            var result = await objects.Client.GetMarketInfoAsync();
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -51,7 +52,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetMarketInfoBySymbol_Should_RespondWithMarketInfo()
+        public async Task GetMarketInfoBySymbol_Should_RespondWithMarketInfo()
         {
             
             Dictionary<string, CoinExMarket> expected = new Dictionary<string, CoinExMarket>()
@@ -63,7 +64,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMarketInfo("ETHBTC");
+            var result = await objects.Client.GetMarketInfoAsync("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -71,7 +72,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetKlines_Should_RespondWithKlines()
+        public async Task GetKlines_Should_RespondWithKlines()
         {
             // arrange
             CoinExKline[] expected = new CoinExKline[] {
@@ -81,7 +82,7 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetKlines("ETHBTC", KlineInterval.FiveMinute);
+            var result = await objects.Client.GetKlinesAsync("ETHBTC", KlineInterval.FiveMinute);
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -90,14 +91,14 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void ReceivingCoinExError_Should_ReturnCoinExErrorAndNotSuccess()
+        public async Task ReceivingCoinExError_Should_ReturnCoinExErrorAndNotSuccess()
         {
             // arrange
             var response = JsonConvert.SerializeObject(new CoinExApiResult<object>() { Code = 101, Data = new object(), Message = "Some error" });
             var objects = TestHelpers.PrepareClient(() => Construct(), response);
 
             // act
-            var result = objects.Client.GetSymbols();
+            var result = await objects.Client.GetSymbolsAsync();
 
             // assert
             Assert.IsFalse(result.Success);
@@ -106,13 +107,13 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void ReceivingHttpError_Should_ReturnErrorAndNotSuccess()
+        public async Task ReceivingHttpError_Should_ReturnErrorAndNotSuccess()
         {
             // arrange
             var objects = TestHelpers.PrepareClient(() => Construct(), "Error request", HttpStatusCode.BadRequest);
 
             // act
-            var result = objects.Client.GetSymbols();
+            var result = await objects.Client.GetSymbolsAsync();
 
             // assert
             Assert.IsFalse(result.Success);
@@ -121,7 +122,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetLatestTransactions_Should_RespondWithTransactionList()
+        public async Task GetLatestTransactions_Should_RespondWithTransactionList()
         {
             // arrange
             CoinExSymbolTrade[] expected = new CoinExSymbolTrade[] {
@@ -131,7 +132,7 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetSymbolTrades("ETHBTC");
+            var result = await objects.Client.GetSymbolTradesAsync("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -140,14 +141,14 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetMarketDepth_Should_RespondWithMarketDepth()
+        public async Task GetMarketDepth_Should_RespondWithMarketDepth()
         {
             // arrange
             CoinExOrderBook expected = new CoinExOrderBook();
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetOrderBook("ETHBTC", 1);
+            var result = await objects.Client.GetOrderBookAsync("ETHBTC", 1);
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -155,14 +156,14 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetMarketState_Should_RespondWithMarketState()
+        public async Task GetMarketState_Should_RespondWithMarketState()
         {
             // arrange
             CoinExSymbolState expected = new CoinExSymbolState();
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetSymbolState("ETHBTC");
+            var result = await objects.Client.GetSymbolStateAsync("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -170,7 +171,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetMiningDifficulty_Should_RespondWithMiningDifficulty()
+        public async Task GetMiningDifficulty_Should_RespondWithMiningDifficulty()
         {
             // arrange
             CoinExMiningDifficulty expected = new CoinExMiningDifficulty();
@@ -180,7 +181,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetMiningDifficulty();
+            var result = await objects.Client.GetMiningDifficultyAsync();
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -188,7 +189,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetOpenOrders_Should_RespondWithOpenOrders()
+        public async Task GetOpenOrders_Should_RespondWithOpenOrders()
         {
             // arrange
             CoinExPagedResult<CoinExOrder> expected = new CoinExPagedResult<CoinExOrder>()
@@ -207,7 +208,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetOpenOrders("ETHBTC", 1, 10);
+            var result = await objects.Client.GetOpenOrdersAsync("ETHBTC", 1, 10);
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -215,7 +216,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void GetBalances_Should_RespondWithBalances()
+        public async Task GetBalances_Should_RespondWithBalances()
         {
             // arrange
             Dictionary<string, CoinExBalance> expected = new Dictionary<string, CoinExBalance>()
@@ -229,7 +230,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetBalances();
+            var result = await objects.Client.GetBalancesAsync();
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -238,7 +239,7 @@ namespace CoinEx.Net.UnitTests
 
 
         [Test]
-        public void WithdrawalHistory_Should_RespondWithdrawalHistory()
+        public async Task WithdrawalHistory_Should_RespondWithdrawalHistory()
         {
             // arrange
             IEnumerable<CoinExWithdrawal> expected = new List<CoinExWithdrawal>
@@ -252,7 +253,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetWithdrawalHistory();
+            var result = await objects.Client.GetWithdrawalHistoryAsync();
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -260,7 +261,7 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void AuthenticatedRequests_Should_HaveAuthenticationHeader()
+        public async Task AuthenticatedRequests_Should_HaveAuthenticationHeader()
         {
             // arrange
             var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
@@ -269,14 +270,14 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest("{}"));
 
             // act
-            var result = objects.Client.GetBalances();
+            var result = await objects.Client.GetBalancesAsync();
 
             // assert
             objects.Request.Verify(r => r.AddHeader("Authorization", It.IsAny<string>()));
         }
 
         [Test]
-        public void PostRequests_Should_HaveContentBody()
+        public async Task PostRequests_Should_HaveContentBody()
         {
             // arrange
             var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
@@ -285,14 +286,14 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest("{}"));
 
             // act
-            var result = objects.Client.PlaceLimitOrder("BTCETH", TransactionType.Buy, 1, 1);
+            var result = await objects.Client.PlaceLimitOrderAsync("BTCETH", TransactionType.Buy, 1, 1);
 
             // assert
             objects.Request.Verify(r => r.SetContent(It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [Test]
-        public void GetExecutedOrderDetails_Should_RespondWithExecutedOrderResults()
+        public async Task GetExecutedOrderDetails_Should_RespondWithExecutedOrderResults()
         {
             // arrange
             CoinExPagedResult<CoinExOrderTrade> expected = new CoinExPagedResult<CoinExOrderTrade>()
@@ -311,7 +312,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = objects.Client.GetExecutedOrderDetails(123, 1, 10);
+            var result = await objects.Client.GetExecutedOrderDetailsAsync(123, 1, 10);
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -319,7 +320,7 @@ namespace CoinEx.Net.UnitTests
         }
         
         [Test]
-        public void ProvidingApiCredentials_Should_SaveApiCredentials()
+        public async Task ProvidingApiCredentials_Should_SaveApiCredentials()
         {
             // arrange
             // act
@@ -333,7 +334,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         [TestCase("TestStringToSign", "C351B1833970C30017EF9AE280A09570")]
         [TestCase("access_id=4DA36FFC61334695A66F8D29020EB589&amount=1.0&market=BTCBCH&price=680&tonce=1513746038205&type=buy&secret_key=B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F", "610AB90A1D31D45901D173E4F59C9384")]
-        public void SigningString_Should_GiveCorrectSignResult(string input, string output)
+        public async Task SigningString_Should_GiveCorrectSignResult(string input, string output)
         {
             // arrange
             var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("4DA36FFC61334695A66F8D29020EB589", "B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F"));
@@ -365,7 +366,7 @@ namespace CoinEx.Net.UnitTests
         [TestCase("BETC", false)]
         [TestCase("BTC-USDT", false)]
         [TestCase("BTC-USD", false)]
-        public void CheckValidCoinExSymbol(string symbol, bool isValid)
+        public async Task CheckValidCoinExSymbol(string symbol, bool isValid)
         {
             if (isValid)
                 Assert.DoesNotThrow(symbol.ValidateCoinExSymbol);

@@ -91,12 +91,7 @@ namespace CoinEx.Net
         {
             SetAuthenticationProvider(new CoinExAuthenticationProvider(new ApiCredentials(apiKey, apiSecret)));
         }
-
-        /// <summary>
-        /// Gets a list of symbols active on CoinEx
-        /// </summary>
-        /// <returns>List of symbol names</returns>
-        public WebCallResult<IEnumerable<string>> GetSymbols(CancellationToken ct = default) => GetSymbolsAsync(ct).Result;
+                
         /// <summary>
         /// Gets a list of symbols active on CoinEx
         /// </summary>
@@ -106,13 +101,6 @@ namespace CoinEx.Net
             return await Execute<IEnumerable<string>>(GetUrl(MarketListEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets the state of a specific symbol
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve state for</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>The state of the symbol</returns>
-        public WebCallResult<CoinExSymbolState> GetSymbolState(string symbol, CancellationToken ct = default) => GetSymbolStateAsync(symbol, ct).Result;
         /// <summary>
         /// Gets the state of a specific symbol
         /// </summary>
@@ -135,12 +123,6 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of states for all symbols</returns>
-        public WebCallResult<CoinExSymbolStatesList> GetSymbolStates(CancellationToken ct = default) => GetSymbolStatesAsync(ct).Result;
-        /// <summary>
-        /// Gets the states of all symbols
-        /// </summary>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of states for all symbols</returns>
         public async Task<WebCallResult<CoinExSymbolStatesList>> GetSymbolStatesAsync(CancellationToken ct = default)
         {
             var data = await Execute<CoinExSymbolStatesList>(GetUrl(MarketStatisticsListEndpoint), HttpMethod.Get, ct)
@@ -153,16 +135,6 @@ namespace CoinEx.Net
             return data;
         }
 
-        /// <summary>
-        /// Gets the order book for a symbol
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve depth data for</param>
-        /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-        /// <param name="limit">The limit of results returned</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Order book for a symbol</returns>
-        public WebCallResult<CoinExOrderBook> GetOrderBook(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default) => 
-            GetOrderBookAsync(symbol, mergeDepth, limit, ct).Result;
         /// <summary>
         /// Gets the order book for a symbol
         /// </summary>
@@ -194,15 +166,6 @@ namespace CoinEx.Net
         /// <param name="fromId">The id from which on to return trades</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        public WebCallResult<IEnumerable<CoinExSymbolTrade>> GetSymbolTrades(string symbol, long? fromId = null, CancellationToken ct = default) => 
-            GetSymbolTradesAsync(symbol, fromId, ct).Result;
-        /// <summary>
-        /// Gets the latest trades for a symbol
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve data for</param>
-        /// <param name="fromId">The id from which on to return trades</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of trades for a symbol</returns>
         public async Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetSymbolTradesAsync(string symbol, long? fromId = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -216,13 +179,6 @@ namespace CoinEx.Net
             return await Execute<IEnumerable<CoinExSymbolTrade>>(GetUrl(MarketDealsEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Retrieves market data for the exchange
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve data for</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of market data for the exchange</returns>
-        public WebCallResult<Dictionary<string, CoinExMarket>> GetMarketInfo(string symbol, CancellationToken ct = default) => GetMarketInfoAsync(symbol, ct).Result;
         /// <summary>
         /// Retrieves market data for the exchange
         /// </summary>
@@ -243,26 +199,11 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of market data for the exchange</returns>
-        public WebCallResult<Dictionary<string, CoinExMarket>> GetMarketInfo(CancellationToken ct = default) => GetMarketInfoAsync(ct).Result;
-        /// <summary>
-        /// Retrieves market data for the exchange
-        /// </summary>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of market data for the exchange</returns>
         public async Task<WebCallResult<Dictionary<string, CoinExMarket>>> GetMarketInfoAsync(CancellationToken ct = default)
         {
             return await Execute<Dictionary<string, CoinExMarket>>(GetUrl(MarketInfoEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Retrieves kline data for a specific symbol
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve klines for</param>
-        /// <param name="interval">The interval of the candles</param>
-        /// <param name="limit">Limit of the number of results</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of klines for a symbol</returns>
-        public WebCallResult<IEnumerable<CoinExKline>> GetKlines(string symbol, KlineInterval interval, int? limit = null, CancellationToken ct = default) => GetKlinesAsync(symbol, interval, limit, ct).Result;
         /// <summary>
         /// Retrieves kline data for a specific symbol
         /// </summary>
@@ -290,12 +231,6 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of balances</returns>
-        public WebCallResult<Dictionary<string, CoinExBalance>> GetBalances(CancellationToken ct = default) => GetBalancesAsync(ct).Result;
-        /// <summary>
-        /// Retrieves a list of balances. Requires API credentials
-        /// </summary>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of balances</returns>
         public async Task<WebCallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(CancellationToken ct = default)
         {
             var result = await Execute<Dictionary<string, CoinExBalance>>(GetUrl(AccountInfoEndpoint), HttpMethod.Get, ct, null, true).ConfigureAwait(false);
@@ -308,16 +243,6 @@ namespace CoinEx.Net
             return result;
         }
 
-        /// <summary>
-        /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
-        /// </summary>
-        /// <param name="coin">The coin to get history for</param>
-        /// <param name="page">The page in the results to retrieve</param>
-        /// <param name="limit">The number of results to return per page</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns></returns>
-        public WebCallResult<IEnumerable<CoinExDeposit>> GetDepositHistory(string? coin = null,  int? page = null, int? limit = null, CancellationToken ct = default) =>
-            GetDepositHistoryHistoryAsync(coin, page, limit, ct).Result;
         /// <summary>
         /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
         /// </summary>
@@ -346,17 +271,6 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        public WebCallResult<IEnumerable<CoinExWithdrawal>> GetWithdrawalHistory(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default) =>
-            GetWithdrawalHistoryAsync(coin, coinWithdrawId, page, limit, ct).Result;
-        /// <summary>
-        /// Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
-        /// </summary>
-        /// <param name="coin">The coin to get history for</param>
-        /// <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
-        /// <param name="page">The page in the results to retrieve</param>
-        /// <param name="limit">The number of results to return per page</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns></returns>
         public async Task<WebCallResult<IEnumerable<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default)
         {
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
@@ -368,17 +282,6 @@ namespace CoinEx.Net
 
             return await Execute<IEnumerable<CoinExWithdrawal>>(GetUrl(WithdrawalHistoryEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
-
-        /// <summary>
-        /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
-        /// </summary>
-        /// <param name="coin">The coin to withdraw</param>
-        /// <param name="localTransfer">Is it a local transfer between users or onchain</param>
-        /// <param name="coinAddress">The address to withdraw to</param>
-        /// <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>The withdrawal object</returns>
-        public WebCallResult<CoinExWithdrawal> Withdraw(string coin, string coinAddress, bool localTransfer, decimal amount, CancellationToken ct = default) => WithdrawAsync(coin, coinAddress, localTransfer, amount, ct).Result;
         /// <summary>
         /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
         /// </summary>
@@ -409,13 +312,6 @@ namespace CoinEx.Net
         /// <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>True if successful, false otherwise</returns>
-        public WebCallResult<bool> CancelWithdrawal(long coinWithdrawId, CancellationToken ct = default) => CancelWithdrawalAsync(coinWithdrawId, ct).Result;
-        /// <summary>
-        /// Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
-        /// </summary>
-        /// <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>True if successful, false otherwise</returns>
         public async Task<WebCallResult<bool>> CancelWithdrawalAsync(long coinWithdrawId, CancellationToken ct = default)
         {
             var parameters = new Dictionary<string, object>
@@ -424,21 +320,8 @@ namespace CoinEx.Net
             };
 
             var result = await Execute<object>(GetUrl(CancelWithdrawalEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
-            return !result ? new WebCallResult<bool>(result.ResponseStatusCode, result.ResponseHeaders, false, result.Error) : new WebCallResult<bool>(result.ResponseStatusCode, result.ResponseHeaders, true, null);
+            return result.As(result.Success);
         }
-
-        /// <summary>
-        /// Places a limit order. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
-        /// <param name="price">The price of a single unit of the order</param>
-        /// <param name="sourceId">Client id which can be used to match the order</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of the order that was placed</returns>
-        public WebCallResult<CoinExOrder> PlaceLimitOrder(string symbol, TransactionType type, decimal amount, decimal price, string? sourceId = null, CancellationToken ct = default) =>
-            PlaceLimitOrderAsync(symbol, type, amount, price, sourceId, ct).Result;
         /// <summary>
         /// Places a limit order. Requires API credentials
         /// </summary>
@@ -464,17 +347,6 @@ namespace CoinEx.Net
             return await Execute<CoinExOrder>(GetUrl(PlaceLimitOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Places a market order. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
-        /// <param name="sourceId">Client id which can be used to match the order</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of the order that was placed</returns>
-        public WebCallResult<CoinExOrder> PlaceMarketOrder(string symbol, TransactionType type, decimal amount, string? sourceId = null, CancellationToken ct = default) => 
-            PlaceMarketOrderAsync(symbol, type, amount, sourceId, ct).Result;
         /// <summary>
         /// Places a market order. Requires API credentials
         /// </summary>
@@ -508,18 +380,6 @@ namespace CoinEx.Net
         /// <param name="sourceId">Client id which can be used to match the order</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        public WebCallResult<CoinExOrder> PlaceImmediateOrCancelOrder(string symbol, TransactionType type, decimal amount, decimal price, string? sourceId = null, CancellationToken ct = default) => 
-            PlaceImmediateOrCancelOrderAsync(symbol, type, amount, price, sourceId, ct).Result;
-        /// <summary>
-        /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
-        /// <param name="price">The price of a single unit of the order</param>
-        /// <param name="sourceId">Client id which can be used to match the order</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns></returns>
         public async Task<WebCallResult<CoinExOrder>> PlaceImmediateOrCancelOrderAsync(string symbol, TransactionType type, decimal amount, decimal price, string? sourceId = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -535,16 +395,6 @@ namespace CoinEx.Net
             return await Execute<CoinExOrder>(GetUrl(PlaceImmediateOrCancelOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Retrieves a list of open orders for a symbol. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve the open orders for</param>
-        /// <param name="page">The page of the resulting list</param>
-        /// <param name="limit">The number of results per page</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of open orders for a symbol</returns>
-        public WebCallResult<CoinExPagedResult<CoinExOrder>> GetOpenOrders(string symbol, int page, int limit, CancellationToken ct = default) => 
-            GetOpenOrdersAsync(symbol, page, limit, ct).Result;
         /// <summary>
         /// Retrieves a list of open orders for a symbol. Requires API credentials
         /// </summary>
@@ -575,16 +425,6 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of executed orders for a symbol</returns>
-        public WebCallResult<CoinExPagedResult<CoinExOrder>> GetExecutedOrders(string symbol, int page, int limit, CancellationToken ct = default) =>
-            GetExecutedOrdersAsync(symbol, page, limit, ct).Result;
-        /// <summary>
-        /// Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve the open orders for</param>
-        /// <param name="page">The page of the resulting list</param>
-        /// <param name="limit">The number of results per page</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of executed orders for a symbol</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -606,14 +446,6 @@ namespace CoinEx.Net
         /// <param name="symbol">The symbol the order is for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order</returns>
-        public WebCallResult<CoinExOrder> GetOrderStatus(long orderId, string symbol, CancellationToken ct = default) => GetOrderStatusAsync(orderId, symbol, ct).Result;
-        /// <summary>
-        /// Retrieves details of an order. Requires API credentials
-        /// </summary>
-        /// <param name="orderId">The id of the order to retrieve</param>
-        /// <param name="symbol">The symbol the order is for</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of the order</returns>
         public async Task<WebCallResult<CoinExOrder>> GetOrderStatusAsync(long orderId, string symbol, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -626,16 +458,6 @@ namespace CoinEx.Net
             return await Execute<CoinExOrder>(GetUrl(OrderStatusEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Retrieves execution details of a specific order. Requires API credentials
-        /// </summary>
-        /// <param name="orderId">The id of the order</param>
-        /// <param name="page">The page of the resulting list</param>
-        /// <param name="limit">The number of results per page</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of an executed order</returns>
-        public WebCallResult<CoinExPagedResult<CoinExOrderTrade>> GetExecutedOrderDetails(long orderId, int page, int limit, CancellationToken ct = default) => 
-            GetExecutedOrderDetailsAsync(orderId, page, limit, ct).Result;
         /// <summary>
         /// Retrieves execution details of a specific order. Requires API credentials
         /// </summary>
@@ -665,16 +487,6 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        public WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>> GetTrades(string symbol, int page, int limit, CancellationToken ct = default) => 
-            GetTradesAsync(symbol, page, limit, ct).Result;
-        /// <summary>
-        /// Gets a list of trades you executed on a specific symbol. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve trades for</param>
-        /// <param name="page">The page of the resulting list</param>
-        /// <param name="limit">The number of results per page</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>List of trades for a symbol</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetTradesAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -689,14 +501,6 @@ namespace CoinEx.Net
             return await ExecutePaged<CoinExOrderTradeExtended>(GetUrl(UserTransactionsEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Cancels an order. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol the order is on</param>
-        /// <param name="orderId">The id of the order to cancel</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of the canceled order</returns>
-        public WebCallResult<CoinExOrder> CancelOrder(string symbol, long orderId, CancellationToken ct = default) => CancelOrderAsync(symbol, orderId, ct).Result;
         /// <summary>
         /// Cancels an order. Requires API credentials
         /// </summary>
@@ -722,13 +526,6 @@ namespace CoinEx.Net
         /// <param name="symbol">The symbol the orders are on</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Execution statut</returns>
-        public WebCallResult CancelAllOrders(string symbol, CancellationToken ct = default) => CancelAllOrdersAsync(symbol, ct).Result;
-        /// <summary>
-        /// Cancels all orders. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol the orders are on</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Execution statut</returns>
         public async Task<WebCallResult> CancelAllOrdersAsync(string symbol, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
@@ -739,12 +536,7 @@ namespace CoinEx.Net
 
             return await Execute(GetUrl(CancelOrderEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
         }
-        /// <summary>
-        /// Retrieve the mining difficulty. Requires API credentials
-        /// </summary>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Mining difficulty</returns>
-        public WebCallResult<CoinExMiningDifficulty> GetMiningDifficulty(CancellationToken ct = default) => GetMiningDifficultyAsync(ct).Result;
+        
         /// <summary>
         /// Retrieve the mining difficulty. Requires API credentials
         /// </summary>
@@ -800,7 +592,7 @@ namespace CoinEx.Net
             if (result.Error != null || result.Data == null)
                 return WebCallResult<T>.CreateErrorResult(result.ResponseStatusCode, result.ResponseHeaders, result.Error ?? new UnknownError("No data received"));
 
-            return new WebCallResult<T>(result.ResponseStatusCode, result.ResponseHeaders, result.Data.Data, null);
+            return result.As(result.Data.Data);
         }
 
         private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result) 
@@ -824,21 +616,19 @@ namespace CoinEx.Net
         async Task<WebCallResult<IEnumerable<ICommonSymbol>>> IExchangeClient.GetSymbolsAsync()
         {
             var symbols = await GetMarketInfoAsync().ConfigureAwait(false);
-            return new WebCallResult<IEnumerable<ICommonSymbol>>(symbols.ResponseStatusCode, symbols.ResponseHeaders, symbols.Data?.Select(d => d.Value), symbols.Error);
+            return symbols.As<IEnumerable<ICommonSymbol>>(symbols.Data?.Select(d => d.Value));
         }
 
         async Task<WebCallResult<ICommonTicker>> IExchangeClient.GetTickerAsync(string symbol)
         {
             var tickers = await GetSymbolStateAsync(symbol).ConfigureAwait(false);
-            return new WebCallResult<ICommonTicker>(tickers.ResponseStatusCode, tickers.ResponseHeaders,
-                tickers.Data?.Ticker, tickers.Error);
+            return tickers.As<ICommonTicker>(tickers.Data?.Ticker);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonTicker>>> IExchangeClient.GetTickersAsync()
         {
             var tickers = await GetSymbolStatesAsync().ConfigureAwait(false);
-            return new WebCallResult<IEnumerable<ICommonTicker>>(tickers.ResponseStatusCode, tickers.ResponseHeaders,
-                tickers.Data?.Tickers.Select(d => d.Value), tickers.Error);
+            return tickers.As<IEnumerable<ICommonTicker>>(tickers.Data?.Tickers.Select(d => d.Value));
         }
 
         async Task<WebCallResult<IEnumerable<ICommonKline>>> IExchangeClient.GetKlinesAsync(string symbol, TimeSpan timespan, DateTime? startTime = null, DateTime? endTime = null, int? limit = null)
@@ -847,19 +637,19 @@ namespace CoinEx.Net
                 return WebCallResult<IEnumerable<ICommonKline>>.CreateErrorResult(new ArgumentError($"CoinEx does not support the {nameof(startTime)}/{nameof(endTime)} parameters for the method {nameof(IExchangeClient.GetKlinesAsync)}"));
 
             var klines = await GetKlinesAsync(symbol, GetKlineIntervalFromTimespan(timespan), limit).ConfigureAwait(false);
-            return WebCallResult<IEnumerable<ICommonKline>>.CreateFrom(klines);
+            return klines.As<IEnumerable<ICommonKline>>(klines.Data);
         }
 
         async Task<WebCallResult<ICommonOrderBook>> IExchangeClient.GetOrderBookAsync(string symbol)
         {
             var book = await GetOrderBookAsync(symbol, 0).ConfigureAwait(false);
-            return WebCallResult<ICommonOrderBook>.CreateFrom(book);
+            return book.As<ICommonOrderBook>(book.Data);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonRecentTrade>>> IExchangeClient.GetRecentTradesAsync(string symbol)
         {
             var trades = await GetSymbolTradesAsync(symbol).ConfigureAwait(false);
-            return WebCallResult<IEnumerable<ICommonRecentTrade>>.CreateFrom(trades);
+            return trades.As<IEnumerable<ICommonRecentTrade>>(trades.Data);
         }
 
         async Task<WebCallResult<ICommonOrderId>> IExchangeClient.PlaceOrderAsync(string symbol, IExchangeClient.OrderSide side, IExchangeClient.OrderType type, decimal quantity, decimal? price = null, string? accountId = null)
@@ -870,7 +660,7 @@ namespace CoinEx.Net
             else
                 result = await PlaceMarketOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell : TransactionType.Buy, quantity).ConfigureAwait(false);
 
-            return WebCallResult<ICommonOrderId>.CreateFrom(result);
+            return result.As<ICommonOrderId>(result.Data);
         }
 
         async Task<WebCallResult<ICommonOrder>> IExchangeClient.GetOrderAsync(string orderId, string? symbol = null)
@@ -879,13 +669,13 @@ namespace CoinEx.Net
                 return WebCallResult<ICommonOrder>.CreateErrorResult(new ArgumentError($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOrderAsync)}"));
 
             var order = await GetOrderStatusAsync(long.Parse(orderId), symbol).ConfigureAwait(false);
-            return WebCallResult<ICommonOrder>.CreateFrom(order);
+            return order.As<ICommonOrder>(order.Data);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonTrade>>> IExchangeClient.GetTradesAsync(string orderId, string? symbol = null)
         {
             var result = await GetExecutedOrderDetailsAsync(long.Parse(orderId), 1, 100).ConfigureAwait(false);
-            return new WebCallResult<IEnumerable<ICommonTrade>>(result.ResponseStatusCode, result.ResponseHeaders, result.Data?.Data, result.Error);
+            return result.As<IEnumerable<ICommonTrade>>(result.Data?.Data);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetOpenOrdersAsync(string? symbol)
@@ -894,13 +684,13 @@ namespace CoinEx.Net
                 throw new ArgumentException($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOpenOrdersAsync)}");
 
             var openOrders = await GetOpenOrdersAsync(symbol, 1, 100).ConfigureAwait(false);
-            return new WebCallResult<IEnumerable<ICommonOrder>>(openOrders.ResponseStatusCode, openOrders.ResponseHeaders, openOrders.Data?.Data, openOrders.Error);
+            return openOrders.As<IEnumerable<ICommonOrder>>(openOrders.Data?.Data);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetClosedOrdersAsync(string? symbol)
         {
             var result = await GetExecutedOrdersAsync(symbol, 1, 100).ConfigureAwait(false);
-            return new WebCallResult<IEnumerable<ICommonOrder>>(result.ResponseStatusCode, result.ResponseHeaders, result.Data?.Data, result.Error);
+            return result.As<IEnumerable<ICommonOrder>>(result.Data?.Data);
         }
 
         async Task<WebCallResult<ICommonOrderId>> IExchangeClient.CancelOrderAsync(string orderId, string? symbol)
@@ -909,13 +699,13 @@ namespace CoinEx.Net
                 return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError(nameof(symbol) + " required for CoinEx " + nameof(IExchangeClient.CancelOrderAsync)));
 
             var result = await CancelOrderAsync(symbol, long.Parse(orderId)).ConfigureAwait(false);
-            return WebCallResult<ICommonOrderId>.CreateFrom(result);
+            return result.As<ICommonOrderId>(result.Data);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonBalance>>> IExchangeClient.GetBalancesAsync(string? accountId = null)
         {
             var balances = await GetBalancesAsync().ConfigureAwait(false);
-            return new WebCallResult<IEnumerable<ICommonBalance>>(balances.ResponseStatusCode, balances.ResponseHeaders, balances.Data?.Select(d => d.Value), balances.Error);
+            return balances.As<IEnumerable<ICommonBalance>>(balances.Data?.Select(d => d.Value));
         }
 
         private static KlineInterval GetKlineIntervalFromTimespan(TimeSpan timeSpan)

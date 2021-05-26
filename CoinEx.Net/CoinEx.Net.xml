@@ -33,25 +33,11 @@
             <param name="apiKey">The api key</param>
             <param name="apiSecret">The api secret</param>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetSymbols(System.Threading.CancellationToken)">
-            <summary>
-            Gets a list of symbols active on CoinEx
-            </summary>
-            <returns>List of symbol names</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetSymbolsAsync(System.Threading.CancellationToken)">
             <summary>
             Gets a list of symbols active on CoinEx
             </summary>
             <returns>List of symbol names</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetSymbolState(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Gets the state of a specific symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve state for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>The state of the symbol</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetSymbolStateAsync(System.String,System.Threading.CancellationToken)">
             <summary>
@@ -61,29 +47,12 @@
             <param name="ct">Cancellation token</param>
             <returns>The state of the symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetSymbolStates(System.Threading.CancellationToken)">
-            <summary>
-            Gets the states of all symbols
-            </summary>
-            <param name="ct">Cancellation token</param>
-            <returns>List of states for all symbols</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetSymbolStatesAsync(System.Threading.CancellationToken)">
             <summary>
             Gets the states of all symbols
             </summary>
             <param name="ct">Cancellation token</param>
             <returns>List of states for all symbols</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetOrderBook(System.String,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Gets the order book for a symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve depth data for</param>
-            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <param name="limit">The limit of results returned</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Order book for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetOrderBookAsync(System.String,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
@@ -95,15 +64,6 @@
             <param name="ct">Cancellation token</param>
             <returns>Order book for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetSymbolTrades(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
-            <summary>
-            Gets the latest trades for a symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve data for</param>
-            <param name="fromId">The id from which on to return trades</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of trades for a symbol</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetSymbolTradesAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Gets the latest trades for a symbol
@@ -113,26 +73,11 @@
             <param name="ct">Cancellation token</param>
             <returns>List of trades for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetMarketInfo(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves market data for the exchange
-            </summary>
-            <param name="symbol">The symbol to retrieve data for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of market data for the exchange</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetMarketInfoAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Retrieves market data for the exchange
             </summary>
             <param name="symbol">The symbol to retrieve data for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of market data for the exchange</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetMarketInfo(System.Threading.CancellationToken)">
-            <summary>
-            Retrieves market data for the exchange
-            </summary>
             <param name="ct">Cancellation token</param>
             <returns>List of market data for the exchange</returns>
         </member>
@@ -142,16 +87,6 @@
             </summary>
             <param name="ct">Cancellation token</param>
             <returns>List of market data for the exchange</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetKlines(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Retrieves kline data for a specific symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve klines for</param>
-            <param name="interval">The interval of the candles</param>
-            <param name="limit">Limit of the number of results</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of klines for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
@@ -163,13 +98,6 @@
             <param name="ct">Cancellation token</param>
             <returns>List of klines for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetBalances(System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of balances. Requires API credentials
-            </summary>
-            <param name="ct">Cancellation token</param>
-            <returns>List of balances</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetBalancesAsync(System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of balances. Requires API credentials
@@ -177,32 +105,11 @@
             <param name="ct">Cancellation token</param>
             <returns>List of balances</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetDepositHistory(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coin">The coin to get history for</param>
-            <param name="page">The page in the results to retrieve</param>
-            <param name="limit">The number of results to return per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns></returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetDepositHistoryHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
             </summary>
             <param name="coin">The coin to get history for</param>
-            <param name="page">The page in the results to retrieve</param>
-            <param name="limit">The number of results to return per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns></returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetWithdrawalHistory(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coin">The coin to get history for</param>
-            <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
             <param name="page">The page in the results to retrieve</param>
             <param name="limit">The number of results to return per page</param>
             <param name="ct">Cancellation token</param>
@@ -219,17 +126,6 @@
             <param name="ct">Cancellation token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.Withdraw(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
-            <summary>
-            Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coin">The coin to withdraw</param>
-            <param name="localTransfer">Is it a local transfer between users or onchain</param>
-            <param name="coinAddress">The address to withdraw to</param>
-            <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
-            <param name="ct">Cancellation token</param>
-            <returns>The withdrawal object</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.WithdrawAsync(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
@@ -241,14 +137,6 @@
             <param name="ct">Cancellation token</param>
             <returns>The withdrawal object</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.CancelWithdrawal(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
-            <param name="ct">Cancellation token</param>
-            <returns>True if successful, false otherwise</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
@@ -256,18 +144,6 @@
             <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>True if successful, false otherwise</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.PlaceLimitOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Places a limit order. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to place the order for</param>
-            <param name="type">Type of transaction</param>
-            <param name="amount">The amount of the order</param>
-            <param name="price">The price of a single unit of the order</param>
-            <param name="sourceId">Client id which can be used to match the order</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the order that was placed</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.PlaceLimitOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
@@ -277,17 +153,6 @@
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
-            <param name="sourceId">Client id which can be used to match the order</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the order that was placed</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.PlaceMarketOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Places a market order. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to place the order for</param>
-            <param name="type">Type of transaction</param>
-            <param name="amount">The amount of the order</param>
             <param name="sourceId">Client id which can be used to match the order</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
@@ -303,18 +168,6 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.PlaceImmediateOrCancelOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to place the order for</param>
-            <param name="type">Type of transaction</param>
-            <param name="amount">The amount of the order</param>
-            <param name="price">The price of a single unit of the order</param>
-            <param name="sourceId">Client id which can be used to match the order</param>
-            <param name="ct">Cancellation token</param>
-            <returns></returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.PlaceImmediateOrCancelOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
             Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
@@ -327,16 +180,6 @@
             <param name="ct">Cancellation token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetOpenOrders(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of open orders for a symbol. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to retrieve the open orders for</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of open orders for a symbol</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetOpenOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of open orders for a symbol. Requires API credentials
@@ -346,16 +189,6 @@
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
             <returns>List of open orders for a symbol</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrders(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to retrieve the open orders for</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of executed orders for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -367,15 +200,6 @@
             <param name="ct">Cancellation token</param>
             <returns>List of executed orders for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetOrderStatus(System.Int64,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves details of an order. Requires API credentials
-            </summary>
-            <param name="orderId">The id of the order to retrieve</param>
-            <param name="symbol">The symbol the order is for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the order</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetOrderStatusAsync(System.Int64,System.String,System.Threading.CancellationToken)">
             <summary>
             Retrieves details of an order. Requires API credentials
@@ -384,16 +208,6 @@
             <param name="symbol">The symbol the order is for</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrderDetails(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves execution details of a specific order. Requires API credentials
-            </summary>
-            <param name="orderId">The id of the order</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of an executed order</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrderDetailsAsync(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -405,16 +219,6 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of an executed order</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetTrades(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Gets a list of trades you executed on a specific symbol. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to retrieve trades for</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of trades for a symbol</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetTradesAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Gets a list of trades you executed on a specific symbol. Requires API credentials
@@ -425,15 +229,6 @@
             <param name="ct">Cancellation token</param>
             <returns>List of trades for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.CancelOrder(System.String,System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Cancels an order. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol the order is on</param>
-            <param name="orderId">The id of the order to cancel</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the canceled order</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancels an order. Requires API credentials
@@ -443,14 +238,6 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.CancelAllOrders(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Cancels all orders. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol the orders are on</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Execution statut</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExClient.CancelAllOrdersAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Cancels all orders. Requires API credentials
@@ -458,13 +245,6 @@
             <param name="symbol">The symbol the orders are on</param>
             <param name="ct">Cancellation token</param>
             <returns>Execution statut</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetMiningDifficulty(System.Threading.CancellationToken)">
-            <summary>
-            Retrieve the mining difficulty. Requires API credentials
-            </summary>
-            <param name="ct">Cancellation token</param>
-            <returns>Mining difficulty</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetMiningDifficultyAsync(System.Threading.CancellationToken)">
             <summary>
@@ -526,37 +306,17 @@
             </summary>
             <param name="options">The options to use for new clients</param>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.Ping">
-            <summary>
-            Pings the server
-            </summary>
-            <returns>True if server responded, false otherwise</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.PingAsync">
             <summary>
             Pings the server
             </summary>
             <returns>True if server responded, false otherwise</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetServerTime">
-            <summary>
-            Gets the server time
-            </summary>
-            <returns>The server time</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.GetServerTimeAsync">
             <summary>
             Gets the server time
             </summary>
             <returns>The server time</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetSymbolState(System.String,System.Int32)">
-            <summary>
-            Get the symbol state
-            </summary>
-            <param name="symbol">The symbol to get the state for</param>
-            <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
-            <returns>Symbol state</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.GetSymbolStateAsync(System.String,System.Int32)">
             <summary>
@@ -565,15 +325,6 @@
             <param name="symbol">The symbol to get the state for</param>
             <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
             <returns>Symbol state</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetOrderBook(System.String,System.Int32,System.Int32)">
-            <summary>
-            Get an order book
-            </summary>
-            <param name="symbol">The symbol to get the order book for</param>
-            <param name="limit">The limit of results returned</param>
-            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <returns>Order book for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.GetOrderBookAsync(System.String,System.Int32,System.Int32)">
             <summary>
@@ -584,15 +335,6 @@
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <returns>Order book of a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetSymbolTrades(System.String,System.Int32,System.Nullable{System.Int32})">
-            <summary>
-            Gets the latest trades on a symbol
-            </summary>
-            <param name="symbol">The symbol to get the trades for</param>
-            <param name="limit">The limit of trades</param>
-            <param name="fromId">Return trades since this id</param>
-            <returns>List of trades</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.GetSymbolTradesAsync(System.String,System.Int32,System.Nullable{System.Int32})">
             <summary>
             Gets the latest trades on a symbol
@@ -602,14 +344,6 @@
             <param name="fromId">Return trades since this id</param>
             <returns>List of trades</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetKlines(System.String,CoinEx.Net.Objects.KlineInterval)">
-            <summary>
-            Gets symbol kline data
-            </summary>
-            <param name="symbol">The symbol to get the data for</param>
-            <param name="interval">The interval of the candles</param>
-            <returns></returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.GetKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval)">
             <summary>
             Gets symbol kline data
@@ -618,29 +352,12 @@
             <param name="interval">The interval of the candles</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetBalances(System.String[])">
-            <summary>
-            Get balances of coins. Requires API credentials
-            </summary>
-            <param name="coins">The coins to get the balances for, empty for all</param>
-            <returns>Dictionary of coins and their balances</returns>
-        </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.GetBalancesAsync(System.String[])">
             <summary>
             Get balances of coins. Requires API credentials
             </summary>
             <param name="coins">The coins to get the balances for, empty for all</param>
             <returns>Dictionary of coins and their balances</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetOpenOrders(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
-            <summary>
-            Gets a list of open orders for a symbol
-            </summary>
-            <param name="symbol">Symbol to get open orders for</param>
-            <param name="type">The type of orders to get</param>
-            <param name="offset">The offset in the list</param>
-            <param name="limit">The limit of results</param>
-            <returns>List of open orders</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.GetOpenOrdersAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
             <summary>
@@ -652,118 +369,61 @@
             <param name="limit">The limit of results</param>
             <returns>List of open orders</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolStateUpdates(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}})">
             <summary>
             Subscribe to symbol state updates for a specific symbol
             </summary>
             <param name="symbol">Symbol to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolState]: the symbol state update</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState})">
-            <summary>
-            Subscribe to symbol state updates for a specific symbol
-            </summary>
-            <param name="symbol">Symbol to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolState]: the symbol state update</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolStateUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}}})">
             <summary>
             Subscribe to symbol state updates for all symbols
             </summary>
-            <param name="onMessage">Data handler, receives a dictionary of symbol name -> symbol state</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}})">
-            <summary>
-            Subscribe to symbol state updates for all symbols
-            </summary>
-            <param name="onMessage">Data handler, receives a dictionary of symbol name -> symbol state</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderBookUpdates(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook}})">
             <summary>
             Subscribe to order book updates
             </summary>
             <param name="symbol">The symbol to receive updates for</param>
             <param name="limit">The limit of results to receive in a update</param>
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketOrderBook]: the update data</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook})">
-            <summary>
-            Subscribe to order book updates
-            </summary>
-            <param name="symbol">The symbol to receive updates for</param>
-            <param name="limit">The limit of results to receive in a update</param>
-            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketOrderBook]: the update data</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolTradeUpdates(System.String,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolTrade}})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolTrade}}})">
             <summary>
             Subscribe to symbol trade updates for a symbol
             </summary>
             <param name="symbol">The symbol to receive updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolTrade[]]: list of trades</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToSymbolTradeUpdatesAsync(System.String,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolTrade}})">
-            <summary>
-            Subscribe to symbol trade updates for a symbol
-            </summary>
-            <param name="symbol">The symbol to receive updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolTrade[]]: list of trades</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToKlineUpdates(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExKline}})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExKline}}})">
             <summary>
             Subscribe to kline updates for a symbol
             </summary>
             <param name="symbol">The symbol to receive updates for</param>
             <param name="interval">The interval of the candle to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExKline}})">
-            <summary>
-            Subscribe to kline updates for a symbol
-            </summary>
-            <param name="symbol">The symbol to receive updates for</param>
-            <param name="interval">The interval of the candle to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExKline[]]: list of klines updated klines</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToBalanceUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExBalance}}})">
             <summary>
             Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
             </summary>
-            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToBalanceUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
-            <summary>
-            Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
-            </summary>
-            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderUpdates(System.Collections.Generic.IEnumerable{System.String},System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Websocket.CoinExSocketOrderUpdate}})">
             <summary>
             Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
             </summary>
             <param name="symbols">The symbols to receive order updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
-            <summary>
-            Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
-            </summary>
-            <param name="symbols">The symbols to receive order updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.HandleQueryResponse``1(CryptoExchange.Net.Sockets.SocketConnection,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{``0}@)">
@@ -823,25 +483,11 @@
             <param name="apiKey">The api key</param>
             <param name="apiSecret">The api secret</param>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbols(System.Threading.CancellationToken)">
-            <summary>
-            Gets a list of symbols active on CoinEx
-            </summary>
-            <returns>List of symbol names</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolsAsync(System.Threading.CancellationToken)">
             <summary>
             Gets a list of symbols active on CoinEx
             </summary>
             <returns>List of symbol names</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolState(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Gets the state of a specific symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve state for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>The state of the symbol</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolStateAsync(System.String,System.Threading.CancellationToken)">
             <summary>
@@ -851,29 +497,12 @@
             <param name="ct">Cancellation token</param>
             <returns>The state of the symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolStates(System.Threading.CancellationToken)">
-            <summary>
-            Gets the states of all symbols
-            </summary>
-            <param name="ct">Cancellation token</param>
-            <returns>List of states for all symbols</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolStatesAsync(System.Threading.CancellationToken)">
             <summary>
             Gets the states of all symbols
             </summary>
             <param name="ct">Cancellation token</param>
             <returns>List of states for all symbols</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderBook(System.String,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Gets the order book for a symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve depth data for</param>
-            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <param name="limit">The limit of results returned</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Order book for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderBookAsync(System.String,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
@@ -885,15 +514,6 @@
             <param name="ct">Cancellation token</param>
             <returns>Order book for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolTrades(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
-            <summary>
-            Gets the latest trades for a symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve data for</param>
-            <param name="fromId">The id from which on to return trades</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of trades for a symbol</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolTradesAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Gets the latest trades for a symbol
@@ -902,16 +522,6 @@
             <param name="fromId">The id from which on to return trades</param>
             <param name="ct">Cancellation token</param>
             <returns>List of trades for a symbol</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetKlines(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Retrieves kline data for a specific symbol
-            </summary>
-            <param name="symbol">The symbol to retrieve klines for</param>
-            <param name="interval">The interval of the candles</param>
-            <param name="limit">Limit of the number of results</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of klines for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
@@ -923,26 +533,11 @@
             <param name="ct">Cancellation token</param>
             <returns>List of klines for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketInfo(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves market data for the exchange
-            </summary>
-            <param name="symbol">The symbol to retrieve data for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of market data for the exchange</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketInfoAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Retrieves market data for the exchange
             </summary>
             <param name="symbol">The symbol to retrieve data for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of market data for the exchange</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMarketInfo(System.Threading.CancellationToken)">
-            <summary>
-            Retrieves market data for the exchange
-            </summary>
             <param name="ct">Cancellation token</param>
             <returns>List of market data for the exchange</returns>
         </member>
@@ -953,13 +548,6 @@
             <param name="ct">Cancellation token</param>
             <returns>List of market data for the exchange</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetBalances(System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of balances. Requires API credentials
-            </summary>
-            <param name="ct">Cancellation token</param>
-            <returns>List of balances</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetBalancesAsync(System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of balances. Requires API credentials
@@ -967,32 +555,11 @@
             <param name="ct">Cancellation token</param>
             <returns>List of balances</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetDepositHistory(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coin">The coin to get history for</param>
-            <param name="page">The page in the results to retrieve</param>
-            <param name="limit">The number of results to return per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns></returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetDepositHistoryHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
             </summary>
             <param name="coin">The coin to get history for</param>
-            <param name="page">The page in the results to retrieve</param>
-            <param name="limit">The number of results to return per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns></returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetWithdrawalHistory(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coin">The coin to get history for</param>
-            <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
             <param name="page">The page in the results to retrieve</param>
             <param name="limit">The number of results to return per page</param>
             <param name="ct">Cancellation token</param>
@@ -1009,17 +576,6 @@
             <param name="ct">Cancellation token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.Withdraw(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
-            <summary>
-            Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coin">The coin to withdraw</param>
-            <param name="localTransfer">Is it a local transfer between users or onchain</param>
-            <param name="coinAddress">The address to withdraw to</param>
-            <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
-            <param name="ct">Cancellation token</param>
-            <returns>The withdrawal object</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.WithdrawAsync(System.String,System.String,System.Boolean,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
@@ -1031,14 +587,6 @@
             <param name="ct">Cancellation token</param>
             <returns>The withdrawal object</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelWithdrawal(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
-            </summary>
-            <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
-            <param name="ct">Cancellation token</param>
-            <returns>True if successful, false otherwise</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
@@ -1046,18 +594,6 @@
             <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>True if successful, false otherwise</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceLimitOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Places a limit order. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to place the order for</param>
-            <param name="type">Type of transaction</param>
-            <param name="amount">The amount of the order</param>
-            <param name="price">The price of a single unit of the order</param>
-            <param name="sourceId">Client id which can be used to match the order</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the order that was placed</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceLimitOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
@@ -1067,17 +603,6 @@
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order</param>
             <param name="price">The price of a single unit of the order</param>
-            <param name="sourceId">Client id which can be used to match the order</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the order that was placed</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceMarketOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Places a market order. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to place the order for</param>
-            <param name="type">Type of transaction</param>
-            <param name="amount">The amount of the order</param>
             <param name="sourceId">Client id which can be used to match the order</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
@@ -1093,18 +618,6 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceImmediateOrCancelOrder(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to place the order for</param>
-            <param name="type">Type of transaction</param>
-            <param name="amount">The amount of the order</param>
-            <param name="price">The price of a single unit of the order</param>
-            <param name="sourceId">Client id which can be used to match the order</param>
-            <param name="ct">Cancellation token</param>
-            <returns></returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceImmediateOrCancelOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
             Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
@@ -1117,16 +630,6 @@
             <param name="ct">Cancellation token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOpenOrders(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of open orders for a symbol. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to retrieve the open orders for</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of open orders for a symbol</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOpenOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of open orders for a symbol. Requires API credentials
@@ -1136,16 +639,6 @@
             <param name="limit">The number of results per page</param>
             <param name="ct">Cancellation token</param>
             <returns>List of open orders for a symbol</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrders(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to retrieve the open orders for</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of executed orders for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -1157,15 +650,6 @@
             <param name="ct">Cancellation token</param>
             <returns>List of executed orders for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderStatus(System.Int64,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves details of an order. Requires API credentials
-            </summary>
-            <param name="orderId">The id of the order to retrieve</param>
-            <param name="symbol">The symbol the order is for</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the order</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderStatusAsync(System.Int64,System.String,System.Threading.CancellationToken)">
             <summary>
             Retrieves details of an order. Requires API credentials
@@ -1174,16 +658,6 @@
             <param name="symbol">The symbol the order is for</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrderDetails(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves execution details of a specific order. Requires API credentials
-            </summary>
-            <param name="orderId">The id of the order</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of an executed order</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrderDetailsAsync(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -1195,16 +669,6 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of an executed order</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetTrades(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Gets a list of trades you executed on a specific symbol. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol to retrieve trades for</param>
-            <param name="page">The page of the resulting list</param>
-            <param name="limit">The number of results per page</param>
-            <param name="ct">Cancellation token</param>
-            <returns>List of trades for a symbol</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetTradesAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Gets a list of trades you executed on a specific symbol. Requires API credentials
@@ -1215,15 +679,6 @@
             <param name="ct">Cancellation token</param>
             <returns>List of trades for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelOrder(System.String,System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Cancels an order. Requires API credentials
-            </summary>
-            <param name="symbol">The symbol the order is on</param>
-            <param name="orderId">The id of the order to cancel</param>
-            <param name="ct">Cancellation token</param>
-            <returns>Details of the canceled order</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancels an order. Requires API credentials
@@ -1232,13 +687,6 @@
             <param name="orderId">The id of the order to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMiningDifficulty(System.Threading.CancellationToken)">
-            <summary>
-            Retrieve the mining difficulty. Requires API credentials
-            </summary>
-            <param name="ct">Cancellation token</param>
-            <returns>Mining difficulty</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMiningDifficultyAsync(System.Threading.CancellationToken)">
             <summary>
@@ -1252,37 +700,17 @@
             Interface for the CoinEx socket client
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.Ping">
-            <summary>
-            Pings the server
-            </summary>
-            <returns>True if server responded, false otherwise</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.PingAsync">
             <summary>
             Pings the server
             </summary>
             <returns>True if server responded, false otherwise</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetServerTime">
-            <summary>
-            Gets the server time
-            </summary>
-            <returns>The server time</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetServerTimeAsync">
             <summary>
             Gets the server time
             </summary>
             <returns>The server time</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetSymbolState(System.String,System.Int32)">
-            <summary>
-            Get the symbol state
-            </summary>
-            <param name="symbol">The symbol to get the state for</param>
-            <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
-            <returns>Symbol state</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetSymbolStateAsync(System.String,System.Int32)">
             <summary>
@@ -1291,15 +719,6 @@
             <param name="symbol">The symbol to get the state for</param>
             <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
             <returns>Symbol state</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetOrderBook(System.String,System.Int32,System.Int32)">
-            <summary>
-            Get an order book
-            </summary>
-            <param name="symbol">The symbol to get the order book for</param>
-            <param name="limit">The limit of results returned</param>
-            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <returns>Order book for a symbol</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetOrderBookAsync(System.String,System.Int32,System.Int32)">
             <summary>
@@ -1310,15 +729,6 @@
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <returns>Order book of a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetSymbolTrades(System.String,System.Int32,System.Nullable{System.Int32})">
-            <summary>
-            Gets the latest trades on a symbol
-            </summary>
-            <param name="symbol">The symbol to get the trades for</param>
-            <param name="limit">The limit of trades</param>
-            <param name="fromId">Return trades since this id</param>
-            <returns>List of trades</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetSymbolTradesAsync(System.String,System.Int32,System.Nullable{System.Int32})">
             <summary>
             Gets the latest trades on a symbol
@@ -1328,14 +738,6 @@
             <param name="fromId">Return trades since this id</param>
             <returns>List of trades</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetKlines(System.String,CoinEx.Net.Objects.KlineInterval)">
-            <summary>
-            Gets symbol kline data
-            </summary>
-            <param name="symbol">The symbol to get the data for</param>
-            <param name="interval">The interval of the candles</param>
-            <returns></returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetKlinesAsync(System.String,CoinEx.Net.Objects.KlineInterval)">
             <summary>
             Gets symbol kline data
@@ -1344,29 +746,12 @@
             <param name="interval">The interval of the candles</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetBalances(System.String[])">
-            <summary>
-            Get balances of coins. Requires API credentials
-            </summary>
-            <param name="coins">The coins to get the balances for, empty for all</param>
-            <returns>Dictionary of coins and their balances</returns>
-        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetBalancesAsync(System.String[])">
             <summary>
             Get balances of coins. Requires API credentials
             </summary>
             <param name="coins">The coins to get the balances for, empty for all</param>
             <returns>Dictionary of coins and their balances</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetOpenOrders(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
-            <summary>
-            Gets a list of open orders for a symbol
-            </summary>
-            <param name="symbol">Symbol to get open orders for</param>
-            <param name="type">The type of orders to get</param>
-            <param name="offset">The offset in the list</param>
-            <param name="limit">The limit of results</param>
-            <returns>List of open orders</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetOpenOrdersAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Int32,System.Int32)">
             <summary>
@@ -1378,118 +763,61 @@
             <param name="limit">The limit of results</param>
             <returns>List of open orders</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolStateUpdates(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}})">
             <summary>
             Subscribe to symbol state updates for a specific symbol
             </summary>
             <param name="symbol">Symbol to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolState]: the symbol state update</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.String,System.Action{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState})">
-            <summary>
-            Subscribe to symbol state updates for a specific symbol
-            </summary>
-            <param name="symbol">Symbol to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolState]: the symbol state update</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolStateUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}}})">
             <summary>
             Subscribe to symbol state updates for all symbols
             </summary>
-            <param name="onMessage">Data handler, receives a dictionary of symbol name -> symbol state</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolStateUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState}})">
-            <summary>
-            Subscribe to symbol state updates for all symbols
-            </summary>
-            <param name="onMessage">Data handler, receives a dictionary of symbol name -> symbol state</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderBookUpdates(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook}})">
             <summary>
             Subscribe to order book updates
             </summary>
             <param name="symbol">The symbol to receive updates for</param>
             <param name="limit">The limit of results to receive in a update</param>
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketOrderBook]: the update data</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{System.String,System.Boolean,CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook})">
-            <summary>
-            Subscribe to order book updates
-            </summary>
-            <param name="symbol">The symbol to receive updates for</param>
-            <param name="limit">The limit of results to receive in a update</param>
-            <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[bool]: whether this is a full update, or an update based on the last send data, Param 3[CoinExSocketOrderBook]: the update data</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolTradeUpdates(System.String,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolTrade}})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolTrade}}})">
             <summary>
             Subscribe to symbol trade updates for a symbol
             </summary>
             <param name="symbol">The symbol to receive updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolTrade[]]: list of trades</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToSymbolTradeUpdatesAsync(System.String,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Websocket.CoinExSocketSymbolTrade}})">
-            <summary>
-            Subscribe to symbol trade updates for a symbol
-            </summary>
-            <param name="symbol">The symbol to receive updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExSocketSymbolTrade[]]: list of trades</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToKlineUpdates(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExKline}})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExKline}}})">
             <summary>
             Subscribe to kline updates for a symbol
             </summary>
             <param name="symbol">The symbol to receive updates for</param>
             <param name="interval">The interval of the candle to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExKline[]]: list of klines updated klines</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Objects.KlineInterval,System.Action{System.String,System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExKline}})">
-            <summary>
-            Subscribe to kline updates for a symbol
-            </summary>
-            <param name="symbol">The symbol to receive updates for</param>
-            <param name="interval">The interval of the candle to receive updates for</param>
-            <param name="onMessage">Data handler, receives Param 1[string]: the symbol name, Param 2[CoinExKline[]]: list of klines updated klines</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToBalanceUpdates(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.CoinExBalance}}})">
             <summary>
             Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
             </summary>
-            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToBalanceUpdatesAsync(System.Action{System.Collections.Generic.Dictionary{System.String,CoinEx.Net.Objects.CoinExBalance}})">
-            <summary>
-            Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
-            </summary>
-            <param name="onMessage">Data handler, receives a dictionary of coin name -> balance</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderUpdates(System.Collections.Generic.IEnumerable{System.String},System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Websocket.CoinExSocketOrderUpdate}})">
             <summary>
             Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
             </summary>
             <param name="symbols">The symbols to receive order updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
-            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CoinEx.Net.Objects.UpdateType,CoinEx.Net.Objects.Websocket.CoinExSocketOrder})">
-            <summary>
-            Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
-            </summary>
-            <param name="symbols">The symbols to receive order updates from</param>
-            <param name="onMessage">Data handler, receives Param 1[UpdateType]: the type of update, Param 2[CoinExSocketOrder]: the order that was updated</param>
+            <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExBalance">
@@ -2488,6 +1816,11 @@
             The price of the last trade. Only filled on a full update.
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook.FullUpdate">
+            <summary>
+            Whether it is a full update or an update based on the last update
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook.Timestamp">
             <summary>
             The timestamp of the data. Only filled on a full update.
@@ -2501,6 +1834,21 @@
         <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook.Bids">
             <summary>
             The bids on the symbol
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Websocket.CoinExSocketOrderUpdate">
+            <summary>
+            Order update
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrderUpdate.UpdateType">
+            <summary>
+            The type of update
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrderUpdate.Order">
+            <summary>
+            The order info
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Websocket.CoinExSocketPagedResult`1">
@@ -2572,6 +1920,11 @@
         <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState.Volume">
             <summary>
             The volume of the quote asset. i.e. for symbol ETHBTC this is the volume in ETH
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketSymbolState.Symbol">
+            <summary>
+            Symbol
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Websocket.CoinExSocketSymbolTrade">

@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net.Converters;
+using CryptoExchange.Net.Attributes;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Websocket
@@ -48,5 +49,11 @@ namespace CoinEx.Net.Objects.Websocket
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Volume { get; set; }
+
+        /// <summary>
+        /// Symbol
+        /// </summary>
+        [JsonOptionalProperty]
+        public string Symbol { get; set; }
     }
 }

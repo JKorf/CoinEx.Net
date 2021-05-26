@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net;
 using CryptoExchange.Net.Sockets;
+using Microsoft.Extensions.Logging;
 
 namespace CryptoExchange.Net.Testing
 {
@@ -83,7 +84,7 @@ namespace CryptoExchange.Net.Testing
             client.RequestFactory = factory.Object;
 
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
-            log.Level = LogVerbosity.Debug;
+            log.Level = LogLevel.Debug;
             return new MockObjects<T>()
             {
                 Client = client,
@@ -99,8 +100,8 @@ namespace CryptoExchange.Net.Testing
 
             var client = construct();
             var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
-            if (log.Level == LogVerbosity.Info)
-                log.Level = LogVerbosity.None;
+            if (log.Level == LogLevel.Information)
+                log.Level = LogLevel.None;
             typeof(BaseClient).GetField("lastId", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).SetValue(client, 0);
             typeof(T).GetProperty("SocketFactory").SetValue(client, factory.Object);
             return client;
