@@ -316,7 +316,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        public WebCallResult<IEnumerable<CoinExDeposit>> GetDepositHistory(string? coin = null,  int? page = null, int? limit = null, CancellationToken ct = default) =>
+        public WebCallResult<CoinExPagedResult<CoinExDeposit>> GetDepositHistory(string? coin = null,  int? page = null, int? limit = null, CancellationToken ct = default) =>
             GetDepositHistoryHistoryAsync(coin, page, limit, ct).Result;
         /// <summary>
         /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
@@ -326,7 +326,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        public async Task<WebCallResult<IEnumerable<CoinExDeposit>>> GetDepositHistoryHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPagedResult<CoinExDeposit>>> GetDepositHistoryHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default)
         {
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>();
@@ -334,7 +334,7 @@ namespace CoinEx.Net
             parameters.AddOptionalParameter("page", page);
             parameters.AddOptionalParameter("limit", limit);
 
-            return await Execute<IEnumerable<CoinExDeposit>>(GetUrl(DepositHistoryEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            return await ExecutePaged<CoinExDeposit>(GetUrl(DepositHistoryEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <summary>

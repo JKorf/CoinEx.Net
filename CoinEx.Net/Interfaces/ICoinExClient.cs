@@ -174,7 +174,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        WebCallResult<IEnumerable<CoinExDeposit>> GetDepositHistory(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
+        WebCallResult<CoinExPagedResult<CoinExDeposit>> GetDepositHistory(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
@@ -184,7 +184,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExDeposit>>> GetDepositHistoryHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPagedResult<CoinExDeposit>>> GetDepositHistoryHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
 
 
         /// <summary>
