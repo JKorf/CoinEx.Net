@@ -604,6 +604,15 @@
             <param name="ct">Cancellation token</param>
             <returns></returns>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetDepositAddressAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get the deposit address of an asset
+            </summary>
+            <param name="asset">The asset to deposit</param>
+            <param name="smartContractName">Name of the network to use</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
