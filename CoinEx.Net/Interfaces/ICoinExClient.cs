@@ -20,6 +20,21 @@ namespace CoinEx.Net.Interfaces
         void SetApiCredentials(string apiKey, string apiSecret);
 
         /// <summary>
+        /// Gets the exchange rates of currencies
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<Dictionary<string, decimal>>> GetCurrencyRateAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Gets the asset configs
+        /// </summary>
+        /// <param name="assetType">Optionally only return a certain type of asset, for example BCH</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<Dictionary<string, CoinExAssetConfig>>> GetAssetConfigAsync(string? assetType = null, CancellationToken ct = default);
+
+        /// <summary>
         /// Gets a list of symbols active on CoinEx
         /// </summary>
         /// <returns>List of symbol names</returns>
@@ -100,6 +115,15 @@ namespace CoinEx.Net.Interfaces
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
         Task<WebCallResult<IEnumerable<CoinExDeposit>>> GetDepositHistoryHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get the deposit address of an asset
+        /// </summary>
+        /// <param name="asset">The asset to deposit</param>
+        /// <param name="smartContractName">Name of the network to use</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExDepositAddress>> GetDepositAddressAsync(string asset, string? smartContractName = null, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key

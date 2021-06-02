@@ -39,6 +39,21 @@
             </summary>
             <returns>List of symbol names</returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetCurrencyRateAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets the exchange rates of currencies
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetAssetConfigAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the asset configs
+            </summary>
+            <param name="assetType">Optionally only return a certain type of asset, for example BCH</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetSymbolStateAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Gets the state of a specific symbol
@@ -144,6 +159,15 @@
             <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>True if successful, false otherwise</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetDepositAddressAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get the deposit address of an asset
+            </summary>
+            <param name="asset">The asset to deposit</param>
+            <param name="smartContractName">Name of the network to use</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.PlaceLimitOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
@@ -483,6 +507,21 @@
             <param name="apiKey">The api key</param>
             <param name="apiSecret">The api secret</param>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetCurrencyRateAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets the exchange rates of currencies
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetAssetConfigAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the asset configs
+            </summary>
+            <param name="assetType">Optionally only return a certain type of asset, for example BCH</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolsAsync(System.Threading.CancellationToken)">
             <summary>
             Gets a list of symbols active on CoinEx
@@ -820,6 +859,36 @@
             <param name="onMessage">Data handler</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
+        <member name="T:CoinEx.Net.Objects.CoinExAssetConfig">
+            <summary>
+            Asset config
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.CanDeposit">
+            <summary>
+            Deposit is enabled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.CanWithdraw">
+            <summary>
+            Withdraw is enabled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.MinDeposit">
+            <summary>
+            Minimal deposit amount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.MinWithdraw">
+            <summary>
+            Minimal withdrawal amount
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.WithdrawFee">
+            <summary>
+            Withdraw fee
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.CoinExBalance">
             <summary>
             Balance info
@@ -983,6 +1052,36 @@
         <member name="P:CoinEx.Net.Objects.CoinExDeposit.TxIdDisplay">
             <summary>
             The transaction id of the withdrawal
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.CoinExDepositAddress">
+            <summary>
+            Deposit address
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDepositAddress.Address">
+            <summary>
+            The address
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDepositAddress.CreateTime">
+            <summary>
+            Time the address was created
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDepositAddress.DepositAddressId">
+            <summary>
+            Deposit address id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDepositAddress.IsBitcoinCash">
+            <summary>
+            Is bitcoin cash
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExDepositAddress.Status">
+            <summary>
+            Status
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.TransactionType">

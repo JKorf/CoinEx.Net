@@ -25,7 +25,10 @@ namespace CoinEx.Net
         #region fields
         private static CoinExClientOptions defaultOptions = new CoinExClientOptions();
         private static CoinExClientOptions DefaultOptions => defaultOptions.Copy<CoinExClientOptions>();
-        
+
+        private const string AssetConfigEndpoint = "common/asset/config";
+        private const string CurrencyRateEndpoint = "common/currency/rate";
+
         private const string MarketListEndpoint = "market/list";
         private const string MarketStatisticsEndpoint = "market/ticker";
         private const string MarketStatisticsListEndpoint = "market/ticker/all";
@@ -39,6 +42,7 @@ namespace CoinEx.Net
         private const string DepositHistoryEndpoint = "balance/coin/deposit";
         private const string WithdrawEndpoint = "balance/coin/withdraw";
         private const string CancelWithdrawalEndpoint = "balance/coin/withdraw";
+        private const string DepositAddressEndpoint = "balance/deposit/address/";
 
         private const string PlaceLimitOrderEndpoint = "order/limit";
         private const string PlaceMarketOrderEndpoint = "order/market";
@@ -99,6 +103,30 @@ namespace CoinEx.Net
         public async Task<WebCallResult<IEnumerable<string>>> GetSymbolsAsync(CancellationToken ct = default)
         {
             return await Execute<IEnumerable<string>>(GetUrl(MarketListEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the exchange rates of currencies
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        public async Task<WebCallResult<Dictionary<string, decimal>>> GetCurrencyRateAsync(CancellationToken ct = default)
+        {
+            return await Execute<Dictionary<string, decimal>>(GetUrl(CurrencyRateEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the asset configs
+        /// </summary>
+        /// <param name="assetType">Optionally only return a certain type of asset, for example BCH</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        public async Task<WebCallResult<Dictionary<string, CoinExAssetConfig>>> GetAssetConfigAsync(string? assetType = null, CancellationToken ct = default)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.AddOptionalParameter("coin_type", assetType);
+
+            return await Execute< Dictionary<string, CoinExAssetConfig>>(GetUrl(AssetConfigEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -322,6 +350,22 @@ namespace CoinEx.Net
             var result = await Execute<object>(GetUrl(CancelWithdrawalEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
             return result.As(result.Success);
         }
+
+        /// <summary>
+        /// Get the deposit address of an asset
+        /// </summary>
+        /// <param name="asset">The asset to deposit</param>
+        /// <param name="smartContractName">Name of the network to use</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        public async Task<WebCallResult<CoinExDepositAddress>> GetDepositAddressAsync(string asset, string? smartContractName = null, CancellationToken ct = default)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.AddOptionalParameter("smart_contract_name", smartContractName);
+
+            return await Execute<CoinExDepositAddress>(GetUrl(DepositAddressEndpoint + asset), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Places a limit order. Requires API credentials
         /// </summary>
