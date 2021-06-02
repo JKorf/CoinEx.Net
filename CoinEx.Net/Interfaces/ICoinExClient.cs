@@ -162,10 +162,12 @@ namespace CoinEx.Net.Interfaces
         /// <param name="type">Type of transaction</param>
         /// <param name="amount">The amount of the order</param>
         /// <param name="price">The price of a single unit of the order</param>
-        /// <param name="sourceId">Client id which can be used to match the order</param>
+        /// <param name="orderOption">Option for the order</param>
+        /// <param name="clientId">Client id which can be used to match the order</param>
+        /// <param name="sourceId">User defined number</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order that was placed</returns>
-        Task<WebCallResult<CoinExOrder>> PlaceLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal price, string? sourceId = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExOrder>> PlaceLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Places a market order. Requires API credentials

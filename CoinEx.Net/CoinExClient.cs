@@ -327,7 +327,7 @@ namespace CoinEx.Net
             {
                 { "coin_type", coin },
                 { "coin_address", coinAddress },
-                { "tranfer_method", localTransfer ? "local": "onchain" },
+                { "tranfer_method", localTransfer ? "2": "1" },
                 { "actual_amount", amount.ToString(CultureInfo.InvariantCulture) }
             };
 
@@ -373,10 +373,12 @@ namespace CoinEx.Net
         /// <param name="type">Type of transaction</param>
         /// <param name="amount">The amount of the order</param>
         /// <param name="price">The price of a single unit of the order</param>
-        /// <param name="sourceId">Client id which can be used to match the order</param>
+        /// <param name="orderOption">Option for the order</param>
+        /// <param name="clientId">Client id which can be used to match the order</param>
+        /// <param name="sourceId">User defined number</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order that was placed</returns>
-        public async Task<WebCallResult<CoinExOrder>> PlaceLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal price, string? sourceId = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExOrder>> PlaceLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
@@ -386,6 +388,8 @@ namespace CoinEx.Net
                 { "amount", amount.ToString(CultureInfo.InvariantCulture) },
                 { "price", price.ToString(CultureInfo.InvariantCulture) }
             };
+            parameters.AddOptionalParameter("option", orderOption.HasValue ? JsonConvert.SerializeObject(orderOption, new OrderOptionConverter(false)): null);
+            parameters.AddOptionalParameter("client_id", clientId);
             parameters.AddOptionalParameter("source_id", sourceId);
 
             return await Execute<CoinExOrder>(GetUrl(PlaceLimitOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);

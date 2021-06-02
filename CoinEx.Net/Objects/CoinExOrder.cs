@@ -110,6 +110,12 @@ namespace CoinEx.Net.Objects
         [JsonOptionalProperty]
         public long? SourceId { get; set; }
         /// <summary>
+        /// The client id optionally specified by the client
+        /// </summary>
+        [JsonProperty("client_id")]
+        [JsonOptionalProperty]
+        public string? ClientId { get; set; }
+        /// <summary>
         /// The status of the order
         /// </summary>
         [JsonConverter(typeof(OrderStatusConverter))]
