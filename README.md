@@ -121,6 +121,10 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.3.0-beta5 - 02 Jun 2021
+    * Added optional PlaceLimitOrderAsync parameters
+    * Fix for WithdrawAsync
+
 * Version 3.3.0-beta4 - 02 Jun 2021
     * Added GetCurrencyRateAsync endpoint
     * Added GetAssetConfigAsync endpoint
