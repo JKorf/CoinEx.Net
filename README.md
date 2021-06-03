@@ -121,6 +121,10 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.3.0-beta6 - 03 Jun 2021
+    * Added ClientId to order update model
+    * Fixed order subscription parameters
+
 * Version 3.3.0-beta5 - 02 Jun 2021
     * Added optional PlaceLimitOrderAsync parameters
     * Fix for WithdrawAsync
