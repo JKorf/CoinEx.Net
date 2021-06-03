@@ -114,5 +114,11 @@ namespace CoinEx.Net.Objects.Websocket
         /// </summary>
         [JsonProperty("market")]
         public string Symbol { get; set; } = "";
+
+        /// <summary>
+        /// The client id
+        /// </summary>
+        [JsonProperty("client_id")]
+        public string ClientId { get; set; } = "";
     }
 }

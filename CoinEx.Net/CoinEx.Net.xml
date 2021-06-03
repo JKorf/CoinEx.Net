@@ -120,7 +120,7 @@
             <param name="ct">Cancellation token</param>
             <returns>List of balances</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetDepositHistoryHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.CoinExClient.GetDepositHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
             </summary>
@@ -596,7 +596,7 @@
             <param name="ct">Cancellation token</param>
             <returns>List of balances</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetDepositHistoryHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetDepositHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
             </summary>
@@ -1946,6 +1946,11 @@
         <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.Symbol">
             <summary>
             The symbol of the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrder.ClientId">
+            <summary>
+            The client id
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook">
