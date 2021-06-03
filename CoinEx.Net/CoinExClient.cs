@@ -299,7 +299,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        public async Task<WebCallResult<IEnumerable<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPagedResult<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default)
         {
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>();
@@ -308,7 +308,7 @@ namespace CoinEx.Net
             parameters.AddOptionalParameter("page", page);
             parameters.AddOptionalParameter("limit", limit);
 
-            return await Execute<IEnumerable<CoinExWithdrawal>>(GetUrl(WithdrawalHistoryEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            return await Execute<CoinExPagedResult<CoinExWithdrawal>>(GetUrl(WithdrawalHistoryEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
         /// <summary>
         /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key

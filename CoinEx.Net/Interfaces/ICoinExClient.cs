@@ -134,7 +134,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPagedResult<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
