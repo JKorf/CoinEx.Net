@@ -390,7 +390,7 @@ namespace CoinEx.Net
                 onMessage(data.As(result, result.Order.Symbol));
             });
 
-            var request = new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols);
+            var request = new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols.ToArray());
             return await Subscribe(request, null, true, internalHandler).ConfigureAwait(false);
         }
         #endregion
