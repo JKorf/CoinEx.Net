@@ -273,10 +273,10 @@ namespace CoinEx.Net
             symbol.ValidateCoinExSymbol();
             var internalHandler = new Action<DataEvent<JToken[]>>(data =>
             {
-                if (data.Length != 2 && data.Length != 3)
+                if (data.Data.Length != 2 && data.Data.Length != 3)
                 {
                     // Sometimes an extra True is send as 3rd parameter?
-                    log.Write(LogLevel.Warning, $"Received unexpected data format for trade update. Expected 2 objects, received {data.Length}. Data: [{string.Join(",", data.Select(s => s.ToString()))}]");
+                    log.Write(LogLevel.Warning, $"Received unexpected data format for trade update. Expected 2 objects, received {data.Data.Length}. Data: {data.OriginalData}");
                     return;
                 }
 
