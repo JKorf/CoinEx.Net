@@ -242,10 +242,12 @@ namespace CoinEx.Net.UnitTests
         public async Task WithdrawalHistory_Should_RespondWithdrawalHistory()
         {
             // arrange
-            IEnumerable<CoinExWithdrawal> expected = new List<CoinExWithdrawal>
+            CoinExPagedResult<CoinExWithdrawal> expected = new CoinExPagedResult<CoinExWithdrawal>
             {
+                Data = new[] {
                  new CoinExWithdrawal(),
                  new CoinExWithdrawal()
+                 }
             };
             var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
             {
@@ -257,7 +259,7 @@ namespace CoinEx.Net.UnitTests
 
             // assert
             Assert.AreEqual(true, result.Success);
-            TestHelpers.PublicInstancePropertiesEqual(expected.First(), result.Data.First());
+            TestHelpers.PublicInstancePropertiesEqual(expected.Data.First(), result.Data.Data.First());
         }
 
         [Test]

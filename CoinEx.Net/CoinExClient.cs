@@ -55,6 +55,15 @@ namespace CoinEx.Net
         private const string UserTransactionsEndpoint = "order/user/deals";
         private const string CancelOrderEndpoint = "order/pending";
         private const string MiningDifficultyEndpoint = "order/mining/difficulty";
+
+        /// <summary>
+        /// Event triggered when an order is placed via this client
+        /// </summary>
+        public event Action<ICommonOrderId> OnOrderPlaced;
+        /// <summary>
+        /// Event triggered when an order is cancelled via this client. Note that this does not trigger when using CancelAllOrdersAsync
+        /// </summary>
+        public event Action<ICommonOrderId> OnOrderCanceled;
         #endregion
 
         #region ctor
@@ -392,7 +401,11 @@ namespace CoinEx.Net
             parameters.AddOptionalParameter("client_id", clientId);
             parameters.AddOptionalParameter("source_id", sourceId);
 
-            return await Execute<CoinExOrder>(GetUrl(PlaceLimitOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var result = await Execute<CoinExOrder>(GetUrl(PlaceLimitOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            if (result)
+                OnOrderPlaced?.Invoke(result.Data);
+
+            return result;
         }
 
         /// <summary>
@@ -415,7 +428,10 @@ namespace CoinEx.Net
             };
             parameters.AddOptionalParameter("source_id", sourceId);
 
-            return await Execute<CoinExOrder>(GetUrl(PlaceMarketOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var result = await Execute<CoinExOrder>(GetUrl(PlaceMarketOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            if (result)
+                OnOrderPlaced?.Invoke(result.Data);
+            return result;
         }
 
         /// <summary>
@@ -440,7 +456,10 @@ namespace CoinEx.Net
             };
             parameters.AddOptionalParameter("source_id", sourceId);
 
-            return await Execute<CoinExOrder>(GetUrl(PlaceImmediateOrCancelOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var result = await Execute<CoinExOrder>(GetUrl(PlaceImmediateOrCancelOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            if (result)
+                OnOrderPlaced?.Invoke(result.Data);
+            return result;
         }
 
         /// <summary>
@@ -565,7 +584,10 @@ namespace CoinEx.Net
                 { "id", orderId }
             };
 
-            return await Execute<CoinExOrder>(GetUrl(CancelOrderEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
+            var result = await Execute<CoinExOrder>(GetUrl(CancelOrderEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
+            if (result)
+                OnOrderCanceled?.Invoke(result.Data);
+            return result;
         }
 
         /// <summary>

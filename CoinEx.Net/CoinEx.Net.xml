@@ -9,6 +9,16 @@
             Client for the CoinEx REST API
             </summary>
         </member>
+        <member name="E:CoinEx.Net.CoinExClient.OnOrderPlaced">
+            <summary>
+            Event triggered when an order is placed via this client
+            </summary>
+        </member>
+        <member name="E:CoinEx.Net.CoinExClient.OnOrderCanceled">
+            <summary>
+            Event triggered when an order is cancelled via this client. Note that this does not trigger when using CancelAllOrdersAsync
+            </summary>
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.#ctor">
             <summary>
             Create a new instance of CoinExClient with default options

@@ -136,8 +136,12 @@ namespace CoinEx.Net.Objects
         string ICommonOrder.CommonSymbol => Symbol;
         decimal ICommonOrder.CommonPrice => Price;
         decimal ICommonOrder.CommonQuantity => Amount;
-        string ICommonOrder.CommonStatus => Status.ToString();
+        IExchangeClient.OrderStatus ICommonOrder.CommonStatus =>
+            Status == OrderStatus.Canceled ? IExchangeClient.OrderStatus.Canceled :
+            Status == OrderStatus.Executed ? IExchangeClient.OrderStatus.Filled :
+            IExchangeClient.OrderStatus.Active;
         bool ICommonOrder.IsActive => Status == OrderStatus.UnExecuted;
+        DateTime ICommonOrder.CommonOrderTime => CreateTime;
 
         IExchangeClient.OrderSide ICommonOrder.CommonSide => Type == TransactionType.Buy
             ? IExchangeClient.OrderSide.Sell

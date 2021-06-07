@@ -65,6 +65,7 @@ namespace CoinEx.Net.Objects
         decimal ICommonTrade.CommonQuantity => Amount;
         decimal ICommonTrade.CommonFee => Fee;
         string ICommonTrade.CommonFeeAsset => FeeAsset;
+        DateTime ICommonTrade.CommonTradeTime => CreateTime;
     }
 
     /// <summary>
