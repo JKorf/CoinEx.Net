@@ -121,6 +121,9 @@ CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExCli
 Examples can be found in the Examples folder.
 
 ## Release notes
+* Version 3.3.0-beta9 - 14 Jun 2021
+    * Fixed typo in WithdrawAsync
+
 * Version 3.3.0-beta8 - 07 Jun 2021
     * Fixed GetWithdrawalHistory
     * Updated CryptoExchange.Net
