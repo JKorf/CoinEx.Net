@@ -336,7 +336,7 @@ namespace CoinEx.Net
             {
                 { "coin_type", coin },
                 { "coin_address", coinAddress },
-                { "transfer_method", localTransfer ? "2": "1" },
+                { "transfer_method", localTransfer ? "local": "onchain" },
                 { "actual_amount", amount.ToString(CultureInfo.InvariantCulture) }
             };
 
