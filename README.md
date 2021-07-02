@@ -1,124 +1,84 @@
-# ![Icon](https://github.com/JKorf/CoinEx.Net/blob/master/CoinEx.Net/Icon/icon.png?raw=true) CoinEx.Net 
+# CoinEx.Net
+![Build status](https://travis-ci.org/JKorf/CoinEx.Net.svg?branch=master) ![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)  ![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)
 
-![Build status](https://travis-ci.org/JKorf/CoinEx.Net.svg?branch=master)
-
-A .Net wrapper for the CoinEX API as described on [CoinEx](https://github.com/coinexcom/coinex_exchange_api/wiki), including all features the API provides using clear and readable objects.
+CoinEx.Net is a wrapper around the CoinEx API as described on [CoinEx](https://github.com/coinexcom/coinex_exchange_api/wiki), including all features the API provides using clear and readable objects, both for the REST  as the websocket API's.
 
 **If you think something is broken, something is missing or have any questions, please open an [Issue](https://github.com/JKorf/CoinEx.Net/issues)**
 
 ## CryptoExchange.Net
-Implementation is build upon the CryptoExchange.Net library, make sure to also check out the documentation on that: [docs](https://github.com/JKorf/CryptoExchange.Net)
-
-Other CryptoExchange.Net implementations:
-<table>
-<tr>
-<td><a href="https://github.com/JKorf/Bittrex.Net"><img src="https://github.com/JKorf/Bittrex.Net/blob/master/Bittrex.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/JKorf/Bittrex.Net">Bittrex</a>
-</td>
-<td><a href="https://github.com/JKorf/Bitfinex.Net"><img src="https://github.com/JKorf/Bitfinex.Net/blob/master/Bitfinex.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/JKorf/Bitfinex.Net">Bitfinex</a>
-</td>
-<td><a href="https://github.com/JKorf/Binance.Net"><img src="https://github.com/JKorf/Binance.Net/blob/master/Binance.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/JKorf/Binance.Net">Binance</a>
-</td>
-<td><a href="https://github.com/JKorf/Huobi.Net"><img src="https://github.com/JKorf/Huobi.Net/blob/master/Huobi.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/JKorf/Huobi.Net">Huobi</a>
-</td>
-<td><a href="https://github.com/JKorf/Kucoin.Net"><img src="https://github.com/JKorf/Kucoin.Net/blob/master/Kucoin.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/JKorf/Kucoin.Net">Kucoin</a>
-</td>
-<td><a href="https://github.com/JKorf/Kraken.Net"><img src="https://github.com/JKorf/Kraken.Net/blob/master/Kraken.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/JKorf/Kraken.Net">Kraken</a>
-</td>
-</tr>
-</table>
-
-Implementations from third parties
-<table>
-<tr>
-<td><a href="https://github.com/Zaliro/Switcheo.Net"><img src="https://github.com/Zaliro/Switcheo.Net/blob/master/Resources/switcheo-coin.png?raw=true"></a>
-<br />
-<a href="https://github.com/Zaliro/Switcheo.Net">Switcheo</a>
-</td>
-<td><a href="https://github.com/ridicoulous/LiquidQuoine.Net"><img src="https://github.com/ridicoulous/LiquidQuoine.Net/blob/master/Resources/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/ridicoulous/LiquidQuoine.Net">Liquid</a>
-</td>
-<td><a href="https://github.com/ridicoulous/Bitmex.Net"><img src="https://github.com/ridicoulous/Bitmex.Net/blob/master/Bitmex.Net/Icon/icon.png"></a>
-<br />
-<a href="https://github.com/ridicoulous/Bitmex.Net">Bitmex</a>
-</td>
-<td><a href="https://github.com/intelligences/HitBTC.Net"><img src="https://github.com/intelligences/HitBTC.Net/blob/master/src/HitBTC.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/intelligences/HitBTC.Net">HitBTC</a>
-</td>
-<td><a href="https://github.com/EricGarnier/LiveCoin.Net"><img src="https://github.com/EricGarnier/LiveCoin.Net/blob/master/LiveCoin.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/EricGarnier/LiveCoin.Net">LiveCoin</a>
-</td>
-<td><a href="https://github.com/burakoner/OKEx.Net"><img src="https://github.com/burakoner/OKEx.Net/blob/master/Okex.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/burakoner/OKEx.Net">OKEx</a>
-</td>
-<td><a href="https://github.com/burakoner/Chiliz.Net"><img src="https://github.com/burakoner/Chiliz.Net/blob/master/Chiliz.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/burakoner/Chiliz.Net">Chiliz</a>
-</td>
-<td><a href="https://github.com/burakoner/BtcTurk.Net"><img src="https://github.com/burakoner/BtcTurk.Net/blob/master/BtcTurk.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/burakoner/BtcTurk.Net">BtcTurk</a>
-</td>
-<td><a href="https://github.com/burakoner/Thodex.Net"><img src="https://github.com/burakoner/Thodex.Net/blob/master/Thodex.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/burakoner/Thodex.Net">Thodex</a>
-</td>
-<td><a href="https://github.com/d-ugarov/Exante.Net"><img src="https://github.com/d-ugarov/Exante.Net/blob/master/Exante.Net/Icon/icon.png?raw=true"></a>
-<br />
-<a href="https://github.com/d-ugarov/Exante.Net">Exante</a>
-</td>
-</tr>
-</table>
-
+This library is build upon the CryptoExchange.Net library, make sure to check out the documentation on that for basic usage: [docs](https://github.com/JKorf/CryptoExchange.Net)
 
 ## Donations
-Donations are greatly appreciated and a motivation to keep improving.
+I develop and maintain this package on my own for free in my spare time. Donations are greatly appreciated. If you prefer to donate any other currency please contact me.
 
 **Btc**:  12KwZk3r2Y3JZ2uMULcjqqBvXmpDwjhhQS  
 **Eth**:  0x069176ca1a4b1d6e0b7901a6bc0dbf3bb0bf5cc2  
 **Nano**: xrb_1ocs3hbp561ef76eoctjwg85w5ugr8wgimkj8mfhoyqbx4s1pbc74zggw7gs  
 
 ## Discord
-A Discord server is available [here](https://discord.gg/MSpeEtSY8t). For discussion and/or questions around the CryptoExchange.Net and implementation libraries, feel free to join.
+A Discord server is available [here](https://discord.gg/MSpeEtSY8t). Feel free to join for discussion and/or questions around the CryptoExchange.Net and implementation libraries.
 
-
-## Installation
-![Nuget version](https://img.shields.io/nuget/v/coinex.net.svg)  ![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)
-Available on [Nuget](https://www.nuget.org/packages/CoinEx.Net/).
-```
-pm> Install-Package CoinEx.Net
-```
-To get started with CoinEx.Net first you will need to get the library itself. The easiest way to do this is to install the package into your project using  [NuGet](https://www.nuget.org/packages/CoinEx.Net/). Using Visual Studio this can be done in two ways.
-
-### Using the package manager
-In Visual Studio right click on your solution and select 'Manage NuGet Packages for solution...'. A screen will appear which initially shows the currently installed packages. In the top bit select 'Browse'. This will let you download net package from the NuGet server. In the search box type 'CoinEx.Net' and hit enter. The CoinEx.Net package should come up in the results. After selecting the package you can then on the right hand side select in which projects in your solution the package should install. After you've selected all project you wish to install and use CoinEx.Net in hit 'Install' and the package will be downloaded and added to you projects.
-
-### Using the package manager console
-In Visual Studio in the top menu select 'Tools' -> 'NuGet Package Manager' -> 'Package Manager Console'. This should open up a command line interface. On top of the interface there is a dropdown menu where you can select the Default Project. This is the project that CoinEx.Net will be installed in. After selecting the correct project type  `Install-Package CoinEx.Net`  in the command line interface. This should install the latest version of the package in your project.
-
-After doing either of above steps you should now be ready to actually start using CoinEx.Net.
 ## Getting started
-After installing it's time to actually use it. To get started you have to add the CoinEx.Net namespace: `using CoinEx.Net;`.
+Make sure you have installed the CoinEx.Net [Nuget](https://www.nuget.org/packages/CoinEx.Net/) package and add `using CoinEx.Net` to your usings.  You now have access to 2 clients:  
+**CoinExClient**  
+The client to interact with the CoinExREST API. Getting prices:
+````C#
+var client = new CoinExClient(new CoinExClientOptions(){
+ // Specify options for the client
+});
+var callResult = await client.GetSymbolStatesAsync();
+// Make sure to check if the call was successful
+if(!callResult.Success)
+{
+  // Call failed, check callResult.Error for more info
+}
+else
+{
+  // Call succeeded, callResult.Data will have the resulting data
+}
+````
 
-CoinEx.Net provides two clients to interact with the CoinEx API. The  `CoinExClient`  provides all rest API calls. The `CoinExSocketClient` provides functions to interact with the websocket provided by the CoinEx API. Both clients are disposable and as such can be used in a `using` statement.
+Placing an order:
+````C#
+var client = new CoinExClient(new CoinExClientOptions(){
+ // Specify options for the client
+ ApiCredentials = new ApiCredentials("Key", "Secret")
+});
+var callResult = await client.PlaceLimitOrderAsync("BTC-USDT", TransactionType.Buy, 50, 10);
+// Make sure to check if the call was successful
+if(!callResult.Success)
+{
+  // Call failed, check callResult.Error for more info
+}
+else
+{
+  // Call succeeded, callResult.Data will have the resulting data
+}
+````
 
-## Examples
-Examples can be found in the Examples folder.
+**CoinExSocketClient**  
+The client to interact with the CoinEx websocket API. Basic usage:
+````C#
+var client = new CoinExSocketClient(new CoinExSocketClientOptions()
+{
+  // Specify options for the client
+});
+var subscribeResult = client.SubscribeToSymbolStateUpdatesAsync("ETHBTC", data => {
+  // Handle data when it is received
+});
+// Make sure to check if the subscritpion was successful
+if(!subscribeResult.Success)
+{
+  // Subscription failed, check callResult.Error for more info
+}
+else
+{
+  // Subscription succeeded, the handler will start receiving data when it is available
+}
+````
+
+## Client options
+For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
 * Version 3.3.0-beta10 - 15 Jun 2021
