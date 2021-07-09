@@ -621,7 +621,7 @@ namespace CoinEx.Net
         #region private
 
         /// <inheritdoc />
-        protected override Task<ServerError?> TryParseError(JToken data)
+        protected override Task<ServerError?> TryParseErrorAsync(JToken data)
         {
             if (data["code"] != null && data["message"] != null)
             {
@@ -645,16 +645,16 @@ namespace CoinEx.Net
 
         private async Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
-            return GetResult(await SendRequest<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+            return GetResult(await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
         private async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) 
         {
-            return GetResult(await SendRequest<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+            return GetResult(await SendRequestAsync<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
 
         private async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
-            return GetResult(await SendRequest<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+            return GetResult(await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
 
         private static WebCallResult<T> GetResult<T>(WebCallResult<CoinExApiResult<T>> result) where T : class

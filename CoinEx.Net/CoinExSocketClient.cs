@@ -78,7 +78,7 @@ namespace CoinEx.Net
         /// <returns>True if server responded, false otherwise</returns>
         public async Task<CallResult<bool>> PingAsync()
         {
-            var result = await Query<string>(new CoinExSocketRequest(NextId(), ServerSubject, PingAction), false).ConfigureAwait(false);
+            var result = await QueryAsync<string>(new CoinExSocketRequest(NextId(), ServerSubject, PingAction), false).ConfigureAwait(false);
             return new CallResult<bool>(result.Success, result.Error);
         }
 
@@ -88,7 +88,7 @@ namespace CoinEx.Net
         /// <returns>The server time</returns>
         public async Task<CallResult<DateTime>> GetServerTimeAsync()
         {
-            var result = await Query<long>(new CoinExSocketRequest(NextId(), ServerSubject, ServerTimeAction), false).ConfigureAwait(false);
+            var result = await QueryAsync<long>(new CoinExSocketRequest(NextId(), ServerSubject, ServerTimeAction), false).ConfigureAwait(false);
             if (!result)
                 return new CallResult<DateTime>(default, result.Error);
             return new CallResult<DateTime>(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(result.Data), null);
@@ -103,7 +103,7 @@ namespace CoinEx.Net
         public async Task<CallResult<CoinExSocketSymbolState>> GetSymbolStateAsync(string symbol, int cyclePeriod)
         {
             symbol.ValidateCoinExSymbol();
-            return await Query<CoinExSocketSymbolState>(new CoinExSocketRequest(NextId(), StateSubject, QueryAction, symbol, cyclePeriod), false).ConfigureAwait(false);
+            return await QueryAsync<CoinExSocketSymbolState>(new CoinExSocketRequest(NextId(), StateSubject, QueryAction, symbol, cyclePeriod), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace CoinEx.Net
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
-            return await Query<CoinExSocketOrderBook>(new CoinExSocketRequest(NextId(), DepthSubject, QueryAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
+            return await QueryAsync<CoinExSocketOrderBook>(new CoinExSocketRequest(NextId(), DepthSubject, QueryAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace CoinEx.Net
         {
             symbol.ValidateCoinExSymbol();
 
-            return await Query<IEnumerable<CoinExSocketSymbolTrade>>(new CoinExSocketRequest(NextId(), TransactionSubject, QueryAction, symbol, limit, fromId ?? 0), false).ConfigureAwait(false);
+            return await QueryAsync<IEnumerable<CoinExSocketSymbolTrade>>(new CoinExSocketRequest(NextId(), TransactionSubject, QueryAction, symbol, limit, fromId ?? 0), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace CoinEx.Net
         {
             symbol.ValidateCoinExSymbol();
 
-            return await Query<CoinExKline>(new CoinExSocketRequest(NextId(), KlineSubject, QueryAction, symbol, interval.ToSeconds()), false).ConfigureAwait(false);
+            return await QueryAsync<CoinExKline>(new CoinExSocketRequest(NextId(), KlineSubject, QueryAction, symbol, interval.ToSeconds()), false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace CoinEx.Net
         /// <returns>Dictionary of coins and their balances</returns>
         public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(params string[] coins)
         {
-            return await Query<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(NextId(), BalanceSubject, QueryAction, coins), true).ConfigureAwait(false);
+            return await QueryAsync<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(NextId(), BalanceSubject, QueryAction, coins), true).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -170,7 +170,7 @@ namespace CoinEx.Net
         public async Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string symbol, TransactionType type, int offset, int limit)
         {
             symbol.ValidateCoinExSymbol();
-            return await Query<CoinExSocketPagedResult<CoinExSocketOrder>>(
+            return await QueryAsync<CoinExSocketPagedResult<CoinExSocketOrder>>(
                 new CoinExSocketRequest(NextId(), OrderSubject, QueryAction, symbol, int.Parse(JsonConvert.SerializeObject(type, new TransactionTypeIntConverter(false))), offset, limit), true).ConfigureAwait(false);
         }
 
@@ -197,7 +197,7 @@ namespace CoinEx.Net
                 onMessage(data.As(result, symbol));
             });
 
-            return await Subscribe(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction, symbol), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction, symbol), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace CoinEx.Net
                 onMessage(data.As<IEnumerable<CoinExSocketSymbolState>>(desResult.Data.Select(d => d.Value)));
             });
 
-            return await Subscribe(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace CoinEx.Net
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await Subscribe(new CoinExSocketRequest(NextId(), DepthSubject, SubscribeAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), DepthSubject, SubscribeAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace CoinEx.Net
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await Subscribe(new CoinExSocketRequest(NextId(), TransactionSubject, SubscribeAction, symbol), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), TransactionSubject, SubscribeAction, symbol), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace CoinEx.Net
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await Subscribe(new CoinExSocketRequest(NextId(), KlineSubject, SubscribeAction, symbol, interval.ToSeconds()), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), KlineSubject, SubscribeAction, symbol, interval.ToSeconds()), null, false, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace CoinEx.Net
                 onMessage(data.As<IEnumerable<CoinExBalance>>(desResult.Data.Values, null));
             });
 
-            return await Subscribe(new CoinExSocketRequest(NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace CoinEx.Net
             });
 
             var request = new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols.ToArray());
-            return await Subscribe(request, null, true, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(request, null, true, internalHandler).ConfigureAwait(false);
         }
         #endregion
 
@@ -504,14 +504,14 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        protected override async Task<CallResult<bool>> AuthenticateSocket(SocketConnection s)
+        protected override async Task<CallResult<bool>> AuthenticateSocketAsync(SocketConnection s)
         {
             if (authProvider == null)
                 return new CallResult<bool>(false, new NoApiCredentialsError());
 
             var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters());
             var result = new CallResult<bool>(false, new ServerError("No response from server"));
-            await s.SendAndWait(request, ResponseTimeout, data =>
+            await s.SendAndWaitAsync(request, ResponseTimeout, data =>
             {
                 var idField = data["id"];
                 if (idField == null)
@@ -552,7 +552,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        protected override Task<bool> Unsubscribe(SocketConnection connection, SocketSubscription s)
+        protected override Task<bool> UnsubscribeAsync(SocketConnection connection, SocketSubscription s)
         {
             return Task.FromResult(true);
         }

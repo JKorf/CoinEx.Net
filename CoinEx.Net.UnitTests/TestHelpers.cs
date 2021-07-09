@@ -72,11 +72,11 @@ namespace CryptoExchange.Net.Testing
             var response = new Mock<IResponse>();
             response.Setup(c => c.IsSuccessStatusCode).Returns(code == HttpStatusCode.OK);
             response.Setup(c => c.StatusCode).Returns(code);
-            response.Setup(c => c.GetResponseStream()).Returns(Task.FromResult((Stream)responseStream));
+            response.Setup(c => c.GetResponseStreamAsync()).Returns(Task.FromResult((Stream)responseStream));
 
             var request = new Mock<IRequest>();
             request.Setup(c => c.Uri).Returns(new Uri("http://www.test.com"));
-            request.Setup(c => c.GetResponse(It.IsAny<CancellationToken>())).Returns(Task.FromResult(response.Object));
+            request.Setup(c => c.GetResponseAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(response.Object));
 
             var factory = new Mock<IRequestFactory>();
             factory.Setup(c => c.Create(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<int>()))
@@ -118,7 +118,7 @@ namespace CryptoExchange.Net.Testing
 
             IWebsocket obj = Mock.Of<IWebsocket>();
             var socket = Mock.Get(obj);
-            socket.Setup(s => s.Close()).Returns(Task.FromResult(true)).Callback(() =>
+            socket.Setup(s => s.CloseAsync()).Returns(Task.FromResult(true)).Callback(() =>
             {
                 var closing = socket.Object.IsOpen;
                 open = false; closed = true;
@@ -132,7 +132,7 @@ namespace CryptoExchange.Net.Testing
                 OnSend?.Invoke(socket, data);
             }));
             socket.Setup(s => s.IsClosed).Returns(() => closed);
-            socket.Setup(s => s.Connect()).Returns(Task.FromResult(true)).Callback(() =>
+            socket.Setup(s => s.ConnectAsync()).Returns(Task.FromResult(true)).Callback(() =>
             {
                 socket.Setup(s => s.IsOpen).Returns(() => open);
                 socket.Setup(s => s.IsClosed).Returns(() => closed);

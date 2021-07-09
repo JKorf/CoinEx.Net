@@ -28,7 +28,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        protected override async Task<CallResult<UpdateSubscription>> DoStart()
+        protected override async Task<CallResult<UpdateSubscription>> DoStartAsync()
         {
             var result = await socketClient.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate).ConfigureAwait(false);
             if (!result)
@@ -36,14 +36,14 @@ namespace CoinEx.Net
 
             Status = OrderBookStatus.Syncing;
 
-            var setResult = await WaitForSetOrderBook(10000).ConfigureAwait(false);
+            var setResult = await WaitForSetOrderBookAsync(10000).ConfigureAwait(false);
             return setResult ? result : new CallResult<UpdateSubscription>(null, setResult.Error);
         }
 
         /// <inheritdoc />
-        protected override async Task<CallResult<bool>> DoResync()
+        protected override async Task<CallResult<bool>> DoResyncAsync()
         {
-            return await WaitForSetOrderBook(10000).ConfigureAwait(false);
+            return await WaitForSetOrderBookAsync(10000).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

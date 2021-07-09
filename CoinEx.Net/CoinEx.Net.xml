@@ -289,7 +289,7 @@
             <param name="ct">Cancellation token</param>
             <returns>Mining difficulty</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.TryParseError(Newtonsoft.Json.Linq.JToken)">
+        <member name="M:CoinEx.Net.CoinExClient.TryParseErrorAsync(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.CoinExClient.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
@@ -477,10 +477,10 @@
         <member name="M:CoinEx.Net.CoinExSocketClient.MessageMatchesHandler(Newtonsoft.Json.Linq.JToken,System.String)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.AuthenticateSocket(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:CoinEx.Net.CoinExSocketClient.AuthenticateSocketAsync(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.Unsubscribe(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription)">
+        <member name="M:CoinEx.Net.CoinExSocketClient.UnsubscribeAsync(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.CoinExSymbolOrderBook">
@@ -495,10 +495,10 @@
             <param name="symbol">The symbol of the order book</param>
             <param name="options">The options for the order book</param>
         </member>
-        <member name="M:CoinEx.Net.CoinExSymbolOrderBook.DoStart">
+        <member name="M:CoinEx.Net.CoinExSymbolOrderBook.DoStartAsync">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.CoinExSymbolOrderBook.DoResync">
+        <member name="M:CoinEx.Net.CoinExSymbolOrderBook.DoResyncAsync">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.CoinExSymbolOrderBook.DoReset">
