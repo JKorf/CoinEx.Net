@@ -81,6 +81,10 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 4.0.0-beta1 - 09 Jul 2021
+    * Added Async postfix for async methods
+    * Updated CryptoExchange.Net
+
 * Version 3.3.0-beta10 - 15 Jun 2021
     * WithrawAsync fixed
 
