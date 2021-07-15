@@ -1,8 +1,6 @@
 ﻿using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoinEx.Net.Objects
 {
@@ -15,7 +13,7 @@ namespace CoinEx.Net.Objects
         /// The address
         /// </summary>
         [JsonProperty("coin_address")]
-        public string Address { get; set; } = "";
+        public string Address { get; set; } = string.Empty;
         /// <summary>
         /// Time the address was created
         /// </summary>
@@ -35,6 +33,6 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// Status
         /// </summary>
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
     }
 }

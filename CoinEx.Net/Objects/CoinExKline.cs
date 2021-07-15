@@ -59,7 +59,7 @@ namespace CoinEx.Net.Objects
         /// The symbol for this kline
         /// </summary>
         [ArrayProperty(7)]
-        public string Symbol { get; set; } = "";
+        public string Symbol { get; set; } = string.Empty;
 
         decimal ICommonKline.CommonHigh => High;
         decimal ICommonKline.CommonLow => Low;

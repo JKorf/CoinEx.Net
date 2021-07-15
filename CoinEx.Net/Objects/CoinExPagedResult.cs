@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects
@@ -21,7 +22,7 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// The results
         /// </summary>
-        public IEnumerable<T> Data { get; set; } = new List<T>();
+        public IEnumerable<T> Data { get; set; } = Array.Empty<T>();
         /// <summary>
         /// Whether there is a next page
         /// </summary>

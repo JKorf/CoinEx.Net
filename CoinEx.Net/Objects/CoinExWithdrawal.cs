@@ -24,12 +24,12 @@ namespace CoinEx.Net.Objects
         /// The destination address of the withdrawal
         /// </summary>
         [JsonProperty("coin_address")]
-        public string CoinAddress { get; set; } = "";
+        public string CoinAddress { get; set; } = string.Empty;
         /// <summary>
         /// The name of the coin of the withdrawal
         /// </summary>
         [JsonProperty("coin_type")]
-        public string CoinType { get; set; } = "";
+        public string CoinType { get; set; } = string.Empty;
         /// <summary>
         /// The id of this withdrawal
         /// </summary>
@@ -58,6 +58,6 @@ namespace CoinEx.Net.Objects
         /// The transaction id of the withdrawal
         /// </summary>
         [JsonProperty("tx_id")]
-        public string TransactionId { get; set; } = "";
+        public string TransactionId { get; set; } = string.Empty;
     }
 }

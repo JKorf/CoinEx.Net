@@ -49,7 +49,7 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// Symbol
         /// </summary>
-        public string Symbol { get; set; } = "";
+        public string Symbol { get; set; } = string.Empty;
         /// <summary>
         /// The best buy price available on the symbol
         /// </summary>

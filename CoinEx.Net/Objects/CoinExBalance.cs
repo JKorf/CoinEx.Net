@@ -12,7 +12,7 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// The symbol
         /// </summary>
-        public string Symbol { get; set; }
+        public string Symbol { get; set; } = string.Empty;
         /// <summary>
         /// The amount of the asset that is available
         /// </summary>

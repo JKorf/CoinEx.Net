@@ -38,7 +38,7 @@ namespace CoinEx.Net.Objects
         /// The asset of the fee
         /// </summary>
         [JsonProperty("fee_asset")]
-        public string FeeAsset { get; set; } = "";
+        public string FeeAsset { get; set; } = string.Empty;
         /// <summary>
         /// The id of the transaction
         /// </summary>
@@ -77,7 +77,7 @@ namespace CoinEx.Net.Objects
         /// The symbol of the transaction
         /// </summary>
         [JsonProperty("market")]
-        public string Symbol { get; set; } = "";
+        public string Symbol { get; set; } = string.Empty;
         /// <summary>
         /// The type of the transaction
         /// </summary>

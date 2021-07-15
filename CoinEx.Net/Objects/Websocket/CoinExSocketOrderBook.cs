@@ -30,10 +30,10 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// The asks on the symbol
         /// </summary>
-        public IEnumerable<CoinExDepthEntry> Asks { get; set; } = new List<CoinExDepthEntry>();
+        public IEnumerable<CoinExDepthEntry> Asks { get; set; } = Array.Empty<CoinExDepthEntry>();
         /// <summary>
         /// The bids on the symbol
         /// </summary>
-        public IEnumerable<CoinExDepthEntry> Bids { get; set; } = new List<CoinExDepthEntry>();
+        public IEnumerable<CoinExDepthEntry> Bids { get; set; } = Array.Empty<CoinExDepthEntry>();
     }
 }

@@ -37,7 +37,7 @@ namespace CoinEx.Net.Objects.Websocket
         /// The asset the fee is on
         /// </summary>
         [JsonProperty("fee_asset")]
-        public string FeeAsset { get; set; } = "";
+        public string FeeAsset { get; set; } = string.Empty;
         /// <summary>
         /// The executed amount transaction fee
         /// </summary>
@@ -92,7 +92,7 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// The source of the order
         /// </summary>
-        public string Source { get; set; } = "";
+        public string Source { get; set; } = string.Empty;
         /// <summary>
         /// Taker fee
         /// </summary>
@@ -113,12 +113,12 @@ namespace CoinEx.Net.Objects.Websocket
         /// The symbol of the order
         /// </summary>
         [JsonProperty("market")]
-        public string Symbol { get; set; } = "";
+        public string Symbol { get; set; } = string.Empty;
 
         /// <summary>
         /// The client id
         /// </summary>
         [JsonProperty("client_id")]
-        public string ClientId { get; set; } = "";
+        public string ClientId { get; set; } = string.Empty;
     }
 }

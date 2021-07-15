@@ -1,7 +1,5 @@
 ﻿using CoinEx.Net.Converters;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using CryptoExchange.Net.ExchangeInterfaces;
 
 namespace CoinEx.Net.Objects
@@ -15,7 +13,7 @@ namespace CoinEx.Net.Objects
         /// The name of the market
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; set; }= "";
+        public string Name { get; set; }= string.Empty;
 
         /// <summary>
         /// The minimum amount that can be traded
@@ -42,7 +40,7 @@ namespace CoinEx.Net.Objects
         /// The coin being that is being traded against
         /// </summary>
         [JsonProperty("pricing_name")]
-        public string PricingName { get; set; }= "";
+        public string PricingName { get; set; }= string.Empty;
 
         /// <summary>
         /// The number of decimals for the price
@@ -55,7 +53,7 @@ namespace CoinEx.Net.Objects
         /// The coin being traded
         /// </summary>
         [JsonProperty("trading_name")]
-        public string TradingName { get; set; } = "";
+        public string TradingName { get; set; } = string.Empty;
         
         /// <summary>
         /// The number of decimals for the price

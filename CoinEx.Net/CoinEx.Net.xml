@@ -295,6 +295,14 @@
         <member name="M:CoinEx.Net.CoinExClient.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetSymbolName(System.String,System.String)">
+            <summary>
+            Get the name of a symbol for CoinEx based on the base and quote asset
+            </summary>
+            <param name="baseAsset"></param>
+            <param name="quoteAsset"></param>
+            <returns></returns>
+        </member>
         <member name="T:CoinEx.Net.CoinExHelpers">
             <summary>
             CoinEx helpers

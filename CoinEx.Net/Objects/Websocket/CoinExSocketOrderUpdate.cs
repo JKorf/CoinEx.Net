@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoinEx.Net.Objects.Websocket
+﻿namespace CoinEx.Net.Objects.Websocket
 {
     /// <summary>
     /// Order update
@@ -16,6 +12,6 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// The order info
         /// </summary>
-        public CoinExSocketOrder Order { get; set; }
+        public CoinExSocketOrder Order { get; set; } = default!;
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using CoinEx.Net.Converters;
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects
-{ 
+{
     /// <summary>
     /// Deposit info
     /// </summary>
@@ -29,7 +27,7 @@ namespace CoinEx.Net.Objects
         /// Depositor
         /// </summary>
         [JsonProperty("add_explorer")]
-        public string AddExplorer { get; set; } = "";
+        public string AddExplorer { get; set; } = string.Empty;
         /// <summary>
         /// The total amount of the deposit
         /// </summary>
@@ -46,12 +44,12 @@ namespace CoinEx.Net.Objects
         /// Deposit add displayed
         /// </summary>
         [JsonProperty("coin_address")]
-        public string CoinAddress { get; set; } = "";
+        public string CoinAddress { get; set; } = string.Empty;
         /// <summary>
         /// Deposit add displayed
         /// </summary>
         [JsonProperty("coin_address_display")]
-        public string CoinAddressDisplay { get; set; } = "";
+        public string CoinAddressDisplay { get; set; } = string.Empty;
         /// <summary>
         /// Deposit ID
         /// </summary>
@@ -61,7 +59,7 @@ namespace CoinEx.Net.Objects
         /// Deposit ID
         /// </summary>
         [JsonProperty("coin_type")]
-        public string CoinType { get; set; } = "";
+        public string CoinType { get; set; } = string.Empty;
         /// <summary>
         /// Deposit ID
         /// </summary>
@@ -77,36 +75,36 @@ namespace CoinEx.Net.Objects
         /// Explorer
         /// </summary>
         [JsonProperty("explorer")]
-        public string Explorer { get; set; } = "";
+        public string Explorer { get; set; } = string.Empty;
         /// <summary>
         /// Remarks
         /// </summary>
         [JsonProperty("remark")]
-        public string Remark { get; set; } = "";
+        public string Remark { get; set; } = string.Empty;
         /// <summary>
         /// Status
         /// </summary>
         [JsonProperty("status")]
-        public string Status { get; set; } = "";
+        public string Status { get; set; } = string.Empty;
         /// <summary>
         /// Status Displayed
         /// </summary>
         [JsonProperty("status_display")]
-        public string StatusDisplay { get; set; } = "";
+        public string StatusDisplay { get; set; } = string.Empty;
         /// <summary>
         /// transfer method
         /// </summary>
         [JsonProperty("transfer_method")]
-        public string TransferMethod { get; set; } = "";
+        public string TransferMethod { get; set; } = string.Empty;
         /// <summary>
         /// The transaction id of the withdrawal
         /// </summary>
         [JsonProperty("tx_id")]
-        public string TxId { get; set; } = "";
+        public string TxId { get; set; } = string.Empty;
         /// <summary>
         /// The transaction id of the withdrawal
         /// </summary>
         [JsonProperty("tx_id_display")]
-        public string TxIdDisplay { get; set; } = "";
+        public string TxIdDisplay { get; set; } = string.Empty;
     }
 }

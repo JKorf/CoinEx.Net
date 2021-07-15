@@ -59,11 +59,11 @@ namespace CoinEx.Net
         /// <summary>
         /// Event triggered when an order is placed via this client
         /// </summary>
-        public event Action<ICommonOrderId> OnOrderPlaced;
+        public event Action<ICommonOrderId>? OnOrderPlaced;
         /// <summary>
         /// Event triggered when an order is cancelled via this client. Note that this does not trigger when using CancelAllOrdersAsync
         /// </summary>
-        public event Action<ICommonOrderId> OnOrderCanceled;
+        public event Action<ICommonOrderId>? OnOrderCanceled;
         #endregion
 
         #region ctor
@@ -681,6 +681,12 @@ namespace CoinEx.Net
 
         #region common interface
 
+        /// <summary>
+        /// Get the name of a symbol for CoinEx based on the base and quote asset
+        /// </summary>
+        /// <param name="baseAsset"></param>
+        /// <param name="quoteAsset"></param>
+        /// <returns></returns>
         public string GetSymbolName(string baseAsset, string quoteAsset) => (baseAsset + quoteAsset).ToUpperInvariant();
 
         async Task<WebCallResult<IEnumerable<ICommonSymbol>>> IExchangeClient.GetSymbolsAsync()
@@ -724,9 +730,12 @@ namespace CoinEx.Net
 
         async Task<WebCallResult<ICommonOrderId>> IExchangeClient.PlaceOrderAsync(string symbol, IExchangeClient.OrderSide side, IExchangeClient.OrderType type, decimal quantity, decimal? price = null, string? accountId = null)
         {
+            if(price == null && type == IExchangeClient.OrderType.Limit)
+                return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError($"Price parameter null while placing a limit order"));
+
             WebCallResult<CoinExOrder> result;
             if(type == IExchangeClient.OrderType.Limit)
-                result = await PlaceLimitOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell: TransactionType.Buy, quantity, price.Value).ConfigureAwait(false);
+                result = await PlaceLimitOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell: TransactionType.Buy, quantity, price!.Value).ConfigureAwait(false);
             else
                 result = await PlaceMarketOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell : TransactionType.Buy, quantity).ConfigureAwait(false);
 
@@ -738,7 +747,7 @@ namespace CoinEx.Net
             if (string.IsNullOrEmpty(symbol))
                 return WebCallResult<ICommonOrder>.CreateErrorResult(new ArgumentError($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOrderAsync)}"));
 
-            var order = await GetOrderStatusAsync(long.Parse(orderId), symbol).ConfigureAwait(false);
+            var order = await GetOrderStatusAsync(long.Parse(orderId), symbol!).ConfigureAwait(false);
             return order.As<ICommonOrder>(order.Data);
         }
 

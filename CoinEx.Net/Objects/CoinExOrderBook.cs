@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CoinEx.Net.Converters;
 using CryptoExchange.Net.Converters;
 using CryptoExchange.Net.ExchangeInterfaces;
@@ -20,11 +21,11 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// The asks on this symbol
         /// </summary>
-        public IEnumerable<CoinExDepthEntry> Asks { get; set; } = new List<CoinExDepthEntry>();
+        public IEnumerable<CoinExDepthEntry> Asks { get; set; } = Array.Empty<CoinExDepthEntry>();
         /// <summary>
         /// The bids on this symbol
         /// </summary>
-        public IEnumerable<CoinExDepthEntry> Bids { get; set; } = new List<CoinExDepthEntry>();
+        public IEnumerable<CoinExDepthEntry> Bids { get; set; } = Array.Empty<CoinExDepthEntry>();
 
         IEnumerable<ISymbolOrderBookEntry> ICommonOrderBook.CommonBids => Bids;
         IEnumerable<ISymbolOrderBookEntry> ICommonOrderBook.CommonAsks => Asks;
