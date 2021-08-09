@@ -379,7 +379,7 @@
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <returns>Order book of a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetSymbolTradesAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetTradeHistoryAsync(System.String,System.Int32,System.Nullable{System.Int32})">
             <summary>
             Gets the latest trades on a symbol
             </summary>
@@ -799,7 +799,7 @@
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <returns>Order book of a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetSymbolTradesAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetTradeHistoryAsync(System.String,System.Int32,System.Nullable{System.Int32})">
             <summary>
             Gets the latest trades on a symbol
             </summary>
