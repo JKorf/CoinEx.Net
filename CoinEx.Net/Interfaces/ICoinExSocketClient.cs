@@ -50,7 +50,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The limit of trades</param>
         /// <param name="fromId">Return trades since this id</param>
         /// <returns>List of trades</returns>
-        Task<CallResult<IEnumerable<CoinExSocketSymbolTrade>>> GetSymbolTradesAsync(string symbol, int limit, int? fromId = null);
+        Task<CallResult<IEnumerable<CoinExSocketSymbolTrade>>> GetTradeHistoryAsync(string symbol, int limit, int? fromId = null);
 
         /// <summary>
         /// Gets symbol kline data

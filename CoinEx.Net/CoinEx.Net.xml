@@ -89,7 +89,7 @@
             <param name="ct">Cancellation token</param>
             <returns>Order book for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetSymbolTradesAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.CoinExClient.GetTradesHistoryAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Gets the latest trades for a symbol
             </summary>
@@ -236,7 +236,7 @@
             <param name="ct">Cancellation token</param>
             <returns>List of executed orders for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetOrderStatusAsync(System.Int64,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.CoinExClient.GetOrderAsync(System.Int64,System.String,System.Threading.CancellationToken)">
             <summary>
             Retrieves details of an order. Requires API credentials
             </summary>
@@ -245,7 +245,7 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrderDetailsAsync(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.CoinExClient.GetOrderTradesAsync(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Retrieves execution details of a specific order. Requires API credentials
             </summary>
@@ -255,7 +255,7 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of an executed order</returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.GetTradesAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.CoinExClient.GetUserTradesAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Gets a list of trades you executed on a specific symbol. Requires API credentials
             </summary>
@@ -573,7 +573,7 @@
             <param name="ct">Cancellation token</param>
             <returns>Order book for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetSymbolTradesAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetTradesHistoryAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Gets the latest trades for a symbol
             </summary>
@@ -720,7 +720,7 @@
             <param name="ct">Cancellation token</param>
             <returns>List of executed orders for a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderStatusAsync(System.Int64,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderAsync(System.Int64,System.String,System.Threading.CancellationToken)">
             <summary>
             Retrieves details of an order. Requires API credentials
             </summary>
@@ -729,7 +729,7 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the order</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrderDetailsAsync(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOrderTradesAsync(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Retrieves execution details of a specific order. Requires API credentials
             </summary>
@@ -739,7 +739,7 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of an executed order</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetTradesAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetUserTradesAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Gets a list of trades you executed on a specific symbol. Requires API credentials
             </summary>
