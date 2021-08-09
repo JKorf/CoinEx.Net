@@ -203,7 +203,7 @@ namespace CoinEx.Net
         /// <param name="fromId">The id from which on to return trades</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        public async Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetSymbolTradesAsync(string symbol, long? fromId = null, CancellationToken ct = default)
+        public async Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetTradesHistoryAsync(string symbol, long? fromId = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
 
@@ -513,7 +513,7 @@ namespace CoinEx.Net
         /// <param name="symbol">The symbol the order is for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order</returns>
-        public async Task<WebCallResult<CoinExOrder>> GetOrderStatusAsync(long orderId, string symbol, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExOrder>> GetOrderAsync(long orderId, string symbol, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
@@ -533,7 +533,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of an executed order</returns>
-        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTrade>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTrade>>> GetOrderTradesAsync(long orderId, int page, int limit, CancellationToken ct = default)
         {
             limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
@@ -554,7 +554,7 @@ namespace CoinEx.Net
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetTradesAsync(string symbol, int page, int limit, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetUserTradesAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             limit.ValidateIntBetween(nameof(limit), 1, 100);
@@ -724,7 +724,7 @@ namespace CoinEx.Net
 
         async Task<WebCallResult<IEnumerable<ICommonRecentTrade>>> IExchangeClient.GetRecentTradesAsync(string symbol)
         {
-            var trades = await GetSymbolTradesAsync(symbol).ConfigureAwait(false);
+            var trades = await GetTradesHistoryAsync(symbol).ConfigureAwait(false);
             return trades.As<IEnumerable<ICommonRecentTrade>>(trades.Data);
         }
 
@@ -747,13 +747,13 @@ namespace CoinEx.Net
             if (string.IsNullOrEmpty(symbol))
                 return WebCallResult<ICommonOrder>.CreateErrorResult(new ArgumentError($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOrderAsync)}"));
 
-            var order = await GetOrderStatusAsync(long.Parse(orderId), symbol!).ConfigureAwait(false);
+            var order = await GetOrderAsync(long.Parse(orderId), symbol!).ConfigureAwait(false);
             return order.As<ICommonOrder>(order.Data);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonTrade>>> IExchangeClient.GetTradesAsync(string orderId, string? symbol = null)
         {
-            var result = await GetExecutedOrderDetailsAsync(long.Parse(orderId), 1, 100).ConfigureAwait(false);
+            var result = await GetOrderTradesAsync(long.Parse(orderId), 1, 100).ConfigureAwait(false);
             return result.As<IEnumerable<ICommonTrade>>(result.Data?.Data);
         }
 

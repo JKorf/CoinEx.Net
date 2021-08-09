@@ -72,7 +72,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="fromId">The id from which on to return trades</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetSymbolTradesAsync(string symbol, long? fromId = null, CancellationToken ct = default);
+        Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetTradesHistoryAsync(string symbol, long? fromId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves kline data for a specific symbol
@@ -219,7 +219,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="symbol">The symbol the order is for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order</returns>
-        Task<WebCallResult<CoinExOrder>> GetOrderStatusAsync(long orderId, string symbol, CancellationToken ct = default);
+        Task<WebCallResult<CoinExOrder>> GetOrderAsync(long orderId, string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves execution details of a specific order. Requires API credentials
@@ -229,7 +229,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of an executed order</returns>
-        Task<WebCallResult<CoinExPagedResult<CoinExOrderTrade>>> GetExecutedOrderDetailsAsync(long orderId, int page, int limit, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPagedResult<CoinExOrderTrade>>> GetOrderTradesAsync(long orderId, int page, int limit, CancellationToken ct = default);
 
         /// <summary>
         /// Gets a list of trades you executed on a specific symbol. Requires API credentials
@@ -239,7 +239,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetTradesAsync(string symbol, int page, int limit, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetUserTradesAsync(string symbol, int page, int limit, CancellationToken ct = default);
 
         /// <summary>
         /// Cancels an order. Requires API credentials

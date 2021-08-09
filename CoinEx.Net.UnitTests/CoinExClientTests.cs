@@ -132,7 +132,7 @@ namespace CoinEx.Net.UnitTests
             var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
             // act
-            var result = await objects.Client.GetSymbolTradesAsync("ETHBTC");
+            var result = await objects.Client.GetTradesHistoryAsync("ETHBTC");
 
             // assert
             Assert.AreEqual(true, result.Success);
@@ -314,7 +314,7 @@ namespace CoinEx.Net.UnitTests
             }), CreateRequest(expected));
 
             // act
-            var result = await objects.Client.GetExecutedOrderDetailsAsync(123, 1, 10);
+            var result = await objects.Client.GetOrderTradesAsync(123, 1, 10);
 
             // assert
             Assert.AreEqual(true, result.Success);
