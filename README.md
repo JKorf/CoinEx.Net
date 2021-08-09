@@ -81,6 +81,12 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 4.0.0-beta3 - 09 Aug 2021
+    * Renamed GetSymbolTradesAsync to GetTradesHistoryAsync
+    * Renamed GetExecutedOrderDetailsAsync to GetOrderTradesAsync
+    * Renamed GetOrderStatusAsync to GetOrderAsync
+    * Renamed GetTradesAsync to GetUserTradesAsync
+
 * Version 4.0.0-beta2 - 26 Jul 2021
     * Updated CryptoExchange.Net
 
