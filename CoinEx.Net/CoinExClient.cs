@@ -46,6 +46,7 @@ namespace CoinEx.Net
 
         private const string PlaceLimitOrderEndpoint = "order/limit";
         private const string PlaceMarketOrderEndpoint = "order/market";
+        private const string PlaceStopLimitOrderEndpoint = "order/stop/limit";
         private const string PlaceImmediateOrCancelOrderEndpoint = "order/ioc";
 
         private const string FinishedOrdersEndpoint = "order/finished";
@@ -402,6 +403,41 @@ namespace CoinEx.Net
             parameters.AddOptionalParameter("source_id", sourceId);
 
             var result = await Execute<CoinExOrder>(GetUrl(PlaceLimitOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            if (result)
+                OnOrderPlaced?.Invoke(result.Data);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Places a stop-limit order. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol to place the order for</param>
+        /// <param name="type">Type of transaction</param>
+        /// <param name="amount">The amount of the order</param>
+        /// <param name="stopPrice">The stop-price of a single unit of the order</param>
+        /// <param name="price">The price of a single unit of the order</param>
+        /// <param name="orderOption">Option for the order</param>
+        /// <param name="clientId">Client id which can be used to match the order</param>
+        /// <param name="sourceId">User defined number</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Details of the order that was placed</returns>
+        public async Task<WebCallResult<CoinExOrder>> PlaceStopLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal stopPrice, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default)
+        {
+            symbol.ValidateCoinExSymbol();
+            var parameters = new Dictionary<string, object>
+            {
+                { "market", symbol },
+                { "type", JsonConvert.SerializeObject(type, new TransactionTypeConverter(false)) },
+                { "amount", amount.ToString(CultureInfo.InvariantCulture) },
+                { "price", price.ToString(CultureInfo.InvariantCulture) },
+                { "stop_price", stopPrice.ToString(CultureInfo.InvariantCulture) }
+            };
+            parameters.AddOptionalParameter("option", orderOption.HasValue ? JsonConvert.SerializeObject(orderOption, new OrderOptionConverter(false)) : null);
+            parameters.AddOptionalParameter("client_id", clientId);
+            parameters.AddOptionalParameter("source_id", sourceId);
+
+            var result = await Execute<CoinExOrder>(GetUrl(PlaceStopLimitOrderEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
             if (result)
                 OnOrderPlaced?.Invoke(result.Data);
 
