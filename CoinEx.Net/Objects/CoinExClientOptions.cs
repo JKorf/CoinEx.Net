@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using CoinEx.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net.Objects
@@ -69,10 +70,17 @@ namespace CoinEx.Net.Objects
     public class CoinExOrderBookOptions : OrderBookOptions
     {
         /// <summary>
+        /// The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.
+        /// </summary>
+        public ICoinExSocketClient? SocketClient { get; }
+
+        /// <summary>
         /// ctor
         /// </summary>
-        public CoinExOrderBookOptions() : base("CoinEx", false, false)
+        /// <param name="client">The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.</param>
+        public CoinExOrderBookOptions(ICoinExSocketClient? client = null) : base("CoinEx", false, false)
         {
+            SocketClient = client;
         }
     }
 }

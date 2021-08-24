@@ -985,10 +985,16 @@
             Order book options
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Objects.CoinExOrderBookOptions.#ctor">
+        <member name="P:CoinEx.Net.Objects.CoinExOrderBookOptions.SocketClient">
+            <summary>
+            The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Objects.CoinExOrderBookOptions.#ctor(CoinEx.Net.Interfaces.ICoinExSocketClient)">
             <summary>
             ctor
             </summary>
+            <param name="client">The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.</param>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExDeposit">
             <summary>
