@@ -193,7 +193,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="sourceId">User defined number</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order that was placed</returns>
-        public async Task<WebCallResult<CoinExOrder>> PlaceStopLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal stopPrice, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default)
+        Task<WebCallResult<CoinExOrder>> PlaceStopLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal stopPrice, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default);
 
 
         /// <summary>
