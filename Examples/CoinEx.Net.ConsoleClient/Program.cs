@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoinEx.Net.Examples
 {
     class Program
     {
-        static async void Main(string[] args)
+        static async Task Main(string[] args)
         {
             string[] marketList = new string[0];
             using(var client = new CoinExClient())
