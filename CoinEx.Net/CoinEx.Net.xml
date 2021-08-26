@@ -193,6 +193,21 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceStopLimitOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.Decimal,System.Nullable{CoinEx.Net.Objects.OrderOption},System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Places a stop-limit order. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="stopPrice">The stop-price of a single unit of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="orderOption">Option for the order</param>
+            <param name="clientId">Client id which can be used to match the order</param>
+            <param name="sourceId">User defined number</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.PlaceMarketOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
             Places a market order. Requires API credentials
@@ -685,6 +700,21 @@
             <param name="type">Type of transaction</param>
             <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC symbol the value should be how much BTC should be spend to buy ETH</param>
             <param name="sourceId">Client id which can be used to match the order</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceStopLimitOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.Decimal,System.Nullable{CoinEx.Net.Objects.OrderOption},System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Places a stop-limit order. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="stopPrice">The stop-price of a single unit of the order</param>
+            <param name="price">The price of a single unit of the order</param>
+            <param name="orderOption">Option for the order</param>
+            <param name="clientId">Client id which can be used to match the order</param>
+            <param name="sourceId">User defined number</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
         </member>
