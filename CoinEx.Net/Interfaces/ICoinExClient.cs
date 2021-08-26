@@ -181,6 +181,22 @@ namespace CoinEx.Net.Interfaces
         Task<WebCallResult<CoinExOrder>> PlaceMarketOrderAsync(string symbol, TransactionType type, decimal amount, string? sourceId = null, CancellationToken ct = default);
 
         /// <summary>
+        /// Places a stop-limit order. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol to place the order for</param>
+        /// <param name="type">Type of transaction</param>
+        /// <param name="amount">The amount of the order</param>
+        /// <param name="stopPrice">The stop-price of a single unit of the order</param>
+        /// <param name="price">The price of a single unit of the order</param>
+        /// <param name="orderOption">Option for the order</param>
+        /// <param name="clientId">Client id which can be used to match the order</param>
+        /// <param name="sourceId">User defined number</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Details of the order that was placed</returns>
+        Task<WebCallResult<CoinExOrder>> PlaceStopLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal stopPrice, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default);
+
+
+        /// <summary>
         /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
         /// </summary>
         /// <param name="symbol">The symbol to place the order for</param>
