@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoinEx.Net" Version="0.0.1" />
+    <PackageReference Include="CoinEx.Net" Version="4.0.2" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using CryptoExchange.Net.Logging;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,18 +9,18 @@ namespace CoinEx.Net.Examples
 {
     class Program
     {
-        static void Main(string[] args)
+        static async void Main(string[] args)
         {
             string[] marketList = new string[0];
             using(var client = new CoinExClient())
             {
-                var listResult = client.GetMarketList();
+                var listResult = await client.GetSymbolsAsync();
                 if (!listResult.Success)
                     Console.WriteLine("Failed to get market list: " + listResult.Error);
                 else
                 {
                     Console.WriteLine("Support market list: " + string.Join(", ", listResult.Data));
-                    marketList = listResult.Data;
+                    marketList = listResult.Data.ToArray();
                 }
             }
 
@@ -37,12 +38,12 @@ namespace CoinEx.Net.Examples
 
             var socketClient = new CoinExSocketClient(new Objects.CoinExSocketClientOptions()
             {
-                LogVerbosity = LogVerbosity.Info,
-                LogWriters = new List<TextWriter> { Console.Out }
+                LogLevel = LogLevel.Information,
+                LogWriters = new List<ILogger> { new ConsoleLogger() }
             });
-            socketClient.SubscribeToMarketStateUpdates(market, (marketName, data) =>
+            await socketClient.SubscribeToSymbolStateUpdatesAsync(market, data =>
             {
-                Console.WriteLine($"Last price of {market}: {data.Close}");
+                Console.WriteLine($"Last price of {market}: {data.Data.Close}");
             });
             Console.ReadLine();
         }
