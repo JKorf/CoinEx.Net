@@ -15,6 +15,7 @@ namespace CoinEx.Net
     public class CoinExSymbolOrderBook: SymbolOrderBook
     {
         private readonly ICoinExSocketClient socketClient;
+        private readonly bool _socketOwner;
 
         /// <summary>
         /// Create a new order book instance
@@ -25,6 +26,7 @@ namespace CoinEx.Net
         {
             symbol.ValidateCoinExSymbol();
             socketClient = options?.SocketClient ?? new CoinExSocketClient();
+            _socketOwner = options?.SocketClient == null;
             Levels = 20;
         }
 
@@ -71,7 +73,8 @@ namespace CoinEx.Net
             asks.Clear();
             bids.Clear();
 
-            socketClient?.Dispose();
+            if(_socketOwner)
+                socketClient?.Dispose();
         }
     }
 }
