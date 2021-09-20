@@ -36,12 +36,13 @@
             </summary>
             <param name="options">The options to use for new clients</param>
         </member>
-        <member name="M:CoinEx.Net.CoinExClient.SetApiCredentials(System.String,System.String)">
+        <member name="M:CoinEx.Net.CoinExClient.SetApiCredentials(System.String,System.String,CryptoExchange.Net.Interfaces.INonceProvider)">
             <summary>
             Set the API key and secret
             </summary>
             <param name="apiKey">The api key</param>
             <param name="apiSecret">The api secret</param>
+            <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
         </member>
         <member name="M:CoinEx.Net.CoinExClient.GetSymbolsAsync(System.Threading.CancellationToken)">
             <summary>
@@ -208,6 +209,20 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.PlaceStopMarketOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.Nullable{CoinEx.Net.Objects.OrderOption},System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Places a stop-market order. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="stopPrice">The stop-price of a single unit of the order</param>
+            <param name="orderOption">Option for the order</param>
+            <param name="clientId">Client id which can be used to match the order</param>
+            <param name="sourceId">User defined number</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.PlaceMarketOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
             Places a market order. Requires API credentials
@@ -358,6 +373,14 @@
             Create a new instance of CoinExSocketClient using provided options
             </summary>
             <param name="options">The options to use for this client</param>
+        </member>
+        <member name="M:CoinEx.Net.CoinExSocketClient.SetApiCredentials(System.String,System.String,CryptoExchange.Net.Interfaces.INonceProvider)">
+            <summary>
+            Set the API key and secret
+            </summary>
+            <param name="apiKey">The api key</param>
+            <param name="apiSecret">The api secret</param>
+            <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
         </member>
         <member name="M:CoinEx.Net.CoinExSocketClient.SetDefaultOptions(CoinEx.Net.Objects.CoinExSocketClientOptions)">
             <summary>
@@ -535,12 +558,13 @@
             Interface for the CoinEx client
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.SetApiCredentials(System.String,System.String)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.SetApiCredentials(System.String,System.String,CryptoExchange.Net.Interfaces.INonceProvider)">
             <summary>
             Set the API key and secret
             </summary>
             <param name="apiKey">The api key</param>
             <param name="apiSecret">The api secret</param>
+            <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetCurrencyRateAsync(System.Threading.CancellationToken)">
             <summary>
@@ -718,6 +742,20 @@
             <param name="ct">Cancellation token</param>
             <returns>Details of the order that was placed</returns>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceStopMarketOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.Nullable{CoinEx.Net.Objects.OrderOption},System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Places a stop-market order. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol to place the order for</param>
+            <param name="type">Type of transaction</param>
+            <param name="amount">The amount of the order</param>
+            <param name="stopPrice">The stop-price of a single unit of the order</param>
+            <param name="orderOption">Option for the order</param>
+            <param name="clientId">Client id which can be used to match the order</param>
+            <param name="sourceId">User defined number</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Details of the order that was placed</returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.PlaceImmediateOrCancelOrderAsync(System.String,CoinEx.Net.Objects.TransactionType,System.Decimal,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
             Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
@@ -799,6 +837,14 @@
             <summary>
             Interface for the CoinEx socket client
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.SetApiCredentials(System.String,System.String,CryptoExchange.Net.Interfaces.INonceProvider)">
+            <summary>
+            Set the API key and secret
+            </summary>
+            <param name="apiKey">The api key</param>
+            <param name="apiSecret">The api secret</param>
+            <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.PingAsync">
             <summary>
@@ -975,6 +1021,11 @@
             Client options
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.CoinExClientOptions.NonceProvider">
+            <summary>
+            Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
+            </summary>
+        </member>
         <member name="M:CoinEx.Net.Objects.CoinExClientOptions.#ctor">
             <summary>
             Create new client options
@@ -993,9 +1044,20 @@
             <param name="apiAddress">Custom API address to use</param>
             <param name="client">HttpClient to use for requests from this client</param>
         </member>
+        <member name="M:CoinEx.Net.Objects.CoinExClientOptions.Copy">
+            <summary>
+            Copy the options
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:CoinEx.Net.Objects.CoinExSocketClientOptions">
             <summary>
             Socket client options
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.NonceProvider">
+            <summary>
+            Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.SocketSubscriptionsCombineTarget">
@@ -1009,6 +1071,12 @@
             <summary>
             ctor
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Objects.CoinExSocketClientOptions.Copy">
+            <summary>
+            Copy the options
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExOrderBookOptions">
             <summary>
