@@ -7,17 +7,21 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net
 {
     internal class CoinExAuthenticationProvider: AuthenticationProvider
     {
         private readonly MD5 encryptor;
+        private INonceProvider _nonceProvider;
 
+        public long GetNonce() => _nonceProvider.GetNonce();
 
-        public CoinExAuthenticationProvider(ApiCredentials credentials): base(credentials)
+        public CoinExAuthenticationProvider(ApiCredentials credentials, INonceProvider? nonceProvider): base(credentials)
         {
             encryptor = MD5.Create();
+            _nonceProvider = nonceProvider ?? new DefaultNonceProvider();
         }
 
         public override Dictionary<string, string> AddAuthenticationToHeaders(string uri, HttpMethod method, Dictionary<string, object> parameters, bool signed, HttpMethodParameterPosition parameterPosition, ArrayParametersSerialization arraySerialization)
@@ -43,7 +47,7 @@ namespace CoinEx.Net
                 throw new ArgumentException("ApiKey/secret not provided");
 
             parameters.Add("access_id", Credentials.Key.GetString());
-            parameters.Add("tonce", (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds);
+            parameters.Add("tonce", _nonceProvider.GetNonce());
             parameters = parameters.OrderBy(p => p.Key).ToDictionary(k => k.Key, v => v.Value);
             return parameters;
         }

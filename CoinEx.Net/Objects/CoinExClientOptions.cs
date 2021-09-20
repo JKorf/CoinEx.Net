@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 
 namespace CoinEx.Net.Objects
@@ -10,6 +11,11 @@ namespace CoinEx.Net.Objects
     /// </summary>
     public class CoinExClientOptions: RestClientOptions
     {
+        /// <summary>
+        /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
+        /// </summary>
+        public INonceProvider? NonceProvider { get; set; }
+
         /// <summary>
         /// Create new client options
         /// </summary>
@@ -34,6 +40,17 @@ namespace CoinEx.Net.Objects
         {
             HttpClient = client;
         }
+        
+        /// <summary>
+        /// Copy the options
+        /// </summary>
+        /// <returns></returns>
+        public CoinExClientOptions Copy()
+        {
+            var copy = Copy<CoinExClientOptions>();
+            copy.NonceProvider = NonceProvider;
+            return copy;
+        }
     }
 
     /// <summary>
@@ -41,6 +58,11 @@ namespace CoinEx.Net.Objects
     /// </summary>
     public class CoinExSocketClientOptions : SocketClientOptions
     {
+        /// <summary>
+        /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
+        /// </summary>
+        public INonceProvider? NonceProvider { get; set; }
+
         /// <summary>
         /// The amount of subscriptions that should be made on a single socket connection. Not all exchanges support multiple subscriptions on a single socket.
         /// Setting this to a higher number increases subscription speed, but having more subscriptions on a single connection will also increase the amount of traffic on that single connection.
@@ -61,6 +83,17 @@ namespace CoinEx.Net.Objects
         /// </summary>
         public CoinExSocketClientOptions(): base("wss://socket.coinex.com/")
         {
+        }
+
+        /// <summary>
+        /// Copy the options
+        /// </summary>
+        /// <returns></returns>
+        public CoinExSocketClientOptions Copy()
+        {
+            var copy = Copy<CoinExSocketClientOptions>();
+            copy.NonceProvider = NonceProvider;
+            return copy;
         }
     }
 

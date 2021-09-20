@@ -15,6 +15,14 @@ namespace CoinEx.Net.Interfaces
     public interface ICoinExSocketClient: ISocketClient
     {
         /// <summary>
+        /// Set the API key and secret
+        /// </summary>
+        /// <param name="apiKey">The api key</param>
+        /// <param name="apiSecret">The api secret</param>
+        /// <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
+        void SetApiCredentials(string apiKey, string apiSecret, INonceProvider? nonceProvider = null);
+
+        /// <summary>
         /// Pings the server
         /// </summary>
         /// <returns>True if server responded, false otherwise</returns>

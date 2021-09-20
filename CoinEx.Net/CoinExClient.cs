@@ -14,6 +14,7 @@ using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.ExchangeInterfaces;
 using Newtonsoft.Json.Linq;
+using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net
 {
@@ -79,7 +80,7 @@ namespace CoinEx.Net
         /// Create a new instance of CoinExClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExClient(CoinExClientOptions options): base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
+        public CoinExClient(CoinExClientOptions options): base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
         {
             manualParseError = true;
         }
@@ -101,9 +102,10 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="apiKey">The api key</param>
         /// <param name="apiSecret">The api secret</param>
-        public void SetApiCredentials(string apiKey, string apiSecret)
+        /// <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
+        public void SetApiCredentials(string apiKey, string apiSecret, INonceProvider? nonceProvider = null)
         {
-            SetAuthenticationProvider(new CoinExAuthenticationProvider(new ApiCredentials(apiKey, apiSecret)));
+            SetAuthenticationProvider(new CoinExAuthenticationProvider(new ApiCredentials(apiKey, apiSecret), nonceProvider));
         }
                 
         /// <summary>

@@ -326,7 +326,7 @@ namespace CoinEx.Net.UnitTests
         {
             // arrange
             // act
-            var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("TestKey", "TestSecret"));
+            var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("TestKey", "TestSecret"), null);
 
             // assert
             Assert.AreEqual(authProvider.Credentials.Key.GetString(), "TestKey");
@@ -339,7 +339,7 @@ namespace CoinEx.Net.UnitTests
         public async Task SigningString_Should_GiveCorrectSignResult(string input, string output)
         {
             // arrange
-            var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("4DA36FFC61334695A66F8D29020EB589", "B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F"));
+            var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("4DA36FFC61334695A66F8D29020EB589", "B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F"), null);
 
             // act
             var sign = authProvider.Sign(input);

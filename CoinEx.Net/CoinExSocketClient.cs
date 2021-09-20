@@ -12,6 +12,8 @@ using CoinEx.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
+using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Authentication;
 
 namespace CoinEx.Net
 {
@@ -53,7 +55,7 @@ namespace CoinEx.Net
         /// Create a new instance of CoinExSocketClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExSocketClient(CoinExSocketClientOptions options) : base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials))
+        public CoinExSocketClient(CoinExSocketClientOptions options) : base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
         {
             AddGenericHandler("Pong", (messageEvent) => { });
             SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
@@ -62,6 +64,17 @@ namespace CoinEx.Net
 
         #region methods
         #region public
+        /// <summary>
+        /// Set the API key and secret
+        /// </summary>
+        /// <param name="apiKey">The api key</param>
+        /// <param name="apiSecret">The api secret</param>
+        /// <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
+        public void SetApiCredentials(string apiKey, string apiSecret, INonceProvider? nonceProvider = null)
+        {
+            SetAuthenticationProvider(new CoinExAuthenticationProvider(new ApiCredentials(apiKey, apiSecret), nonceProvider));
+        }
+
         /// <summary>
         /// Set the default options to be used when creating new socket clients
         /// </summary>
@@ -400,7 +413,7 @@ namespace CoinEx.Net
             if(authProvider!.Credentials.Key == null || authProvider.Credentials.Secret == null)
                 throw new ArgumentException("ApiKey/Secret not provided");
 
-            var tonce = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            var tonce = ((CoinExAuthenticationProvider)authProvider).GetNonce();
             var parameterString = $"access_id={authProvider.Credentials.Key.GetString()}&tonce={tonce}&secret_key={authProvider.Credentials.Secret.GetString()}";
             var auth = authProvider.Sign(parameterString);
             return new object[] { authProvider.Credentials.Key.GetString(), auth, tonce };
