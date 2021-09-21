@@ -1564,6 +1564,9 @@
             The update time of the Prediction field
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Objects.CoinExNonceProvider.GetNonce">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.Objects.CoinExOrder">
             <summary>
             Order info

@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Interfaces;
+using CoinEx.Net.Objects;
 
 namespace CoinEx.Net
 {
@@ -21,7 +22,7 @@ namespace CoinEx.Net
         public CoinExAuthenticationProvider(ApiCredentials credentials, INonceProvider? nonceProvider): base(credentials)
         {
             encryptor = MD5.Create();
-            _nonceProvider = nonceProvider ?? new DefaultNonceProvider();
+            _nonceProvider = nonceProvider ?? new CoinExNonceProvider();
         }
 
         public override Dictionary<string, string> AddAuthenticationToHeaders(string uri, HttpMethod method, Dictionary<string, object> parameters, bool signed, HttpMethodParameterPosition parameterPosition, ArrayParametersSerialization arraySerialization)
