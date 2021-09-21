@@ -81,6 +81,9 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 4.1.1 - 21 Sep 2021
+    * Fix for nonce provider not working correctly in combination with other exchanges
+
 * Version 4.1.0 - 20 Sep 2021
     * Added custom nonce provider support
     * Added PlaceStopMarketOrderAsync endpoint
