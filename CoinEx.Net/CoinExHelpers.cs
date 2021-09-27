@@ -16,37 +16,23 @@ namespace CoinEx.Net
         /// <returns></returns>
         public static int ToSeconds(this KlineInterval interval)
         {
-            switch (interval)
+            return interval switch
             {
-                case KlineInterval.OneMinute:
-                    return 1 * 60;
-                case KlineInterval.ThreeMinute:
-                    return 3 * 60;
-                case KlineInterval.FiveMinute:
-                    return 5 * 60;
-                case KlineInterval.FifteenMinute:
-                    return 15 * 60;
-                case KlineInterval.ThirtyMinute:
-                    return 30 * 60;
-                case KlineInterval.OneHour:
-                    return 1 * 60 * 60;
-                case KlineInterval.TwoHour:
-                    return 2 * 60 * 60;
-                case KlineInterval.FourHour:
-                    return 4 * 60 * 60;
-                case KlineInterval.SixHour:
-                    return 6 * 60 * 60;
-                case KlineInterval.TwelveHour:
-                    return 12 * 60 * 60;
-                case KlineInterval.OneDay:
-                    return 1 * 24 * 60 * 60;
-                case KlineInterval.ThreeDay:
-                    return 3 * 24 * 60 * 60;
-                case KlineInterval.OneWeek:
-                    return 7 * 24 * 60 * 60;
-                default:
-                    return 0;
-            }
+                KlineInterval.OneMinute => 1 * 60,
+                KlineInterval.ThreeMinute => 3 * 60,
+                KlineInterval.FiveMinute => 5 * 60,
+                KlineInterval.FifteenMinute => 15 * 60,
+                KlineInterval.ThirtyMinute => 30 * 60,
+                KlineInterval.OneHour => 1 * 60 * 60,
+                KlineInterval.TwoHour => 2 * 60 * 60,
+                KlineInterval.FourHour => 4 * 60 * 60,
+                KlineInterval.SixHour => 6 * 60 * 60,
+                KlineInterval.TwelveHour => 12 * 60 * 60,
+                KlineInterval.OneDay => 1 * 24 * 60 * 60,
+                KlineInterval.ThreeDay => 3 * 24 * 60 * 60,
+                KlineInterval.OneWeek => 7 * 24 * 60 * 60,
+                _ => 0,
+            };
         }
 
         /// <summary>

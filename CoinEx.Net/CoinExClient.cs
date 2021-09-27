@@ -697,7 +697,7 @@ namespace CoinEx.Net
         {
             if (data["code"] != null && data["message"] != null)
             {
-                if ((int)data["code"] != 0)
+                if (data["code"]!.Value<int>() != 0)
                 {
                     return Task.FromResult((ServerError?)ParseErrorResponse(data));
                 }
@@ -760,7 +760,7 @@ namespace CoinEx.Net
         /// <param name="quoteAsset"></param>
         /// <returns></returns>
         public string GetSymbolName(string baseAsset, string quoteAsset) => (baseAsset + quoteAsset).ToUpperInvariant();
-
+#pragma warning disable 1066
         async Task<WebCallResult<IEnumerable<ICommonSymbol>>> IExchangeClient.GetSymbolsAsync()
         {
             var symbols = await GetMarketInfoAsync().ConfigureAwait(false);
@@ -834,13 +834,16 @@ namespace CoinEx.Net
             if (string.IsNullOrEmpty(symbol))
                 throw new ArgumentException($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOpenOrdersAsync)}");
 
-            var openOrders = await GetOpenOrdersAsync(symbol, 1, 100).ConfigureAwait(false);
+            var openOrders = await GetOpenOrdersAsync(symbol!, 1, 100).ConfigureAwait(false);
             return openOrders.As<IEnumerable<ICommonOrder>>(openOrders.Data?.Data);
         }
 
         async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetClosedOrdersAsync(string? symbol)
         {
-            var result = await GetExecutedOrdersAsync(symbol, 1, 100).ConfigureAwait(false);
+            if (string.IsNullOrEmpty(symbol))
+                throw new ArgumentException($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetClosedOrdersAsync)}");
+
+            var result = await GetExecutedOrdersAsync(symbol!, 1, 100).ConfigureAwait(false);
             return result.As<IEnumerable<ICommonOrder>>(result.Data?.Data);
         }
 
@@ -858,6 +861,7 @@ namespace CoinEx.Net
             var balances = await GetBalancesAsync().ConfigureAwait(false);
             return balances.As<IEnumerable<ICommonBalance>>(balances.Data?.Select(d => d.Value));
         }
+#pragma warning restore 1066
 
         private static KlineInterval GetKlineIntervalFromTimespan(TimeSpan timeSpan)
         {

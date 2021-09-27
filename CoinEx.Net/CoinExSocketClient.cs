@@ -386,7 +386,7 @@ namespace CoinEx.Net
                     return;
                 }
 
-                var updateResult = JsonConvert.DeserializeObject<UpdateType>((string)data.Data[0], new UpdateTypeConverter(false));
+                var updateResult = JsonConvert.DeserializeObject<UpdateType>(data.Data[0].ToString(), new UpdateTypeConverter(false));
                 var desResult = Deserialize<CoinExSocketOrder>(data.Data[1], false);
                 if (!desResult)
                 {
@@ -422,9 +422,9 @@ namespace CoinEx.Net
         #endregion
 
         /// <inheritdoc />
-        protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T>? callResult)
+        protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T> callResult)
         {
-            callResult = null;
+            callResult = null!;
             var cRequest = (CoinExSocketRequest) request;
             var idField = data["id"];
             if (idField == null)
@@ -433,14 +433,22 @@ namespace CoinEx.Net
             if ((int)idField != cRequest.Id)
                 return false;
 
-            if (data["error"].Type != JTokenType.Null)
+            var error = data["error"];
+            if (error != null && error.Type != JTokenType.Null)
             {
-                callResult = new CallResult<T>(default, new ServerError((int)data["error"]["code"], (string)data["error"]["message"]));
+                callResult = new CallResult<T>(default, new ServerError(error["code"]?.Value<int>()??0, error["message"]?.ToString() ?? "Unknown error"));
                 return true;
             }
             else
             {
-                var desResult = Deserialize<T>(data["result"]);
+                var result = data["result"];
+                if (result == null)
+                {
+                    callResult = new CallResult<T>(default, new UnknownError("No data"));
+                    return true;
+                }
+
+                var desResult = Deserialize<T>(result);
                 if (!desResult)
                 {
                     callResult = new CallResult<T>(default, desResult.Error);
@@ -490,18 +498,18 @@ namespace CoinEx.Net
         /// <inheritdoc />
         protected override JToken ProcessTokenData(JToken data)
         {
-            return data["params"];
+            return data["params"]!;
         }
 
         /// <inheritdoc />
         protected override bool MessageMatchesHandler(JToken message, object request)
         {
             var cRequest = (CoinExSocketRequest)request;
-            var method = message["method"];
+            var method = message["method"]?.ToString();
             if (method == null)
                 return false;
 
-            var subject = ((string) method).Split(new [] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
+            var subject = method.Split(new [] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
             return cRequest.Subject == subject;
         }
 
@@ -510,7 +518,7 @@ namespace CoinEx.Net
         {
             if (message.Type != JTokenType.Object)
                 return false;
-            return identifier == "Pong" && (string) message["result"] == "pong";
+            return identifier == "Pong" && message["result"]?.ToString() == "pong";
         }
 
         /// <inheritdoc />

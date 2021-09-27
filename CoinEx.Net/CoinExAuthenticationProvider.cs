@@ -15,7 +15,7 @@ namespace CoinEx.Net
     internal class CoinExAuthenticationProvider: AuthenticationProvider
     {
         private readonly MD5 encryptor;
-        private INonceProvider _nonceProvider;
+        private readonly INonceProvider _nonceProvider;
 
         public long GetNonce() => _nonceProvider.GetNonce();
 
