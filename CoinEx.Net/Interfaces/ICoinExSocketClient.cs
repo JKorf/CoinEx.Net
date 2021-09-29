@@ -73,7 +73,7 @@ namespace CoinEx.Net.Interfaces
         /// </summary>
         /// <param name="coins">The coins to get the balances for, empty for all</param>
         /// <returns>Dictionary of coins and their balances</returns>
-        Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(params string[] coins);
+        Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable<string> coins);
 
         /// <summary>
         /// Gets a list of open orders for a symbol

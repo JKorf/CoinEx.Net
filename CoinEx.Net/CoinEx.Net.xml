@@ -434,7 +434,7 @@
             <param name="interval">The interval of the candles</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.CoinExSocketClient.GetBalancesAsync(System.String[])">
+        <member name="M:CoinEx.Net.CoinExSocketClient.GetBalancesAsync(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Get balances of coins. Requires API credentials
             </summary>
@@ -892,7 +892,7 @@
             <param name="interval">The interval of the candles</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetBalancesAsync(System.String[])">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExSocketClient.GetBalancesAsync(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Get balances of coins. Requires API credentials
             </summary>

@@ -166,9 +166,9 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="coins">The coins to get the balances for, empty for all</param>
         /// <returns>Dictionary of coins and their balances</returns>
-        public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(params string[] coins)
+        public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable<string> coins)
         {
-            return await QueryAsync<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(NextId(), BalanceSubject, QueryAction, coins), true).ConfigureAwait(false);
+            return await QueryAsync<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(NextId(), BalanceSubject, QueryAction, coins.ToArray()), true).ConfigureAwait(false);
         }
         
         /// <summary>

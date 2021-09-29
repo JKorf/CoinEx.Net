@@ -140,7 +140,7 @@ namespace CoinEx.Net.Objects
             Status == OrderStatus.Canceled ? IExchangeClient.OrderStatus.Canceled :
             Status == OrderStatus.Executed ? IExchangeClient.OrderStatus.Filled :
             IExchangeClient.OrderStatus.Active;
-        bool ICommonOrder.IsActive => Status == OrderStatus.UnExecuted;
+        bool ICommonOrder.IsActive => Status == OrderStatus.UnExecuted || Status == OrderStatus.PartiallyExecuted;
         DateTime ICommonOrder.CommonOrderTime => CreateTime;
 
         IExchangeClient.OrderSide ICommonOrder.CommonSide => Type == TransactionType.Buy

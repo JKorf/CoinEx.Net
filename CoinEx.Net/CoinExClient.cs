@@ -84,6 +84,7 @@ namespace CoinEx.Net
         public CoinExClient(CoinExClientOptions options): base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
         {
             manualParseError = true;
+            ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
         }
         #endregion
 
