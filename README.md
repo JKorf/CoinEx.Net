@@ -81,6 +81,11 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 4.2.0 - 29 Sep 2021
+    * Fixed DELETE endpoints
+    * Changed GetBalances parameter from `params` to `IEnumerable`
+    * Updated CryptoExchange.Net
+
 * Version 4.1.2 - 22 Sep 2021
     * Fixed nonce provider when running multiple program instances
 
