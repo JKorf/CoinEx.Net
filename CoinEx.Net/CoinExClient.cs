@@ -53,10 +53,12 @@ namespace CoinEx.Net
 
         private const string FinishedOrdersEndpoint = "order/finished";
         private const string OpenOrdersEndpoint = "order/pending";
+        private const string OpenStopOrdersEndpoint = "order/stop/pending";
         private const string OrderStatusEndpoint = "order/status";
         private const string OrderDetailsEndpoint = "order/deals";
         private const string UserTransactionsEndpoint = "order/user/deals";
         private const string CancelOrderEndpoint = "order/pending";
+        private const string CancelStopOrderEndpoint = "order/stop/pending";
         private const string MiningDifficultyEndpoint = "order/mining/difficulty";
 
         /// <summary>
@@ -558,6 +560,28 @@ namespace CoinEx.Net
         }
 
         /// <summary>
+        /// Retrieves a list of open stop orders for a symbol. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol to retrieve the open orders for</param>
+        /// <param name="page">The page of the resulting list</param>
+        /// <param name="limit">The number of results per page</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of open orders for a symbol</returns>
+        public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenStopOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
+        {
+            symbol.ValidateCoinExSymbol();
+            limit.ValidateIntBetween(nameof(limit), 1, 100);
+            var parameters = new Dictionary<string, object>
+            {
+                { "market", symbol },
+                { "page", page },
+                { "limit", limit }
+            };
+
+            return await ExecutePaged<CoinExOrder>(GetUrl(OpenStopOrdersEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
         /// </summary>
         /// <param name="symbol">The symbol to retrieve the open orders for</param>
@@ -679,7 +703,24 @@ namespace CoinEx.Net
 
             return await Execute(GetUrl(CancelOrderEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
         }
-        
+
+        /// <summary>
+        /// Cancels all stop orders. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol the orders are on</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Execution statut</returns>
+        public async Task<WebCallResult> CancelAllStopOrdersAsync(string symbol, CancellationToken ct = default)
+        {
+            symbol.ValidateCoinExSymbol();
+            var parameters = new Dictionary<string, object>
+            {
+                { "market", symbol },
+            };
+
+            return await Execute(GetUrl(CancelStopOrderEndpoint), HttpMethod.Delete, ct, parameters, true).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Retrieve the mining difficulty. Requires API credentials
         /// </summary>
