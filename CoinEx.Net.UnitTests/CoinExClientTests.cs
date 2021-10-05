@@ -322,7 +322,7 @@ namespace CoinEx.Net.UnitTests
         }
         
         [Test]
-        public async Task ProvidingApiCredentials_Should_SaveApiCredentials()
+        public void ProvidingApiCredentials_Should_SaveApiCredentials()
         {
             // arrange
             // act
@@ -336,7 +336,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         [TestCase("TestStringToSign", "C351B1833970C30017EF9AE280A09570")]
         [TestCase("access_id=4DA36FFC61334695A66F8D29020EB589&amount=1.0&market=BTCBCH&price=680&tonce=1513746038205&type=buy&secret_key=B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F", "610AB90A1D31D45901D173E4F59C9384")]
-        public async Task SigningString_Should_GiveCorrectSignResult(string input, string output)
+        public void SigningString_Should_GiveCorrectSignResult(string input, string output)
         {
             // arrange
             var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("4DA36FFC61334695A66F8D29020EB589", "B51068CF10B34E7789C374AB932696A05E0A629BE7BFC62F"), null);
@@ -368,7 +368,7 @@ namespace CoinEx.Net.UnitTests
         [TestCase("BETC", false)]
         [TestCase("BTC-USDT", false)]
         [TestCase("BTC-USD", false)]
-        public async Task CheckValidCoinExSymbol(string symbol, bool isValid)
+        public void CheckValidCoinExSymbol(string symbol, bool isValid)
         {
             if (isValid)
                 Assert.DoesNotThrow(symbol.ValidateCoinExSymbol);
