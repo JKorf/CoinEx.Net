@@ -81,6 +81,10 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 4.2.1 - 05 Oct 2021
+    * Added GetOpenStopOrdersAsync endpoint
+    * Added CancelAllStopOrdersAsync endpoint
+
 * Version 4.2.0 - 29 Sep 2021
     * Fixed DELETE endpoints
     * Changed GetBalances parameter from `params` to `IEnumerable`

@@ -256,6 +256,16 @@
             <param name="ct">Cancellation token</param>
             <returns>List of open orders for a symbol</returns>
         </member>
+        <member name="M:CoinEx.Net.CoinExClient.GetOpenStopOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a list of open stop orders for a symbol. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <param name="ct">Cancellation token</param>
+            <returns>List of open orders for a symbol</returns>
+        </member>
         <member name="M:CoinEx.Net.CoinExClient.GetExecutedOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
@@ -307,6 +317,14 @@
         <member name="M:CoinEx.Net.CoinExClient.CancelAllOrdersAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Cancels all orders. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol the orders are on</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Execution statut</returns>
+        </member>
+        <member name="M:CoinEx.Net.CoinExClient.CancelAllStopOrdersAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Cancels all stop orders. Requires API credentials
             </summary>
             <param name="symbol">The symbol the orders are on</param>
             <param name="ct">Cancellation token</param>
@@ -778,6 +796,16 @@
             <param name="ct">Cancellation token</param>
             <returns>List of open orders for a symbol</returns>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetOpenStopOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a list of open stop orders for a symbol. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol to retrieve the open orders for</param>
+            <param name="page">The page of the resulting list</param>
+            <param name="limit">The number of results per page</param>
+            <param name="ct">Cancellation token</param>
+            <returns>List of open orders for a symbol</returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetExecutedOrdersAsync(System.String,System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
@@ -825,6 +853,22 @@
             <param name="orderId">The id of the order to cancel</param>
             <param name="ct">Cancellation token</param>
             <returns>Details of the canceled order</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelAllStopOrdersAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Cancels all stop orders. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol the orders are on</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Execution statut</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExClient.CancelAllOrdersAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Cancels all orders. Requires API credentials
+            </summary>
+            <param name="symbol">The symbol the orders are on</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Execution statut</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExClient.GetMiningDifficultyAsync(System.Threading.CancellationToken)">
             <summary>
