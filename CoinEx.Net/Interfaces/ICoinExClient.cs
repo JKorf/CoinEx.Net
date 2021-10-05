@@ -234,6 +234,16 @@ namespace CoinEx.Net.Interfaces
         Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default);
 
         /// <summary>
+        /// Retrieves a list of open stop orders for a symbol. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol to retrieve the open orders for</param>
+        /// <param name="page">The page of the resulting list</param>
+        /// <param name="limit">The number of results per page</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>List of open orders for a symbol</returns>
+        Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenStopOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default);
+
+        /// <summary>
         /// Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
         /// </summary>
         /// <param name="symbol">The symbol to retrieve the open orders for</param>
@@ -280,6 +290,22 @@ namespace CoinEx.Net.Interfaces
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the canceled order</returns>
         Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, long orderId, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancels all stop orders. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol the orders are on</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Execution statut</returns>
+        Task<WebCallResult> CancelAllStopOrdersAsync(string symbol, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancels all orders. Requires API credentials
+        /// </summary>
+        /// <param name="symbol">The symbol the orders are on</param>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Execution statut</returns>
+        Task<WebCallResult> CancelAllOrdersAsync(string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieve the mining difficulty. Requires API credentials
