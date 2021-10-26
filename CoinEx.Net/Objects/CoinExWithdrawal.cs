@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net.Converters;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
@@ -11,22 +12,23 @@ namespace CoinEx.Net.Objects
     public class CoinExWithdrawal
     {
         /// <summary>
-        /// The actual amount of the withdrawal, i.e. the amount which will be transferred to the destination address
+        /// The actual quantity of the withdrawal, i.e. the quantity which will be transferred to the destination address
         /// </summary>
         [JsonProperty("actual_amount"), JsonConverter(typeof(DecimalConverter))]
-        public decimal ActualAmount { get; set; }
+        public decimal ActualQuantity { get; set; }
         /// <summary>
-        /// The total amount of the withdrawal
+        /// The total quantity of the withdrawal
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Amount { get; set; }
+        [JsonProperty("amount")]
+        public decimal Quantity { get; set; }
         /// <summary>
         /// The destination address of the withdrawal
         /// </summary>
         [JsonProperty("coin_address")]
-        public string CoinAddress { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
         /// <summary>
-        /// The name of the coin of the withdrawal
+        /// The name of the asset of the withdrawal
         /// </summary>
         [JsonProperty("coin_type")]
         public string CoinType { get; set; } = string.Empty;
@@ -34,7 +36,7 @@ namespace CoinEx.Net.Objects
         /// The id of this withdrawal
         /// </summary>
         [JsonProperty("coin_withdraw_id")]
-        public long CoinWithdrawalId { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// The current number of confirmations
         /// </summary>

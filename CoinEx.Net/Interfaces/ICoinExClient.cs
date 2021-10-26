@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoinEx.Net.Enums;
 using CoinEx.Net.Objects;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
@@ -47,14 +48,14 @@ namespace CoinEx.Net.Interfaces
         /// <param name="symbol">The symbol to retrieve state for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>The state of the symbol</returns>
-        Task<WebCallResult<CoinExSymbolState>> GetSymbolStateAsync(string symbol, CancellationToken ct = default);
+        Task<WebCallResult<CoinExSymbolState>> GetTickerAsync(string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Gets the states of all symbols
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of states for all symbols</returns>
-        Task<WebCallResult<CoinExSymbolStatesList>> GetSymbolStatesAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExSymbolStatesList>> GetTickersAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Gets the order book for a symbol
@@ -73,7 +74,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="fromId">The id from which on to return trades</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of trades for a symbol</returns>
-        Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetTradesHistoryAsync(string symbol, long? fromId = null, CancellationToken ct = default);
+        Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetTradeHistoryAsync(string symbol, long? fromId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves kline data for a specific symbol
@@ -91,14 +92,14 @@ namespace CoinEx.Net.Interfaces
         /// <param name="symbol">The symbol to retrieve data for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of market data for the exchange</returns>
-        Task<WebCallResult<Dictionary<string, CoinExMarket>>> GetMarketInfoAsync(string symbol, CancellationToken ct = default);
+        Task<WebCallResult<Dictionary<string, CoinExSymbol>>> GetSymbolInfoAsync(string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves market data for the exchange
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of market data for the exchange</returns>
-        Task<WebCallResult<Dictionary<string, CoinExMarket>>> GetMarketInfoAsync(CancellationToken ct = default);
+        Task<WebCallResult<Dictionary<string, CoinExSymbol>>> GetSymbolInfoAsync(CancellationToken ct = default);
        
         /// <summary>
         /// Retrieves a list of balances. Requires API credentials
@@ -110,12 +111,12 @@ namespace CoinEx.Net.Interfaces
         /// <summary>
         /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
         /// </summary>
-        /// <param name="coin">The coin to get history for</param>
+        /// <param name="asset">The asset to get history for</param>
         /// <param name="page">The page in the results to retrieve</param>
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPagedResult<CoinExDeposit>>> GetDepositHistoryAsync(string? coin = null, int? page = null, int? limit = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPagedResult<CoinExDeposit>>> GetDepositHistoryAsync(string? asset = null, int? page = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get the deposit address of an asset
@@ -129,99 +130,62 @@ namespace CoinEx.Net.Interfaces
         /// <summary>
         /// Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
         /// </summary>
-        /// <param name="coin">The coin to get history for</param>
-        /// <param name="coinWithdrawId">Retrieve a withdrawal with a specific id</param>
+        /// <param name="asset">The asset to get history for</param>
+        /// <param name="withdrawId">Retrieve a withdrawal with a specific id</param>
         /// <param name="page">The page in the results to retrieve</param>
         /// <param name="limit">The number of results to return per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPagedResult<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? coin = null, long? coinWithdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPagedResult<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? asset = null, long? withdrawId = null, int? page = null, int? limit = null, CancellationToken ct = default);
 
         /// <summary>
-        /// Withdraw coins from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
+        /// Withdraw assets from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
         /// </summary>
-        /// <param name="coin">The coin to withdraw</param>
+        /// <param name="asset">The asset to withdraw</param>
         /// <param name="localTransfer">Is it a local transfer between users or onchain</param>
-        /// <param name="coinAddress">The address to withdraw to</param>
-        /// <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
+        /// <param name="address">The address to withdraw to</param>
+        /// <param name="quantity">The quantity to withdraw. This is the quantity AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>The withdrawal object</returns>
-        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, bool localTransfer, decimal amount, CancellationToken ct = default);
+        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, string address, bool localTransfer, decimal quantity, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
         /// </summary>
-        /// <param name="coinWithdrawId">The id of the withdrawal to cancel</param>
+        /// <param name="withdrawId">The id of the withdrawal to cancel</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>True if successful, false otherwise</returns>
-        Task<WebCallResult<bool>> CancelWithdrawalAsync(long coinWithdrawId, CancellationToken ct = default);
+        Task<WebCallResult<bool>> CancelWithdrawalAsync(long withdrawId, CancellationToken ct = default);
+
 
         /// <summary>
-        /// Places a limit order. Requires API credentials
+        /// Places an order. Requires API credentials
         /// </summary>
         /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
+        /// <param name="side">Order side</param>
+        /// <param name="type">Order type</param>
+        /// <param name="quantity">The quantity of the order</param>
         /// <param name="price">The price of a single unit of the order</param>
         /// <param name="orderOption">Option for the order</param>
-        /// <param name="clientId">Client id which can be used to match the order</param>
-        /// <param name="sourceId">User defined number</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of the order that was placed</returns>
-        Task<WebCallResult<CoinExOrder>> PlaceLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default);
-
-        /// <summary>
-        /// Places a market order. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order, specified in the base asset. For example on a ETHBTC symbol the value should be how much BTC should be spend to buy ETH</param>
-        /// <param name="sourceId">Client id which can be used to match the order</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of the order that was placed</returns>
-        Task<WebCallResult<CoinExOrder>> PlaceMarketOrderAsync(string symbol, TransactionType type, decimal amount, string? sourceId = null, CancellationToken ct = default);
-
-        /// <summary>
-        /// Places a stop-limit order. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
         /// <param name="stopPrice">The stop-price of a single unit of the order</param>
-        /// <param name="price">The price of a single unit of the order</param>
-        /// <param name="orderOption">Option for the order</param>
+        /// <param name="immediateOrCancel">True if the order should be filled immediately up on placing, otherwise it will be canceled</param>
         /// <param name="clientId">Client id which can be used to match the order</param>
         /// <param name="sourceId">User defined number</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order that was placed</returns>
-        Task<WebCallResult<CoinExOrder>> PlaceStopLimitOrderAsync(string symbol, TransactionType type, decimal amount, decimal stopPrice, decimal price, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExOrder>> PlaceOrderAsync(
+            string symbol,
+            OrderType type,
+            OrderSide side,
+            decimal quantity,
 
-        /// <summary>
-        /// Places a stop-market order. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
-        /// <param name="stopPrice">The stop-price of a single unit of the order</param>
-        /// <param name="orderOption">Option for the order</param>
-        /// <param name="clientId">Client id which can be used to match the order</param>
-        /// <param name="sourceId">User defined number</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns>Details of the order that was placed</returns>
-        Task<WebCallResult<CoinExOrder>> PlaceStopMarketOrderAsync(string symbol, TransactionType type, decimal amount, decimal stopPrice, OrderOption? orderOption = null, string? clientId = null, string? sourceId = null, CancellationToken ct = default);
-
-
-        /// <summary>
-        /// Places an order which should be filled immediately up on placing, otherwise it will be canceled. Requires API credentials
-        /// </summary>
-        /// <param name="symbol">The symbol to place the order for</param>
-        /// <param name="type">Type of transaction</param>
-        /// <param name="amount">The amount of the order</param>
-        /// <param name="price">The price of a single unit of the order</param>
-        /// <param name="sourceId">Client id which can be used to match the order</param>
-        /// <param name="ct">Cancellation token</param>
-        /// <returns></returns>
-        Task<WebCallResult<CoinExOrder>> PlaceImmediateOrCancelOrderAsync(string symbol, TransactionType type, decimal amount, decimal price, string? sourceId = null, CancellationToken ct = default);
+            decimal? price = null,
+            decimal? stopPrice = null,
+            bool? immediateOrCancel = null,
+            OrderOption? orderOption = null,
+            string? clientId = null,
+            string? sourceId = null,
+            CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves a list of open orders for a symbol. Requires API credentials

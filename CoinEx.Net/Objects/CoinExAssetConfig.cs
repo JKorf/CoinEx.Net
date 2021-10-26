@@ -8,16 +8,14 @@ namespace CoinEx.Net.Objects
     public class CoinExAssetConfig
     {
         /// <summary>
-        /// Asset code
+        /// Asset
         /// </summary>
-        [JsonProperty("asset")]
         public string Asset { get; set; } = string.Empty;
-
         /// <summary>
-        /// Withdraw and Deposit asset chain
+        /// Network
         /// </summary>
         [JsonProperty("chain")]
-        public string Chain { get; set; } = string.Empty;
+        public string Network { get; set; } = string.Empty;
         /// <summary>
         /// Deposit is enabled
         /// </summary>
@@ -29,12 +27,12 @@ namespace CoinEx.Net.Objects
         [JsonProperty("can_withdraw")]
         public bool CanWithdraw { get; set; }
         /// <summary>
-        /// Minimal deposit amount
+        /// Minimal deposit quantity
         /// </summary>
         [JsonProperty("deposit_least_amount")]
         public decimal MinDeposit { get; set; }
         /// <summary>
-        /// Minimal withdrawal amount
+        /// Minimal withdrawal quantity
         /// </summary>
         [JsonProperty("withdraw_least_amount")]
         public decimal MinWithdraw { get; set; }

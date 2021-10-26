@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CoinEx.Net.Enums;
 using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Websocket;
 using CryptoExchange.Net.Interfaces;
@@ -69,21 +70,21 @@ namespace CoinEx.Net.Interfaces
         Task<CallResult<CoinExKline>> GetKlinesAsync(string symbol, KlineInterval interval);
 
         /// <summary>
-        /// Get balances of coins. Requires API credentials
+        /// Get balances of assets. Requires API credentials
         /// </summary>
-        /// <param name="coins">The coins to get the balances for, empty for all</param>
-        /// <returns>Dictionary of coins and their balances</returns>
-        Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable<string> coins);
+        /// <param name="assets">The assets to get the balances for, empty for all</param>
+        /// <returns>Dictionary of assets and their balances</returns>
+        Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable<string> assets);
 
         /// <summary>
         /// Gets a list of open orders for a symbol
         /// </summary>
         /// <param name="symbol">Symbol to get open orders for</param>
-        /// <param name="type">The type of orders to get</param>
+        /// <param name="side">Order side</param>
         /// <param name="offset">The offset in the list</param>
         /// <param name="limit">The limit of results</param>
         /// <returns>List of open orders</returns>
-        Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string symbol, TransactionType type, int offset, int limit);
+        Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string symbol, OrderSide side, int offset, int limit);
 
         /// <summary>
         /// Subscribe to symbol state updates for a specific symbol
@@ -116,7 +117,7 @@ namespace CoinEx.Net.Interfaces
         /// <param name="symbol">The symbol to receive updates from</param>
         /// <param name="onMessage">Data handler</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToSymbolTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExSocketSymbolTrade>>> onMessage);
+        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExSocketSymbolTrade>>> onMessage);
 
         /// <summary>
         /// Subscribe to kline updates for a symbol
@@ -128,7 +129,7 @@ namespace CoinEx.Net.Interfaces
         Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<IEnumerable<CoinExKline>>> onMessage);
 
         /// <summary>
-        /// Subscribe to updates of your balances, Receives updates whenever the balance for a coin changes
+        /// Subscribe to updates of your balances, Receives updates whenever the balance for an asset changes
         /// </summary>
         /// <param name="onMessage">Data handler</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>

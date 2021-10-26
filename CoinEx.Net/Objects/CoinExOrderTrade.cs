@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using CryptoExchange.Net.ExchangeInterfaces;
+using CoinEx.Net.Enums;
 
 namespace CoinEx.Net.Objects
 {
@@ -13,22 +14,23 @@ namespace CoinEx.Net.Objects
     public class CoinExOrderTrade:ICommonTrade
     {
         /// <summary>
-        /// The amount of the transaction
+        /// The quantity of the transaction
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Amount { get; set; }
+        [JsonProperty("amount")]
+        public decimal Quantity { get; set; }
         /// <summary>
         /// The time the transaction was created
         /// </summary>
         [JsonConverter(typeof(TimestampSecondsConverter))]
         [JsonProperty("create_time")]
-        public DateTime CreateTime { get; set; }
+        public DateTime Timestamp { get; set; }
         /// <summary>
         /// The value of the transaction
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         [JsonProperty("deal_money")]
-        public decimal Value { get; set; }
+        public decimal QuoteQuantity { get; set; }
         /// <summary>
         /// The fee of the transactions
         /// </summary>
@@ -43,7 +45,7 @@ namespace CoinEx.Net.Objects
         /// The id of the transaction
         /// </summary>
         [JsonProperty("id")]
-        public long TransactionId { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// The id of the order
         /// </summary>
@@ -59,13 +61,18 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [JsonConverter(typeof(TransactionRoleConverter))]
         public TransactionRole Role { get; set; }
+        /// <summary>
+        /// The role of the transaction, maker or taker
+        /// </summary>
+        [JsonProperty("type"), JsonConverter(typeof(OrderSideConverter))]
+        public OrderSide Side { get; set; }
 
-        string ICommonTrade.CommonId => TransactionId.ToString(CultureInfo.InvariantCulture);
+        string ICommonTrade.CommonId => Id.ToString(CultureInfo.InvariantCulture);
         decimal ICommonTrade.CommonPrice => Price;
-        decimal ICommonTrade.CommonQuantity => Amount;
+        decimal ICommonTrade.CommonQuantity => Quantity;
         decimal ICommonTrade.CommonFee => Fee;
         string ICommonTrade.CommonFeeAsset => FeeAsset;
-        DateTime ICommonTrade.CommonTradeTime => CreateTime;
+        DateTime ICommonTrade.CommonTradeTime => Timestamp;
     }
 
     /// <summary>
@@ -79,9 +86,10 @@ namespace CoinEx.Net.Objects
         [JsonProperty("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// The type of the transaction
+        /// Order side
         /// </summary>
-        [JsonConverter(typeof(TransactionTypeConverter))]
-        public TransactionType Type { get; set; }
+        [JsonConverter(typeof(OrderSideConverter))]
+        [JsonProperty("type")]
+        public OrderSide Side { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net.Converters;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
@@ -11,10 +12,11 @@ namespace CoinEx.Net.Objects.Websocket
     public class CoinExSocketSymbolTrade
     {
         /// <summary>
-        /// The type of the transaction
+        /// The orde side
         /// </summary>
-        [JsonConverter(typeof(TransactionTypeConverter))]
-        public TransactionType Type { get; set; }
+        [JsonConverter(typeof(OrderSideConverter))]
+        [JsonProperty("type")]
+        public OrderSide Side { get; set; }
         /// <summary>
         /// The timestamp of the transaction
         /// </summary>
@@ -32,9 +34,10 @@ namespace CoinEx.Net.Objects.Websocket
         [JsonProperty("id")]
         public long OrderId { get; set; }
         /// <summary>
-        /// The amount of the transaction
+        /// The quantity of the transaction
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Amount { get; set; }
+        [JsonProperty("amount")]
+        public decimal Quantity { get; set; }
     }
 }

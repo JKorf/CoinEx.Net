@@ -5,22 +5,22 @@ using CryptoExchange.Net.ExchangeInterfaces;
 namespace CoinEx.Net.Objects
 {
     /// <summary>
-    /// Market Info
+    /// Symbol Info
     /// </summary>
-    public class CoinExMarket: ICommonSymbol
+    public class CoinExSymbol: ICommonSymbol
     {
         /// <summary>
-        /// The name of the market
+        /// The name of the symbol
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }= string.Empty;
 
         /// <summary>
-        /// The minimum amount that can be traded
+        /// The minimum quantity that can be traded
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         [JsonProperty("min_amount")]
-        public decimal MinAmount { get; set; }
+        public decimal MinQuantity { get; set; }
 
         /// <summary>
         /// The fee for the maker
@@ -37,7 +37,7 @@ namespace CoinEx.Net.Objects
         public decimal TakerFeeRate { get; set; }
         
         /// <summary>
-        /// The coin being that is being traded against
+        /// The asset being that is being traded against
         /// </summary>
         [JsonProperty("pricing_name")]
         public string PricingName { get; set; }= string.Empty;
@@ -50,7 +50,7 @@ namespace CoinEx.Net.Objects
         public int PricingDecimal { get; set; }
 
         /// <summary>
-        /// The coin being traded
+        /// The asset being traded
         /// </summary>
         [JsonProperty("trading_name")]
         public string TradingName { get; set; } = string.Empty;
@@ -63,6 +63,6 @@ namespace CoinEx.Net.Objects
         public int TradingDecimal { get; set; }
 
         string ICommonSymbol.CommonName => Name;
-        decimal ICommonSymbol.CommonMinimumTradeSize => MinAmount;
+        decimal ICommonSymbol.CommonMinimumTradeQuantity => MinQuantity;
     }
 }

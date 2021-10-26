@@ -1,4 +1,6 @@
-﻿namespace CoinEx.Net.Objects.Websocket
+﻿using CoinEx.Net.Enums;
+
+namespace CoinEx.Net.Objects.Websocket
 {
     /// <summary>
     /// Order update

@@ -14,12 +14,12 @@ namespace CoinEx.Net.Objects
         /// </summary>
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// The amount of the asset that is available
+        /// The quantity of the asset that is available
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Available { get; set; }
         /// <summary>
-        /// The amount of the asset not currently available
+        /// The quantity of the asset not currently available
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Frozen { get; set; }

@@ -3,6 +3,7 @@ using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
 using CryptoExchange.Net.ExchangeInterfaces;
+using CoinEx.Net.Enums;
 
 namespace CoinEx.Net.Objects
 {
@@ -12,10 +13,11 @@ namespace CoinEx.Net.Objects
     public class CoinExSymbolTrade: ICommonRecentTrade
     {
         /// <summary>
-        /// The amount of the transaction
+        /// The quantity of the transaction
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Amount { get; set; }
+        [JsonProperty("amount")]
+        public decimal Quantity { get; set; }
         /// <summary>
         /// The timestamp of the transaction
         /// </summary>
@@ -31,13 +33,14 @@ namespace CoinEx.Net.Objects
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Price { get; set; }
         /// <summary>
-        /// The type of the transaction
+        /// Order side
         /// </summary>
-        [JsonConverter(typeof(TransactionTypeConverter))]
-        public TransactionType Type { get; set; }
+        [JsonConverter(typeof(OrderSideConverter))]
+        [JsonProperty("type")]
+        public OrderSide Side { get; set; }
 
         decimal ICommonRecentTrade.CommonPrice => Price;
-        decimal ICommonRecentTrade.CommonQuantity => Amount;
+        decimal ICommonRecentTrade.CommonQuantity => Quantity;
         DateTime ICommonRecentTrade.CommonTradeTime => Timestamp;
     }
 }

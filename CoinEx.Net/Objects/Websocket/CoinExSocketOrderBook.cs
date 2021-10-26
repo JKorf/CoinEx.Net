@@ -14,7 +14,8 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// The price of the last trade. Only filled on a full update.
         /// </summary>
-        public decimal? Last { get; set; }
+        [JsonProperty("last")]
+        public decimal? LastPrice { get; set; }
 
         /// <summary>
         /// Whether it is a full update or an update based on the last update

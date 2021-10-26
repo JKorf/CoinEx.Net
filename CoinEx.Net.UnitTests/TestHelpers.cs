@@ -16,8 +16,14 @@ using System.Threading.Tasks;
 using CoinEx.Net;
 using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
+using System.Collections;
+using CoinEx.Net.Interfaces;
+using CoinEx.Net.Objects;
+using Newtonsoft.Json;
+using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net;
 
-namespace CryptoExchange.Net.Testing
+namespace CoinEx.Net.Testing
 {
     public class TestHelpers
     {
@@ -61,9 +67,37 @@ namespace CryptoExchange.Net.Testing
             return self == to;
         }
 
-        public static MockObjects<T> PrepareClient<T>(Func<T> construct, string responseData, HttpStatusCode code = HttpStatusCode.OK) where T : RestClient, new()
+        public static ICoinExClient CreateClient(CoinExClientOptions options = null)
         {
-            var client = construct();
+            ICoinExClient client;
+            client = options != null ? new CoinExClient(options) : new CoinExClient();
+            client.RequestFactory = Mock.Of<IRequestFactory>();
+            return client;
+        }
+
+        public static ICoinExClient CreateResponseClient(string response, CoinExClientOptions options = null, HttpStatusCode code = HttpStatusCode.OK)
+        {
+            var client = (CoinExClient)CreateClient(options);
+            SetResponse(client, response, code);
+            return client;
+        }
+
+        public static ICoinExClient CreateAuthenticatedResponseClient<T>(T response, CoinExClientOptions options = null)
+        {
+            var client = (CoinExClient)CreateClient(options ?? new CoinExClientOptions() { ApiCredentials = new ApiCredentials("Test", "Test") });
+            SetResponse(client, JsonConvert.SerializeObject(response));
+            return client;
+        }
+
+        public static ICoinExClient CreateResponseClient<T>(T response, CoinExClientOptions options = null)
+        {
+            var client = (CoinExClient)CreateClient(options);
+            SetResponse(client, JsonConvert.SerializeObject(response));
+            return client;
+        }
+
+        public static Mock<IRequest> SetResponse(RestClient client, string responseData, HttpStatusCode code = HttpStatusCode.OK)
+        {
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();
             responseStream.Write(expectedBytes, 0, expectedBytes.Length);
@@ -78,165 +112,89 @@ namespace CryptoExchange.Net.Testing
             request.Setup(c => c.Uri).Returns(new Uri("http://www.test.com"));
             request.Setup(c => c.GetResponseAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(response.Object));
 
-            var factory = new Mock<IRequestFactory>();
+            var factory = Mock.Get(client.RequestFactory);
             factory.Setup(c => c.Create(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(request.Object);
-            client.RequestFactory = factory.Object;
-
-            var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
-            log.Level = LogLevel.Debug;
-            return new MockObjects<T>()
-            {
-                Client = client,
-                Request = request,
-                Response = response
-            };
+            return request;
         }
 
-        public static T PrepareSocketClient<T>(Func<T> construct) where T : SocketClient, new()
+        public static object? GetTestValue(Type type, int i)
         {
-            var factory = new Mock<IWebsocketFactory>();
-            factory.Setup(s => s.CreateWebsocket(It.IsAny<Log>(), It.IsAny<string>())).Returns(CreateSocket);
+            if (type == typeof(bool))
+                return true;
 
-            var client = construct();
-            var log = (Log)typeof(T).GetField("log", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(client);
-            if (log.Level == LogLevel.Information)
-                log.Level = LogLevel.None;
-            typeof(BaseClient).GetField("lastId", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static).SetValue(client, 0);
-            typeof(T).GetProperty("SocketFactory").SetValue(client, factory.Object);
-            return client;
-        }
+            if (type == typeof(bool?))
+                return (bool?)true;
 
-        private static event Action<Mock<IWebsocket>> OnOpen;
-        private static event Action<Mock<IWebsocket>> OnClose;
-        private static event Action<Mock<IWebsocket>, string> OnSend;
+            if (type == typeof(decimal))
+                return i / 100m;
 
-        private static IWebsocket CreateSocket()
-        {
-            bool open = false;
-            bool closed = true;
+            if (type == typeof(decimal?))
+                return (decimal?)(i / 100m);
 
-            IWebsocket obj = Mock.Of<IWebsocket>();
-            var socket = Mock.Get(obj);
-            socket.Setup(s => s.CloseAsync()).Returns(Task.FromResult(true)).Callback(() =>
+            if (type == typeof(int))
+                return i+1;
+
+            if (type == typeof(int?))
+                return (int?)i;
+
+            if (type == typeof(long))
+                return (long)i;
+
+            if (type == typeof(long?))
+                return (long?)i;
+
+            if (type == typeof(DateTime))
+                return new DateTime(2019, 1, Math.Max(i, 1));
+
+            if (type == typeof(DateTime?))
+                return (DateTime?)new DateTime(2019, 1, Math.Max(i, 1));
+
+            if (type == typeof(string))
+                return "STRING" + i;
+
+            if (type == typeof(IEnumerable<string>))
+                return new[] { "string" + i };
+
+            if (type.IsEnum)
             {
-                var closing = socket.Object.IsOpen;
-                open = false; closed = true;
-                if (closing)
-                    socket.Raise(s => s.OnClose += null);
-                OnClose?.Invoke(socket);
-            });
-            socket.Setup(s => s.IsOpen).Returns(() => open);
-            socket.Setup(s => s.Send(It.IsAny<string>())).Callback(new Action<string>((data) =>
-            {
-                OnSend?.Invoke(socket, data);
-            }));
-            socket.Setup(s => s.IsClosed).Returns(() => closed);
-            socket.Setup(s => s.ConnectAsync()).Returns(Task.FromResult(true)).Callback(() =>
-            {
-                socket.Setup(s => s.IsOpen).Returns(() => open);
-                socket.Setup(s => s.IsClosed).Returns(() => closed);
+                return Activator.CreateInstance(type);
+            }
 
-                open = true; closed = false;
-                socket.Raise(s => s.OnOpen += null);
-                OnOpen?.Invoke(socket);
-            });
-            return socket.Object;
-        }
-
-        public static async Task<bool> WaitForConnect(CoinExSocketClient client, int timeout = 1000)
-        {
-            var evnt = new ManualResetEvent(false);
-            var handler = new Action<Mock<IWebsocket>>((s) =>
+            if (type.IsArray)
             {
-                evnt.Set();
-            });
-
-            OnOpen += handler;
-            return await Task.Run(() =>
-            {
-                var result = evnt.WaitOne(timeout);
-                OnOpen -= handler;
+                var elementType = type.GetElementType()!;
+                var result = Array.CreateInstance(elementType, 2);
+                result.SetValue(GetTestValue(elementType, 0), 0);
+                result.SetValue(GetTestValue(elementType, 1), 1);
                 return result;
-            });
-        }
+            }
 
-        public static List<SocketConnection> GetSockets(CoinExSocketClient client)
-        {            
-            return ((ConcurrentDictionary<int, SocketConnection>)client.GetType().GetField("sockets", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(client)).Values.ToList();
-        }
-
-        public static async Task<bool> WaitForClose(CoinExSocketClient client, int timeout = 1000)
-        {
-            var evnt = new ManualResetEvent(false);
-            var handler = new Action<Mock<IWebsocket>>((s) =>
+            if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>)))
             {
-                var sockets = GetSockets(client);
-                if (!sockets.Any())
-                    return;
-
-                var mock = Mock.Get(sockets[0].Socket);
-                if (s.Equals(mock))
-                    evnt.Set();
-            });
-
-            OnClose += handler;
-            return await Task.Run(() =>
-            {
-                var result = evnt.WaitOne(timeout);
-                OnClose -= handler;
+                var result = (IList)Activator.CreateInstance(type)!;
+                result.Add(GetTestValue(type.GetGenericArguments()[0], 0));
+                result.Add(GetTestValue(type.GetGenericArguments()[0], 1));
                 return result;
-            });
-        }
+            }
 
-        public static void CloseWebsocket(CoinExSocketClient client)
-        {
-            var sockets = GetSockets(client);
-            var mock = Mock.Get(sockets[0].Socket);
-            mock.Setup(s => s.IsOpen).Returns(() => false);
-            mock.Setup(s => s.IsClosed).Returns(() => true);
-
-            mock.Raise(r => r.OnClose += null);
-        }
-
-        public static async Task<bool> WaitForSend(CoinExSocketClient client, int timeout = 3000, string expectedData = null)
-        {
-            var evnt = new ManualResetEvent(false);
-            var handler = new Action<Mock<IWebsocket>, string>((s, data) =>
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
             {
-                var sockets = GetSockets(client);
-                if (!sockets.Any())
-                    return;
+                var result = (IDictionary)Activator.CreateInstance(type)!;
+                result.Add(GetTestValue(type.GetGenericArguments()[0], 0)!, GetTestValue(type.GetGenericArguments()[1], 0));
+                result.Add(GetTestValue(type.GetGenericArguments()[0], 1)!, GetTestValue(type.GetGenericArguments()[1], 1));
+                return Convert.ChangeType(result, type);
+            }
 
-                var mock = Mock.Get(sockets[0].Socket);
-                if (s.Equals(mock))
-                {
-                    if (expectedData == null || data == expectedData)
-                        evnt.Set();
-                }
-            });
-
-            OnSend += handler;
-            return await Task.Run(() =>
-            {
-                var result = evnt.WaitOne(timeout);
-                OnSend -= handler;
-                return result;
-            });
+            return null;
         }
 
-        public static void InvokeWebsocket(CoinExSocketClient client, string data)
+        public static async Task<object> InvokeAsync(MethodInfo @this, object obj, params object[] parameters)
         {
-            var sockets = GetSockets(client);
-            var mock = Mock.Get(sockets[0].Socket);
-            mock.Raise(r => r.OnMessage += null, data);
-        }
-        public class MockObjects<T> where T: RestClient
-        {
-            public T Client { get; set; }
-            public Mock<IRequest> Request { get; set; }
-            public Mock<IResponse> Response { get; set; }
-
+            var task = (Task)@this.Invoke(obj, parameters);
+            await task.ConfigureAwait(false);
+            var resultProperty = task.GetType().GetProperty("Result");
+            return resultProperty.GetValue(task);
         }
     }
 }

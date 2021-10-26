@@ -17,7 +17,15 @@ namespace CoinEx.Net.Objects
         /// The price of the last transaction
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Last { get; set; }
+        [JsonProperty("last")]
+        public decimal LastPrice { get; set; }
+
+        /// <summary>
+        /// Timestamp
+        /// </summary>
+        [JsonProperty("time"), JsonConverter(typeof(TimestampConverter))]
+        public DateTime Timestamp { get; set; }
+
         /// <summary>
         /// The asks on this symbol
         /// </summary>

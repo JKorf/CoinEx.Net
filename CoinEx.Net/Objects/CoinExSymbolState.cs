@@ -54,42 +54,46 @@ namespace CoinEx.Net.Objects
         /// The best buy price available on the symbol
         /// </summary>
         [JsonProperty("buy"), JsonConverter(typeof(DecimalConverter))]
-        public decimal BestBuyPrice { get; set; }
+        public decimal BestAskPrice { get; set; }
         /// <summary>
-        /// The amount of the best buy price
+        /// The quantity of the best buy price
         /// </summary>
         [JsonProperty("buy_amount"), JsonConverter(typeof(DecimalConverter))]
-        public decimal BestBuyAmount { get; set; }
+        public decimal BestAskQuantity { get; set; }
         /// <summary>
         /// The best sell price available on the symbol
         /// </summary>
         [JsonProperty("sell"), JsonConverter(typeof(DecimalConverter))]
-        public decimal BestSellPrice { get; set; }
+        public decimal BestBidPrice { get; set; }
         /// <summary>
-        /// The amount of the best sell price
+        /// The quantity of the best sell price
         /// </summary>
         [JsonProperty("sell_amount"), JsonConverter(typeof(DecimalConverter))]
-        public decimal BestSellAmount { get; set; }
+        public decimal BestBidQuantity { get; set; }
         /// <summary>
         /// The open price based on a 24H ticker
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Open { get; set; }
+        [JsonProperty("open")]
+        public decimal OpenPrice { get; set; }
         /// <summary>
         /// The high price based on a 24H ticker
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal High { get; set; }
+        [JsonProperty("high")]
+        public decimal HighPrice { get; set; }
         /// <summary>
         /// The low price based on a 24H ticker
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Low { get; set; }
+        [JsonProperty("low")]
+        public decimal LowPrice { get; set; }
         /// <summary>
         /// The price of the last trade
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Last { get; set; }
+        [JsonProperty("last")]
+        public decimal LastPrice { get; set; }
         /// <summary>
         /// The volume of the quote asset. i.e. for symbol ETHBTC this is the volume in ETH
         /// </summary>
@@ -97,8 +101,8 @@ namespace CoinEx.Net.Objects
         public decimal Volume { get; set; }
 
         string ICommonTicker.CommonSymbol => Symbol;
-        decimal ICommonTicker.CommonHigh => High;
-        decimal ICommonTicker.CommonLow => Low;
+        decimal ICommonTicker.CommonHighPrice => HighPrice;
+        decimal ICommonTicker.CommonLowPrice => LowPrice;
         decimal ICommonTicker.CommonVolume => Volume;
     }
 }

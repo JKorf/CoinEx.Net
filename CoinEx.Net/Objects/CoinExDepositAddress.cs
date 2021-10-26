@@ -24,7 +24,7 @@ namespace CoinEx.Net.Objects
         /// Deposit address id
         /// </summary>
         [JsonProperty("deposit_address_id")]
-        public int DepositAddressId { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Is bitcoin cash
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net.Converters;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 using System;
@@ -11,10 +12,11 @@ namespace CoinEx.Net.Objects.Websocket
     public class CoinExSocketOrder
     {
         /// <summary>
-        /// The total amount of the oder
+        /// The total quantity of the oder
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Amount { get; set; }
+        [JsonProperty("amount")]
+        public decimal Quantity { get; set; }
         /// <summary>
         /// The time the order was created
         /// </summary>
@@ -26,7 +28,7 @@ namespace CoinEx.Net.Objects.Websocket
         /// </summary>
         [JsonProperty("asset_fee")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal AssetFee { get; set; }
+        public decimal Fee { get; set; }
         /// <summary>
         /// The fee discount
         /// </summary>
@@ -39,33 +41,33 @@ namespace CoinEx.Net.Objects.Websocket
         [JsonProperty("fee_asset")]
         public string FeeAsset { get; set; } = string.Empty;
         /// <summary>
-        /// The executed amount transaction fee
+        /// The executed quantity transaction fee
         /// </summary>
         [JsonProperty("deal_fee")]
         [JsonConverter(typeof(DecimalConverter))]
         public decimal TransactionFee { get; set; }
         /// <summary>
-        /// The executed value
+        /// The executed value in this update
         /// </summary>
         [JsonProperty("deal_money")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal TransactionValue { get; set; }
+        public decimal QuoteQuantityExecuted { get; set; }
         /// <summary>
-        /// The executed amount
+        /// The executed quantity in this update
         /// </summary>
         [JsonProperty("deal_stock")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal ExecutedAmount { get; set; }
+        public decimal QuantityExecuted { get; set; }
         /// <summary>
         /// The order id
         /// </summary>
-        [JsonProperty("id")]
-        public long OrderId { get; set; }
+        public long Id { get; set; }
         /// <summary>
-        /// Amount of order left to execute
+        /// Quantity of order left to execute
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Left { get; set; }
+        [JsonProperty("left")]
+        public decimal QuantityRemaining { get; set; }
         /// <summary>
         /// Maker fee
         /// </summary>
@@ -77,18 +79,18 @@ namespace CoinEx.Net.Objects.Websocket
         /// </summary>
         [JsonConverter(typeof(TimestampSecondsConverter))]
         [JsonProperty("mtime")]
-        public DateTime ModifyTime { get; set; }
+        public DateTime UpdateTime { get; set; }
         /// <summary>
         /// The price per unit of the order
         /// </summary>
         [JsonConverter(typeof(DecimalConverter))]
         public decimal Price { get; set; }
         /// <summary>
-        /// The transaction type
+        /// The order side
         /// </summary>
-        [JsonConverter(typeof(TransactionTypeIntConverter))]
+        [JsonConverter(typeof(OrderSideIntConverter))]
         [JsonProperty("side")]
-        public TransactionType TransactionType { get; set; }
+        public OrderSide Side { get; set; }
         /// <summary>
         /// The source of the order
         /// </summary>
@@ -119,6 +121,6 @@ namespace CoinEx.Net.Objects.Websocket
         /// The client id
         /// </summary>
         [JsonProperty("client_id")]
-        public string ClientId { get; set; } = string.Empty;
+        public string ClientOrderId { get; set; } = string.Empty;
     }
 }

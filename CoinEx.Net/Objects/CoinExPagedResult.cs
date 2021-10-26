@@ -28,5 +28,15 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [JsonProperty("has_next")]
         public bool HasNext { get; set; }
+        /// <summary>
+        /// Total items
+        /// </summary>
+        [JsonProperty("total")]
+        public int TotalItems { get; set; }
+        /// <summary>
+        /// Total pages
+        /// </summary>
+        [JsonProperty("total_page")]
+        public int TotalPages { get; set; }
     }
 }

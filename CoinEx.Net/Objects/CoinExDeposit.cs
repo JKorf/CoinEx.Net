@@ -11,50 +11,50 @@ namespace CoinEx.Net.Objects
     public class CoinExDeposit
     {
         /// <summary>
-        /// The actual amount of the deposit
+        /// The actual quantity of the deposit
         /// </summary>
         [JsonProperty("actual_amount")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal ActualAmount { get; set; }
+        public decimal ActualQuantity { get; set; }
 
         /// <summary>
         /// The display for the deposit
         /// </summary>
         [JsonProperty("actual_amount_display")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal ActualAmountDisplay { get; set; }
+        public decimal ActualQuantityDisplay { get; set; }
         /// <summary>
         /// Depositor
         /// </summary>
         [JsonProperty("add_explorer")]
         public string AddExplorer { get; set; } = string.Empty;
         /// <summary>
-        /// The total amount of the deposit
+        /// The total quantity of the deposit
         /// </summary>
         [JsonProperty("amount")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal Amount { get; set; }
+        public decimal Quantity { get; set; }
         /// <summary>
-        /// The display for the amount
+        /// The display for the quantity
         /// </summary>
         [JsonProperty("amount_display")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal AmountDisplay { get; set; }
+        public decimal QuantityDisplay { get; set; }
         /// <summary>
         /// Deposit add displayed
         /// </summary>
         [JsonProperty("coin_address")]
-        public string CoinAddress { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
         /// <summary>
         /// Deposit add displayed
         /// </summary>
         [JsonProperty("coin_address_display")]
-        public string CoinAddressDisplay { get; set; } = string.Empty;
+        public string AddressDisplay { get; set; } = string.Empty;
         /// <summary>
         /// Deposit ID
         /// </summary>
         [JsonProperty("coin_deposit_id")]
-        public long CoinDepositId { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// Deposit ID
         /// </summary>
@@ -100,11 +100,11 @@ namespace CoinEx.Net.Objects
         /// The transaction id of the withdrawal
         /// </summary>
         [JsonProperty("tx_id")]
-        public string TxId { get; set; } = string.Empty;
+        public string TransactionId { get; set; } = string.Empty;
         /// <summary>
         /// The transaction id of the withdrawal
         /// </summary>
         [JsonProperty("tx_id_display")]
-        public string TxIdDisplay { get; set; } = string.Empty;
+        public string TransactionIdDisplay { get; set; } = string.Empty;
     }
 }
