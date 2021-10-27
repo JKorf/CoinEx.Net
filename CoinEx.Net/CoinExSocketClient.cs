@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Authentication;
 using CoinEx.Net.Enums;
+using System.Threading;
 
 namespace CoinEx.Net
 {
@@ -149,7 +150,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToSymbolStateUpdatesAsync(string symbol, Action<DataEvent<CoinExSocketSymbolState>> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToSymbolStateUpdatesAsync(string symbol, Action<DataEvent<CoinExSocketSymbolState>> onMessage, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             var internalHandler = new Action<DataEvent<JToken[]>>(data =>
@@ -166,11 +167,11 @@ namespace CoinEx.Net
                 onMessage(data.As(result, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction, symbol), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToSymbolStateUpdatesAsync(Action<DataEvent<IEnumerable<CoinExSocketSymbolState>>> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToSymbolStateUpdatesAsync(Action<DataEvent<IEnumerable<CoinExSocketSymbolState>>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DataEvent<JToken[]>>(data =>
             {
@@ -187,11 +188,11 @@ namespace CoinEx.Net
                 onMessage(data.As<IEnumerable<CoinExSocketSymbolState>>(desResult.Data.Select(d => d.Value)));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<DataEvent<CoinExSocketOrderBook>> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<DataEvent<CoinExSocketOrderBook>> onMessage, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
@@ -217,11 +218,11 @@ namespace CoinEx.Net
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), DepthSubject, SubscribeAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), DepthSubject, SubscribeAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExSocketSymbolTrade>>> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExSocketSymbolTrade>>> onMessage, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             var internalHandler = new Action<DataEvent<JToken[]>>(data =>
@@ -243,11 +244,11 @@ namespace CoinEx.Net
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), TransactionSubject, SubscribeAction, symbol), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), TransactionSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<IEnumerable<CoinExKline>>> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<IEnumerable<CoinExKline>>> onMessage, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             var internalHandler = new Action<DataEvent<JToken[]>>(data =>
@@ -268,11 +269,11 @@ namespace CoinEx.Net
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), KlineSubject, SubscribeAction, symbol, interval.ToSeconds()), null, false, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), KlineSubject, SubscribeAction, symbol, interval.ToSeconds()), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<IEnumerable<CoinExBalance>>> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<IEnumerable<CoinExBalance>>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DataEvent<JToken[]>>(data =>
             {
@@ -298,11 +299,11 @@ namespace CoinEx.Net
                 onMessage(data.As<IEnumerable<CoinExBalance>>(desResult.Data.Values, null));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExSocketOrderUpdate>> onMessage)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExSocketOrderUpdate>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DataEvent<JToken[]>>(data =>
             {
@@ -329,7 +330,7 @@ namespace CoinEx.Net
             });
 
             var request = new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols.ToArray());
-            return await SubscribeAsync(request, null, true, internalHandler).ConfigureAwait(false);
+            return await SubscribeAsync(request, null, true, internalHandler, ct).ConfigureAwait(false);
         }
         #endregion
 
