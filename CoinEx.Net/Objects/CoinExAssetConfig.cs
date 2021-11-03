@@ -8,6 +8,17 @@ namespace CoinEx.Net.Objects
     public class CoinExAssetConfig
     {
         /// <summary>
+        /// Asset code
+        /// </summary>
+        [JsonProperty("asset")]
+        public string Asset { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Withdraw and Deposit asset chain
+        /// </summary>
+        [JsonProperty("chain")]
+        public string Chain { get; set; } = string.Empty;
+        /// <summary>
         /// Deposit is enabled
         /// </summary>
         [JsonProperty("can_deposit")]

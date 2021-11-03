@@ -1015,6 +1015,16 @@
             Asset config
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.Asset">
+            <summary>
+            Asset code
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.Chain">
+            <summary>
+            Withdraw and Deposit asset chain
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Objects.CoinExAssetConfig.CanDeposit">
             <summary>
             Deposit is enabled

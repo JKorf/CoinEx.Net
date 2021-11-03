@@ -14,7 +14,7 @@ namespace CoinEx.Net.Converters
             new KeyValuePair<OrderOption, string>(OrderOption.Normal, "NORMAL"),
             new KeyValuePair<OrderOption, string>(OrderOption.ImmediateOrCancel, "IOC"),
             new KeyValuePair<OrderOption, string>(OrderOption.FillOrKill, "FOK"),
-            new KeyValuePair<OrderOption, string>(OrderOption.MakerOnly, "MAKEN_ONLY")
+            new KeyValuePair<OrderOption, string>(OrderOption.MakerOnly, "MAKER_ONLY")
         };
     }
 }
