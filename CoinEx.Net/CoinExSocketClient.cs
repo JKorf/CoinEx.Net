@@ -207,7 +207,7 @@ namespace CoinEx.Net
                 }
 
                 var fullUpdate = (bool)data.Data[0];
-                var desResult = Deserialize<CoinExSocketOrderBook>(data.Data[1], false);
+                var desResult = Deserialize<CoinExSocketOrderBook>(data.Data[1]);
                 if (!desResult)
                 {
                     log.Write(LogLevel.Warning, "Received invalid depth update: " + desResult.Error);
@@ -234,7 +234,7 @@ namespace CoinEx.Net
                     return;
                 }
 
-                var desResult = Deserialize<IEnumerable<CoinExSocketSymbolTrade>>(data.Data[1], false);
+                var desResult = Deserialize<IEnumerable<CoinExSocketSymbolTrade>>(data.Data[1]);
                 if (!desResult)
                 {
                     log.Write(LogLevel.Warning, "Received invalid trade update: " + desResult.Error);
@@ -259,7 +259,7 @@ namespace CoinEx.Net
                     return;
                 }
 
-                var desResult = Deserialize<IEnumerable<CoinExKline>>(new JArray(data.Data), false);
+                var desResult = Deserialize<IEnumerable<CoinExKline>>(new JArray(data.Data));
                 if (!desResult)
                 {
                     log.Write(LogLevel.Warning, "Received invalid kline update: " + desResult.Error);
@@ -286,7 +286,7 @@ namespace CoinEx.Net
                     }
                 }
 
-                var desResult = Deserialize<Dictionary<string, CoinExBalance>>(data.Data[0], false);
+                var desResult = Deserialize<Dictionary<string, CoinExBalance>>(data.Data[0]);
                 if (!desResult)
                 {
                     log.Write(LogLevel.Warning, "Received invalid balance update: " + desResult.Error);
@@ -314,7 +314,7 @@ namespace CoinEx.Net
                 }
 
                 var updateResult = JsonConvert.DeserializeObject<UpdateType>(data.Data[0].ToString(), new UpdateTypeConverter(false));
-                var desResult = Deserialize<CoinExSocketOrder>(data.Data[1], false);
+                var desResult = Deserialize<CoinExSocketOrder>(data.Data[1]);
                 if (!desResult)
                 {
                     log.Write(LogLevel.Warning, "Received invalid order update: " + desResult.Error);
@@ -402,7 +402,7 @@ namespace CoinEx.Net
             if ((int) idField != cRequest.Id)
                 return false;
 
-            var subResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(message, false);
+            var subResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(message);
             if (!subResponse)
             {
                 log.Write(LogLevel.Warning, "Subscription failed: " + subResponse.Error);
@@ -456,7 +456,7 @@ namespace CoinEx.Net
 
             var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters());
             var result = new CallResult<bool>(false, new ServerError("No response from server"));
-            await s.SendAndWaitAsync(request, ResponseTimeout, data =>
+            await s.SendAndWaitAsync(request, ClientOptions.SocketResponseTimeout, data =>
             {
                 var idField = data["id"];
                 if (idField == null)
@@ -465,7 +465,7 @@ namespace CoinEx.Net
                 if ((int)idField != request.Id)
                     return false; // Not for this request
 
-                var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data, false);
+                var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data);
                 if (!authResponse)
                 {
                     log.Write(LogLevel.Warning, "Authorization failed: " + authResponse.Error);
