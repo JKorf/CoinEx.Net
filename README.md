@@ -81,6 +81,10 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 4.2.4 - 03 Nov 2021
+    * Updated CoinExAssetConfig model
+    * Fixed typo in OrderOptionConverter
+
 * Version 4.2.3 - 08 Oct 2021
     * Updated CryptoExchange.Net to fix some socket issues
 
