@@ -9,12 +9,12 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 
-namespace CoinEx.Net.Interfaces
+namespace CoinEx.Net.Interfaces.Clients.Socket
 {
     /// <summary>
     /// Interface for the CoinEx socket client
     /// </summary>
-    public interface ICoinExSocketClient: ISocketClient
+    public interface ICoinExSocketClientSpot : ISocketClient
     {
         /// <summary>
         /// Set the API key and secret

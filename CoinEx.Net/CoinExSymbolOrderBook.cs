@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CoinEx.Net.Interfaces;
+using CoinEx.Net.Clients.Socket;
+using CoinEx.Net.Interfaces.Clients.Socket;
 using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Websocket;
 using CryptoExchange.Net.Objects;
@@ -14,7 +15,7 @@ namespace CoinEx.Net
     /// </summary>
     public class CoinExSymbolOrderBook: SymbolOrderBook
     {
-        private readonly ICoinExSocketClient socketClient;
+        private readonly ICoinExSocketClientSpot socketClient;
         private readonly bool _socketOwner;
 
         /// <summary>
@@ -22,10 +23,14 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="symbol">The symbol of the order book</param>
         /// <param name="options">The options for the order book</param>
-        public CoinExSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base(symbol, options ?? new CoinExOrderBookOptions())
+        public CoinExSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base("CoinEx[Spot]", symbol, options ?? new CoinExOrderBookOptions())
         {
             symbol.ValidateCoinExSymbol();
-            socketClient = options?.SocketClient ?? new CoinExSocketClient();
+
+            strictLevels = false;
+            sequencesAreConsecutive = false;
+
+            socketClient = options?.SocketClient ?? new CoinExSocketClientSpot();
             _socketOwner = options?.SocketClient == null;
             Levels = 20;
         }

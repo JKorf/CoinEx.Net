@@ -22,6 +22,8 @@ using CoinEx.Net.Objects;
 using Newtonsoft.Json;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net;
+using CoinEx.Net.Interfaces.Clients.Rest.Spot;
+using CoinEx.Net.Clients.Rest.Spot;
 
 namespace CoinEx.Net.Testing
 {
@@ -67,31 +69,31 @@ namespace CoinEx.Net.Testing
             return self == to;
         }
 
-        public static ICoinExClient CreateClient(CoinExClientOptions options = null)
+        public static ICoinExClientSpot CreateClient(CoinExClientSpotOptions options = null)
         {
-            ICoinExClient client;
-            client = options != null ? new CoinExClient(options) : new CoinExClient();
+            ICoinExClientSpot client;
+            client = options != null ? new CoinExClientSpot(options) : new CoinExClientSpot();
             client.RequestFactory = Mock.Of<IRequestFactory>();
             return client;
         }
 
-        public static ICoinExClient CreateResponseClient(string response, CoinExClientOptions options = null, HttpStatusCode code = HttpStatusCode.OK)
+        public static ICoinExClientSpot CreateResponseClient(string response, CoinExClientSpotOptions options = null, HttpStatusCode code = HttpStatusCode.OK)
         {
-            var client = (CoinExClient)CreateClient(options);
+            var client = (CoinExClientSpot)CreateClient(options);
             SetResponse(client, response, code);
             return client;
         }
 
-        public static ICoinExClient CreateAuthenticatedResponseClient<T>(T response, CoinExClientOptions options = null)
+        public static ICoinExClientSpot CreateAuthenticatedResponseClient<T>(T response, CoinExClientSpotOptions options = null)
         {
-            var client = (CoinExClient)CreateClient(options ?? new CoinExClientOptions() { ApiCredentials = new ApiCredentials("Test", "Test") });
+            var client = (CoinExClientSpot)CreateClient(options ?? new CoinExClientSpotOptions() { ApiCredentials = new ApiCredentials("Test", "Test") });
             SetResponse(client, JsonConvert.SerializeObject(response));
             return client;
         }
 
-        public static ICoinExClient CreateResponseClient<T>(T response, CoinExClientOptions options = null)
+        public static ICoinExClientSpot CreateResponseClient<T>(T response, CoinExClientSpotOptions options = null)
         {
-            var client = (CoinExClient)CreateClient(options);
+            var client = (CoinExClientSpot)CreateClient(options);
             SetResponse(client, JsonConvert.SerializeObject(response));
             return client;
         }

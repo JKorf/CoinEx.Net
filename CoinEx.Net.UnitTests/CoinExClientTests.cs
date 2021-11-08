@@ -10,6 +10,7 @@ using System.Net;
 using System;
 using System.Threading.Tasks;
 using CoinEx.Net.Enums;
+using CoinEx.Net.Clients.Rest.Spot;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -130,11 +131,11 @@ namespace CoinEx.Net.UnitTests
             return JsonConvert.SerializeObject(new CoinExApiResult<T>() { Code = 0, Data = obj, Message = "" });
         }
 
-        private CoinExClient Construct(CoinExClientOptions options = null)
+        private CoinExClientSpot Construct(CoinExClientSpotOptions options = null)
         {
             if (options != null)
-                return new CoinExClient(options);
-            return new CoinExClient();
+                return new CoinExClientSpot(options);
+            return new CoinExClientSpot();
         }
 
         [TestCase("BTCUSDT", true)]

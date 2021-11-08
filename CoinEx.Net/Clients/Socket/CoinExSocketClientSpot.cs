@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoinEx.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
@@ -16,18 +15,16 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Authentication;
 using CoinEx.Net.Enums;
 using System.Threading;
+using CoinEx.Net.Interfaces.Clients.Socket;
 
-namespace CoinEx.Net
+namespace CoinEx.Net.Clients.Socket
 {
     /// <summary>
     /// Client for the CoinEx socket API
     /// </summary>
-    public class CoinExSocketClient: SocketClient, ICoinExSocketClient
+    public class CoinExSocketClientSpot: SocketClient, ICoinExSocketClientSpot
     {
         #region fields
-        private static CoinExSocketClientOptions defaultOptions = new CoinExSocketClientOptions();
-        private static CoinExSocketClientOptions DefaultOptions => defaultOptions.Copy<CoinExSocketClientOptions>();
-        
         private const string ServerSubject = "server";
         private const string StateSubject = "state";
         private const string DepthSubject = "depth";
@@ -49,7 +46,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        public CoinExSocketClient() : this(DefaultOptions)
+        public CoinExSocketClientSpot() : this(CoinExSocketClientSpotOptions.Default)
         {
         }
 
@@ -57,7 +54,7 @@ namespace CoinEx.Net
         /// Create a new instance of CoinExSocketClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExSocketClient(CoinExSocketClientOptions options) : base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
+        public CoinExSocketClientSpot(CoinExSocketClientSpotOptions options) : base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
         {
             AddGenericHandler("Pong", (messageEvent) => { });
             SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
@@ -81,9 +78,9 @@ namespace CoinEx.Net
         /// Set the default options to be used when creating new socket clients
         /// </summary>
         /// <param name="options">The options to use for new clients</param>
-        public static void SetDefaultOptions(CoinExSocketClientOptions options)
+        public static void SetDefaultOptions(CoinExSocketClientSpotOptions options)
         {
-            defaultOptions = options;
+            CoinExSocketClientSpotOptions.Default = options;
         }
 
         /// <inheritdoc />
