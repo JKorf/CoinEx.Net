@@ -5,6 +5,7 @@ namespace CoinEx.Net.Objects
 {
     internal class CoinExNonceProvider : INonceProvider
     {
+        private static DateTime unix = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private static readonly object nonceLock = new object();
         private static long? lastNonce;
 
@@ -13,7 +14,7 @@ namespace CoinEx.Net.Objects
         {
             lock (nonceLock)
             {
-                var nonce = DateTime.UtcNow.Ticks;
+                var nonce = (long)Math.Round((DateTime.UtcNow - unix).TotalMilliseconds);
                 if (lastNonce.HasValue && nonce <= lastNonce.Value)
                     nonce = lastNonce.Value + 1;
                 lastNonce = nonce;
