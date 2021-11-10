@@ -8,12 +8,12 @@ using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.OrderBook;
 using CryptoExchange.Net.Sockets;
 
-namespace CoinEx.Net
+namespace CoinEx.Net.SymbolOrderBooks
 {
     /// <summary>
     /// Symbol order book implementation
     /// </summary>
-    public class CoinExSymbolOrderBook: SymbolOrderBook
+    public class CoinExSpotSymbolOrderBook: SymbolOrderBook
     {
         private readonly ICoinExSocketClientSpot socketClient;
         private readonly bool _socketOwner;
@@ -23,7 +23,7 @@ namespace CoinEx.Net
         /// </summary>
         /// <param name="symbol">The symbol of the order book</param>
         /// <param name="options">The options for the order book</param>
-        public CoinExSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base("CoinEx[Spot]", symbol, options ?? new CoinExOrderBookOptions())
+        public CoinExSpotSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base("CoinEx[Spot]", symbol, options ?? new CoinExOrderBookOptions())
         {
             symbol.ValidateCoinExSymbol();
 
