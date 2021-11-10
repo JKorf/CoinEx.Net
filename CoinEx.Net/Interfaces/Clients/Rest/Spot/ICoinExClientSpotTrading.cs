@@ -68,7 +68,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
         /// <param name="limit">The number of results per page</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of executed orders for a symbol</returns>
-        Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetClosedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves details of an order. Requires API credentials

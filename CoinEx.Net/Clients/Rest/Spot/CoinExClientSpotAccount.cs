@@ -24,7 +24,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
 
         private CoinExClientSpot _baseClient;
 
-        public CoinExClientSpotAccount(CoinExClientSpot baseClient)
+        internal CoinExClientSpotAccount(CoinExClientSpot baseClient)
         {
             _baseClient = baseClient;
         }

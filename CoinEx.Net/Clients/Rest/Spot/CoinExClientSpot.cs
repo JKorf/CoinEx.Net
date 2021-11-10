@@ -253,7 +253,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
             if (string.IsNullOrEmpty(symbol))
                 throw new ArgumentException($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetClosedOrdersAsync)}");
 
-            var result = await Trading.GetExecutedOrdersAsync(symbol!, 1, 100).ConfigureAwait(false);
+            var result = await Trading.GetClosedOrdersAsync(symbol!, 1, 100).ConfigureAwait(false);
             return result.As<IEnumerable<ICommonOrder>>(result.Data?.Data);
         }
 

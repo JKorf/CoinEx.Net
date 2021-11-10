@@ -33,7 +33,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
 
         private CoinExClientSpot _baseClient;
 
-        public CoinExClientSpotTrading(CoinExClientSpot baseClient)
+        internal CoinExClientSpotTrading(CoinExClientSpot baseClient)
         {
             _baseClient = baseClient;
         }
@@ -123,7 +123,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetClosedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             limit.ValidateIntBetween(nameof(limit), 1, 100);

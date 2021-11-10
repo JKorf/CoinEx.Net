@@ -30,7 +30,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
 
         private CoinExClientSpot _baseClient;
 
-        public CoinExClientSpotExchangeData(CoinExClientSpot baseClient)
+        internal CoinExClientSpotExchangeData(CoinExClientSpot baseClient)
         {
             _baseClient = baseClient;
         }
