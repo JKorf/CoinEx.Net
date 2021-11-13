@@ -81,6 +81,9 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 4.2.5 - 13 Nov 2021
+    * Fix for invalid timestamp error
+
 * Version 4.2.4 - 03 Nov 2021
     * Updated CoinExAssetConfig model
     * Fixed typo in OrderOptionConverter

@@ -7,9 +7,9 @@
   <PropertyGroup>
     <PackageId>CoinEx.Net</PackageId>
     <Authors>JKorf</Authors>
-    <PackageVersion>4.2.4</PackageVersion>
-    <AssemblyVersion>4.2.4</AssemblyVersion>
-    <FileVersion>4.2.4</FileVersion>
+    <PackageVersion>4.2.5</PackageVersion>
+    <AssemblyVersion>4.2.5</AssemblyVersion>
+    <FileVersion>4.2.5</FileVersion>
     <Description>CoinEx.Net is a .Net wrapper for the CoinEx API. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>CoinEx CoinEx.Net C# .Net CryptoCurrency Exchange API wrapper</PackageTags>
@@ -20,7 +20,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>4.2.4 - Updated CoinExAssetConfig model, Fixed typo in OrderOptionConverter</PackageReleaseNotes>
+    <PackageReleaseNotes>4.2.5 - Fix for invalid timestamp error</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <DocumentationFile>CoinEx.Net.xml</DocumentationFile>
