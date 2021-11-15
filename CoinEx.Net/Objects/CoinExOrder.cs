@@ -60,7 +60,6 @@ namespace CoinEx.Net.Objects
         /// </summary>
         [JsonConverter(typeof(TimestampSecondsConverter))]
         [JsonProperty("finished_time")]
-        [JsonOptionalProperty]
         public DateTime? CloseTime { get; set; }
         /// <summary>
         /// The executed quantity
@@ -121,13 +120,11 @@ namespace CoinEx.Net.Objects
         /// The source id optionally specified by the client
         /// </summary>
         [JsonProperty("source_id")]
-        [JsonOptionalProperty]
         public long? SourceId { get; set; }
         /// <summary>
         /// The client id optionally specified by the client
         /// </summary>
         [JsonProperty("client_id")]
-        [JsonOptionalProperty]
         public string? ClientOrderId { get; set; }
         /// <summary>
         /// The status of the order

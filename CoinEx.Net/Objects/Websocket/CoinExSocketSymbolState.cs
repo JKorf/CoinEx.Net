@@ -57,7 +57,6 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// Symbol
         /// </summary>
-        [JsonOptionalProperty]
         public string Symbol { get; set; } = string.Empty;
     }
 }

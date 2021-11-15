@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using CoinEx.Net.Interfaces.Clients.Socket;
 using CryptoExchange.Net.Interfaces;
@@ -16,7 +17,12 @@ namespace CoinEx.Net.Objects
         /// </summary>
         public static CoinExClientSpotOptions Default { get; set; } = new CoinExClientSpotOptions()
         {
-            BaseAddress = "https://api.coinex.com/v1"
+            BaseAddress = "https://api.coinex.com/v1",
+            RateLimiters = new List<IRateLimiter>
+            {
+                new RateLimiter()
+                    .AddPartialEndpointLimit("/v1/order/", 100, TimeSpan.FromSeconds(10), countPerEndpoint: true)             
+            }
         };
 
         /// <summary>

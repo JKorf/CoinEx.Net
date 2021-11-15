@@ -20,7 +20,6 @@ namespace CoinEx.Net.Objects.Websocket
         /// <summary>
         /// Whether it is a full update or an update based on the last update
         /// </summary>
-        [JsonOptionalProperty]
         public bool FullUpdate { get; set; }
 
         /// <summary>
