@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects.Websocket
+namespace CoinEx.Net.Objects.Internal
 {
     internal class CoinExSocketRequest
     {

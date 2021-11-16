@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects
+namespace CoinEx.Net.Objects.Models
 {
     /// <summary>
     /// Paged result

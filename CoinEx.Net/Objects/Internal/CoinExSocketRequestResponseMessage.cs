@@ -1,4 +1,4 @@
-﻿namespace CoinEx.Net.Objects.Websocket
+﻿namespace CoinEx.Net.Objects.Internal
 {
     internal class CoinExSocketRequestResponseMessage
     {

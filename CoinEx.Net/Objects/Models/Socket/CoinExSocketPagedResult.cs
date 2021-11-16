@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects.Websocket
+namespace CoinEx.Net.Objects.Models.Socket
 {
     /// <summary>
     /// Paged result

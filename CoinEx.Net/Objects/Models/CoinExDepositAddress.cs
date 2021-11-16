@@ -1,8 +1,8 @@
-﻿using CryptoExchange.Net.Converters;
+﻿using System;
+using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
-using System;
 
-namespace CoinEx.Net.Objects
+namespace CoinEx.Net.Objects.Models
 {
     /// <summary>
     /// Deposit address

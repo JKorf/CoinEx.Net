@@ -17,6 +17,8 @@ using Newtonsoft.Json.Linq;
 using CryptoExchange.Net.Interfaces;
 using CoinEx.Net.Enums;
 using CoinEx.Net.Interfaces.Clients.Rest.Spot;
+using CoinEx.Net.Objects.Internal;
+using CoinEx.Net.Objects.Models;
 
 namespace CoinEx.Net.Clients.Rest.Spot
 {

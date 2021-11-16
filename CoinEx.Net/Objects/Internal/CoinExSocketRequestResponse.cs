@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects.Websocket
+namespace CoinEx.Net.Objects.Internal
 {
     internal class CoinExSocketRequestResponse<T>
     {

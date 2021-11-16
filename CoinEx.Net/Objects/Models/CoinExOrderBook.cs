@@ -6,7 +6,7 @@ using CryptoExchange.Net.ExchangeInterfaces;
 using CryptoExchange.Net.Interfaces;
 using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects
+namespace CoinEx.Net.Objects.Models
 {
     /// <summary>
     /// Order book

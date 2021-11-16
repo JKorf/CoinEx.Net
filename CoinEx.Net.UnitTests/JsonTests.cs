@@ -5,6 +5,7 @@ using CoinEx.Net.Testing;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -12,7 +13,7 @@ namespace CoinEx.Net.UnitTests
     public class JsonTests
     {
         private JsonToObjectComparer<ICoinExClientSpot> _comparer = new JsonToObjectComparer<ICoinExClientSpot>((json) => TestHelpers.CreateResponseClient(json, new CoinExClientSpotOptions()
-        { ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123"), OutputOriginalData = true }, System.Net.HttpStatusCode.OK));
+        { ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123"), OutputOriginalData = true, RateLimiters = new List<IRateLimiter>() }, System.Net.HttpStatusCode.OK));
 
         [Test]
         public async Task ValidateSpotAccountCalls()

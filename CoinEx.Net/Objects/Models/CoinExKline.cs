@@ -1,10 +1,10 @@
-﻿using CoinEx.Net.Converters;
+﻿using System;
+using CoinEx.Net.Converters;
 using CryptoExchange.Net.Converters;
-using Newtonsoft.Json;
-using System;
 using CryptoExchange.Net.ExchangeInterfaces;
+using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects
+namespace CoinEx.Net.Objects.Models
 {
     /// <summary>
     /// Kline data

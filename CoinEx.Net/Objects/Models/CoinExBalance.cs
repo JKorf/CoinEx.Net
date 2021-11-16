@@ -2,7 +2,7 @@
 using CryptoExchange.Net.ExchangeInterfaces;
 using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects
+namespace CoinEx.Net.Objects.Models
 {
     /// <summary>
     /// Balance info

@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CoinEx.Net.Objects.Models;
 
 namespace CoinEx.Net.Clients.Rest.Spot
 {

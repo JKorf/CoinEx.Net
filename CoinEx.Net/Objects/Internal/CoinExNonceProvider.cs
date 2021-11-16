@@ -1,7 +1,7 @@
-﻿using CryptoExchange.Net.Interfaces;
-using System;
+﻿using System;
+using CryptoExchange.Net.Interfaces;
 
-namespace CoinEx.Net.Objects
+namespace CoinEx.Net.Objects.Internal
 {
     internal class CoinExNonceProvider : INonceProvider
     {

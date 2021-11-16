@@ -1,10 +1,10 @@
-﻿using CoinEx.Net.Converters;
+﻿using System;
+using CoinEx.Net.Converters;
 using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
-using System;
 
-namespace CoinEx.Net.Objects.Websocket
+namespace CoinEx.Net.Objects.Models.Socket
 {
     /// <summary>
     /// Order info

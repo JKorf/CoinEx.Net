@@ -14,6 +14,7 @@ using CoinEx.Net.Clients.Rest.Spot;
 using System.Reflection;
 using System.Diagnostics;
 using CoinEx.Net.Clients.Socket;
+using CoinEx.Net.Objects.Internal;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 

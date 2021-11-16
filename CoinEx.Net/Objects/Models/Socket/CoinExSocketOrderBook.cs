@@ -1,10 +1,9 @@
-﻿using CryptoExchange.Net.Attributes;
+﻿using System;
+using System.Collections.Generic;
 using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 
-namespace CoinEx.Net.Objects.Websocket
+namespace CoinEx.Net.Objects.Models.Socket
 {
     /// <summary>
     /// Order book

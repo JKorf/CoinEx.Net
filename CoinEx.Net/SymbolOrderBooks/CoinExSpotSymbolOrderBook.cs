@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.Clients.Socket;
 using CoinEx.Net.Interfaces.Clients.Socket;
 using CoinEx.Net.Objects;
-using CoinEx.Net.Objects.Websocket;
+using CoinEx.Net.Objects.Models.Socket;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.OrderBook;
 using CryptoExchange.Net.Sockets;

@@ -1,8 +1,7 @@
 ﻿using CoinEx.Net.Converters;
-using CryptoExchange.Net.Attributes;
 using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects.Websocket
+namespace CoinEx.Net.Objects.Models.Socket
 {
     /// <summary>
     /// Symbol state info

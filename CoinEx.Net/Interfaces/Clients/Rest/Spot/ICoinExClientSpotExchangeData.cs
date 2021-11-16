@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CoinEx.Net.Objects.Models;
 
 namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 {

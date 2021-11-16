@@ -1,8 +1,8 @@
 ﻿using CoinEx.Net.Converters;
-using Newtonsoft.Json;
 using CryptoExchange.Net.ExchangeInterfaces;
+using Newtonsoft.Json;
 
-namespace CoinEx.Net.Objects
+namespace CoinEx.Net.Objects.Models
 {
     /// <summary>
     /// Symbol Info

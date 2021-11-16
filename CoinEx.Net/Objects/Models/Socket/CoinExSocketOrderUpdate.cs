@@ -1,6 +1,6 @@
 ﻿using CoinEx.Net.Enums;
 
-namespace CoinEx.Net.Objects.Websocket
+namespace CoinEx.Net.Objects.Models.Socket
 {
     /// <summary>
     /// Order update

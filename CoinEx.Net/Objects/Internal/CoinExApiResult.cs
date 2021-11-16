@@ -1,6 +1,4 @@
-﻿using CryptoExchange.Net.Attributes;
-
-namespace CoinEx.Net.Objects
+﻿namespace CoinEx.Net.Objects.Internal
 {
     internal class CoinExApiResult<T>
     {

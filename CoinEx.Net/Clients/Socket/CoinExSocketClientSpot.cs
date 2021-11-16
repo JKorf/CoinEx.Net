@@ -1,6 +1,5 @@
 ﻿using CoinEx.Net.Converters;
 using CoinEx.Net.Objects;
-using CoinEx.Net.Objects.Websocket;
 using CryptoExchange.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,6 +15,9 @@ using CryptoExchange.Net.Authentication;
 using CoinEx.Net.Enums;
 using System.Threading;
 using CoinEx.Net.Interfaces.Clients.Socket;
+using CoinEx.Net.Objects.Internal;
+using CoinEx.Net.Objects.Models;
+using CoinEx.Net.Objects.Models.Socket;
 
 namespace CoinEx.Net.Clients.Socket
 {
