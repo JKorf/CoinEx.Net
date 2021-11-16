@@ -11,6 +11,11 @@ using System;
 using System.Threading.Tasks;
 using CoinEx.Net.Enums;
 using CoinEx.Net.Clients.Rest.Spot;
+using System.Reflection;
+using System.Diagnostics;
+using CoinEx.Net.Clients.Socket;
+using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Sockets;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -152,6 +157,47 @@ namespace CoinEx.Net.UnitTests
                 Assert.DoesNotThrow(symbol.ValidateCoinExSymbol);
             else
                 Assert.Throws(typeof(ArgumentException), symbol.ValidateCoinExSymbol);
+        }
+
+        [Test]
+        public void CheckRestInterfaces()
+        {
+            var assembly = Assembly.GetAssembly(typeof(CoinExClientSpot));
+            var ignore = new string[] { "ICoinExClientSpot" };
+            var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExClient") && !ignore.Contains(t.Name));
+
+            foreach (var clientInterface in clientInterfaces)
+            {
+                var implementation = assembly.GetTypes().Single(t => t.IsAssignableTo(clientInterface) && t != clientInterface);
+                int methods = 0;
+                foreach (var method in implementation.GetMethods().Where(m => m.ReturnType.IsAssignableTo(typeof(Task))))
+                {
+                    var interfaceMethod = clientInterface.GetMethod(method.Name, method.GetParameters().Select(p => p.ParameterType).ToArray());
+                    Assert.NotNull(interfaceMethod);
+                    methods++;
+                }
+                Debug.WriteLine($"{clientInterface.Name} {methods} methods validated");
+            }
+        }
+
+        [Test]
+        public void CheckSocketInterfaces()
+        {
+            var assembly = Assembly.GetAssembly(typeof(CoinExSocketClientSpot));
+            var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExSocketClient"));
+
+            foreach (var clientInterface in clientInterfaces)
+            {
+                var implementation = assembly.GetTypes().Single(t => t.IsAssignableTo(clientInterface) && t != clientInterface);
+                int methods = 0;
+                foreach (var method in implementation.GetMethods().Where(m => m.ReturnType.IsAssignableTo(typeof(Task<CallResult<UpdateSubscription>>))))
+                {
+                    var interfaceMethod = clientInterface.GetMethod(method.Name, method.GetParameters().Select(p => p.ParameterType).ToArray());
+                    Assert.NotNull(interfaceMethod);
+                    methods++;
+                }
+                Debug.WriteLine($"{clientInterface.Name} {methods} methods validated");
+            }
         }
     }
 }
