@@ -9,7 +9,11 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
     public interface ICoinExClientSpotTrading
     {
         /// <summary>
-        /// Places an order. Requires API credentials
+        /// Places an order. This is a single method for multiple place order endpoints. The called endpoint depends on the provided order type.
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/031limit_order" /></para>
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/032market_order" /></para>
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/03111stop_limit_order" /></para>
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/033IOC_order" /></para>
         /// </summary>
         /// <param name="symbol">The symbol to place the order for</param>
         /// <param name="side">Order side</param>
@@ -39,6 +43,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Retrieves a list of open orders for a symbol. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/034pending" /></para>
         /// </summary>
         /// <param name="symbol">The symbol to retrieve the open orders for</param>
         /// <param name="page">The page of the resulting list</param>
@@ -49,6 +54,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Retrieves a list of open stop orders for a symbol. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/041stop_pending" /></para>
         /// </summary>
         /// <param name="symbol">The symbol to retrieve the open orders for</param>
         /// <param name="page">The page of the resulting list</param>
@@ -59,6 +65,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/036finished" /></para>
         /// </summary>
         /// <param name="symbol">The symbol to retrieve the open orders for</param>
         /// <param name="page">The page of the resulting list</param>
@@ -69,6 +76,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Retrieves details of an order. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/037order_status" /></para>
         /// </summary>
         /// <param name="orderId">The id of the order to retrieve</param>
         /// <param name="symbol">The symbol the order is for</param>
@@ -78,6 +86,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Retrieves execution details of a specific order. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/0311order_deals" /></para>
         /// </summary>
         /// <param name="orderId">The id of the order</param>
         /// <param name="page">The page of the resulting list</param>
@@ -88,6 +97,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Gets a list of trades you executed on a specific symbol. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/039user_deals" /></para>
         /// </summary>
         /// <param name="symbol">The symbol to retrieve trades for</param>
         /// <param name="page">The page of the resulting list</param>
@@ -98,6 +108,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Cancels an order. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/035cancel" /></para>
         /// </summary>
         /// <param name="symbol">The symbol the order is on</param>
         /// <param name="orderId">The id of the order to cancel</param>
@@ -115,6 +126,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Cancels all orders. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/0315cancel_all" /></para>
         /// </summary>
         /// <param name="symbol">The symbol the orders are on</param>
         /// <param name="ct">Cancellation token</param>

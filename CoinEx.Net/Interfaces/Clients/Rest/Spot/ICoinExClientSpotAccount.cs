@@ -10,6 +10,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
     {
         /// <summary>
         /// Retrieves a list of balances. Requires API credentials
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/060balance" /></para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
         /// <returns>List of balances</returns>
@@ -17,6 +18,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/065get_deposit_list" /></para>
         /// </summary>
         /// <param name="asset">The asset to get history for</param>
         /// <param name="page">The page in the results to retrieve</param>
@@ -27,6 +29,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Get the deposit address of an asset
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/072get_deposit_address" /></para>
         /// </summary>
         /// <param name="asset">The asset to deposit</param>
         /// <param name="smartContractName">Name of the network to use</param>
@@ -36,6 +39,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/061get_withdraw_list" /></para>
         /// </summary>
         /// <param name="asset">The asset to get history for</param>
         /// <param name="withdrawId">Retrieve a withdrawal with a specific id</param>
@@ -47,6 +51,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Withdraw assets from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/062submit_withdraw" /></para>
         /// </summary>
         /// <param name="asset">The asset to withdraw</param>
         /// <param name="localTransfer">Is it a local transfer between users or onchain</param>
@@ -58,6 +63,7 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 
         /// <summary>
         /// Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key
+        /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/064cancel_withdraw" /></para>
         /// </summary>
         /// <param name="withdrawId">The id of the withdrawal to cancel</param>
         /// <param name="ct">Cancellation token</param>
