@@ -1,15 +1,11 @@
-﻿using CoinEx.Net.Converters;
-using CoinEx.Net.Objects;
+﻿using CoinEx.Net.Objects;
 using CryptoExchange.Net;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoinEx.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.ExchangeInterfaces;
@@ -214,7 +210,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         async Task<WebCallResult<ICommonOrderId>> IExchangeClient.PlaceOrderAsync(string symbol, IExchangeClient.OrderSide side, IExchangeClient.OrderType type, decimal quantity, decimal? price = null, string? accountId = null)
         {
             if(price == null && type == IExchangeClient.OrderType.Limit)
-                return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError($"Price parameter null while placing a limit order"));
+                return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError("Price parameter null while placing a limit order"));
 
             var result = await Trading.PlaceOrderAsync(
                 symbol,

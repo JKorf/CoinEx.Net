@@ -1,12 +1,9 @@
 ﻿using CoinEx.Net.Interfaces.Clients.Rest.Spot;
-using CoinEx.Net.Objects;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Objects;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
@@ -23,7 +20,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         private const string DepositAddressEndpoint = "balance/deposit/address/";
 
 
-        private CoinExClientSpot _baseClient;
+        private readonly CoinExClientSpot _baseClient;
 
         internal CoinExClientSpotAccount(CoinExClientSpot baseClient)
         {

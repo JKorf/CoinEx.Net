@@ -1,14 +1,11 @@
 ﻿using CoinEx.Net.Converters;
 using CoinEx.Net.Enums;
 using CoinEx.Net.Interfaces.Clients.Rest.Spot;
-using CoinEx.Net.Objects;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Objects;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
@@ -29,7 +26,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         private const string MarketInfoEndpoint = "market/info";
         private const string MiningDifficultyEndpoint = "order/mining/difficulty";
 
-        private CoinExClientSpot _baseClient;
+        private readonly CoinExClientSpot _baseClient;
 
         internal CoinExClientSpotExchangeData(CoinExClientSpot baseClient)
         {

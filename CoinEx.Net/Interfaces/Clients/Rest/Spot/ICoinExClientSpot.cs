@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using CoinEx.Net.Enums;
-using CoinEx.Net.Objects;
-using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.Objects;
+﻿using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 {

@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Interfaces;
-using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Internal;
 
 namespace CoinEx.Net

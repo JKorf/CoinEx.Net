@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Enums;
-using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Objects.Models.Socket;
 using CryptoExchange.Net.Interfaces;

@@ -62,7 +62,7 @@ namespace CoinEx.Net.Objects.Models
         [JsonConverter(typeof(TransactionRoleConverter))]
         public TransactionRole Role { get; set; }
         /// <summary>
-        /// The role of the transaction, maker or taker
+        /// Order side
         /// </summary>
         [JsonProperty("type"), JsonConverter(typeof(OrderSideConverter))]
         public OrderSide Side { get; set; }
@@ -85,11 +85,5 @@ namespace CoinEx.Net.Objects.Models
         /// </summary>
         [JsonProperty("market")]
         public string Symbol { get; set; } = string.Empty;
-        /// <summary>
-        /// Order side
-        /// </summary>
-        [JsonConverter(typeof(OrderSideConverter))]
-        [JsonProperty("type")]
-        public OrderSide Side { get; set; }
     }
 }

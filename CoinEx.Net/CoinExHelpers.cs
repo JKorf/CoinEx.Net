@@ -1,5 +1,4 @@
 ﻿using CoinEx.Net.Enums;
-using CoinEx.Net.Objects;
 using System;
 using System.Text.RegularExpressions;
 
