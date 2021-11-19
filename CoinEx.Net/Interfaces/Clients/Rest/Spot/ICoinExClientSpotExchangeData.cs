@@ -7,6 +7,9 @@ using CoinEx.Net.Objects.Models;
 
 namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 {
+    /// <summary>
+    /// CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
+    /// </summary>
     public interface ICoinExClientSpotExchangeData
     {
         /// <summary>

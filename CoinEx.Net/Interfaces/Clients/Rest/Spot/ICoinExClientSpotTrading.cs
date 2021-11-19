@@ -6,6 +6,9 @@ using CoinEx.Net.Objects.Models;
 
 namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
 {
+    /// <summary>
+    /// CoinEx trading endpoints, placing and mananging orders.
+    /// </summary>
     public interface ICoinExClientSpotTrading
     {
         /// <summary>
