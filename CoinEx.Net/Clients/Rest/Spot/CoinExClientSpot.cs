@@ -142,7 +142,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         }
         internal Uri GetUrl(string endpoint)
         {
-            return new Uri(ClientOptions.BaseAddress + endpoint);
+            return new Uri(ClientOptions.BaseAddress.AppendPath(endpoint));
         }
 
         internal void InvokeOrderPlaced(ICommonOrderId id)
