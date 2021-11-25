@@ -21,7 +21,7 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The timestamp of the transaction
         /// </summary>
-        [JsonProperty("date_ms"), JsonConverter(typeof(TimestampConverter))]
+        [JsonProperty("date_ms"), JsonConverter(typeof(DateTimeConverter))]
         public DateTime Timestamp { get; set; }
         /// <summary>
         /// The id of the transaction

@@ -24,7 +24,7 @@ namespace CoinEx.Net.Objects.Models.Socket
         /// <summary>
         /// The timestamp of the data. Only filled on a full update.
         /// </summary>
-        [JsonProperty("time"), JsonConverter(typeof(TimestampConverter))]
+        [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
         public DateTime? Timestamp { get; set; }
         /// <summary>
         /// The asks on the symbol

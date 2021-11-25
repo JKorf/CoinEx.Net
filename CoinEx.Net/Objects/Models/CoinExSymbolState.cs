@@ -15,7 +15,7 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The timestamp of the data
         /// </summary>
-        [JsonProperty("date"), JsonConverter(typeof(TimestampConverter))]
+        [JsonProperty("date"), JsonConverter(typeof(DateTimeConverter))]
         public DateTime Timestamp { get; set; }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The timestamp of the data
         /// </summary>
-        [JsonProperty("date"), JsonConverter(typeof(TimestampConverter))]
+        [JsonProperty("date"), JsonConverter(typeof(DateTimeConverter))]
         public DateTime Timestamp { get; set; }
         /// <summary>
         /// The data specified as symbol -> symbol state data

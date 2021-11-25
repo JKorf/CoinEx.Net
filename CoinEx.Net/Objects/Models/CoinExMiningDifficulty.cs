@@ -20,7 +20,7 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The update time of the Prediction field
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("update_time")]
         public DateTime UpdateTime { get; set; }
     }

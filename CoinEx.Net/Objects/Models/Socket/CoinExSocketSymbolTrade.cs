@@ -20,7 +20,7 @@ namespace CoinEx.Net.Objects.Models.Socket
         /// <summary>
         /// The timestamp of the transaction
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("time")]
         public DateTime Timestamp { get; set; }
         /// <summary>

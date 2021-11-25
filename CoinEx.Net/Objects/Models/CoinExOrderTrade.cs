@@ -22,7 +22,7 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The time the transaction was created
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("create_time")]
         public DateTime Timestamp { get; set; }
         /// <summary>

@@ -20,7 +20,7 @@ namespace CoinEx.Net.Objects.Models.Socket
         /// <summary>
         /// The time the order was created
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("ctime")]
         public DateTime CreateTime { get; set; }
         /// <summary>
@@ -77,7 +77,7 @@ namespace CoinEx.Net.Objects.Models.Socket
         /// <summary>
         /// The last update time
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("mtime")]
         public DateTime UpdateTime { get; set; }
         /// <summary>

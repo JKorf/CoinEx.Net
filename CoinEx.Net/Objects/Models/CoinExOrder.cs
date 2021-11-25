@@ -51,13 +51,13 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The time the order was created
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("create_time")]
         public DateTime CreateTime { get; set; }
         /// <summary>
         /// The time the order was finished
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [JsonProperty("finished_time")]
         public DateTime? CloseTime { get; set; }
         /// <summary>

@@ -69,7 +69,7 @@ namespace CoinEx.Net.Objects.Models
         /// Deposit ID
         /// </summary>
         [JsonProperty("create_time")]
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime CreateTime { get; set; }
         /// <summary>
         /// Explorer

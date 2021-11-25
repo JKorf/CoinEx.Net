@@ -15,7 +15,7 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The open time of this kline
         /// </summary>
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         [ArrayProperty(0)]
         public DateTime OpenTime { get; set; }
         /// <summary>

@@ -44,7 +44,7 @@ namespace CoinEx.Net.Objects.Models
         /// <summary>
         /// The time the withdrawal was created
         /// </summary>
-        [JsonProperty("create_time"), JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
         public DateTime CreateTime { get; set; }
         /// <summary>
         /// The status of the withdrawal

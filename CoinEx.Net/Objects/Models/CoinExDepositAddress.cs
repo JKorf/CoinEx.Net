@@ -18,7 +18,7 @@ namespace CoinEx.Net.Objects.Models
         /// Time the address was created
         /// </summary>
         [JsonProperty("create_time")]
-        [JsonConverter(typeof(TimestampSecondsConverter))]
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime CreateTime { get; set; }
         /// <summary>
         /// Deposit address id
