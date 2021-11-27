@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using CoinEx.Net.Interfaces;
 using CoinEx.Net.Objects;
@@ -6,6 +7,7 @@ using CoinEx.Net.Objects.Websocket;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.OrderBook;
 using CryptoExchange.Net.Sockets;
+using Microsoft.Extensions.Logging;
 
 namespace CoinEx.Net
 {
@@ -59,11 +61,41 @@ namespace CoinEx.Net
             if (data.Data.FullUpdate)
             { 
                 SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Data.Bids, data.Data.Asks);
+                if (data.Data.Checksum != null)
+				{
+                    AddChecksum((int)data.Data.Checksum.Value);
+				}
             }
             else
             {
                 UpdateOrderBook(DateTime.UtcNow.Ticks, data.Data.Bids, data.Data.Asks);
+                if (data.Data.Checksum != null)
+                {
+                    AddChecksum((int)data.Data.Checksum.Value);
+                }
             }
+        }
+        /// <inheritdoc />
+        protected override bool DoChecksum(int checksum)
+		{
+            var checkStringBuilder = new StringBuilder();
+            foreach(var bid in bids)
+			{
+                checkStringBuilder.Append(bid.Value.Price.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + bid.Value.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":");
+            }
+            foreach (var ask in asks)
+			{
+                checkStringBuilder.Append(ask.Value.Price.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + ask.Value.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":");
+            }
+            var checkString = checkStringBuilder.ToString().TrimEnd(':');
+            var checkBytes = Encoding.ASCII.GetBytes(checkString);
+            var checkHexCrc32 = Force.Crc32.Crc32Algorithm.Compute(checkBytes);
+            var result = checkHexCrc32 == (uint)checksum;
+            if (!result)
+            {
+                log.Write(LogLevel.Debug, $"{Id} order book {Symbol} failed checksum. Expected {checkHexCrc32}, received {checksum}");
+            }
+            return result;
         }
 
         /// <inheritdoc />

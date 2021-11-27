@@ -568,6 +568,9 @@
         <member name="M:CoinEx.Net.CoinExSymbolOrderBook.DoReset">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.CoinExSymbolOrderBook.DoChecksum(System.Int32)">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.CoinExSymbolOrderBook.Dispose">
             <inheritdoc />
         </member>
@@ -2160,6 +2163,11 @@
         <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook.Bids">
             <summary>
             The bids on the symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Websocket.CoinExSocketOrderBook.Checksum">
+            <summary>
+            Signed integer (32 bit) of full depth data checksum
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Websocket.CoinExSocketOrderUpdate">
