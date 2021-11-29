@@ -9,18 +9,21 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Client options
     /// </summary>
-    public class CoinExClientSpotOptions: RestClientOptions
+    public class CoinExClientOptions: RestClientOptions
     {
         /// <summary>
         /// Default options for the spot client
         /// </summary>
-        public static CoinExClientSpotOptions Default { get; set; } = new CoinExClientSpotOptions()
+        public static CoinExClientOptions Default { get; set; } = new CoinExClientOptions()
         {
-            BaseAddress = "https://api.coinex.com/v1",
-            RateLimiters = new List<IRateLimiter>
+            OptionsSpot = new RestSubClientOptions
             {
-                new RateLimiter()
-                    .AddPartialEndpointLimit("/v1/order/", 100, TimeSpan.FromSeconds(10), countPerEndpoint: true)             
+                BaseAddress = "https://api.coinex.com/v1",
+                RateLimiters = new List<IRateLimiter>
+                {
+                    new RateLimiter()
+                        .AddPartialEndpointLimit("/v1/order/", 100, TimeSpan.FromSeconds(10), countPerEndpoint: true)
+                }
             }
         };
 
@@ -29,10 +32,12 @@ namespace CoinEx.Net.Objects
         /// </summary>
         public INonceProvider? NonceProvider { get; set; }
 
+        public RestSubClientOptions OptionsSpot { get; set; }
+
         /// <summary>
         /// Ctor
         /// </summary>
-        public CoinExClientSpotOptions()
+        public CoinExClientOptions()
         {
             if (Default == null)
                 return;
@@ -46,11 +51,14 @@ namespace CoinEx.Net.Objects
         /// <typeparam name="T"></typeparam>
         /// <param name="input"></param>
         /// <param name="def"></param>
-        public new void Copy<T>(T input, T def) where T : CoinExClientSpotOptions
+        public new void Copy<T>(T input, T def) where T : CoinExClientOptions
         {
             base.Copy(input, def);
 
             input.NonceProvider = def.NonceProvider;
+
+            input.OptionsSpot = new RestSubClientOptions();
+            def.OptionsSpot.Copy(input.OptionsSpot, def.OptionsSpot);
         }
     }
 
@@ -64,7 +72,10 @@ namespace CoinEx.Net.Objects
         /// </summary>
         public static CoinExSocketClientSpotOptions Default { get; set; } = new CoinExSocketClientSpotOptions()
         {
-            BaseAddress = "wss://socket.coinex.com/",
+            OptionsSpot = new SocketSubClientOptions
+            {
+                BaseAddress = "wss://socket.coinex.com/"
+            },
             SocketSubscriptionsCombineTarget = 1
         };
 
@@ -88,6 +99,9 @@ namespace CoinEx.Net.Objects
             }
         }
 
+        public SocketSubClientOptions OptionsSpot { get; set; }
+
+
         /// <summary>
         /// Ctor
         /// </summary>
@@ -110,6 +124,9 @@ namespace CoinEx.Net.Objects
             base.Copy(input, def);
 
             input.NonceProvider = def.NonceProvider;
+
+            input.OptionsSpot = new SocketSubClientOptions();
+            def.OptionsSpot.Copy(input.OptionsSpot, def.OptionsSpot);
         }
     }
 
@@ -121,13 +138,13 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.
         /// </summary>
-        public ICoinExSocketClientSpot? SocketClient { get; }
+        public ICoinExSocketClient? SocketClient { get; }
 
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="client">The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.</param>
-        public CoinExOrderBookOptions(ICoinExSocketClientSpot? client = null)
+        public CoinExOrderBookOptions(ICoinExSocketClient? client = null)
         {
             SocketClient = client;
         }

@@ -21,9 +21,11 @@ namespace CoinEx.Net.Clients.Rest.Spot
     /// <summary>
     /// Client for the CoinEx REST API
     /// </summary>
-    public class CoinExClientSpot : RestClient, ICoinExClientSpot, IExchangeClient
+    public class CoinExClientSpot : RestSubClient, ICoinExClientSpot, IExchangeClient
     {
         #region fields
+        private CoinExClient _baseClient;
+
         /// <summary>
         /// Event triggered when an order is placed via this client
         /// </summary>
@@ -44,18 +46,10 @@ namespace CoinEx.Net.Clients.Rest.Spot
         /// <summary>
         /// Create a new instance of CoinExClient with default options
         /// </summary>
-        public CoinExClientSpot() : this(CoinExClientSpotOptions.Default)
+        public CoinExClientSpot(CoinExClient baseClient, CoinExClientOptions options) :
+            base(options.OptionsSpot, options.OptionsSpot.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.OptionsSpot.ApiCredentials, options.NonceProvider))
         {
-        }
-
-        /// <summary>
-        /// Create a new instance of CoinExClient using provided options
-        /// </summary>
-        /// <param name="options">The options to use for this client</param>
-        public CoinExClientSpot(CoinExClientSpotOptions options): base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
-        {
-            manualParseError = true;
-            ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
+            _baseClient = baseClient;
 
             Account = new CoinExClientSpotAccount(this);
             ExchangeData = new CoinExClientSpotExchangeData(this);
@@ -64,85 +58,18 @@ namespace CoinEx.Net.Clients.Rest.Spot
         #endregion
 
         #region methods
-        #region public
-        /// <summary>
-        /// Set the default options to be used when creating new socket clients
-        /// </summary>
-        /// <param name="options">The options to use for new clients</param>
-        public static void SetDefaultOptions(CoinExClientSpotOptions options)
-        {
-            CoinExClientSpotOptions.Default = options;
-        }
-
-        /// <summary>
-        /// Set the API key and secret
-        /// </summary>
-        /// <param name="apiKey">The api key</param>
-        /// <param name="apiSecret">The api secret</param>
-        /// <param name="nonceProvider">Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that</param>
-        public void SetApiCredentials(string apiKey, string apiSecret, INonceProvider? nonceProvider = null)
-        {
-            SetAuthenticationProvider(new CoinExAuthenticationProvider(new ApiCredentials(apiKey, apiSecret), nonceProvider));
-        }
-        #endregion
-
         #region private
+        internal Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+            => _baseClient.Execute<T>(this, uri, method, ct, parameters, signed);
+        internal Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
+            => _baseClient.Execute(this, uri, method, ct, parameters, signed);
 
-        /// <inheritdoc />
-        protected override Task<ServerError?> TryParseErrorAsync(JToken data)
-        {
-            if (data["code"] != null && data["message"] != null)
-            {
-                if (data["code"]!.Value<int>() != 0)
-                {
-                    return Task.FromResult((ServerError?)ParseErrorResponse(data));
-                }
-            }
+        internal Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+            => _baseClient.ExecutePaged<T>(this, uri, method, ct, parameters, signed);
 
-            return Task.FromResult((ServerError?) null);
-        }
-
-        /// <inheritdoc />
-        protected override Error ParseErrorResponse(JToken error)
-        {
-            if (error["code"] == null || error["message"] == null)
-                return new ServerError(error.ToString());
-
-            return new ServerError((int)error["code"]!, (string)error["message"]!);
-        }
-
-        internal async Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-        {
-            return GetResult(await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
-        }
-        internal async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) 
-        {
-            return GetResult(await SendRequestAsync<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
-        }
-
-        internal async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-        {
-            return GetResult(await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
-        }
-
-        private static WebCallResult<T> GetResult<T>(WebCallResult<CoinExApiResult<T>> result) where T : class
-        {
-            if (result.Error != null || result.Data == null)
-                return WebCallResult<T>.CreateErrorResult(result.ResponseStatusCode, result.ResponseHeaders, result.Error ?? new UnknownError("No data received"));
-
-            return result.As(result.Data.Data);
-        }
-
-        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result) 
-        {
-            if (result.Error != null || result.Data == null)
-                return WebCallResult.CreateErrorResult(result.ResponseStatusCode, result.ResponseHeaders, result.Error ?? new UnknownError("No data received"));
-
-            return new WebCallResult(result.ResponseStatusCode, result.ResponseHeaders, null);
-        }
         internal Uri GetUrl(string endpoint)
         {
-            return new Uri(ClientOptions.BaseAddress.AppendPath(endpoint));
+            return new Uri(BaseAddress.AppendPath(endpoint));
         }
 
         internal void InvokeOrderPlaced(ICommonOrderId id)

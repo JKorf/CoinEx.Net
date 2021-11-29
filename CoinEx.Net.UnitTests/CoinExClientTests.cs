@@ -137,7 +137,7 @@ namespace CoinEx.Net.UnitTests
             return JsonConvert.SerializeObject(new CoinExApiResult<T>() { Code = 0, Data = obj, Message = "" });
         }
 
-        private CoinExClientSpot Construct(CoinExClientSpotOptions options = null)
+        private CoinExClientSpot Construct(CoinExClientOptions options = null)
         {
             if (options != null)
                 return new CoinExClientSpot(options);

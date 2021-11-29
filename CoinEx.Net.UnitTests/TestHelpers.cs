@@ -69,7 +69,7 @@ namespace CoinEx.Net.Testing
             return self == to;
         }
 
-        public static ICoinExClientSpot CreateClient(CoinExClientSpotOptions options = null)
+        public static ICoinExClientSpot CreateClient(CoinExClientOptions options = null)
         {
             ICoinExClientSpot client;
             client = options != null ? new CoinExClientSpot(options) : new CoinExClientSpot();
@@ -77,21 +77,21 @@ namespace CoinEx.Net.Testing
             return client;
         }
 
-        public static ICoinExClientSpot CreateResponseClient(string response, CoinExClientSpotOptions options = null, HttpStatusCode code = HttpStatusCode.OK)
+        public static ICoinExClientSpot CreateResponseClient(string response, CoinExClientOptions options = null, HttpStatusCode code = HttpStatusCode.OK)
         {
             var client = (CoinExClientSpot)CreateClient(options);
             SetResponse(client, response, code);
             return client;
         }
 
-        public static ICoinExClientSpot CreateAuthenticatedResponseClient<T>(T response, CoinExClientSpotOptions options = null)
+        public static ICoinExClientSpot CreateAuthenticatedResponseClient<T>(T response, CoinExClientOptions options = null)
         {
             var client = (CoinExClientSpot)CreateClient(options ?? new CoinExClientSpotOptions() { ApiCredentials = new ApiCredentials("Test", "Test") });
             SetResponse(client, JsonConvert.SerializeObject(response));
             return client;
         }
 
-        public static ICoinExClientSpot CreateResponseClient<T>(T response, CoinExClientSpotOptions options = null)
+        public static ICoinExClientSpot CreateResponseClient<T>(T response, CoinExClientOptions options = null)
         {
             var client = (CoinExClientSpot)CreateClient(options);
             SetResponse(client, JsonConvert.SerializeObject(response));

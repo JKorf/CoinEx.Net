@@ -15,7 +15,7 @@ namespace CoinEx.Net.SymbolOrderBooks
     /// </summary>
     public class CoinExSpotSymbolOrderBook: SymbolOrderBook
     {
-        private readonly ICoinExSocketClientSpot socketClient;
+        private readonly ICoinExSocketClient socketClient;
         private readonly bool _socketOwner;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace CoinEx.Net.SymbolOrderBooks
             strictLevels = false;
             sequencesAreConsecutive = false;
 
-            socketClient = options?.SocketClient ?? new CoinExSocketClientSpot();
+            socketClient = options?.SocketClient ?? new CoinExSocketClient();
             _socketOwner = options?.SocketClient == null;
             Levels = 20;
         }
@@ -38,7 +38,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync()
         {
-            var result = await socketClient.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate).ConfigureAwait(false);
+            var result = await socketClient.SpotMarket.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 
