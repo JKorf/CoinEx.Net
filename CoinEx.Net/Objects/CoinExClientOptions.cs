@@ -72,7 +72,7 @@ namespace CoinEx.Net.Objects
         /// </summary>
         public static CoinExSocketClientSpotOptions Default { get; set; } = new CoinExSocketClientSpotOptions()
         {
-            OptionsSpot = new SocketSubClientOptions
+            OptionsSpot = new SubClientOptions
             {
                 BaseAddress = "wss://socket.coinex.com/"
             },
@@ -99,7 +99,7 @@ namespace CoinEx.Net.Objects
             }
         }
 
-        public SocketSubClientOptions OptionsSpot { get; set; }
+        public SubClientOptions OptionsSpot { get; set; }
 
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace CoinEx.Net.Objects
 
             input.NonceProvider = def.NonceProvider;
 
-            input.OptionsSpot = new SocketSubClientOptions();
+            input.OptionsSpot = new SubClientOptions();
             def.OptionsSpot.Copy(input.OptionsSpot, def.OptionsSpot);
         }
     }

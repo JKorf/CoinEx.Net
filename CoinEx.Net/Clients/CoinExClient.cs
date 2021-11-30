@@ -137,6 +137,12 @@ namespace CoinEx.Net.Clients.Rest.Spot
         }
 
         #endregion
+
+        public override void Dispose()
+        {
+            SpotMarket.Dispose();
+            base.Dispose();
+        }
         #endregion
     }
 }

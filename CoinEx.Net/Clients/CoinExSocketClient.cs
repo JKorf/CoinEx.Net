@@ -258,5 +258,11 @@ namespace CoinEx.Net.Clients.Socket
         {
             return Task.FromResult(true);
         }
+
+        public override void Dispose()
+        {
+            SpotMarket.Dispose();
+            base.Dispose();
+        }
     }
 }

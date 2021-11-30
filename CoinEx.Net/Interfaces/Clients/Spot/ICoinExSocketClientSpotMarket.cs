@@ -14,7 +14,7 @@ namespace CoinEx.Net.Interfaces.Clients.Socket
     /// <summary>
     /// Interface for the CoinEx socket client
     /// </summary>
-    public interface ICoinExSocketClientSpotMarket
+    public interface ICoinExSocketClientSpotMarket: IDisposable
     {        
         /// <summary>
         /// Pings the server
