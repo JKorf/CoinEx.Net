@@ -21,7 +21,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
     /// <summary>
     /// Client for the CoinEx REST API
     /// </summary>
-    public class CoinExClient : RestClient, ICoinExClient
+    public class CoinExClient : BaseRestClient, ICoinExClient
     {
         #region fields
         /// <summary>
@@ -34,8 +34,8 @@ namespace CoinEx.Net.Clients.Rest.Spot
         public event Action<ICommonOrderId>? OnOrderCanceled;
         #endregion
 
-        #region Subclients
-        public ICoinExClientSpot SpotMarket { get; }
+        #region Api clients
+        public ICoinExClientSpot SpotApi { get; }
         #endregion
 
         #region ctor
@@ -55,7 +55,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
             manualParseError = true;
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
 
-            SpotMarket = new CoinExClientSpot(this, options);
+            SpotApi = new CoinExClientSpot(this, options);
         }
         #endregion
 
@@ -96,18 +96,18 @@ namespace CoinEx.Net.Clients.Rest.Spot
             return new ServerError((int)error["code"]!, (string)error["message"]!);
         }
 
-        internal async Task<WebCallResult<T>> Execute<T>(RestSubClient subClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+        internal async Task<WebCallResult<T>> Execute<T>(RestApiClient apiClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
-            return GetResult(await SendRequestAsync<CoinExApiResult<T>>(subClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
+            return GetResult(await SendRequestAsync<CoinExApiResult<T>>(apiClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
-        internal async Task<WebCallResult> Execute(RestSubClient subClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) 
+        internal async Task<WebCallResult> Execute(RestApiClient apiClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) 
         {
-            return GetResult(await SendRequestAsync<CoinExApiResult<object>>(subClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
+            return GetResult(await SendRequestAsync<CoinExApiResult<object>>(apiClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
 
-        internal async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(RestSubClient subClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+        internal async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(RestApiClient apiClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
-            return GetResult(await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(subClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
+            return GetResult(await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(apiClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
 
         private static WebCallResult<T> GetResult<T>(WebCallResult<CoinExApiResult<T>> result) where T : class
@@ -140,7 +140,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
 
         public override void Dispose()
         {
-            SpotMarket.Dispose();
+            SpotApi.Dispose();
             base.Dispose();
         }
         #endregion

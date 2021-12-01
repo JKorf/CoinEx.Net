@@ -10,6 +10,6 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
         /// <summary>
         /// Endpoints related to account settings, info or actions
         /// </summary>
-        ICoinExClientSpot SpotMarket { get; }
+        ICoinExClientSpot SpotApi { get; }
     }
 }

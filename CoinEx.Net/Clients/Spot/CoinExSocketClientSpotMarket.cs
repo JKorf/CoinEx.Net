@@ -25,10 +25,11 @@ namespace CoinEx.Net.Clients.Socket
     /// <summary>
     /// Client for the CoinEx socket API
     /// </summary>
-    public class CoinExSocketClientSpotMarket : SocketSubClient, ICoinExSocketClientSpotMarket
+    public class CoinExSocketClientSpotMarket : SocketApiClient, ICoinExSocketClientSpotMarket
     {
         #region fields
         private readonly CoinExSocketClient _baseClient;
+        private readonly CoinExSocketClientOptions _options;
         private readonly Log _log;
 
         private const string ServerSubject = "server";
@@ -52,16 +53,21 @@ namespace CoinEx.Net.Clients.Socket
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        public CoinExSocketClientSpotMarket(Log log, CoinExSocketClient baseClient, CoinExSocketClientSpotOptions options) :base(options.OptionsSpot, options.OptionsSpot.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.OptionsSpot.ApiCredentials, options.NonceProvider))
+        public CoinExSocketClientSpotMarket(Log log, CoinExSocketClient baseClient, CoinExSocketClientOptions options) 
+            :base(options, options.SpotStreamsOptions)
         {
             _log = log;
+            _options = options;
             _baseClient = baseClient;
         }
         #endregion
 
+        public override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+            => new CoinExAuthenticationProvider(credentials, _options.NonceProvider ?? new CoinExNonceProvider());
+
         #region methods
         #region public
-        
+
         /// <inheritdoc />
         public async Task<CallResult<bool>> PingAsync()
         {

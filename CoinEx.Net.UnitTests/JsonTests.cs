@@ -12,13 +12,20 @@ namespace CoinEx.Net.UnitTests
     [TestFixture]
     public class JsonTests
     {
-        private JsonToObjectComparer<ICoinExClientSpot> _comparer = new JsonToObjectComparer<ICoinExClientSpot>((json) => TestHelpers.CreateResponseClient(json, new CoinExClientSpotOptions()
-        { ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123"), OutputOriginalData = true, RateLimiters = new List<IRateLimiter>() }, System.Net.HttpStatusCode.OK));
+        private JsonToObjectComparer<ICoinExClient> _comparer = new JsonToObjectComparer<ICoinExClient>((json) => TestHelpers.CreateResponseClient(json, new CoinExClientOptions()
+        { 
+            ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123"), 
+            OutputOriginalData = true, 
+            SpotApiOptions = new CryptoExchange.Net.Objects.RestApiClientOptions
+            {
+                RateLimiters = new List<IRateLimiter>()
+            }
+        }, System.Net.HttpStatusCode.OK));
 
         [Test]
         public async Task ValidateSpotAccountCalls()
         {   
-            await _comparer.ProcessSubject("Spot/Account", c => c.Account,
+            await _comparer.ProcessSubject("Spot/Account", c => c.SpotApi.Account,
                 useNestedJsonPropertyForCompare: new Dictionary<string, string> 
                 { 
 
@@ -34,7 +41,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         public async Task ValidateSpotExchangeDataCalls()
         {
-            await _comparer.ProcessSubject("Spot/ExchangeData", c => c.ExchangeData,
+            await _comparer.ProcessSubject("Spot/ExchangeData", c => c.SpotApi.ExchangeData,
                 useNestedJsonPropertyForCompare: new Dictionary<string, string>
                 {
 
@@ -51,7 +58,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         public async Task ValidateSpotTradingCalls()
         {
-            await _comparer.ProcessSubject("Spot/Trading", c => c.Trading,
+            await _comparer.ProcessSubject("Spot/Trading", c => c.SpotApi.Trading,
                 useNestedJsonPropertyForCompare: new Dictionary<string, string>
                 {
 

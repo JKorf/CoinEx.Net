@@ -9,30 +9,31 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Client options
     /// </summary>
-    public class CoinExClientOptions: RestClientOptions
+    public class CoinExClientOptions: BaseRestClientOptions
     {
         /// <summary>
         /// Default options for the spot client
         /// </summary>
-        public static CoinExClientOptions Default { get; set; } = new CoinExClientOptions()
-        {
-            OptionsSpot = new RestSubClientOptions
-            {
-                BaseAddress = "https://api.coinex.com/v1",
-                RateLimiters = new List<IRateLimiter>
-                {
-                    new RateLimiter()
-                        .AddPartialEndpointLimit("/v1/order/", 100, TimeSpan.FromSeconds(10), countPerEndpoint: true)
-                }
-            }
-        };
+        public static CoinExClientOptions Default { get; set; } = new CoinExClientOptions();
 
         /// <summary>
         /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
         /// </summary>
         public INonceProvider? NonceProvider { get; set; }
 
-        public RestSubClientOptions OptionsSpot { get; set; }
+        private RestApiClientOptions _spotApiOptions = new RestApiClientOptions("https://api.coinex.com/v1")
+        {
+            RateLimiters = new List<IRateLimiter>
+                {
+                    new RateLimiter()
+                        .AddPartialEndpointLimit("/v1/order/", 100, TimeSpan.FromSeconds(10), countPerEndpoint: true)
+                }
+        };
+        public RestApiClientOptions SpotApiOptions
+        {
+            get => _spotApiOptions;
+            set => _spotApiOptions.Copy(_spotApiOptions, value);
+        }
 
         /// <summary>
         /// Ctor
@@ -56,26 +57,20 @@ namespace CoinEx.Net.Objects
             base.Copy(input, def);
 
             input.NonceProvider = def.NonceProvider;
-
-            input.OptionsSpot = new RestSubClientOptions();
-            def.OptionsSpot.Copy(input.OptionsSpot, def.OptionsSpot);
+            input.SpotApiOptions = new RestApiClientOptions(def.SpotApiOptions);
         }
     }
 
     /// <summary>
     /// Socket client options
     /// </summary>
-    public class CoinExSocketClientSpotOptions : SocketClientOptions
+    public class CoinExSocketClientOptions : BaseSocketClientOptions
     {
         /// <summary>
         /// Default options for the spot client
         /// </summary>
-        public static CoinExSocketClientSpotOptions Default { get; set; } = new CoinExSocketClientSpotOptions()
+        public static CoinExSocketClientOptions Default { get; set; } = new CoinExSocketClientOptions()
         {
-            OptionsSpot = new SubClientOptions
-            {
-                BaseAddress = "wss://socket.coinex.com/"
-            },
             SocketSubscriptionsCombineTarget = 1
         };
 
@@ -99,13 +94,18 @@ namespace CoinEx.Net.Objects
             }
         }
 
-        public SubClientOptions OptionsSpot { get; set; }
+        private ApiClientOptions _spotStreamsOptions = new ApiClientOptions("wss://socket.coinex.com/");
+        public ApiClientOptions SpotStreamsOptions
+        {
+            get => _spotStreamsOptions;
+            set => _spotStreamsOptions.Copy(_spotStreamsOptions, value);
+        }
 
 
         /// <summary>
         /// Ctor
         /// </summary>
-        public CoinExSocketClientSpotOptions()
+        public CoinExSocketClientOptions()
         {
             if (Default == null)
                 return;
@@ -119,14 +119,12 @@ namespace CoinEx.Net.Objects
         /// <typeparam name="T"></typeparam>
         /// <param name="input"></param>
         /// <param name="def"></param>
-        public new void Copy<T>(T input, T def) where T : CoinExSocketClientSpotOptions
+        public new void Copy<T>(T input, T def) where T : CoinExSocketClientOptions
         {
             base.Copy(input, def);
 
             input.NonceProvider = def.NonceProvider;
-
-            input.OptionsSpot = new SubClientOptions();
-            def.OptionsSpot.Copy(input.OptionsSpot, def.OptionsSpot);
+            input.SpotStreamsOptions = new ApiClientOptions(def.SpotStreamsOptions);
         }
     }
 

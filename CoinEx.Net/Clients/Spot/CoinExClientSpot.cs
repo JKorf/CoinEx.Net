@@ -21,10 +21,11 @@ namespace CoinEx.Net.Clients.Rest.Spot
     /// <summary>
     /// Client for the CoinEx REST API
     /// </summary>
-    public class CoinExClientSpot : RestSubClient, ICoinExClientSpot, IExchangeClient
+    public class CoinExClientSpot : RestApiClient, ICoinExClientSpot, IExchangeClient
     {
         #region fields
         private CoinExClient _baseClient;
+        private CoinExClientOptions _options;
 
         /// <summary>
         /// Event triggered when an order is placed via this client
@@ -36,7 +37,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         public event Action<ICommonOrderId>? OnOrderCanceled;
         #endregion
 
-        #region Subclients
+        #region Api clients
         public ICoinExClientSpotAccount Account { get; }
         public ICoinExClientSpotExchangeData ExchangeData { get; }
         public ICoinExClientSpotTrading Trading { get; }
@@ -47,15 +48,19 @@ namespace CoinEx.Net.Clients.Rest.Spot
         /// Create a new instance of CoinExClient with default options
         /// </summary>
         public CoinExClientSpot(CoinExClient baseClient, CoinExClientOptions options) :
-            base(options.OptionsSpot, options.OptionsSpot.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.OptionsSpot.ApiCredentials, options.NonceProvider))
+            base(options, options.SpotApiOptions)
         {
             _baseClient = baseClient;
+            _options = options;
 
             Account = new CoinExClientSpotAccount(this);
             ExchangeData = new CoinExClientSpotExchangeData(this);
             Trading = new CoinExClientSpotTrading(this);
         }
         #endregion
+
+        public override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+            => new CoinExAuthenticationProvider(credentials, _options.NonceProvider ?? new CoinExNonceProvider());
 
         #region methods
         #region private

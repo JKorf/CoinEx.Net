@@ -132,18 +132,6 @@ namespace CoinEx.Net.UnitTests
             Assert.AreEqual(sign, output);
         }
 
-        private string CreateRequest<T>(T obj)
-        {
-            return JsonConvert.SerializeObject(new CoinExApiResult<T>() { Code = 0, Data = obj, Message = "" });
-        }
-
-        private CoinExClientSpot Construct(CoinExClientOptions options = null)
-        {
-            if (options != null)
-                return new CoinExClientSpot(options);
-            return new CoinExClientSpot();
-        }
-
         [TestCase("BTCUSDT", true)]
         [TestCase("NANOUSDTA", true)]
         [TestCase("NANOBTC", true)]
@@ -184,7 +172,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         public void CheckSocketInterfaces()
         {
-            var assembly = Assembly.GetAssembly(typeof(CoinExSocketClientSpot));
+            var assembly = Assembly.GetAssembly(typeof(CoinExSocketClient));
             var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExSocketClient"));
 
             foreach (var clientInterface in clientInterfaces)

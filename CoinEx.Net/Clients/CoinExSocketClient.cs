@@ -24,7 +24,7 @@ namespace CoinEx.Net.Clients.Socket
     /// <summary>
     /// Client for the CoinEx socket API
     /// </summary>
-    public class CoinExSocketClient : SocketClient, ICoinExSocketClient
+    public class CoinExSocketClient : BaseSocketClient, ICoinExSocketClient
     {
         #region fields
         private const string ServerSubject = "server";
@@ -44,9 +44,9 @@ namespace CoinEx.Net.Clients.Socket
         private const string SuccessString = "success";
         #endregion
 
-        #region SubClients
+        #region Api clients
 
-        public ICoinExSocketClientSpotMarket SpotMarket { get; }
+        public ICoinExSocketClientSpotMarket SpotStreams { get; }
 
         #endregion
 
@@ -54,7 +54,7 @@ namespace CoinEx.Net.Clients.Socket
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        public CoinExSocketClient() : this(CoinExSocketClientSpotOptions.Default)
+        public CoinExSocketClient() : this(CoinExSocketClientOptions.Default)
         {
         }
 
@@ -62,9 +62,9 @@ namespace CoinEx.Net.Clients.Socket
         /// Create a new instance of CoinExSocketClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExSocketClient(CoinExSocketClientSpotOptions options) : base("CoinEx", options)
+        public CoinExSocketClient(CoinExSocketClientOptions options) : base("CoinEx", options)
         {
-            SpotMarket = new CoinExSocketClientSpotMarket(log, this, options);
+            SpotStreams = new CoinExSocketClientSpotMarket(log, this, options);
 
             AddGenericHandler("Pong", (messageEvent) => { });
             SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
@@ -73,15 +73,15 @@ namespace CoinEx.Net.Clients.Socket
 
         #region methods
         
-        private object[] GetAuthParameters(SubClient subClient)
+        private object[] GetAuthParameters(BaseApiClient apiClient)
         {
-            if(subClient.AuthenticationProvider!.Credentials.Key == null || subClient.AuthenticationProvider.Credentials.Secret == null)
+            if(apiClient.AuthenticationProvider!.Credentials.Key == null || apiClient.AuthenticationProvider.Credentials.Secret == null)
                 throw new ArgumentException("ApiKey/Secret not provided");
 
-            var tonce = ((CoinExAuthenticationProvider)subClient.AuthenticationProvider).GetNonce();
-            var parameterString = $"access_id={subClient.AuthenticationProvider.Credentials.Key.GetString()}&tonce={tonce}&secret_key={subClient.AuthenticationProvider.Credentials.Secret.GetString()}";
-            var auth = subClient.AuthenticationProvider.Sign(parameterString);
-            return new object[] { subClient.AuthenticationProvider.Credentials.Key.GetString(), auth, tonce };
+            var tonce = ((CoinExAuthenticationProvider)apiClient.AuthenticationProvider).GetNonce();
+            var parameterString = $"access_id={apiClient.AuthenticationProvider.Credentials.Key.GetString()}&tonce={tonce}&secret_key={apiClient.AuthenticationProvider.Credentials.Secret.GetString()}";
+            var auth = apiClient.AuthenticationProvider.Sign(parameterString);
+            return new object[] { apiClient.AuthenticationProvider.Credentials.Key.GetString(), auth, tonce };
         }
 
         internal int NextIdInternal()
@@ -89,14 +89,14 @@ namespace CoinEx.Net.Clients.Socket
             return NextId();
         }
 
-        internal virtual Task<CallResult<T>> QueryInternalAsync<T>(SocketSubClient subClient, object request, bool authenticated)
+        internal virtual Task<CallResult<T>> QueryInternalAsync<T>(SocketApiClient apiClient, object request, bool authenticated)
         {
-            return QueryAsync<T>(subClient, request, authenticated);
+            return QueryAsync<T>(apiClient, request, authenticated);
         }
 
-        internal virtual Task<CallResult<UpdateSubscription>> SubscribeInternalAsync<T>(SocketSubClient subClient, object? request, string? identifier, bool authenticated, Action<DataEvent<T>> dataHandler, CancellationToken ct)
+        internal virtual Task<CallResult<UpdateSubscription>> SubscribeInternalAsync<T>(SocketApiClient apiClient, object? request, string? identifier, bool authenticated, Action<DataEvent<T>> dataHandler, CancellationToken ct)
         {
-            return SubscribeAsync(subClient, request, identifier, authenticated, dataHandler, ct);
+            return SubscribeAsync(apiClient, request, identifier, authenticated, dataHandler, ct);
         }
 
         internal CallResult<T> DeserializeInternal<T>(JToken obj, JsonSerializer? serializer = null, int? requestId = null)
@@ -208,10 +208,10 @@ namespace CoinEx.Net.Clients.Socket
         /// <inheritdoc />
         protected override async Task<CallResult<bool>> AuthenticateSocketAsync(SocketConnection s)
         {
-            if (s.SubClient.AuthenticationProvider == null)
+            if (s.ApiClient.AuthenticationProvider == null)
                 return new CallResult<bool>(false, new NoApiCredentialsError());
 
-            var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters(s.SubClient));
+            var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters(s.ApiClient));
             var result = new CallResult<bool>(false, new ServerError("No response from server"));
             await s.SendAndWaitAsync(request, ClientOptions.SocketResponseTimeout, data =>
             {
@@ -261,7 +261,7 @@ namespace CoinEx.Net.Clients.Socket
 
         public override void Dispose()
         {
-            SpotMarket.Dispose();
+            SpotStreams.Dispose();
             base.Dispose();
         }
     }

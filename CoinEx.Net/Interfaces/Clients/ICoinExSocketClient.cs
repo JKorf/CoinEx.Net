@@ -16,6 +16,6 @@ namespace CoinEx.Net.Interfaces.Clients.Socket
     /// </summary>
     public interface ICoinExSocketClient : ISocketClient
     {
-        public ICoinExSocketClientSpotMarket SpotMarket { get; }
+        public ICoinExSocketClientSpotMarket SpotStreams { get; }
     }
 }
