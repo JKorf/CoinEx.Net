@@ -1,25 +1,19 @@
-﻿using CoinEx.Net.Converters;
-using CoinEx.Net.Objects;
+﻿using CoinEx.Net.Objects;
 using CryptoExchange.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
-using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.Authentication;
-using CoinEx.Net.Enums;
 using System.Threading;
-using CoinEx.Net.Interfaces.Clients.Socket;
 using CoinEx.Net.Objects.Internal;
-using CoinEx.Net.Objects.Models;
-using CoinEx.Net.Objects.Models.Socket;
+using CoinEx.Net.Interfaces.Clients;
+using CoinEx.Net.Interfaces.Clients.SpotApi;
+using CoinEx.Net.Clients.SpotApi;
 
-namespace CoinEx.Net.Clients.Socket
+namespace CoinEx.Net.Clients
 {
     /// <summary>
     /// Client for the CoinEx socket API
@@ -46,7 +40,7 @@ namespace CoinEx.Net.Clients.Socket
 
         #region Api clients
 
-        public ICoinExSocketClientSpotMarket SpotStreams { get; }
+        public ICoinExSocketClientSpotStreams SpotStreams { get; }
 
         #endregion
 
@@ -64,7 +58,7 @@ namespace CoinEx.Net.Clients.Socket
         /// <param name="options">The options to use for this client</param>
         public CoinExSocketClient(CoinExSocketClientOptions options) : base("CoinEx", options)
         {
-            SpotStreams = new CoinExSocketClientSpotMarket(log, this, options);
+            SpotStreams = new CoinExSocketClientSpotStreams(log, this, options);
 
             AddGenericHandler("Pong", (messageEvent) => { });
             SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
@@ -72,10 +66,10 @@ namespace CoinEx.Net.Clients.Socket
         #endregion
 
         #region methods
-        
+
         private object[] GetAuthParameters(BaseApiClient apiClient)
         {
-            if(apiClient.AuthenticationProvider!.Credentials.Key == null || apiClient.AuthenticationProvider.Credentials.Secret == null)
+            if (apiClient.AuthenticationProvider!.Credentials.Key == null || apiClient.AuthenticationProvider.Credentials.Secret == null)
                 throw new ArgumentException("ApiKey/Secret not provided");
 
             var tonce = ((CoinExAuthenticationProvider)apiClient.AuthenticationProvider).GetNonce();
@@ -109,7 +103,7 @@ namespace CoinEx.Net.Clients.Socket
         protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T> callResult)
         {
             callResult = null!;
-            var cRequest = (CoinExSocketRequest) request;
+            var cRequest = (CoinExSocketRequest)request;
             var idField = data["id"];
             if (idField == null)
                 return false;
@@ -120,7 +114,7 @@ namespace CoinEx.Net.Clients.Socket
             var error = data["error"];
             if (error != null && error.Type != JTokenType.Null)
             {
-                callResult = new CallResult<T>(default, new ServerError(error["code"]?.Value<int>()??0, error["message"]?.ToString() ?? "Unknown error"));
+                callResult = new CallResult<T>(default, new ServerError(error["code"]?.Value<int>() ?? 0, error["message"]?.ToString() ?? "Unknown error"));
                 return true;
             }
             else
@@ -155,8 +149,8 @@ namespace CoinEx.Net.Clients.Socket
             if (idField == null || idField.Type == JTokenType.Null)
                 return false;
 
-            var cRequest = (CoinExSocketRequest) request;
-            if ((int) idField != cRequest.Id)
+            var cRequest = (CoinExSocketRequest)request;
+            if ((int)idField != cRequest.Id)
                 return false;
 
             var subResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(message);
@@ -193,7 +187,7 @@ namespace CoinEx.Net.Clients.Socket
             if (method == null)
                 return false;
 
-            var subject = method.Split(new [] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
+            var subject = method.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
             return cRequest.Subject == subject;
         }
 

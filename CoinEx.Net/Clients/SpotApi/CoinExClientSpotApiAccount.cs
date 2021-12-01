@@ -1,5 +1,4 @@
-﻿using CoinEx.Net.Interfaces.Clients.Rest.Spot;
-using CryptoExchange.Net;
+﻿using CryptoExchange.Net;
 using CryptoExchange.Net.Objects;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,10 +6,11 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
+using CoinEx.Net.Interfaces.Clients.SpotApi;
 
-namespace CoinEx.Net.Clients.Rest.Spot
+namespace CoinEx.Net.Clients.SpotApi
 {
-    public class CoinExClientSpotAccount: ICoinExClientSpotAccount
+    public class CoinExClientSpotApiAccount : ICoinExClientSpotApiAccount
     {
         private const string AccountInfoEndpoint = "balance/info";
         private const string WithdrawalHistoryEndpoint = "balance/coin/withdraw";
@@ -20,9 +20,9 @@ namespace CoinEx.Net.Clients.Rest.Spot
         private const string DepositAddressEndpoint = "balance/deposit/address/";
 
 
-        private readonly CoinExClientSpot _baseClient;
+        private readonly CoinExClientSpotApi _baseClient;
 
-        internal CoinExClientSpotAccount(CoinExClientSpot baseClient)
+        internal CoinExClientSpotApiAccount(CoinExClientSpotApi baseClient)
         {
             _baseClient = baseClient;
         }

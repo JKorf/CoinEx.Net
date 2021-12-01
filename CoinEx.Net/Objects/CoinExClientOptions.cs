@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CoinEx.Net.Interfaces.Clients.Socket;
+using CoinEx.Net.Interfaces.Clients;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 

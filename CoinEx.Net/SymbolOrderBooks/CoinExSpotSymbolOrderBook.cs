@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CoinEx.Net.Clients.Socket;
-using CoinEx.Net.Interfaces.Clients.Socket;
+using CoinEx.Net.Clients;
+using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Models.Socket;
 using CryptoExchange.Net.Objects;

@@ -2,21 +2,19 @@
 using CryptoExchange.Net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.ExchangeInterfaces;
 using Newtonsoft.Json.Linq;
-using CryptoExchange.Net.Interfaces;
-using CoinEx.Net.Enums;
-using CoinEx.Net.Interfaces.Clients.Rest.Spot;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
+using CoinEx.Net.Interfaces.Clients;
+using CoinEx.Net.Interfaces.Clients.SpotApi;
+using CoinEx.Net.Clients.SpotApi;
 
-namespace CoinEx.Net.Clients.Rest.Spot
+namespace CoinEx.Net.Clients
 {
     /// <summary>
     /// Client for the CoinEx REST API
@@ -35,7 +33,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         #endregion
 
         #region Api clients
-        public ICoinExClientSpot SpotApi { get; }
+        public ICoinExClientSpotApi SpotApi { get; }
         #endregion
 
         #region ctor
@@ -50,12 +48,12 @@ namespace CoinEx.Net.Clients.Rest.Spot
         /// Create a new instance of CoinExClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExClient(CoinExClientOptions options): base("CoinEx", options)
+        public CoinExClient(CoinExClientOptions options) : base("CoinEx", options)
         {
             manualParseError = true;
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
 
-            SpotApi = new CoinExClientSpot(this, options);
+            SpotApi = new CoinExClientSpotApi(this, options);
         }
         #endregion
 
@@ -84,7 +82,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
                 }
             }
 
-            return Task.FromResult((ServerError?) null);
+            return Task.FromResult((ServerError?)null);
         }
 
         /// <inheritdoc />
@@ -100,7 +98,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
         {
             return GetResult(await SendRequestAsync<CoinExApiResult<T>>(apiClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
-        internal async Task<WebCallResult> Execute(RestApiClient apiClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) 
+        internal async Task<WebCallResult> Execute(RestApiClient apiClient, Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
         {
             return GetResult(await SendRequestAsync<CoinExApiResult<object>>(apiClient, uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
@@ -118,7 +116,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
             return result.As(result.Data.Data);
         }
 
-        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result) 
+        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result)
         {
             if (result.Error != null || result.Data == null)
                 return WebCallResult.CreateErrorResult(result.ResponseStatusCode, result.ResponseHeaders, result.Error ?? new UnknownError("No data received"));

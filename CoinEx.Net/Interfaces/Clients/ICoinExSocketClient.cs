@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using CoinEx.Net.Enums;
-using CoinEx.Net.Objects.Models;
-using CoinEx.Net.Objects.Models.Socket;
+﻿using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.Sockets;
 
-namespace CoinEx.Net.Interfaces.Clients.Socket
+namespace CoinEx.Net.Interfaces.Clients
 {
     /// <summary>
     /// Interface for the CoinEx socket client
     /// </summary>
     public interface ICoinExSocketClient : ISocketClient
     {
-        public ICoinExSocketClientSpotMarket SpotStreams { get; }
+        public ICoinExSocketClientSpotStreams SpotStreams { get; }
     }
 }

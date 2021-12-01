@@ -22,8 +22,8 @@ using CoinEx.Net.Objects;
 using Newtonsoft.Json;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net;
-using CoinEx.Net.Interfaces.Clients.Rest.Spot;
-using CoinEx.Net.Clients.Rest.Spot;
+using CoinEx.Net.Interfaces.Clients;
+using CoinEx.Net.Clients;
 
 namespace CoinEx.Net.Testing
 {

@@ -10,13 +10,13 @@ using System.Net;
 using System;
 using System.Threading.Tasks;
 using CoinEx.Net.Enums;
-using CoinEx.Net.Clients.Rest.Spot;
 using System.Reflection;
 using System.Diagnostics;
-using CoinEx.Net.Clients.Socket;
 using CoinEx.Net.Objects.Internal;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
+using CoinEx.Net.Clients;
+using CoinEx.Net.Clients.SpotApi;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -151,7 +151,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         public void CheckRestInterfaces()
         {
-            var assembly = Assembly.GetAssembly(typeof(CoinExClientSpot));
+            var assembly = Assembly.GetAssembly(typeof(CoinExClientSpotApi));
             var ignore = new string[] { "ICoinExClientSpot" };
             var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExClient") && !ignore.Contains(t.Name));
 
@@ -162,7 +162,7 @@ namespace CoinEx.Net.UnitTests
                 foreach (var method in implementation.GetMethods().Where(m => m.ReturnType.IsAssignableTo(typeof(Task))))
                 {
                     var interfaceMethod = clientInterface.GetMethod(method.Name, method.GetParameters().Select(p => p.ParameterType).ToArray());
-                    Assert.NotNull(interfaceMethod);
+                    Assert.NotNull(interfaceMethod, $"Missing interface for method {method.Name} in {implementation.Name} implementing interface {clientInterface.Name}");
                     methods++;
                 }
                 Debug.WriteLine($"{clientInterface.Name} {methods} methods validated");
@@ -182,7 +182,7 @@ namespace CoinEx.Net.UnitTests
                 foreach (var method in implementation.GetMethods().Where(m => m.ReturnType.IsAssignableTo(typeof(Task<CallResult<UpdateSubscription>>))))
                 {
                     var interfaceMethod = clientInterface.GetMethod(method.Name, method.GetParameters().Select(p => p.ParameterType).ToArray());
-                    Assert.NotNull(interfaceMethod);
+                    Assert.NotNull(interfaceMethod, $"Missing interface for method {method.Name} in {implementation.Name} implementing interface {clientInterface.Name}");
                     methods++;
                 }
                 Debug.WriteLine($"{clientInterface.Name} {methods} methods validated");

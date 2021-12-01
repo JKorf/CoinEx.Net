@@ -9,19 +9,17 @@ using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.ExchangeInterfaces;
-using Newtonsoft.Json.Linq;
-using CryptoExchange.Net.Interfaces;
 using CoinEx.Net.Enums;
-using CoinEx.Net.Interfaces.Clients.Rest.Spot;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
+using CoinEx.Net.Interfaces.Clients.SpotApi;
 
-namespace CoinEx.Net.Clients.Rest.Spot
+namespace CoinEx.Net.Clients.SpotApi
 {
     /// <summary>
     /// Client for the CoinEx REST API
     /// </summary>
-    public class CoinExClientSpot : RestApiClient, ICoinExClientSpot, IExchangeClient
+    public class CoinExClientSpotApi : RestApiClient, ICoinExClientSpotApi, IExchangeClient
     {
         #region fields
         private CoinExClient _baseClient;
@@ -38,24 +36,24 @@ namespace CoinEx.Net.Clients.Rest.Spot
         #endregion
 
         #region Api clients
-        public ICoinExClientSpotAccount Account { get; }
-        public ICoinExClientSpotExchangeData ExchangeData { get; }
-        public ICoinExClientSpotTrading Trading { get; }
+        public ICoinExClientSpotApiAccount Account { get; }
+        public ICoinExClientSpotApiExchangeData ExchangeData { get; }
+        public ICoinExClientSpotApiTrading Trading { get; }
         #endregion
 
         #region ctor
         /// <summary>
         /// Create a new instance of CoinExClient with default options
         /// </summary>
-        public CoinExClientSpot(CoinExClient baseClient, CoinExClientOptions options) :
+        public CoinExClientSpotApi(CoinExClient baseClient, CoinExClientOptions options) :
             base(options, options.SpotApiOptions)
         {
             _baseClient = baseClient;
             _options = options;
 
-            Account = new CoinExClientSpotAccount(this);
-            ExchangeData = new CoinExClientSpotExchangeData(this);
-            Trading = new CoinExClientSpotTrading(this);
+            Account = new CoinExClientSpotApiAccount(this);
+            ExchangeData = new CoinExClientSpotApiExchangeData(this);
+            Trading = new CoinExClientSpotApiTrading(this);
         }
         #endregion
 
@@ -120,7 +118,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
 
         async Task<WebCallResult<IEnumerable<ICommonKline>>> IExchangeClient.GetKlinesAsync(string symbol, TimeSpan timespan, DateTime? startTime = null, DateTime? endTime = null, int? limit = null)
         {
-            if(startTime != null || endTime != null)
+            if (startTime != null || endTime != null)
                 return WebCallResult<IEnumerable<ICommonKline>>.CreateErrorResult(new ArgumentError($"CoinEx does not support the {nameof(startTime)}/{nameof(endTime)} parameters for the method {nameof(IExchangeClient.GetKlinesAsync)}"));
 
             var klines = await ExchangeData.GetKlinesAsync(symbol, GetKlineIntervalFromTimespan(timespan), limit).ConfigureAwait(false);
@@ -141,7 +139,7 @@ namespace CoinEx.Net.Clients.Rest.Spot
 
         async Task<WebCallResult<ICommonOrderId>> IExchangeClient.PlaceOrderAsync(string symbol, IExchangeClient.OrderSide side, IExchangeClient.OrderType type, decimal quantity, decimal? price = null, string? accountId = null)
         {
-            if(price == null && type == IExchangeClient.OrderType.Limit)
+            if (price == null && type == IExchangeClient.OrderType.Limit)
                 return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError("Price parameter null while placing a limit order"));
 
             var result = await Trading.PlaceOrderAsync(

@@ -10,22 +10,21 @@ using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
-using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Authentication;
 using CoinEx.Net.Enums;
 using System.Threading;
-using CoinEx.Net.Interfaces.Clients.Socket;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Objects.Models.Socket;
 using CryptoExchange.Net.Logging;
+using CoinEx.Net.Interfaces.Clients.SpotApi;
 
-namespace CoinEx.Net.Clients.Socket
+namespace CoinEx.Net.Clients.SpotApi
 {
     /// <summary>
     /// Client for the CoinEx socket API
     /// </summary>
-    public class CoinExSocketClientSpotMarket : SocketApiClient, ICoinExSocketClientSpotMarket
+    public class CoinExSocketClientSpotStreams : SocketApiClient, ICoinExSocketClientSpotStreams
     {
         #region fields
         private readonly CoinExSocketClient _baseClient;
@@ -46,15 +45,15 @@ namespace CoinEx.Net.Clients.Socket
         private const string PingAction = "ping";
         private const string AuthenticateAction = "sign";
 
-        private const string SuccessString = "success";        
+        private const string SuccessString = "success";
         #endregion
 
         #region ctor
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        public CoinExSocketClientSpotMarket(Log log, CoinExSocketClient baseClient, CoinExSocketClientOptions options) 
-            :base(options, options.SpotStreamsOptions)
+        public CoinExSocketClientSpotStreams(Log log, CoinExSocketClient baseClient, CoinExSocketClientOptions options)
+            : base(options, options.SpotStreamsOptions)
         {
             _log = log;
             _options = options;
@@ -167,7 +166,7 @@ namespace CoinEx.Net.Clients.Socket
                 foreach (var item in desResult.Data)
                     item.Value.Symbol = item.Key;
 
-                onMessage(data.As<IEnumerable<CoinExSocketSymbolState>>(desResult.Data.Select(d => d.Value)));
+                onMessage(data.As(desResult.Data.Select(d => d.Value)));
             });
 
             return await _baseClient.SubscribeInternalAsync(this, new CoinExSocketRequest(_baseClient.NextIdInternal(), StateSubject, SubscribeAction), null, false, internalHandler, ct).ConfigureAwait(false);
@@ -261,7 +260,7 @@ namespace CoinEx.Net.Clients.Socket
             {
                 if (data.Data.Length != 1)
                 {
-                    if (data.Data.Length != 2 || (data.Data.Length == 2 && data.Data[1].ToString().Trim() != "0"))
+                    if (data.Data.Length != 2 || data.Data.Length == 2 && data.Data[1].ToString().Trim() != "0")
                     {
                         _log.Write(LogLevel.Warning, $"Received unexpected data format for balance update. Expected 1 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
                         return;

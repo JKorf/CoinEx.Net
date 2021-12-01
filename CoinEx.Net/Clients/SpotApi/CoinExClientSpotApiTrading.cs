@@ -1,6 +1,5 @@
 ﻿using CoinEx.Net.Converters;
 using CoinEx.Net.Enums;
-using CoinEx.Net.Interfaces.Clients.Rest.Spot;
 using CryptoExchange.Net;
 using CryptoExchange.Net.Objects;
 using Newtonsoft.Json;
@@ -11,10 +10,11 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
+using CoinEx.Net.Interfaces.Clients.SpotApi;
 
-namespace CoinEx.Net.Clients.Rest.Spot
+namespace CoinEx.Net.Clients.SpotApi
 {
-    public class CoinExClientSpotTrading: ICoinExClientSpotTrading
+    public class CoinExClientSpotApiTrading : ICoinExClientSpotApiTrading
     {
         private const string PlaceLimitOrderEndpoint = "order/limit";
         private const string PlaceMarketOrderEndpoint = "order/market";
@@ -30,9 +30,9 @@ namespace CoinEx.Net.Clients.Rest.Spot
         private const string CancelOrderEndpoint = "order/pending";
         private const string CancelStopOrderEndpoint = "order/stop/pending";
 
-        private readonly CoinExClientSpot _baseClient;
+        private readonly CoinExClientSpotApi _baseClient;
 
-        internal CoinExClientSpotTrading(CoinExClientSpot baseClient)
+        internal CoinExClientSpotApiTrading(CoinExClientSpotApi baseClient)
         {
             _baseClient = baseClient;
         }

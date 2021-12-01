@@ -4,12 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
 
-namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
+namespace CoinEx.Net.Interfaces.Clients.SpotApi
 {
     /// <summary>
     /// CoinEx trading endpoints, placing and mananging orders.
     /// </summary>
-    public interface ICoinExClientSpotTrading
+    public interface ICoinExClientSpotApiTrading
     {
         /// <summary>
         /// Places an order. This is a single method for multiple place order endpoints. The called endpoint depends on the provided order type.

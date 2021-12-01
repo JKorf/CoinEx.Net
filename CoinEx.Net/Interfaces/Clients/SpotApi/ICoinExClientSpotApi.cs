@@ -1,26 +1,25 @@
-﻿using CryptoExchange.Net.Interfaces;
-using System;
+﻿using System;
 
-namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
+namespace CoinEx.Net.Interfaces.Clients.SpotApi
 {
     /// <summary>
     /// Client for accessing the CoinEx API. 
     /// </summary>
-    public interface ICoinExClientSpot: IDisposable
+    public interface ICoinExClientSpotApi : IDisposable
     {
         /// <summary>
         /// Endpoints related to account settings, info or actions
         /// </summary>
-        ICoinExClientSpotAccount Account { get; }
+        ICoinExClientSpotApiAccount Account { get; }
 
         /// <summary>
         /// Endpoints related to retrieving market and system data
         /// </summary>
-        ICoinExClientSpotExchangeData ExchangeData { get; }
+        ICoinExClientSpotApiExchangeData ExchangeData { get; }
 
         /// <summary>
         /// Endpoints related to orders and trades
         /// </summary>
-        ICoinExClientSpotTrading Trading { get; }
+        ICoinExClientSpotApiTrading Trading { get; }
     }
 }

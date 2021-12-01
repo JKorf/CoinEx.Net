@@ -1,11 +1,11 @@
 ﻿using CoinEx.Net.Interfaces;
-using CoinEx.Net.Interfaces.Clients.Rest.Spot;
 using CoinEx.Net.Objects;
 using CoinEx.Net.Testing;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Interfaces;
+using CoinEx.Net.Interfaces.Clients;
 
 namespace CoinEx.Net.UnitTests
 {

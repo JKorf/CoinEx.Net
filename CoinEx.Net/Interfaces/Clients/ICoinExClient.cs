@@ -1,6 +1,7 @@
-﻿using CryptoExchange.Net.Interfaces;
+﻿using CoinEx.Net.Interfaces.Clients.SpotApi;
+using CryptoExchange.Net.Interfaces;
 
-namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
+namespace CoinEx.Net.Interfaces.Clients
 {
     /// <summary>
     /// Client for accessing the CoinEx API. 
@@ -10,6 +11,6 @@ namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
         /// <summary>
         /// Endpoints related to account settings, info or actions
         /// </summary>
-        ICoinExClientSpot SpotApi { get; }
+        ICoinExClientSpotApi SpotApi { get; }
     }
 }

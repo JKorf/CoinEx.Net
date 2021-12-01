@@ -5,12 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
 
-namespace CoinEx.Net.Interfaces.Clients.Rest.Spot
+namespace CoinEx.Net.Interfaces.Clients.SpotApi
 {
     /// <summary>
     /// CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
     /// </summary>
-    public interface ICoinExClientSpotExchangeData
+    public interface ICoinExClientSpotApiExchangeData
     {
         /// <summary>
         /// Gets the exchange rates of currencies
