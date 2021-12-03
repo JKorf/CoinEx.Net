@@ -15,23 +15,11 @@ using CoinEx.Net.Clients.SpotApi;
 
 namespace CoinEx.Net.Clients
 {
-    /// <summary>
-    /// Client for the CoinEx socket API
-    /// </summary>
+    /// <inheritdoc cref="ICoinExSocketClient" />
     public class CoinExSocketClient : BaseSocketClient, ICoinExSocketClient
     {
         #region fields
         private const string ServerSubject = "server";
-        private const string StateSubject = "state";
-        private const string DepthSubject = "depth";
-        private const string TransactionSubject = "deals";
-        private const string KlineSubject = "kline";
-        private const string BalanceSubject = "asset";
-        private const string OrderSubject = "order";
-
-        private const string SubscribeAction = "subscribe";
-        private const string QueryAction = "query";
-        private const string ServerTimeAction = "time";
         private const string PingAction = "ping";
         private const string AuthenticateAction = "sign";
 
@@ -40,6 +28,7 @@ namespace CoinEx.Net.Clients
 
         #region Api clients
 
+        /// <inheritdoc />
         public ICoinExSocketClientSpotStreams SpotStreams { get; }
 
         #endregion
@@ -64,6 +53,15 @@ namespace CoinEx.Net.Clients
             SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
         }
         #endregion
+
+        /// <summary>
+        /// Set the default options to be used when creating new clients
+        /// </summary>
+        /// <param name="options">Options to use as default</param>
+        public static void SetDefaultOptions(CoinExSocketClientOptions options)
+        {
+            CoinExSocketClientOptions.Default = options;
+        }
 
         #region methods
 
@@ -180,7 +178,7 @@ namespace CoinEx.Net.Clients
         }
 
         /// <inheritdoc />
-        protected override bool MessageMatchesHandler(JToken message, object request)
+        protected override bool MessageMatchesHandler(SocketConnection socketConnection, JToken message, object request)
         {
             var cRequest = (CoinExSocketRequest)request;
             var method = message["method"]?.ToString();
@@ -192,7 +190,7 @@ namespace CoinEx.Net.Clients
         }
 
         /// <inheritdoc />
-        protected override bool MessageMatchesHandler(JToken message, string identifier)
+        protected override bool MessageMatchesHandler(SocketConnection socketConnection, JToken message, string identifier)
         {
             if (message.Type != JTokenType.Object)
                 return false;
@@ -253,6 +251,7 @@ namespace CoinEx.Net.Clients
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             SpotStreams.Dispose();

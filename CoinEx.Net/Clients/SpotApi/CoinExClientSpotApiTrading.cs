@@ -14,6 +14,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApi;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
+    /// <inheritdoc />
     public class CoinExClientSpotApiTrading : ICoinExClientSpotApiTrading
     {
         private const string PlaceLimitOrderEndpoint = "order/limit";

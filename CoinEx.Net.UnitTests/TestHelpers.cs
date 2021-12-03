@@ -120,7 +120,7 @@ namespace CoinEx.Net.Testing
             return request;
         }
 
-        public static object? GetTestValue(Type type, int i)
+        public static object GetTestValue(Type type, int i)
         {
             if (type == typeof(bool))
                 return true;

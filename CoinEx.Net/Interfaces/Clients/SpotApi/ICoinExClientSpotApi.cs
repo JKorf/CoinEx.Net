@@ -3,7 +3,7 @@
 namespace CoinEx.Net.Interfaces.Clients.SpotApi
 {
     /// <summary>
-    /// Client for accessing the CoinEx API. 
+    /// Spot API
     /// </summary>
     public interface ICoinExClientSpotApi : IDisposable
     {

@@ -16,9 +16,7 @@ using CoinEx.Net.Clients.SpotApi;
 
 namespace CoinEx.Net.Clients
 {
-    /// <summary>
-    /// Client for the CoinEx REST API
-    /// </summary>
+    /// <inheritdoc cref="ICoinExClient" />
     public class CoinExClient : BaseRestClient, ICoinExClient
     {
         #region fields
@@ -33,6 +31,7 @@ namespace CoinEx.Net.Clients
         #endregion
 
         #region Api clients
+        /// <inheritdoc />
         public ICoinExClientSpotApi SpotApi { get; }
         #endregion
 
@@ -60,9 +59,9 @@ namespace CoinEx.Net.Clients
         #region methods
         #region public
         /// <summary>
-        /// Set the default options to be used when creating new socket clients
+        /// Set the default options to be used when creating new clients
         /// </summary>
-        /// <param name="options">The options to use for new clients</param>
+        /// <param name="options">Options to use as default</param>
         public static void SetDefaultOptions(CoinExClientOptions options)
         {
             CoinExClientOptions.Default = options;
@@ -136,6 +135,7 @@ namespace CoinEx.Net.Clients
 
         #endregion
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             SpotApi.Dispose();

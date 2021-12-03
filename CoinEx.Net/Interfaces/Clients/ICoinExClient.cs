@@ -9,7 +9,7 @@ namespace CoinEx.Net.Interfaces.Clients
     public interface ICoinExClient : IRestClient
     {
         /// <summary>
-        /// Endpoints related to account settings, info or actions
+        /// Spot endpoints
         /// </summary>
         ICoinExClientSpotApi SpotApi { get; }
     }

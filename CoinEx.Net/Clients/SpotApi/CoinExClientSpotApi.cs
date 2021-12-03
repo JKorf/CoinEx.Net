@@ -16,9 +16,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApi;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
-    /// <summary>
-    /// Client for the CoinEx REST API
-    /// </summary>
+    /// <inheritdoc cref="ICoinExClientSpotApi" />
     public class CoinExClientSpotApi : RestApiClient, ICoinExClientSpotApi, IExchangeClient
     {
         #region fields
@@ -36,16 +34,16 @@ namespace CoinEx.Net.Clients.SpotApi
         #endregion
 
         #region Api clients
+        /// <inheritdoc />
         public ICoinExClientSpotApiAccount Account { get; }
+        /// <inheritdoc />
         public ICoinExClientSpotApiExchangeData ExchangeData { get; }
+        /// <inheritdoc />
         public ICoinExClientSpotApiTrading Trading { get; }
         #endregion
 
         #region ctor
-        /// <summary>
-        /// Create a new instance of CoinExClient with default options
-        /// </summary>
-        public CoinExClientSpotApi(CoinExClient baseClient, CoinExClientOptions options) :
+        internal CoinExClientSpotApi(CoinExClient baseClient, CoinExClientOptions options) :
             base(options, options.SpotApiOptions)
         {
             _baseClient = baseClient;
@@ -57,7 +55,8 @@ namespace CoinEx.Net.Clients.SpotApi
         }
         #endregion
 
-        public override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        /// <inheritdoc />
+        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
             => new CoinExAuthenticationProvider(credentials, _options.NonceProvider ?? new CoinExNonceProvider());
 
         #region methods

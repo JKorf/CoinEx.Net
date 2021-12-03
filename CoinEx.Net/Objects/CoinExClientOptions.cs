@@ -29,6 +29,9 @@ namespace CoinEx.Net.Objects
                         .AddPartialEndpointLimit("/v1/order/", 100, TimeSpan.FromSeconds(10), countPerEndpoint: true)
                 }
         };
+        /// <summary>
+        /// Spot API options
+        /// </summary>
         public RestApiClientOptions SpotApiOptions
         {
             get => _spotApiOptions;
@@ -95,12 +98,14 @@ namespace CoinEx.Net.Objects
         }
 
         private ApiClientOptions _spotStreamsOptions = new ApiClientOptions("wss://socket.coinex.com/");
+        /// <summary>
+        /// Spot stream options
+        /// </summary>
         public ApiClientOptions SpotStreamsOptions
         {
             get => _spotStreamsOptions;
             set => _spotStreamsOptions.Copy(_spotStreamsOptions, value);
         }
-
 
         /// <summary>
         /// Ctor

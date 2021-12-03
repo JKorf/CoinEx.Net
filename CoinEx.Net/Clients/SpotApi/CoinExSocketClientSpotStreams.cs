@@ -21,9 +21,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApi;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
-    /// <summary>
-    /// Client for the CoinEx socket API
-    /// </summary>
+    /// <inheritdoc cref="ICoinExSocketClientSpotStreams" />
     public class CoinExSocketClientSpotStreams : SocketApiClient, ICoinExSocketClientSpotStreams
     {
         #region fields
@@ -43,9 +41,6 @@ namespace CoinEx.Net.Clients.SpotApi
         private const string QueryAction = "query";
         private const string ServerTimeAction = "time";
         private const string PingAction = "ping";
-        private const string AuthenticateAction = "sign";
-
-        private const string SuccessString = "success";
         #endregion
 
         #region ctor
@@ -61,7 +56,8 @@ namespace CoinEx.Net.Clients.SpotApi
         }
         #endregion
 
-        public override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        /// <inheritdoc />
+        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
             => new CoinExAuthenticationProvider(credentials, _options.NonceProvider ?? new CoinExNonceProvider());
 
         #region methods

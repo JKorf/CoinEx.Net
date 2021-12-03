@@ -11,7 +11,7 @@ using CryptoExchange.Net.Sockets;
 namespace CoinEx.Net.Interfaces.Clients.SpotApi
 {
     /// <summary>
-    /// Interface for the CoinEx socket client
+    /// Spot streams
     /// </summary>
     public interface ICoinExSocketClientSpotStreams : IDisposable
     {

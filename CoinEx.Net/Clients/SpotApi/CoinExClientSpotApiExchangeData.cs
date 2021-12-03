@@ -12,6 +12,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApi;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
+    /// <inheritdoc />
     public class CoinExClientSpotApiExchangeData : ICoinExClientSpotApiExchangeData
     {
         private const string AssetConfigEndpoint = "common/asset/config";
