@@ -51,13 +51,13 @@ namespace CoinEx.Net.Objects.Models.Socket
         /// </summary>
         [JsonProperty("deal_money")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal QuoteQuantityExecuted { get; set; }
+        public decimal QuoteQuantityFilled { get; set; }
         /// <summary>
         /// The executed quantity in this update
         /// </summary>
         [JsonProperty("deal_stock")]
         [JsonConverter(typeof(DecimalConverter))]
-        public decimal QuantityExecuted { get; set; }
+        public decimal QuantityFilled { get; set; }
         /// <summary>
         /// The order id
         /// </summary>
