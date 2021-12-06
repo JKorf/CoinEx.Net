@@ -50,7 +50,7 @@ namespace CoinEx.Net.Clients
             SpotStreams = new CoinExSocketClientSpotStreams(log, this, options);
 
             AddGenericHandler("Pong", (messageEvent) => { });
-            SendPeriodic(TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
+            SendPeriodic("Ping", TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
         }
         #endregion
 
