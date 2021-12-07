@@ -81,6 +81,9 @@ else
 For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
 
 ## Release notes
+* Version 5.0.0-alpha1 - 07 Dec 2021
+    * Initial version new CryptoExchange.Net. More documentation coming soon
+
 * Version 4.2.4 - 03 Nov 2021
     * Updated CoinExAssetConfig model
     * Fixed typo in OrderOptionConverter
