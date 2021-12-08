@@ -12,7 +12,7 @@ using CoinEx.Net.Objects.Internal;
 
 namespace CoinEx.Net
 {
-    internal class CoinExAuthenticationProvider: AuthenticationProvider
+    internal class CoinExAuthenticationProvider : AuthenticationProvider
     {
         private readonly MD5 encryptor;
         private readonly INonceProvider _nonceProvider;
@@ -25,37 +25,27 @@ namespace CoinEx.Net
             _nonceProvider = nonceProvider ?? new CoinExNonceProvider();
         }
 
-        public override Dictionary<string, string> AddAuthenticationToHeaders(string uri, HttpMethod method, Dictionary<string, object> parameters, bool signed, HttpMethodParameterPosition parameterPosition, ArrayParametersSerialization arraySerialization)
+        public override void AuthenticateUriRequest(RestApiClient apiClient, Uri uri, HttpMethod method, SortedDictionary<string, object> parameters, Dictionary<string, string> headers, bool auth, ArrayParametersSerialization arraySerialization)
         {
-            var result = new Dictionary<string, string>();
-            if (!signed)
-                return result;
+            parameters.Add("access_id", Credentials.Key!.GetString());
+            parameters.Add("tonce", _nonceProvider.GetNonce());
 
-            if(Credentials.Secret == null)
-                throw new ArgumentException("ApiKey/secret not provided");
-
-            var paramString = parameters.CreateParamString(true, ArrayParametersSerialization.MultipleValues);
-            result.Add("Authorization", Sign(paramString + "&secret_key=" + Credentials.Secret.GetString()));
-            return result;
+            uri = uri.SetParameters(parameters);
+            headers.Add("Authorization", SignMD5(uri.Query.Replace("?", "") + "&secret_key=" + Credentials.Secret!.GetString()));
         }
 
-        public override Dictionary<string, object> AddAuthenticationToParameters(string uri, HttpMethod method, Dictionary<string, object> parameters, bool signed, HttpMethodParameterPosition parameterPosition, ArrayParametersSerialization arraySerialization)
+        public override void AuthenticateBodyRequest(RestApiClient apiClient, Uri uri, HttpMethod method, SortedDictionary<string, object> parameters, Dictionary<string, string> headers, bool auth, ArrayParametersSerialization arraySerialization)
         {
-            if (!signed)
-                return parameters;
-
-            if (Credentials.Key == null)
-                throw new ArgumentException("ApiKey/secret not provided");
-
-            parameters.Add("access_id", Credentials.Key.GetString());
+            parameters.Add("access_id", Credentials.Key!.GetString());
             parameters.Add("tonce", _nonceProvider.GetNonce());
-            parameters = parameters.OrderBy(p => p.Key).ToDictionary(k => k.Key, v => v.Value);
-            return parameters;
+
+            uri = uri.SetParameters(parameters);
+            headers.Add("Authorization", SignMD5(uri.Query.Replace("?", "") + "&secret_key=" + Credentials.Secret!.GetString()));
         }
 
         public override string Sign(string toSign)
         {
-            return BitConverter.ToString(encryptor.ComputeHash(Encoding.ASCII.GetBytes(toSign))).Replace("-", string.Empty).ToUpper();
+            return SignMD5(toSign).ToUpper();
         }
     }
 }

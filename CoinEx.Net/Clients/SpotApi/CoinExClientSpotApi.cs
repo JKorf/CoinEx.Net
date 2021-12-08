@@ -13,6 +13,8 @@ using CoinEx.Net.Enums;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
+using CryptoExchange.Net.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -22,6 +24,11 @@ namespace CoinEx.Net.Clients.SpotApi
         #region fields
         private CoinExClient _baseClient;
         private CoinExClientOptions _options;
+        private readonly Log _log;
+
+        internal static TimeSpan TimeOffset;
+        internal static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        internal static DateTime LastTimeSync;
 
         /// <summary>
         /// Event triggered when an order is placed via this client
@@ -43,10 +50,11 @@ namespace CoinEx.Net.Clients.SpotApi
         #endregion
 
         #region ctor
-        internal CoinExClientSpotApi(CoinExClient baseClient, CoinExClientOptions options) :
+        internal CoinExClientSpotApi(Log log, CoinExClient baseClient, CoinExClientOptions options) :
             base(options, options.SpotApiOptions)
         {
             _baseClient = baseClient;
+            _log = log;
             _options = options;
 
             Account = new CoinExClientSpotApiAccount(this);
@@ -219,5 +227,32 @@ namespace CoinEx.Net.Clients.SpotApi
             throw new ArgumentException("Unsupported timespan for CoinEx Klines, check supported intervals using CoinEx.Net.Objects.KlineInterval");
         }
         #endregion
+
+        /// <inheritdoc />
+        protected override Task<WebCallResult<DateTime>> GetServerTimestampAsync()
+        {
+            // No server time endpoint available..
+            return Task.FromResult(new WebCallResult<DateTime>(null, null, DateTime.UtcNow, null));
+        }
+
+        /// <inheritdoc />
+        protected override TimeSyncModel GetTimeSyncParameters()
+        {
+            return new TimeSyncModel(_options.SpotApiOptions.AutoTimestamp, SemaphoreSlim, LastTimeSync);
+        }
+
+        /// <inheritdoc />
+        protected override void UpdateTimeOffset(TimeSpan timestamp)
+        {
+            LastTimeSync = DateTime.UtcNow;
+            if (timestamp.TotalMilliseconds > 0 && timestamp.TotalMilliseconds < 500)
+                return;
+
+            _log.Write(LogLevel.Information, $"Time offset set to {Math.Round(timestamp.TotalMilliseconds)}ms");
+            TimeOffset = timestamp;
+        }
+
+        /// <inheritdoc />
+        public override TimeSpan GetTimeOffset() => TimeOffset;
     }
 }
