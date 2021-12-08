@@ -41,8 +41,8 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExOrder>> PlaceOrderAsync(
             string symbol,
-            OrderType type,
             OrderSide side,
+            OrderType type,
             decimal quantity,
 
             decimal? price = null,

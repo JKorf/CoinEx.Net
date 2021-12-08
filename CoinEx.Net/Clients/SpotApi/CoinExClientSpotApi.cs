@@ -143,8 +143,8 @@ namespace CoinEx.Net.Clients.SpotApi
 
             var result = await Trading.PlaceOrderAsync(
                 symbol,
-                type == IExchangeClient.OrderType.Limit ? OrderType.Limit : OrderType.Market,
                 side == IExchangeClient.OrderSide.Sell ? OrderSide.Sell : OrderSide.Buy,
+                type == IExchangeClient.OrderType.Limit ? OrderType.Limit : OrderType.Market,
                 quantity,
                 price).ConfigureAwait(false);
 
@@ -203,17 +203,17 @@ namespace CoinEx.Net.Clients.SpotApi
         private static KlineInterval GetKlineIntervalFromTimespan(TimeSpan timeSpan)
         {
             if (timeSpan == TimeSpan.FromMinutes(1)) return KlineInterval.OneMinute;
-            if (timeSpan == TimeSpan.FromMinutes(3)) return KlineInterval.ThreeMinute;
-            if (timeSpan == TimeSpan.FromMinutes(5)) return KlineInterval.FiveMinute;
-            if (timeSpan == TimeSpan.FromMinutes(15)) return KlineInterval.FiveMinute;
-            if (timeSpan == TimeSpan.FromMinutes(30)) return KlineInterval.ThirtyMinute;
+            if (timeSpan == TimeSpan.FromMinutes(3)) return KlineInterval.ThreeMinutes;
+            if (timeSpan == TimeSpan.FromMinutes(5)) return KlineInterval.FiveMinutes;
+            if (timeSpan == TimeSpan.FromMinutes(15)) return KlineInterval.FiveMinutes;
+            if (timeSpan == TimeSpan.FromMinutes(30)) return KlineInterval.ThirtyMinutes;
             if (timeSpan == TimeSpan.FromHours(1)) return KlineInterval.OneHour;
-            if (timeSpan == TimeSpan.FromHours(2)) return KlineInterval.TwoHour;
-            if (timeSpan == TimeSpan.FromHours(4)) return KlineInterval.FourHour;
-            if (timeSpan == TimeSpan.FromHours(6)) return KlineInterval.SixHour;
-            if (timeSpan == TimeSpan.FromHours(12)) return KlineInterval.TwelveHour;
+            if (timeSpan == TimeSpan.FromHours(2)) return KlineInterval.TwoHours;
+            if (timeSpan == TimeSpan.FromHours(4)) return KlineInterval.FourHours;
+            if (timeSpan == TimeSpan.FromHours(6)) return KlineInterval.SixHours;
+            if (timeSpan == TimeSpan.FromHours(12)) return KlineInterval.TwelveHours;
             if (timeSpan == TimeSpan.FromDays(1)) return KlineInterval.OneDay;
-            if (timeSpan == TimeSpan.FromDays(3)) return KlineInterval.ThreeDay;
+            if (timeSpan == TimeSpan.FromDays(3)) return KlineInterval.ThreeDays;
             if (timeSpan == TimeSpan.FromDays(7)) return KlineInterval.OneWeek;
 
             throw new ArgumentException("Unsupported timespan for CoinEx Klines, check supported intervals using CoinEx.Net.Objects.KlineInterval");
