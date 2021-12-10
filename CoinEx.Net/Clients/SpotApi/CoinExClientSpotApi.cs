@@ -26,9 +26,7 @@ namespace CoinEx.Net.Clients.SpotApi
         private CoinExClientOptions _options;
         private readonly Log _log;
 
-        internal static TimeSpan TimeOffset;
-        internal static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
-        internal static DateTime LastTimeSync;
+        internal static TimeSyncState TimeSyncState = new TimeSyncState();
 
         /// <summary>
         /// Event triggered when an order is placed via this client
@@ -164,7 +162,7 @@ namespace CoinEx.Net.Clients.SpotApi
             if (string.IsNullOrEmpty(symbol))
                 return WebCallResult<ICommonOrder>.CreateErrorResult(new ArgumentError($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOrderAsync)}"));
 
-            var order = await Trading.GetOrderAsync(long.Parse(orderId), symbol!).ConfigureAwait(false);
+            var order = await Trading.GetOrderAsync(symbol!, long.Parse(orderId)).ConfigureAwait(false);
             return order.As<ICommonOrder>(order.Data);
         }
 
@@ -230,29 +228,14 @@ namespace CoinEx.Net.Clients.SpotApi
 
         /// <inheritdoc />
         protected override Task<WebCallResult<DateTime>> GetServerTimestampAsync()
-        {
-            // No server time endpoint available..
-            return Task.FromResult(new WebCallResult<DateTime>(null, null, DateTime.UtcNow, null));
-        }
+            => Task.FromResult(new WebCallResult<DateTime>(null, null, DateTime.UtcNow, null));
 
         /// <inheritdoc />
-        protected override TimeSyncModel GetTimeSyncParameters()
-        {
-            return new TimeSyncModel(_options.SpotApiOptions.AutoTimestamp, SemaphoreSlim, LastTimeSync);
-        }
+        protected override TimeSyncInfo GetTimeSyncInfo()
+            => new TimeSyncInfo(_log, _options.SpotApiOptions.AutoTimestamp, TimeSyncState);
 
         /// <inheritdoc />
-        protected override void UpdateTimeOffset(TimeSpan timestamp)
-        {
-            LastTimeSync = DateTime.UtcNow;
-            if (timestamp.TotalMilliseconds > 0 && timestamp.TotalMilliseconds < 500)
-                return;
-
-            _log.Write(LogLevel.Information, $"Time offset set to {Math.Round(timestamp.TotalMilliseconds)}ms");
-            TimeOffset = timestamp;
-        }
-
-        /// <inheritdoc />
-        public override TimeSpan GetTimeOffset() => TimeOffset;
+        public override TimeSpan GetTimeOffset()
+            => TimeSyncState.TimeOffset;
     }
 }

@@ -27,7 +27,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApi
         /// <param name="assetType">Optionally only return a certain type of asset, for example BCH</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns></returns>
-        Task<WebCallResult<Dictionary<string, CoinExAssetConfig>>> GetAssetConfigAsync(string? assetType = null, CancellationToken ct = default);
+        Task<WebCallResult<Dictionary<string, CoinExAssetConfig>>> GetAssetsAsync(string? assetType = null, CancellationToken ct = default);
 
         /// <summary>
         /// Gets a list of symbols active on CoinEx

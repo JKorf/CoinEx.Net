@@ -48,7 +48,7 @@ namespace CoinEx.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<Dictionary<string, CoinExAssetConfig>>> GetAssetConfigAsync(string? assetType = null, CancellationToken ct = default)
+        public async Task<WebCallResult<Dictionary<string, CoinExAssetConfig>>> GetAssetsAsync(string? assetType = null, CancellationToken ct = default)
         {
             var parameters = new Dictionary<string, object>();
             parameters.AddOptionalParameter("coin_type", assetType);

@@ -85,7 +85,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApi
         /// <param name="symbol">The symbol the order is for</param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>Details of the order</returns>
-        Task<WebCallResult<CoinExOrder>> GetOrderAsync(long orderId, string symbol, CancellationToken ct = default);
+        Task<WebCallResult<CoinExOrder>> GetOrderAsync(string symbol, long orderId, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves execution details of a specific order. Requires API credentials
