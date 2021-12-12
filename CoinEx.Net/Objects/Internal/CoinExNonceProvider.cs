@@ -5,8 +5,8 @@ namespace CoinEx.Net.Objects.Internal
 {
     internal class CoinExNonceProvider : INonceProvider
     {
-        private static DateTime unix = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        private static readonly object nonceLock = new object();
+        private readonly static DateTime unix = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private readonly static object nonceLock = new object();
         private static long? lastNonce;
 
         /// <inheritdoc />

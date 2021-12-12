@@ -33,6 +33,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApi
         /// Gets a list of symbols active on CoinEx
         /// <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/020market" /></para>
         /// </summary>
+        /// <param name="ct">Cancellation token</param>
         /// <returns>List of symbol names</returns>
         Task<WebCallResult<IEnumerable<string>>> GetSymbolsAsync(CancellationToken ct = default);
 

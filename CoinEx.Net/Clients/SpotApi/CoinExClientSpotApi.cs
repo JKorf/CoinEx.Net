@@ -22,8 +22,8 @@ namespace CoinEx.Net.Clients.SpotApi
     public class CoinExClientSpotApi : RestApiClient, ICoinExClientSpotApi, IExchangeClient
     {
         #region fields
-        private CoinExClient _baseClient;
-        private CoinExClientOptions _options;
+        private readonly CoinExClient _baseClient;
+        private readonly CoinExClientOptions _options;
         private readonly Log _log;
 
         internal static TimeSyncState TimeSyncState = new TimeSyncState();
