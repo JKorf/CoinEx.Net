@@ -23,7 +23,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// </summary>
         /// <param name="symbol">The symbol of the order book</param>
         /// <param name="options">The options for the order book</param>
-        public CoinExSpotSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base("CoinEx[Spot]", symbol, options ?? new CoinExOrderBookOptions())
+        public CoinExSpotSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base("CoinEx", symbol, options ?? new CoinExOrderBookOptions())
         {
             symbol.ValidateCoinExSymbol();
 
@@ -32,7 +32,7 @@ namespace CoinEx.Net.SymbolOrderBooks
 
             socketClient = options?.SocketClient ?? new CoinExSocketClient();
             _socketOwner = options?.SocketClient == null;
-            Levels = 20;
+            Levels = options?.Limit ?? 20;
         }
 
         /// <inheritdoc />
