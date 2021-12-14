@@ -34,5 +34,9 @@ namespace CoinEx.Net.Objects.Models.Socket
         /// The bids on the symbol
         /// </summary>
         public IEnumerable<CoinExDepthEntry> Bids { get; set; } = Array.Empty<CoinExDepthEntry>();
+        /// <summary>
+        /// Signed integer (32 bit) of full depth data checksum
+        /// </summary>
+        public long? Checksum { get; set; }
     }
 }
