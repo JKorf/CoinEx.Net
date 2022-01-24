@@ -5,12 +5,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageId>CoinEx.Net</PackageId>
-    <Authors>JKorf</Authors>
+    <PackageId>SeptaPay.CoinEx.Net</PackageId>
+    <Authors>MajidBigdeli</Authors>
     <PackageVersion>4.2.5</PackageVersion>
-    <AssemblyVersion>4.2.5</AssemblyVersion>
-    <FileVersion>4.2.5</FileVersion>
-    <Description>CoinEx.Net is a .Net wrapper for the CoinEx API. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
+    <AssemblyVersion>4.2.6</AssemblyVersion>
+    <FileVersion>4.2.6</FileVersion>
+    <Description>Fork of CoinEx.Net is a .Net wrapper for the CoinEx API. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>CoinEx CoinEx.Net C# .Net CryptoCurrency Exchange API wrapper</PackageTags>
     <RepositoryType>git</RepositoryType>
@@ -24,6 +24,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <DocumentationFile>CoinEx.Net.xml</DocumentationFile>
+    <Product>SeptaPay.CoinEx.Net</Product>
   </PropertyGroup>
   <PropertyGroup Label="Deterministic Build" Condition="'$(Configuration)' == 'Release'">
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

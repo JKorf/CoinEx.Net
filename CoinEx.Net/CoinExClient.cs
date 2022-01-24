@@ -577,14 +577,20 @@ namespace CoinEx.Net
         /// <returns>List of open orders for a symbol</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenStopOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
-                { "market", symbol },
                 { "page", page },
                 { "limit", limit }
             };
+
+            if (!string.IsNullOrWhiteSpace(symbol))
+            {
+                if (!Regex.IsMatch(symbol, "^([0-9A-Z]{5,})$"))
+                    throw new ArgumentException($"{symbol} is not a valid CoinEx symbol. Should be [QuoteCurrency][BaseCurrency], e.g. ETHBTC");
+
+                parameters.Add("market", symbol);
+            }
 
             return await ExecutePaged<CoinExOrder>(GetUrl(OpenStopOrdersEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
