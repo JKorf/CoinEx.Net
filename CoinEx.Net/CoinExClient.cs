@@ -15,6 +15,7 @@ using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.ExchangeInterfaces;
 using Newtonsoft.Json.Linq;
 using CryptoExchange.Net.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace CoinEx.Net
 {
@@ -547,14 +548,21 @@ namespace CoinEx.Net
         /// <returns>List of open orders for a symbol</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
+
             limit.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
-                { "market", symbol },
                 { "page", page },
                 { "limit", limit }
             };
+
+            if (!string.IsNullOrWhiteSpace(symbol))
+            {
+                if (!Regex.IsMatch(symbol, "^([0-9A-Z]{5,})$"))
+                    throw new ArgumentException($"{symbol} is not a valid CoinEx symbol. Should be [QuoteCurrency][BaseCurrency], e.g. ETHBTC");
+
+                parameters.Add("market", symbol);
+            }
 
             return await ExecutePaged<CoinExOrder>(GetUrl(OpenOrdersEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
@@ -591,14 +599,21 @@ namespace CoinEx.Net
         /// <returns>List of executed orders for a symbol</returns>
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetExecutedOrdersAsync(string symbol, int page, int limit, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             limit.ValidateIntBetween(nameof(limit), 1, 100);
+
             var parameters = new Dictionary<string, object>
             {
-                { "market", symbol },
                 { "page", page },
                 { "limit", limit }
             };
+
+            if (!string.IsNullOrWhiteSpace(symbol))
+            {
+                if (!Regex.IsMatch(symbol, "^([0-9A-Z]{5,})$"))
+                    throw new ArgumentException($"{symbol} is not a valid CoinEx symbol. Should be [QuoteCurrency][BaseCurrency], e.g. ETHBTC");
+
+                parameters.Add("market", symbol);
+            }
 
             return await ExecutePaged<CoinExOrder>(GetUrl(FinishedOrdersEndpoint), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
@@ -871,12 +886,10 @@ namespace CoinEx.Net
             return result.As<IEnumerable<ICommonTrade>>(result.Data?.Data);
         }
 
-        async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetOpenOrdersAsync(string? symbol)
+        async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetOpenOrdersAsync(string symbol)
         {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(IExchangeClient.GetOpenOrdersAsync)}");
-
-            var openOrders = await GetOpenOrdersAsync(symbol!, 1, 100).ConfigureAwait(false);
+         
+            var openOrders = await GetOpenOrdersAsync(symbol, 1, 100).ConfigureAwait(false);
             return openOrders.As<IEnumerable<ICommonOrder>>(openOrders.Data?.Data);
         }
 
