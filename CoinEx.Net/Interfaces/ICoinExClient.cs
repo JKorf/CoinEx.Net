@@ -143,10 +143,11 @@ namespace CoinEx.Net.Interfaces
         /// <param name="coin">The coin to withdraw</param>
         /// <param name="localTransfer">Is it a local transfer between users or onchain</param>
         /// <param name="coinAddress">The address to withdraw to</param>
+        /// <param name="smartContractName">Multi-protocol USDT parameter: ERC20, TRC20, CoinExChain (ERC20 is set by default for USDT); No required for non-multi-protocol coin types.</param>
         /// <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>The withdrawal object</returns>
-        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, bool localTransfer, decimal amount, CancellationToken ct = default);
+        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, string smartContractName, bool localTransfer, decimal amount, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key

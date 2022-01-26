@@ -84,7 +84,7 @@ namespace CoinEx.Net
         /// Create a new instance of CoinExClient using provided options
         /// </summary>
         /// <param name="options">The options to use for this client</param>
-        public CoinExClient(CoinExClientOptions options): base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
+        public CoinExClient(CoinExClientOptions options) : base("CoinEx", options, options.ApiCredentials == null ? null : new CoinExAuthenticationProvider(options.ApiCredentials, options.NonceProvider))
         {
             manualParseError = true;
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
@@ -112,7 +112,7 @@ namespace CoinEx.Net
         {
             SetAuthenticationProvider(new CoinExAuthenticationProvider(new ApiCredentials(apiKey, apiSecret), nonceProvider));
         }
-                
+
         /// <summary>
         /// Gets a list of symbols active on CoinEx
         /// </summary>
@@ -143,7 +143,7 @@ namespace CoinEx.Net
             var parameters = new Dictionary<string, object>();
             parameters.AddOptionalParameter("coin_type", assetType);
 
-            return await Execute< Dictionary<string, CoinExAssetConfig>>(GetUrl(AssetConfigEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            return await Execute<Dictionary<string, CoinExAssetConfig>>(GetUrl(AssetConfigEndpoint), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -333,10 +333,11 @@ namespace CoinEx.Net
         /// <param name="coin">The coin to withdraw</param>
         /// <param name="localTransfer">Is it a local transfer between users or onchain</param>
         /// <param name="coinAddress">The address to withdraw to</param>
+        /// <param name="smartContractName">Multi-protocol USDT parameter: ERC20, TRC20, CoinExChain (ERC20 is set by default for USDT); No required for non-multi-protocol coin types.</param>
         /// <param name="amount">The amount to withdraw. This is the amount AFTER fees have been deducted. For fee rates see https://www.coinex.com/fees </param>
         /// <param name="ct">Cancellation token</param>
         /// <returns>The withdrawal object</returns>
-        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, bool localTransfer, decimal amount, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string coin, string coinAddress, string smartContractName, bool localTransfer, decimal amount, CancellationToken ct = default)
         {
             coin.ValidateNotNull(nameof(coin));
             coinAddress.ValidateNotNull(nameof(coinAddress));
@@ -347,6 +348,11 @@ namespace CoinEx.Net
                 { "transfer_method", localTransfer ? "local": "onchain" },
                 { "actual_amount", amount.ToString(CultureInfo.InvariantCulture) }
             };
+
+            if (!string.IsNullOrWhiteSpace(smartContractName))
+            {
+                parameters.Add("smart_contract_name", smartContractName);
+            }
 
             return await Execute<CoinExWithdrawal>(GetUrl(WithdrawEndpoint), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
@@ -405,7 +411,7 @@ namespace CoinEx.Net
                 { "amount", amount.ToString(CultureInfo.InvariantCulture) },
                 { "price", price.ToString(CultureInfo.InvariantCulture) }
             };
-            parameters.AddOptionalParameter("option", orderOption.HasValue ? JsonConvert.SerializeObject(orderOption, new OrderOptionConverter(false)): null);
+            parameters.AddOptionalParameter("option", orderOption.HasValue ? JsonConvert.SerializeObject(orderOption, new OrderOptionConverter(false)) : null);
             parameters.AddOptionalParameter("client_id", clientId);
             parameters.AddOptionalParameter("source_id", sourceId);
 
@@ -773,7 +779,7 @@ namespace CoinEx.Net
                 }
             }
 
-            return Task.FromResult((ServerError?) null);
+            return Task.FromResult((ServerError?)null);
         }
 
         /// <inheritdoc />
@@ -789,7 +795,7 @@ namespace CoinEx.Net
         {
             return GetResult(await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
-        private async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) 
+        private async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
         {
             return GetResult(await SendRequestAsync<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
         }
@@ -807,7 +813,7 @@ namespace CoinEx.Net
             return result.As(result.Data.Data);
         }
 
-        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result) 
+        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result)
         {
             if (result.Error != null || result.Data == null)
                 return WebCallResult.CreateErrorResult(result.ResponseStatusCode, result.ResponseHeaders, result.Error ?? new UnknownError("No data received"));
@@ -851,7 +857,7 @@ namespace CoinEx.Net
 
         async Task<WebCallResult<IEnumerable<ICommonKline>>> IExchangeClient.GetKlinesAsync(string symbol, TimeSpan timespan, DateTime? startTime = null, DateTime? endTime = null, int? limit = null)
         {
-            if(startTime != null || endTime != null)
+            if (startTime != null || endTime != null)
                 return WebCallResult<IEnumerable<ICommonKline>>.CreateErrorResult(new ArgumentError($"CoinEx does not support the {nameof(startTime)}/{nameof(endTime)} parameters for the method {nameof(IExchangeClient.GetKlinesAsync)}"));
 
             var klines = await GetKlinesAsync(symbol, GetKlineIntervalFromTimespan(timespan), limit).ConfigureAwait(false);
@@ -872,12 +878,12 @@ namespace CoinEx.Net
 
         async Task<WebCallResult<ICommonOrderId>> IExchangeClient.PlaceOrderAsync(string symbol, IExchangeClient.OrderSide side, IExchangeClient.OrderType type, decimal quantity, decimal? price = null, string? accountId = null)
         {
-            if(price == null && type == IExchangeClient.OrderType.Limit)
+            if (price == null && type == IExchangeClient.OrderType.Limit)
                 return WebCallResult<ICommonOrderId>.CreateErrorResult(new ArgumentError($"Price parameter null while placing a limit order"));
 
             WebCallResult<CoinExOrder> result;
-            if(type == IExchangeClient.OrderType.Limit)
-                result = await PlaceLimitOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell: TransactionType.Buy, quantity, price!.Value).ConfigureAwait(false);
+            if (type == IExchangeClient.OrderType.Limit)
+                result = await PlaceLimitOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell : TransactionType.Buy, quantity, price!.Value).ConfigureAwait(false);
             else
                 result = await PlaceMarketOrderAsync(symbol, side == IExchangeClient.OrderSide.Sell ? TransactionType.Sell : TransactionType.Buy, quantity).ConfigureAwait(false);
 
@@ -901,7 +907,7 @@ namespace CoinEx.Net
 
         async Task<WebCallResult<IEnumerable<ICommonOrder>>> IExchangeClient.GetOpenOrdersAsync(string symbol)
         {
-         
+
             var openOrders = await GetOpenOrdersAsync(symbol, 1, 100).ConfigureAwait(false);
             return openOrders.As<IEnumerable<ICommonOrder>>(openOrders.Data?.Data);
         }
