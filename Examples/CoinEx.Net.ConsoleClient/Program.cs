@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.Logging;
+﻿using CoinEx.Net.Clients;
+using CryptoExchange.Net.Logging;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,12 @@ namespace CoinEx.Net.Examples
             string[] marketList = new string[0];
             using(var client = new CoinExClient())
             {
-                var listResult = await client.GetSymbolsAsync();
+                var listResult = await client.SpotApi.ExchangeData.GetSymbolsAsync();
                 if (!listResult.Success)
                     Console.WriteLine("Failed to get market list: " + listResult.Error);
                 else
                 {
-                    Console.WriteLine("Support market list: " + string.Join(", ", listResult.Data));
+                    Console.WriteLine("Supported market list: " + string.Join(", ", listResult.Data));
                     marketList = listResult.Data.ToArray();
                 }
             }
@@ -42,7 +43,7 @@ namespace CoinEx.Net.Examples
                 LogLevel = LogLevel.Information,
                 LogWriters = new List<ILogger> { new ConsoleLogger() }
             });
-            await socketClient.SubscribeToSymbolStateUpdatesAsync(market, data =>
+            await socketClient.SpotStreams.SubscribeToTickerUpdatesAsync(market, data =>
             {
                 Console.WriteLine($"Last price of {market}: {data.Data.Close}");
             });

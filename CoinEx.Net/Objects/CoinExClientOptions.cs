@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Net.Http;
-using CoinEx.Net.Interfaces;
+using System.Collections.Generic;
+using CoinEx.Net.Interfaces.Clients;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 
@@ -9,55 +9,74 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Client options
     /// </summary>
-    public class CoinExClientOptions: RestClientOptions
+    public class CoinExClientOptions: BaseRestClientOptions
     {
+        /// <summary>
+        /// Default options for the spot client
+        /// </summary>
+        public static CoinExClientOptions Default { get; set; } = new CoinExClientOptions();
+
         /// <summary>
         /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
         /// </summary>
         public INonceProvider? NonceProvider { get; set; }
 
-        /// <summary>
-        /// Create new client options
-        /// </summary>
-        public CoinExClientOptions() : this(null, "https://api.coinex.com/v1")
+        private readonly RestApiClientOptions _spotApiOptions = new RestApiClientOptions(CoinExApiAddresses.Default.RestClientAddress)
         {
+            RateLimiters = new List<IRateLimiter>
+                {
+                    new RateLimiter()
+                        .AddPartialEndpointLimit("/v1/order/", 100, TimeSpan.FromSeconds(10), countPerEndpoint: true)
+                }
+        };
+        /// <summary>
+        /// Spot API options
+        /// </summary>
+        public RestApiClientOptions SpotApiOptions
+        {
+            get => _spotApiOptions;
+            set => _spotApiOptions.Copy(_spotApiOptions, value);
         }
 
         /// <summary>
-        /// Create new client options
+        /// Ctor
         /// </summary>
-        /// <param name="client">HttpClient to use for requests from this client</param>
-        public CoinExClientOptions(HttpClient client) : this(client, "https://api.coinex.com/v1")
+        public CoinExClientOptions()
         {
+            if (Default == null)
+                return;
+
+            Copy(this, Default);
         }
 
         /// <summary>
-        /// Create new client options
+        /// Copy the values of the def to the input
         /// </summary>
-        /// <param name="apiAddress">Custom API address to use</param>
-        /// <param name="client">HttpClient to use for requests from this client</param>
-        public CoinExClientOptions(HttpClient? client, string apiAddress) : base(apiAddress)
+        /// <typeparam name="T"></typeparam>
+        /// <param name="input"></param>
+        /// <param name="def"></param>
+        public new void Copy<T>(T input, T def) where T : CoinExClientOptions
         {
-            HttpClient = client;
-        }
-        
-        /// <summary>
-        /// Copy the options
-        /// </summary>
-        /// <returns></returns>
-        public CoinExClientOptions Copy()
-        {
-            var copy = Copy<CoinExClientOptions>();
-            copy.NonceProvider = NonceProvider;
-            return copy;
+            base.Copy(input, def);
+
+            input.NonceProvider = def.NonceProvider;
+            input.SpotApiOptions = new RestApiClientOptions(def.SpotApiOptions);
         }
     }
 
     /// <summary>
     /// Socket client options
     /// </summary>
-    public class CoinExSocketClientOptions : SocketClientOptions
+    public class CoinExSocketClientOptions : BaseSocketClientOptions
     {
+        /// <summary>
+        /// Default options for the spot client
+        /// </summary>
+        public static CoinExSocketClientOptions Default { get; set; } = new CoinExSocketClientOptions()
+        {
+            SocketSubscriptionsCombineTarget = 1
+        };
+
         /// <summary>
         /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
         /// </summary>
@@ -78,22 +97,39 @@ namespace CoinEx.Net.Objects
             }
         }
 
+        private readonly ApiClientOptions _spotStreamsOptions = new ApiClientOptions(CoinExApiAddresses.Default.SocketClientAddress);
         /// <summary>
-        /// ctor
+        /// Spot stream options
         /// </summary>
-        public CoinExSocketClientOptions(): base("wss://socket.coinex.com/")
+        public ApiClientOptions SpotStreamsOptions
         {
+            get => _spotStreamsOptions;
+            set => _spotStreamsOptions.Copy(_spotStreamsOptions, value);
         }
 
         /// <summary>
-        /// Copy the options
+        /// Ctor
         /// </summary>
-        /// <returns></returns>
-        public CoinExSocketClientOptions Copy()
+        public CoinExSocketClientOptions()
         {
-            var copy = Copy<CoinExSocketClientOptions>();
-            copy.NonceProvider = NonceProvider;
-            return copy;
+            if (Default == null)
+                return;
+
+            Copy(this, Default);
+        }
+
+        /// <summary>
+        /// Copy the values of the def to the input
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="input"></param>
+        /// <param name="def"></param>
+        public new void Copy<T>(T input, T def) where T : CoinExSocketClientOptions
+        {
+            base.Copy(input, def);
+
+            input.NonceProvider = def.NonceProvider;
+            input.SpotStreamsOptions = new ApiClientOptions(def.SpotStreamsOptions);
         }
     }
 
@@ -105,15 +141,11 @@ namespace CoinEx.Net.Objects
         /// <summary>
         /// The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.
         /// </summary>
-        public ICoinExSocketClient? SocketClient { get; }
+        public ICoinExSocketClient? SocketClient { get; set; }
 
         /// <summary>
-        /// ctor
+        /// The amount of rows. Should be one of: 5/10/20/50
         /// </summary>
-        /// <param name="client">The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.</param>
-        public CoinExOrderBookOptions(ICoinExSocketClient? client = null) : base("CoinEx", false, false)
-        {
-            SocketClient = client;
-        }
+        public int? Limit { get; set; }
     }
 }

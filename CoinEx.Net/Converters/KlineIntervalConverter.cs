@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Objects;
+﻿using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters;
 using System.Collections.Generic;
 
@@ -12,17 +12,17 @@ namespace CoinEx.Net.Converters
         protected override List<KeyValuePair<KlineInterval, string>> Mapping => new List<KeyValuePair<KlineInterval, string>>
         {
             new KeyValuePair<KlineInterval, string>( KlineInterval.OneMinute, "1min"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.ThreeMinute, "3min"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.FiveMinute, "5min"),
-            new KeyValuePair<KlineInterval, string>( KlineInterval.FifteenMinute, "15min"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.ThirtyMinute, "30min"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.ThreeMinutes, "3min"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.FiveMinutes, "5min"),
+            new KeyValuePair<KlineInterval, string>( KlineInterval.FifteenMinutes, "15min"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.ThirtyMinutes, "30min"),
             new KeyValuePair<KlineInterval, string>( KlineInterval.OneHour, "1hour"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.TwoHour, "2hour"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.FourHour, "4hour"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.SixHour, "6hour"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.TwelveHour, "12hour"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.TwoHours, "2hour"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.FourHours, "4hour"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.SixHours, "6hour"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.TwelveHours, "12hour"),
             new KeyValuePair<KlineInterval, string>(KlineInterval.OneDay, "1day"),
-            new KeyValuePair<KlineInterval, string>(KlineInterval.ThreeDay, "3day"),
+            new KeyValuePair<KlineInterval, string>(KlineInterval.ThreeDays, "3day"),
             new KeyValuePair<KlineInterval, string>( KlineInterval.OneWeek, "1week")
         };
     }
