@@ -1097,16 +1097,14 @@
         </member>
         <member name="M:CoinEx.Net.Objects.CoinExClientOptions.#ctor">
             <summary>
-            Ctor
+            ctor
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Objects.CoinExClientOptions.Copy``1(``0,``0)">
+        <member name="M:CoinEx.Net.Objects.CoinExClientOptions.#ctor(CoinEx.Net.Objects.CoinExClientOptions)">
             <summary>
-            Copy the values of the def to the input
+            ctor
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="input"></param>
-            <param name="def"></param>
+            <param name="baseOn">Base the new options on other options</param>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExSocketClientOptions">
             <summary>
@@ -1137,16 +1135,14 @@
         </member>
         <member name="M:CoinEx.Net.Objects.CoinExSocketClientOptions.#ctor">
             <summary>
-            Ctor
+            ctor
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Objects.CoinExSocketClientOptions.Copy``1(``0,``0)">
+        <member name="M:CoinEx.Net.Objects.CoinExSocketClientOptions.#ctor(CoinEx.Net.Objects.CoinExSocketClientOptions)">
             <summary>
-            Copy the values of the def to the input
+            ctor
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="input"></param>
-            <param name="def"></param>
+            <param name="baseOn">Base the new options on other options</param>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExOrderBookOptions">
             <summary>
@@ -2207,8 +2203,11 @@
         <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.DoChecksum(System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.Dispose">
+        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.Dispose(System.Boolean)">
             <inheritdoc />
+            <summary>
+            Dispose
+            </summary>
         </member>
     </members>
 </doc>

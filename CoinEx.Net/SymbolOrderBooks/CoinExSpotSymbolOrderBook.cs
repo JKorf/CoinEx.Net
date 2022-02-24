@@ -111,14 +111,15 @@ namespace CoinEx.Net.SymbolOrderBooks
             return result;
         }
         /// <inheritdoc />
-        public override void Dispose()
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        protected override void Dispose(bool disposing)
         {
-            processBuffer.Clear();
-            asks.Clear();
-            bids.Clear();
-
-            if(_socketOwner)
+            if (_socketOwner)
                 socketClient?.Dispose();
+
+            base.Dispose(disposing);
         }
     }
 }
