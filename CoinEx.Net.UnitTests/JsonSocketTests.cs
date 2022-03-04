@@ -18,25 +18,25 @@ namespace CoinEx.Net.UnitTests
         [Test]
         public async Task ValidateTickerUpdateStreamJson()
         {
-            await TestFileToObject<Dictionary<string, CoinExSocketSymbolState>>(@"JsonResponses\Spot\Socket\TickerUpdate.txt");
+            await TestFileToObject<Dictionary<string, CoinExSocketSymbolState>>(@"JsonResponses/Spot/Socket/TickerUpdate.txt");
         }
 
         [Test]
         public async Task ValidateTradeUpdateStreamJson()
         {
-            await TestFileToObject<IEnumerable<CoinExSocketSymbolTrade>>(@"JsonResponses\Spot\Socket\TradeUpdate.txt");
+            await TestFileToObject<IEnumerable<CoinExSocketSymbolTrade>>(@"JsonResponses/Spot/Socket/TradeUpdate.txt");
         }
 
         [Test]
         public async Task ValidateBalanceUpdateStreamJson()
         {
-            await TestFileToObject<Dictionary<string, CoinExBalance>>(@"JsonResponses\Spot\Socket\BalanceUpdate.txt");
+            await TestFileToObject<Dictionary<string, CoinExBalance>>(@"JsonResponses/Spot/Socket/BalanceUpdate.txt");
         }
 
         [Test]
         public async Task ValidateOrderUpdateStreamJson()
         {
-            await TestFileToObject<CoinExSocketOrder>(@"JsonResponses\Spot\Socket\OrderUpdate.txt", new List<string> { "account", "option" });
+            await TestFileToObject<CoinExSocketOrder>(@"JsonResponses/Spot/Socket/OrderUpdate.txt", new List<string> { "account", "option" });
         }
 
         private static async Task TestFileToObject<T>(string filePath, List<string> ignoreProperties = null)

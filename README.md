@@ -1,5 +1,5 @@
 # CoinEx.Net
-![Build status](https://travis-ci.com/JKorf/CoinEx.Net.svg?branch=master) ![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)  ![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)
+[![.NET](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) ![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)  ![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)
 
 CoinEx.Net is a wrapper around the CoinEx API as described on [CoinEx](https://github.com/coinexcom/coinex_exchange_api/wiki), including all features the API provides using clear and readable objects, both for the REST  as the websocket API's.
 
