@@ -82,7 +82,7 @@ namespace CoinEx.Net.Clients.SpotApi
             };
             parameters.AddOptionalParameter("price", price?.ToString(CultureInfo.InvariantCulture));
             parameters.AddOptionalParameter("option", orderOption.HasValue ? JsonConvert.SerializeObject(orderOption, new OrderOptionConverter(false)) : null);
-            parameters.AddOptionalParameter("stopPrice", stopPrice?.ToString(CultureInfo.InvariantCulture));
+            parameters.AddOptionalParameter("stop_price", stopPrice?.ToString(CultureInfo.InvariantCulture));
             parameters.AddOptionalParameter("client_id", clientOrderId);
             parameters.AddOptionalParameter("source_id", sourceId);
 
