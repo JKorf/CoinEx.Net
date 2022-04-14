@@ -64,6 +64,10 @@ namespace CoinEx.Net.Clients.SpotApi
             Account = new CoinExClientSpotApiAccount(this);
             ExchangeData = new CoinExClientSpotApiExchangeData(this);
             Trading = new CoinExClientSpotApiTrading(this);
+
+            manualParseError = true;
+            ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
+
         }
         #endregion
 

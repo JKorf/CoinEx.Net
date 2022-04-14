@@ -49,9 +49,6 @@ namespace CoinEx.Net.Clients
         /// <param name="options">The options to use for this client</param>
         public CoinExClient(CoinExClientOptions options) : base("CoinEx", options)
         {
-            manualParseError = true;
-            ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
-
             SpotApi = AddApiClient(new CoinExClientSpotApi(log, this, options));
         }
         #endregion
