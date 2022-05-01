@@ -320,7 +320,7 @@
         </member>
         <member name="T:CoinEx.Net.Enums.KlineInterval">
             <summary>
-            Interval for klines
+            Interval for klines, int value represent the time in seconds
             </summary>
         </member>
         <member name="F:CoinEx.Net.Enums.KlineInterval.OneMinute">
