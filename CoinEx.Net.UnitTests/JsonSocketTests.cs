@@ -36,7 +36,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         public async Task ValidateOrderUpdateStreamJson()
         {
-            await TestFileToObject<CoinExSocketOrder>(@"JsonResponses/Spot/Socket/OrderUpdate.txt", new List<string> { "account", "option" });
+            await TestFileToObject<CoinExSocketOrder>(@"JsonResponses/Spot/Socket/OrderUpdate.txt", new List<string> { "account", "option", "last_deal_time" });
         }
 
         private static async Task TestFileToObject<T>(string filePath, List<string> ignoreProperties = null)
