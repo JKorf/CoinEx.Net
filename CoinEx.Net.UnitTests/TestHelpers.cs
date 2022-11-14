@@ -73,7 +73,7 @@ namespace CoinEx.Net.Testing
         {
             ICoinExClient client;
             client = options != null ? new CoinExClient(options) : new CoinExClient();
-            client.RequestFactory = Mock.Of<IRequestFactory>();
+            client.SpotApi.RequestFactory = Mock.Of<IRequestFactory>();
             return client;
         }
 
@@ -98,7 +98,7 @@ namespace CoinEx.Net.Testing
             return client;
         }
 
-        public static Mock<IRequest> SetResponse(BaseRestClient client, string responseData, HttpStatusCode code = HttpStatusCode.OK)
+        public static Mock<IRequest> SetResponse(CoinExClient client, string responseData, HttpStatusCode code = HttpStatusCode.OK)
         {
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();
@@ -115,7 +115,7 @@ namespace CoinEx.Net.Testing
             request.Setup(c => c.GetResponseAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(response.Object));
             request.Setup(c => c.GetHeaders()).Returns(new Dictionary<string, IEnumerable<string>>());
 
-            var factory = Mock.Get(client.RequestFactory);
+            var factory = Mock.Get(client.SpotApi.RequestFactory);
             factory.Setup(c => c.Create(It.IsAny<HttpMethod>(), It.IsAny<Uri>(), It.IsAny<int>()))
                 .Returns(request.Object);
             return request;

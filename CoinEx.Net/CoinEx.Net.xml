@@ -7,16 +7,6 @@
         <member name="T:CoinEx.Net.Clients.CoinExClient">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExClient" />
         </member>
-        <member name="E:CoinEx.Net.Clients.CoinExClient.OnOrderPlaced">
-            <summary>
-            Event triggered when an order is placed via this client
-            </summary>
-        </member>
-        <member name="E:CoinEx.Net.Clients.CoinExClient.OnOrderCanceled">
-            <summary>
-            Event triggered when an order is canceled via this client. Note that this does not trigger when using CancelAllOrdersAsync
-            </summary>
-        </member>
         <member name="P:CoinEx.Net.Clients.CoinExClient.SpotApi">
             <inheritdoc />
         </member>
@@ -36,12 +26,6 @@
             Set the default options to be used when creating new clients
             </summary>
             <param name="options">Options to use as default</param>
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExClient.TryParseErrorAsync(Newtonsoft.Json.Linq.JToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExClient.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
-            <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.CoinExSocketClient">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient" />
@@ -65,27 +49,6 @@
             Set the default options to be used when creating new clients
             </summary>
             <param name="options">Options to use as default</param>
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.HandleQueryResponse``1(CryptoExchange.Net.Sockets.SocketConnection,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{``0}@)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.HandleSubscriptionResponse(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{System.Object}@)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.ProcessTokenData(Newtonsoft.Json.Linq.JToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.Object)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.AuthenticateSocketAsync(CryptoExchange.Net.Sockets.SocketConnection)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.UnsubscribeAsync(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription)">
-            <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi" />
@@ -122,6 +85,12 @@
             <param name="baseAsset"></param>
             <param name="quoteAsset"></param>
             <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.TryParseErrorAsync(Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.GetServerTimestampAsync">
             <inheritdoc />
@@ -228,7 +197,7 @@
         <member name="T:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams" />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.#ctor(CryptoExchange.Net.Logging.Log,CoinEx.Net.Clients.CoinExSocketClient,CoinEx.Net.Objects.CoinExSocketClientOptions)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.#ctor(CryptoExchange.Net.Logging.Log,CoinEx.Net.Objects.CoinExSocketClientOptions)">
             <summary>
             Create a new instance of CoinExSocketClient with default options
             </summary>
@@ -282,6 +251,27 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.HandleQueryResponse``1(CryptoExchange.Net.Sockets.SocketConnection,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{``0}@)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.HandleSubscriptionResponse(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{System.Object}@)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.ProcessTokenData(Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.AuthenticateSocketAsync(CryptoExchange.Net.Sockets.SocketConnection)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.UnsubscribeAsync(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.CoinExHelpers">
@@ -586,6 +576,11 @@
         <member name="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi">
             <summary>
             Spot API
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi.RequestFactory">
+            <summary>
+            The factory for creating requests. Used for unit testing
             </summary>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi.Account">
@@ -1119,13 +1114,6 @@
         <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.NonceProvider">
             <summary>
             Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.SocketSubscriptionsCombineTarget">
-            <summary>
-            The amount of subscriptions that should be made on a single socket connection. Not all exchanges support multiple subscriptions on a single socket.
-            Setting this to a higher number increases subscription speed, but having more subscriptions on a single connection will also increase the amount of traffic on that single connection.
-            Not supported on CoinEx
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.SpotStreamsOptions">

@@ -18,6 +18,7 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.CommonObjects;
 using System.Globalization;
 using CryptoExchange.Net.Interfaces.CommonClients;
+using Newtonsoft.Json.Linq;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -25,9 +26,7 @@ namespace CoinEx.Net.Clients.SpotApi
     public class CoinExClientSpotApi : RestApiClient, ICoinExClientSpotApi, ISpotClient
     {
         #region fields
-        private readonly CoinExClient _baseClient;
         private readonly CoinExClientOptions _options;
-        private readonly Log _log;
 
         internal static TimeSyncState TimeSyncState = new TimeSyncState("Spot Api");
 
@@ -54,11 +53,9 @@ namespace CoinEx.Net.Clients.SpotApi
         #endregion
 
         #region ctor
-        internal CoinExClientSpotApi(Log log, CoinExClient baseClient, CoinExClientOptions options) :
-            base(options, options.SpotApiOptions)
+        internal CoinExClientSpotApi(Log log, CoinExClientOptions options) :
+            base(log, options, options.SpotApiOptions)
         {
-            _baseClient = baseClient;
-            _log = log;
             _options = options;
 
             Account = new CoinExClientSpotApiAccount(this);
@@ -77,13 +74,13 @@ namespace CoinEx.Net.Clients.SpotApi
 
         #region methods
         #region private
-        internal Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-            => _baseClient.Execute<T>(this, uri, method, ct, parameters, signed);
-        internal Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
-            => _baseClient.Execute(this, uri, method, ct, parameters, signed);
+        internal async Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+            => GetResult(await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        internal async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
+            => GetResult(await SendRequestAsync<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
 
-        internal Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-            => _baseClient.ExecutePaged<T>(this, uri, method, ct, parameters, signed);
+        internal async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+            => GetResult(await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
 
         internal Uri GetUrl(string endpoint)
         {
@@ -408,6 +405,47 @@ namespace CoinEx.Net.Clients.SpotApi
             throw new ArgumentException("Unsupported timespan for CoinEx Klines, check supported intervals using CoinEx.Net.Objects.KlineInterval");
         }
         #endregion
+
+
+        /// <inheritdoc />
+        protected override Task<ServerError?> TryParseErrorAsync(JToken data)
+        {
+            if (data["code"] != null && data["message"] != null)
+            {
+                if (data["code"]!.Value<int>() != 0)
+                {
+                    return Task.FromResult((ServerError?)ParseErrorResponse(data));
+                }
+            }
+
+            return Task.FromResult((ServerError?)null);
+        }
+
+        /// <inheritdoc />
+        protected override Error ParseErrorResponse(JToken error)
+        {
+            if (error["code"] == null || error["message"] == null)
+                return new ServerError(error.ToString());
+
+            return new ServerError((int)error["code"]!, (string)error["message"]!);
+        }
+
+
+        private static WebCallResult<T> GetResult<T>(WebCallResult<CoinExApiResult<T>> result) where T : class
+        {
+            if (result.Error != null || result.Data == null)
+                return result.AsError<T>(result.Error ?? new UnknownError("No data received"));
+
+            return result.As(result.Data.Data);
+        }
+
+        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result)
+        {
+            if (result.Error != null || result.Data == null)
+                return result.AsDatalessError(result.Error ?? new UnknownError("No data received"));
+
+            return result.AsDataless();
+        }
 
         /// <inheritdoc />
         protected override Task<WebCallResult<DateTime>> GetServerTimestampAsync()

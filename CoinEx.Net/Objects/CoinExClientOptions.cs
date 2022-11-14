@@ -9,7 +9,7 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Client options
     /// </summary>
-    public class CoinExClientOptions: BaseRestClientOptions
+    public class CoinExClientOptions: ClientOptions
     {
         /// <summary>
         /// Default options for the spot client
@@ -62,44 +62,30 @@ namespace CoinEx.Net.Objects
     /// <summary>
     /// Socket client options
     /// </summary>
-    public class CoinExSocketClientOptions : BaseSocketClientOptions
+    public class CoinExSocketClientOptions : ClientOptions
     {
         /// <summary>
         /// Default options for the spot client
         /// </summary>
-        public static CoinExSocketClientOptions Default { get; set; } = new CoinExSocketClientOptions()
-        {
-            SocketSubscriptionsCombineTarget = 1
-        };
+        public static CoinExSocketClientOptions Default { get; set; } = new CoinExSocketClientOptions();
 
         /// <summary>
         /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
         /// </summary>
         public INonceProvider? NonceProvider { get; set; }
 
-        /// <summary>
-        /// The amount of subscriptions that should be made on a single socket connection. Not all exchanges support multiple subscriptions on a single socket.
-        /// Setting this to a higher number increases subscription speed, but having more subscriptions on a single connection will also increase the amount of traffic on that single connection.
-        /// Not supported on CoinEx
-        /// </summary>
-        public new int? SocketSubscriptionsCombineTarget
+        private SocketApiClientOptions _spotStreamsOptions = new SocketApiClientOptions(CoinExApiAddresses.Default.SocketClientAddress)
         {
-            get => 1;
-            set
-            {
-                if (value != 1)
-                    throw new ArgumentException("Can't change SocketSubscriptionsCombineTarget; server implementation does not allow multiple subscription on a socket");
-            }
-        }
+            SocketSubscriptionsCombineTarget = 1
+        };
 
-        private ApiClientOptions _spotStreamsOptions = new ApiClientOptions(CoinExApiAddresses.Default.SocketClientAddress);
         /// <summary>
         /// Spot stream options
         /// </summary>
-        public ApiClientOptions SpotStreamsOptions
+        public SocketApiClientOptions SpotStreamsOptions
         {
             get => _spotStreamsOptions;
-            set => _spotStreamsOptions = new ApiClientOptions(_spotStreamsOptions, value);
+            set => _spotStreamsOptions = new SocketApiClientOptions(_spotStreamsOptions, value);
         }
 
         /// <summary>
@@ -119,7 +105,7 @@ namespace CoinEx.Net.Objects
                 return;
 
             NonceProvider = baseOn.NonceProvider;
-            _spotStreamsOptions = new ApiClientOptions(baseOn.SpotStreamsOptions, null);
+            _spotStreamsOptions = new SocketApiClientOptions(baseOn.SpotStreamsOptions, null);
         }
     }
 

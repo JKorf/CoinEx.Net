@@ -15,10 +15,10 @@ namespace CoinEx.Net.UnitTests
         private JsonToObjectComparer<ICoinExClient> _comparer = new JsonToObjectComparer<ICoinExClient>((json) => TestHelpers.CreateResponseClient(json, new CoinExClientOptions()
         { 
             ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123"), 
-            OutputOriginalData = true, 
             SpotApiOptions = new CryptoExchange.Net.Objects.RestApiClientOptions
             {
-                RateLimiters = new List<IRateLimiter>()
+                RateLimiters = new List<IRateLimiter>(),
+                OutputOriginalData = true,
             }
         }, System.Net.HttpStatusCode.OK));
 
