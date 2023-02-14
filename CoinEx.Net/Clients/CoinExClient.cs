@@ -13,6 +13,7 @@ using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Clients.SpotApi;
 using CryptoExchange.Net.CommonObjects;
+using CryptoExchange.Net.Authentication;
 
 namespace CoinEx.Net.Clients
 {
@@ -50,6 +51,12 @@ namespace CoinEx.Net.Clients
         public static void SetDefaultOptions(CoinExClientOptions options)
         {
             CoinExClientOptions.Default = options;
+        }
+
+        /// <inheritdoc />
+        public void SetApiCredentials(ApiCredentials credentials)
+        {
+            SpotApi.SetApiCredentials(credentials);
         }
         #endregion
     }

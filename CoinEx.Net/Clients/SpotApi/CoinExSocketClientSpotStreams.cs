@@ -438,7 +438,7 @@ namespace CoinEx.Net.Clients.SpotApi
 
             var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters(s.ApiClient));
             var result = new CallResult<bool>(new ServerError("No response from server"));
-            await s.SendAndWaitAsync(request, Options.SocketResponseTimeout, data =>
+            await s.SendAndWaitAsync(request, Options.SocketResponseTimeout, null, data =>
             {
                 var idField = data["id"];
                 if (idField == null)

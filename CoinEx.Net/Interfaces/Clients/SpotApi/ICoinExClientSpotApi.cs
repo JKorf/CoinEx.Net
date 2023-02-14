@@ -7,13 +7,8 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApi
     /// <summary>
     /// Spot API
     /// </summary>
-    public interface ICoinExClientSpotApi : IDisposable
+    public interface ICoinExClientSpotApi : IRestApiClient, IDisposable
     {
-        /// <summary>
-        /// The factory for creating requests. Used for unit testing
-        /// </summary>
-        IRequestFactory RequestFactory { get; set; }
-
         /// <summary>
         /// Endpoints related to account settings, info or actions
         /// </summary>

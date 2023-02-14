@@ -6,6 +6,7 @@ using System.Net.Http;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Interfaces;
 using CoinEx.Net.Objects.Internal;
+using System.Linq;
 
 namespace CoinEx.Net
 {
@@ -32,7 +33,8 @@ namespace CoinEx.Net
             var parameters = parameterPosition == HttpMethodParameterPosition.InUri ? uriParameters: bodyParameters;
             parameters.Add("access_id", Credentials.Key!.GetString());
             parameters.Add("tonce", _nonceProvider.GetNonce());
-            headers.Add("Authorization", SignMD5(uri.SetParameters(parameters, arraySerialization).Query.Replace("?", "") + "&secret_key=" + Credentials.Secret!.GetString()));
+            var parameterString = string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"));
+            headers.Add("Authorization", SignMD5(parameterString + "&secret_key=" + Credentials.Secret!.GetString()));
         }
 
         public override string Sign(string toSign)

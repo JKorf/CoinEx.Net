@@ -27,6 +27,9 @@
             </summary>
             <param name="options">Options to use as default</param>
         </member>
+        <member name="M:CoinEx.Net.Clients.CoinExClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.Clients.CoinExSocketClient">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient" />
         </member>
@@ -49,6 +52,9 @@
             Set the default options to be used when creating new clients
             </summary>
             <param name="options">Options to use as default</param>
+        </member>
+        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi" />
@@ -90,9 +96,6 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.GetServerTimestampAsync">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.GetTimeSyncInfo">
@@ -563,6 +566,12 @@
             Spot endpoints
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <summary>
+            Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
+            </summary>
+            <param name="credentials">The credentials to set</param>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient">
             <summary>
             Client for accessing the CoinEx websocket API
@@ -573,14 +582,15 @@
             Spot streams
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <summary>
+            Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
+            </summary>
+            <param name="credentials">The credentials to set</param>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi">
             <summary>
             Spot API
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi.RequestFactory">
-            <summary>
-            The factory for creating requests. Used for unit testing
             </summary>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi.Account">

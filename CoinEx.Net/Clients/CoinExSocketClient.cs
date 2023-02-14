@@ -3,6 +3,7 @@ using CryptoExchange.Net;
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Clients.SpotApi;
+using CryptoExchange.Net.Authentication;
 
 namespace CoinEx.Net.Clients
 {
@@ -43,5 +44,10 @@ namespace CoinEx.Net.Clients
             CoinExSocketClientOptions.Default = options;
         }
 
+        /// <inheritdoc />
+        public void SetApiCredentials(ApiCredentials credentials)
+        {
+            SpotStreams.SetApiCredentials(credentials);
+        }
     }
 }

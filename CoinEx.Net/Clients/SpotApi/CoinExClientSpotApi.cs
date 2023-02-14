@@ -28,8 +28,6 @@ namespace CoinEx.Net.Clients.SpotApi
         #region fields
         private readonly CoinExClientOptions _options;
 
-        internal static TimeSyncState TimeSyncState = new TimeSyncState("Spot Api");
-
         /// <summary>
         /// Event triggered when an order is placed via this client
         /// </summary>
@@ -448,16 +446,10 @@ namespace CoinEx.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        protected override Task<WebCallResult<DateTime>> GetServerTimestampAsync()
-            => Task.FromResult(new WebCallResult<DateTime>(null, null, null, null, null, null, null, null, DateTime.UtcNow, null));
+        public override TimeSyncInfo? GetTimeSyncInfo() => null;
 
         /// <inheritdoc />
-        public override TimeSyncInfo GetTimeSyncInfo()
-            => new TimeSyncInfo(_log, _options.SpotApiOptions.AutoTimestamp, _options.SpotApiOptions.TimestampRecalculationInterval, TimeSyncState);
-
-        /// <inheritdoc />
-        public override TimeSpan GetTimeOffset()
-            => TimeSyncState.TimeOffset;
+        public override TimeSpan? GetTimeOffset() => null;
 
         /// <inheritdoc />
         public ISpotClient CommonSpotClient => this;
