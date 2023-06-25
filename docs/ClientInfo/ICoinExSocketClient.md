@@ -11,4 +11,4 @@ has_children: true
 **void SetApiCredentials(ApiCredentials credentials);**  
 ***
 *Spot streams*  
-**[ICoinExSocketClientSpotStreams](SpotApi/ICoinExSocketClientSpotStreams.html) SpotStreams { get; }**  
+**[ICoinExSocketClientSpotApi](SpotApi/ICoinExSocketClientSpotApi.html) SpotApi { get; }**  

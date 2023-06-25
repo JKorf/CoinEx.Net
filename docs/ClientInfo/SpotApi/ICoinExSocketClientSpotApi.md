@@ -1,10 +1,10 @@
 ---
-title: ICoinExSocketClientSpotStreams
-has_children: false
-parent: Socket API documentation
+title: ICoinExSocketClientSpotApi
+has_children: true
+parent: Rest API documentation
 ---
 *[generated documentation]*  
-`CoinExSocketClient > SpotStreams`  
+`CoinExClient > SpotApi`  
 *Spot streams*
   
 
@@ -18,8 +18,8 @@ parent: Socket API documentation
 *Get balances of assets. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.GetBalancesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.GetBalancesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -42,8 +42,8 @@ Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable
 *Gets symbol kline data*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.GetKlinesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.GetKlinesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -67,8 +67,8 @@ Task<CallResult<CoinExKline>> GetKlinesAsync(string symbol, KlineInterval interv
 *Gets a list of open orders for a symbol*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.GetOpenOrdersAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.GetOpenOrdersAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -94,8 +94,8 @@ Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(
 *Get an order book*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.GetOrderBookAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.GetOrderBookAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -120,8 +120,8 @@ Task<CallResult<CoinExSocketOrderBook>> GetOrderBookAsync(string symbol, int lim
 *Gets the server time*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.GetServerTimeAsync();  
+var client = new CoinExClient();  
+var result = await client.SpotApi.GetServerTimeAsync();  
 ```  
 
 ```csharp  
@@ -143,8 +143,8 @@ Task<CallResult<DateTime>> GetServerTimeAsync();
 *Get the symbol ticker*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.GetTickerAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.GetTickerAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -168,8 +168,8 @@ Task<CallResult<CoinExSocketSymbolState>> GetTickerAsync(string symbol, int cycl
 *Gets the latest trades on a symbol*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.GetTradeHistoryAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.GetTradeHistoryAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -194,8 +194,8 @@ Task<CallResult<IEnumerable<CoinExSocketSymbolTrade>>> GetTradeHistoryAsync(stri
 *Pings the server*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.PingAsync();  
+var client = new CoinExClient();  
+var result = await client.SpotApi.PingAsync();  
 ```  
 
 ```csharp  
@@ -217,8 +217,8 @@ Task<CallResult<bool>> PingAsync();
 *Subscribe to ticker updates for all symbols*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToAllTickerUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToAllTickerUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -242,8 +242,8 @@ Task<CallResult<UpdateSubscription>> SubscribeToAllTickerUpdatesAsync(Action<Dat
 *Subscribe to updates of your balances, Receives updates whenever the balance for an asset changes*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToBalanceUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToBalanceUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -267,8 +267,8 @@ Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataE
 *Subscribe to kline updates for a symbol*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToKlineUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToKlineUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -294,8 +294,8 @@ Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol,
 *Subscribe to order book updates*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToOrderBookUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToOrderBookUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -322,8 +322,8 @@ Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string sym
 *Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToOrderUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToOrderUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -347,8 +347,8 @@ Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEve
 *Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToOrderUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToOrderUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -373,8 +373,8 @@ Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(IEnumerable<st
 *Subscribe to symbol ticker updates for a specific symbol*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToTickerUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToTickerUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  
@@ -399,8 +399,8 @@ Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol
 *Subscribe to symbol trade updates for a symbol*  
 
 ```csharp  
-var client = new CoinExSocketClient();  
-var result = await client.SpotStreams.SubscribeToTradeUpdatesAsync(/* parameters */);  
+var client = new CoinExClient();  
+var result = await client.SpotApi.SubscribeToTradeUpdatesAsync(/* parameters */);  
 ```  
 
 ```csharp  

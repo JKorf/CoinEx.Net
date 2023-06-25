@@ -1,5 +1,5 @@
 ---
-title: Rest API documentation
+title: ICoinExRestClient
 has_children: true
 ---
 *[generated documentation]*  
