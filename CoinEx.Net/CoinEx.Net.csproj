@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
@@ -20,7 +20,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>6.0.0 - Updated CryptoExchange.Net to version 6.0.0, Renamed CoinExClient to CoinExRestClient, Renamed SpotStreams to SpotApi on the CoinExSocketClient, Updated endpoints to consistently use a base url without any path as basis to make switching environments/base urls clearer, Added ICoinExOrderBookFactory and implementation for creating order books, Updated dependency injection register method (AddCoinEx)</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <DocumentationFile>CoinEx.Net.xml</DocumentationFile>
