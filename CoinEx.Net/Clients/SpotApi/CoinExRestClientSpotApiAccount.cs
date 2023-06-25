@@ -11,7 +11,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApi;
 namespace CoinEx.Net.Clients.SpotApi
 {
     /// <inheritdoc />
-    public class CoinExClientSpotApiAccount : ICoinExClientSpotApiAccount
+    public class CoinExRestClientSpotApiAccount : ICoinExClientSpotApiAccount
     {
         private const string AccountInfoEndpoint = "balance/info";
         private const string WithdrawalHistoryEndpoint = "balance/coin/withdraw";
@@ -21,9 +21,9 @@ namespace CoinEx.Net.Clients.SpotApi
         private const string DepositAddressEndpoint = "balance/deposit/address/";
 
 
-        private readonly CoinExClientSpotApi _baseClient;
+        private readonly CoinExRestClientSpotApi _baseClient;
 
-        internal CoinExClientSpotApiAccount(CoinExClientSpotApi baseClient)
+        internal CoinExRestClientSpotApiAccount(CoinExRestClientSpotApi baseClient)
         {
             _baseClient = baseClient;
         }

@@ -113,8 +113,7 @@ namespace CoinEx.Net.UnitTests
             var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("TestKey", "TestSecret"), null);
 
             // assert
-            Assert.AreEqual(authProvider.Credentials.Key.GetString(), "TestKey");
-            Assert.AreEqual(authProvider.Credentials.Secret.GetString(), "TestSecret");
+            Assert.AreEqual(authProvider.GetApiKey(), "TestKey");
         }
 
         [Test]
@@ -151,7 +150,7 @@ namespace CoinEx.Net.UnitTests
         [Test]
         public void CheckRestInterfaces()
         {
-            var assembly = Assembly.GetAssembly(typeof(CoinExClientSpotApi));
+            var assembly = Assembly.GetAssembly(typeof(CoinExRestClientSpotApi));
             var ignore = new string[] { "ICoinExClientSpot" };
             var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExClient") && !ignore.Contains(t.Name));
 

@@ -7,7 +7,7 @@ namespace CoinEx.Net.Interfaces.Clients
     /// <summary>
     /// Client for accessing the CoinEx API. 
     /// </summary>
-    public interface ICoinExClient : IRestClient
+    public interface ICoinExRestClient : IRestClient
     {
         /// <summary>
         /// Spot endpoints

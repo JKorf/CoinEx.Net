@@ -12,21 +12,21 @@ using CoinEx.Net.Enums;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
-using CryptoExchange.Net.Logging;
-using Microsoft.Extensions.Logging;
-using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.CommonObjects;
 using System.Globalization;
 using CryptoExchange.Net.Interfaces.CommonClients;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
+using CoinEx.Net.Objects.Options;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
     /// <inheritdoc cref="ICoinExClientSpotApi" />
-    public class CoinExClientSpotApi : RestApiClient, ICoinExClientSpotApi, ISpotClient
+    public class CoinExRestClientSpotApi : RestApiClient, ICoinExClientSpotApi, ISpotClient
     {
         #region fields
-        private readonly CoinExClientOptions _options;
+        /// <inheritdoc />
+        public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
         /// <summary>
         /// Event triggered when an order is placed via this client
@@ -51,14 +51,12 @@ namespace CoinEx.Net.Clients.SpotApi
         #endregion
 
         #region ctor
-        internal CoinExClientSpotApi(Log log, CoinExClientOptions options) :
-            base(log, options, options.SpotApiOptions)
+        internal CoinExRestClientSpotApi(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
+            base(logger, httpClient, options.Environment.RestBaseAddress, options, options.SpotOptions)
         {
-            _options = options;
-
-            Account = new CoinExClientSpotApiAccount(this);
-            ExchangeData = new CoinExClientSpotApiExchangeData(this);
-            Trading = new CoinExClientSpotApiTrading(this);
+            Account = new CoinExRestClientSpotApiAccount(this);
+            ExchangeData = new CoinExRestClientSpotApiExchangeData(this);
+            Trading = new CoinExRestClientSpotApiTrading(this);
 
             manualParseError = true;
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
@@ -68,7 +66,7 @@ namespace CoinEx.Net.Clients.SpotApi
 
         /// <inheritdoc />
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
-            => new CoinExAuthenticationProvider(credentials, _options.NonceProvider ?? new CoinExNonceProvider());
+            => new CoinExAuthenticationProvider(credentials, ClientOptions.NonceProvider ?? new CoinExNonceProvider());
 
         #region methods
         #region private
@@ -82,7 +80,7 @@ namespace CoinEx.Net.Clients.SpotApi
 
         internal Uri GetUrl(string endpoint)
         {
-            return new Uri(BaseAddress.AppendPath(endpoint));
+            return new Uri(BaseAddress.AppendPath("v1").AppendPath(endpoint));
         }
 
         internal void InvokeOrderPlaced(OrderId id)

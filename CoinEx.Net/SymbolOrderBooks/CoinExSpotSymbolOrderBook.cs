@@ -6,6 +6,7 @@ using CoinEx.Net.Clients;
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Objects;
 using CoinEx.Net.Objects.Models.Socket;
+using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.OrderBook;
 using CryptoExchange.Net.Sockets;
@@ -18,32 +19,52 @@ namespace CoinEx.Net.SymbolOrderBooks
     /// </summary>
     public class CoinExSpotSymbolOrderBook: SymbolOrderBook
     {
-        private readonly ICoinExSocketClient socketClient;
-        private readonly bool _socketOwner;
+        private readonly ICoinExSocketClient _socketClient;
+        private readonly bool _clientOwner;
         private readonly TimeSpan _initialDataTimeout;
 
         /// <summary>
         /// Create a new order book instance
         /// </summary>
-        /// <param name="symbol">The symbol of the order book</param>
-        /// <param name="options">The options for the order book</param>
-        public CoinExSpotSymbolOrderBook(string symbol, CoinExOrderBookOptions? options = null) : base("CoinEx", symbol, options ?? new CoinExOrderBookOptions())
+        /// <param name="symbol">The symbol the order book is for</param>
+        /// <param name="optionsDelegate">Option configuration delegate</param>
+        public CoinExSpotSymbolOrderBook(string symbol, Action<CoinExOrderBookOptions>? optionsDelegate = null)
+            : this(symbol, optionsDelegate, null, null)
         {
+        }
+
+        /// <summary>
+        /// Create a new order book instance
+        /// </summary>
+        /// <param name="symbol">The symbol the order book is for</param>
+        /// <param name="optionsDelegate">Option configuration delegate</param>
+        /// <param name="logger">Logger</param>
+        /// <param name="socketClient">Socket client instance</param>
+        public CoinExSpotSymbolOrderBook(string symbol,
+            Action<CoinExOrderBookOptions>? optionsDelegate,
+            ILogger<CoinExSpotSymbolOrderBook>? logger,
+            ICoinExSocketClient? socketClient) : base(logger, "CoinEx", symbol)
+        {
+            var options = CoinExOrderBookOptions.Default.Copy();
+            if (optionsDelegate != null)
+                optionsDelegate(options);
+            Initialize(options);
+
             symbol.ValidateCoinExSymbol();
 
-            strictLevels = false;
-            sequencesAreConsecutive = false;
+            _strictLevels = false;
+            _sequencesAreConsecutive = false;
             _initialDataTimeout = options?.InitialDataTimeout ?? TimeSpan.FromSeconds(30);
 
-            socketClient = options?.SocketClient ?? new CoinExSocketClient();
-            _socketOwner = options?.SocketClient == null;
+            _socketClient = socketClient ?? new CoinExSocketClient();
+            _clientOwner = socketClient == null;
             Levels = options?.Limit ?? 20;
         }
 
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync(CancellationToken ct)
         {
-            var result = await socketClient.SpotStreams.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate).ConfigureAwait(false);
+            var result = await _socketClient.SpotApi.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 
@@ -90,11 +111,11 @@ namespace CoinEx.Net.SymbolOrderBooks
         protected override bool DoChecksum(int checksum)
         {
             var checkStringBuilder = new StringBuilder();
-            foreach (var bid in bids)
+            foreach (var bid in _bids)
             {
                 checkStringBuilder.Append(bid.Value.Price.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + bid.Value.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":");
             }
-            foreach (var ask in asks)
+            foreach (var ask in _asks)
             {
                 checkStringBuilder.Append(ask.Value.Price.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":" + ask.Value.Quantity.ToString(System.Globalization.CultureInfo.InvariantCulture) + ":");
             }
@@ -104,11 +125,11 @@ namespace CoinEx.Net.SymbolOrderBooks
             var result = checkHexCrc32 == (uint)checksum;
             if (!result)
             {
-                log.Write(LogLevel.Debug, $"{Id} order book {Symbol} failed checksum. Expected {checkHexCrc32}, received {checksum}");
+                _logger.Log(LogLevel.Debug, $"{Id} order book {Symbol} failed checksum. Expected {checkHexCrc32}, received {checksum}");
             }
             else
             {
-                log.Write(LogLevel.Trace, $"{Id} order book {Symbol} checksum OK.");
+                _logger.Log(LogLevel.Trace, $"{Id} order book {Symbol} checksum OK.");
             }
             return result;
         }
@@ -118,8 +139,8 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// </summary>
         protected override void Dispose(bool disposing)
         {
-            if (_socketOwner)
-                socketClient?.Dispose();
+            if (_clientOwner)
+                _socketClient?.Dispose();
 
             base.Dispose(disposing);
         }

@@ -14,10 +14,14 @@ namespace CoinEx.Net
     {
         private readonly INonceProvider _nonceProvider;
 
+        public string GetApiKey() => _credentials.Key!.GetString();
         public long GetNonce() => _nonceProvider.GetNonce();
 
         public CoinExAuthenticationProvider(ApiCredentials credentials, INonceProvider? nonceProvider): base(credentials)
         {
+            if (credentials.CredentialType != ApiCredentialsType.Hmac)
+                throw new Exception("Only Hmac authentication is supported");
+
             _nonceProvider = nonceProvider ?? new CoinExNonceProvider();
         }
 
@@ -31,15 +35,23 @@ namespace CoinEx.Net
                 return;
 
             var parameters = parameterPosition == HttpMethodParameterPosition.InUri ? uriParameters: bodyParameters;
-            parameters.Add("access_id", Credentials.Key!.GetString());
+            parameters.Add("access_id", _credentials.Key!.GetString());
             parameters.Add("tonce", _nonceProvider.GetNonce());
             var parameterString = string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"));
-            headers.Add("Authorization", SignMD5(parameterString + "&secret_key=" + Credentials.Secret!.GetString()));
+            headers.Add("Authorization", SignMD5(parameterString + "&secret_key=" + _credentials.Secret!.GetString()));
         }
 
         public override string Sign(string toSign)
         {
             return SignMD5(toSign).ToUpper();
+        }
+
+        public object[] GetSocketAuthParameters()
+        {
+            var tonce = GetNonce();
+            var parameterString = $"access_id={_credentials.Key!.GetString()}&tonce={tonce}&secret_key={_credentials.Secret!.GetString()}";
+            var auth = Sign(parameterString);
+            return new object[] { _credentials.Key!.GetString(), auth, tonce };
         }
     }
 }

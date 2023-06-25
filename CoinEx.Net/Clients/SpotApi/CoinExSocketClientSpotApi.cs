@@ -16,16 +16,17 @@ using System.Threading;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Objects.Models.Socket;
-using CryptoExchange.Net.Logging;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
+using CoinEx.Net.Objects.Options;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
-    /// <inheritdoc cref="ICoinExSocketClientSpotStreams" />
-    public class CoinExSocketClientSpotStreams : SocketApiClient, ICoinExSocketClientSpotStreams
+    /// <inheritdoc cref="ICoinExSocketClientSpotApi" />
+    public class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi
     {
         #region fields
-        private readonly CoinExSocketClientOptions _options;
+        /// <inheritdoc />
+        public new CoinExSocketOptions ClientOptions => (CoinExSocketOptions)base.ClientOptions;
 
         private const string ServerSubject = "server";
         private const string StateSubject = "state";
@@ -49,12 +50,9 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        public CoinExSocketClientSpotStreams(Log log, CoinExSocketClientOptions options)
-            : base(log, options, options.SpotStreamsOptions)
+        internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
+            : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
-            _log = log;
-            _options = options;
-
             AddGenericHandler("Pong", (messageEvent) => { });
             SendPeriodic("Ping", TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
         }
@@ -62,7 +60,7 @@ namespace CoinEx.Net.Clients.SpotApi
 
         /// <inheritdoc />
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
-            => new CoinExAuthenticationProvider(credentials, _options.NonceProvider ?? new CoinExNonceProvider());
+            => new CoinExAuthenticationProvider(credentials, ClientOptions.NonceProvider ?? new CoinExNonceProvider());
 
         #region methods
         #region public
@@ -139,7 +137,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 var desResult = Deserialize<Dictionary<string, CoinExSocketSymbolState>>(data.Data[0]);
                 if (!desResult)
                 {
-                    _log.Write(LogLevel.Warning, "Received invalid state update: " + desResult.Error);
+                    _logger.Log(LogLevel.Warning, "Received invalid state update: " + desResult.Error);
                     return;
                 }
                 var result = desResult.Data.First().Value;
@@ -159,7 +157,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 var desResult = Deserialize<Dictionary<string, CoinExSocketSymbolState>>(data.Data[0]);
                 if (!desResult)
                 {
-                    _log.Write(LogLevel.Warning, "Received invalid state update: " + desResult.Error);
+                    _logger.Log(LogLevel.Warning, "Received invalid state update: " + desResult.Error);
                     return;
                 }
 
@@ -183,7 +181,7 @@ namespace CoinEx.Net.Clients.SpotApi
             {
                 if (data.Data.Length != 3)
                 {
-                    _log.Write(LogLevel.Warning, $"Received unexpected data format for depth update. Expected 3 objects, received {data.Data.Length}. Data: " + data);
+                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for depth update. Expected 3 objects, received {data.Data.Length}. Data: " + data);
                     return;
                 }
 
@@ -191,7 +189,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 var desResult = Deserialize<CoinExSocketOrderBook>(data.Data[1]);
                 if (!desResult)
                 {
-                    _log.Write(LogLevel.Warning, "Received invalid depth update: " + desResult.Error);
+                    _logger.Log(LogLevel.Warning, "Received invalid depth update: " + desResult.Error);
                     return;
                 }
 
@@ -211,14 +209,14 @@ namespace CoinEx.Net.Clients.SpotApi
                 if (data.Data.Length != 2 && data.Data.Length != 3)
                 {
                     // Sometimes an extra True is send as 3rd parameter?
-                    _log.Write(LogLevel.Warning, $"Received unexpected data format for trade update. Expected 2 objects, received {data.Data.Length}. Data: {data.OriginalData}");
+                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for trade update. Expected 2 objects, received {data.Data.Length}. Data: {data.OriginalData}");
                     return;
                 }
 
                 var desResult = Deserialize<IEnumerable<CoinExSocketSymbolTrade>>(data.Data[1]);
                 if (!desResult)
                 {
-                    _log.Write(LogLevel.Warning, "Received invalid trade update: " + desResult.Error);
+                    _logger.Log(LogLevel.Warning, "Received invalid trade update: " + desResult.Error);
                     return;
                 }
 
@@ -236,14 +234,14 @@ namespace CoinEx.Net.Clients.SpotApi
             {
                 if (data.Data.Length > 2)
                 {
-                    _log.Write(LogLevel.Warning, $"Received unexpected data format for kline update. Expected 1 or 2 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
+                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for kline update. Expected 1 or 2 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
                     return;
                 }
 
                 var desResult = Deserialize<IEnumerable<CoinExKline>>(new JArray(data.Data));
                 if (!desResult)
                 {
-                    _log.Write(LogLevel.Warning, "Received invalid kline update: " + desResult.Error);
+                    _logger.Log(LogLevel.Warning, "Received invalid kline update: " + desResult.Error);
                     return;
                 }
 
@@ -262,7 +260,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 {
                     if (data.Data.Length != 2 || data.Data.Length == 2 && data.Data[1].ToString().Trim() != "0")
                     {
-                        _log.Write(LogLevel.Warning, $"Received unexpected data format for balance update. Expected 1 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
+                        _logger.Log(LogLevel.Warning, $"Received unexpected data format for balance update. Expected 1 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
                         return;
                     }
                 }
@@ -270,7 +268,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 var desResult = Deserialize<Dictionary<string, CoinExBalance>>(data.Data[0]);
                 if (!desResult)
                 {
-                    _log.Write(LogLevel.Warning, "Received invalid balance update: " + desResult.Error);
+                    _logger.Log(LogLevel.Warning, "Received invalid balance update: " + desResult.Error);
                     return;
                 }
 
@@ -294,7 +292,7 @@ namespace CoinEx.Net.Clients.SpotApi
             {
                 if (data.Data.Length != 2)
                 {
-                    _log.Write(LogLevel.Warning, $"Received unexpected data format for order update. Expected 2 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
+                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for order update. Expected 2 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
                     return;
                 }
 
@@ -302,7 +300,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 var desResult = Deserialize<CoinExSocketOrder>(data.Data[1]);
                 if (!desResult)
                 {
-                    _log.Write(LogLevel.Warning, "Received invalid order update: " + desResult.Error);
+                    _logger.Log(LogLevel.Warning, "Received invalid order update: " + desResult.Error);
                     return;
                 }
 
@@ -316,18 +314,6 @@ namespace CoinEx.Net.Clients.SpotApi
 
             var request = new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols.ToArray());
             return await SubscribeAsync(request, null, true, internalHandler, ct).ConfigureAwait(false);
-        }
-
-
-        private object[] GetAuthParameters(BaseApiClient apiClient)
-        {
-            if (apiClient.AuthenticationProvider!.Credentials.Key == null || apiClient.AuthenticationProvider.Credentials.Secret == null)
-                throw new ArgumentException("ApiKey/Secret not provided");
-
-            var tonce = ((CoinExAuthenticationProvider)apiClient.AuthenticationProvider).GetNonce();
-            var parameterString = $"access_id={apiClient.AuthenticationProvider.Credentials.Key.GetString()}&tonce={tonce}&secret_key={apiClient.AuthenticationProvider.Credentials.Secret.GetString()}";
-            var auth = apiClient.AuthenticationProvider.Sign(parameterString);
-            return new object[] { apiClient.AuthenticationProvider.Credentials.Key.GetString(), auth, tonce };
         }
 
         /// <inheritdoc />
@@ -387,19 +373,19 @@ namespace CoinEx.Net.Clients.SpotApi
             var subResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(message);
             if (!subResponse)
             {
-                _log.Write(LogLevel.Warning, "Subscription failed: " + subResponse.Error);
+                _logger.Log(LogLevel.Warning, "Subscription failed: " + subResponse.Error);
                 callResult = new CallResult<object>(subResponse.Error!);
                 return true;
             }
 
             if (subResponse.Data.Error != null)
             {
-                _log.Write(LogLevel.Debug, $"Failed to subscribe: {subResponse.Data.Error.Code} {subResponse.Data.Error.Message}");
+                _logger.Log(LogLevel.Debug, $"Failed to subscribe: {subResponse.Data.Error.Code} {subResponse.Data.Error.Message}");
                 callResult = new CallResult<object>(new ServerError(subResponse.Data.Error.Code, subResponse.Data.Error.Message));
                 return true;
             }
 
-            _log.Write(LogLevel.Debug, "Subscription completed");
+            _logger.Log(LogLevel.Debug, "Subscription completed");
             callResult = new CallResult<object>(subResponse);
             return true;
         }
@@ -436,9 +422,10 @@ namespace CoinEx.Net.Clients.SpotApi
             if (s.ApiClient.AuthenticationProvider == null)
                 return new CallResult<bool>(new NoApiCredentialsError());
 
-            var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, GetAuthParameters(s.ApiClient));
+            var authProvider = (CoinExAuthenticationProvider)s.ApiClient.AuthenticationProvider;
+            var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, authProvider.GetSocketAuthParameters());
             var result = new CallResult<bool>(new ServerError("No response from server"));
-            await s.SendAndWaitAsync(request, Options.SocketResponseTimeout, null, data =>
+            await s.SendAndWaitAsync(request, ClientOptions.RequestTimeout, null, data =>
             {
                 var idField = data["id"];
                 if (idField == null)
@@ -450,7 +437,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data);
                 if (!authResponse)
                 {
-                    _log.Write(LogLevel.Warning, "Authorization failed: " + authResponse.Error);
+                    _logger.Log(LogLevel.Warning, "Authorization failed: " + authResponse.Error);
                     result = new CallResult<bool>(authResponse.Error!);
                     return true;
                 }
@@ -458,19 +445,19 @@ namespace CoinEx.Net.Clients.SpotApi
                 if (authResponse.Data.Error != null)
                 {
                     var error = new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message);
-                    _log.Write(LogLevel.Debug, "Failed to authenticate: " + error);
+                    _logger.Log(LogLevel.Debug, "Failed to authenticate: " + error);
                     result = new CallResult<bool>(error);
                     return true;
                 }
 
                 if (authResponse.Data.Result.Status != SuccessString)
                 {
-                    _log.Write(LogLevel.Debug, "Failed to authenticate: " + authResponse.Data.Result.Status);
+                    _logger.Log(LogLevel.Debug, "Failed to authenticate: " + authResponse.Data.Result.Status);
                     result = new CallResult<bool>(new ServerError(authResponse.Data.Result.Status));
                     return true;
                 }
 
-                _log.Write(LogLevel.Debug, "Authorization completed");
+                _logger.Log(LogLevel.Debug, "Authorization completed");
                 result = new CallResult<bool>(true);
                 return true;
             }).ConfigureAwait(false);

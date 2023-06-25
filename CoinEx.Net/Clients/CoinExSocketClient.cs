@@ -4,6 +4,9 @@ using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Clients.SpotApi;
 using CryptoExchange.Net.Authentication;
+using Microsoft.Extensions.Logging;
+using System;
+using CoinEx.Net.Objects.Options;
 
 namespace CoinEx.Net.Clients
 {
@@ -13,41 +16,58 @@ namespace CoinEx.Net.Clients
         #region Api clients
 
         /// <inheritdoc />
-        public ICoinExSocketClientSpotStreams SpotStreams { get; }
+        public ICoinExSocketClientSpotApi SpotApi { get; }
 
         #endregion
 
         #region ctor
+
         /// <summary>
-        /// Create a new instance of CoinExSocketClient with default options
+        /// Create a new instance of the CoinExSocketClient
         /// </summary>
-        public CoinExSocketClient() : this(CoinExSocketClientOptions.Default)
+        /// <param name="loggerFactory">The logger factory</param>
+        public CoinExSocketClient(ILoggerFactory? loggerFactory = null) : this((x) => { }, loggerFactory)
         {
         }
 
         /// <summary>
-        /// Create a new instance of CoinExSocketClient using provided options
+        /// Create a new instance of the CoinExSocketClient
         /// </summary>
-        /// <param name="options">The options to use for this client</param>
-        public CoinExSocketClient(CoinExSocketClientOptions options) : base("CoinEx", options)
+        /// <param name="optionsDelegate">Option configuration delegate</param>
+        public CoinExSocketClient(Action<CoinExSocketOptions> optionsDelegate) : this(optionsDelegate, null)
         {
-            SpotStreams = AddApiClient(new CoinExSocketClientSpotStreams(log, options));
+        }
+
+        /// <summary>
+        /// Create a new instance of the CoinExSocketClient
+        /// </summary>
+        /// <param name="loggerFactory">The logger factory</param>
+        /// <param name="optionsDelegate">Option configuration delegate</param>
+        public CoinExSocketClient(Action<CoinExSocketOptions> optionsDelegate, ILoggerFactory? loggerFactory = null) : base(loggerFactory, "CoinEx")
+        {
+            var options = CoinExSocketOptions.Default.Copy();
+            optionsDelegate(options);
+            Initialize(options);
+
+            SpotApi = AddApiClient(new CoinExSocketClientSpotApi(_logger, options));
         }
         #endregion
 
         /// <summary>
         /// Set the default options to be used when creating new clients
         /// </summary>
-        /// <param name="options">Options to use as default</param>
-        public static void SetDefaultOptions(CoinExSocketClientOptions options)
+        /// <param name="optionsDelegate">Option configuration delegate</param>
+        public static void SetDefaultOptions(Action<CoinExSocketOptions> optionsDelegate)
         {
-            CoinExSocketClientOptions.Default = options;
+            var options = CoinExSocketOptions.Default.Copy();
+            optionsDelegate(options);
+            CoinExSocketOptions.Default = options;
         }
 
         /// <inheritdoc />
         public void SetApiCredentials(ApiCredentials credentials)
         {
-            SpotStreams.SetApiCredentials(credentials);
+            SpotApi.SetApiCredentials(credentials);
         }
     }
 }

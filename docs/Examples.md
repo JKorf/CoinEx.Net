@@ -71,7 +71,7 @@ var userTradesResult = await coinexClient.SpotApi.Trading.GetUserTradesAsync("BT
 
 ### Subscribing to market data updates
 ```csharp
-var subscribeResult = await coinexSocket.SpotStreams.SubscribeToAllTickerUpdatesAsync(data =>
+var subscribeResult = await coinexSocket.SpotApi.SubscribeToAllTickerUpdatesAsync(data =>
 {
 	// Handle ticker data
 });
@@ -79,7 +79,7 @@ var subscribeResult = await coinexSocket.SpotStreams.SubscribeToAllTickerUpdates
 
 ### Subscribing to order updates
 ```csharp
-var subscribeResult = await kucoinSocketClient.SpotStreams.SubscribeToOrderUpdatesAsync(data =>
+var subscribeResult = await kucoinSocketClient.SpotApi.SubscribeToOrderUpdatesAsync(data =>
 {
 	// Handle order updates
 });

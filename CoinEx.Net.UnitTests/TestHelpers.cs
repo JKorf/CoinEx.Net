@@ -1,29 +1,21 @@
 ﻿using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.Logging;
 using Moq;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using CoinEx.Net;
-using CryptoExchange.Net.Sockets;
-using Microsoft.Extensions.Logging;
 using System.Collections;
-using CoinEx.Net.Interfaces;
-using CoinEx.Net.Objects;
 using Newtonsoft.Json;
 using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net;
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Clients;
+using CoinEx.Net.Objects.Options;
 
 namespace CoinEx.Net.Testing
 {
@@ -69,36 +61,36 @@ namespace CoinEx.Net.Testing
             return self == to;
         }
 
-        public static ICoinExClient CreateClient(CoinExClientOptions options = null)
+        public static ICoinExRestClient CreateClient(Action<CoinExRestOptions> options = null)
         {
-            ICoinExClient client;
-            client = options != null ? new CoinExClient(options) : new CoinExClient();
+            ICoinExRestClient client;
+            client = options != null ? new CoinExRestClient(options) : new CoinExRestClient();
             client.SpotApi.RequestFactory = Mock.Of<IRequestFactory>();
             return client;
         }
 
-        public static ICoinExClient CreateResponseClient(string response, CoinExClientOptions options = null, HttpStatusCode code = HttpStatusCode.OK)
+        public static ICoinExRestClient CreateResponseClient(string response, Action<CoinExRestOptions> options = null, HttpStatusCode code = HttpStatusCode.OK)
         {
-            var client = (CoinExClient)CreateClient(options);
+            var client = (CoinExRestClient)CreateClient(options);
             SetResponse(client, response, code);
             return client;
         }
 
-        public static ICoinExClient CreateAuthenticatedResponseClient<T>(T response, CoinExClientOptions options = null)
+        public static ICoinExRestClient CreateAuthenticatedResponseClient<T>(T response, Action<CoinExRestOptions> options = null)
         {
-            var client = (CoinExClient)CreateClient(options ?? new CoinExClientOptions() { ApiCredentials = new ApiCredentials("Test", "Test") });
+            var client = (CoinExRestClient)CreateClient(options ?? new Action<CoinExRestOptions>(x => { x.ApiCredentials = new ApiCredentials("Test", "Test"); }));
             SetResponse(client, JsonConvert.SerializeObject(response));
             return client;
         }
 
-        public static ICoinExClient CreateResponseClient<T>(T response, CoinExClientOptions options = null)
+        public static ICoinExRestClient CreateResponseClient<T>(T response, Action<CoinExRestOptions> options = null)
         {
-            var client = (CoinExClient)CreateClient(options);
+            var client = (CoinExRestClient)CreateClient(options);
             SetResponse(client, JsonConvert.SerializeObject(response));
             return client;
         }
 
-        public static Mock<IRequest> SetResponse(CoinExClient client, string responseData, HttpStatusCode code = HttpStatusCode.OK)
+        public static Mock<IRequest> SetResponse(CoinExRestClient client, string responseData, HttpStatusCode code = HttpStatusCode.OK)
         {
             var expectedBytes = Encoding.UTF8.GetBytes(responseData);
             var responseStream = new MemoryStream();

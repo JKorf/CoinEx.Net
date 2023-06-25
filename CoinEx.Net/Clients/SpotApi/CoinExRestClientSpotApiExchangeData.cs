@@ -13,7 +13,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApi;
 namespace CoinEx.Net.Clients.SpotApi
 {
     /// <inheritdoc />
-    public class CoinExClientSpotApiExchangeData : ICoinExClientSpotApiExchangeData
+    public class CoinExRestClientSpotApiExchangeData : ICoinExClientSpotApiExchangeData
     {
         private const string AssetConfigEndpoint = "common/asset/config";
         private const string CurrencyRateEndpoint = "common/currency/rate";
@@ -27,9 +27,9 @@ namespace CoinEx.Net.Clients.SpotApi
         private const string MarketInfoEndpoint = "market/info";
         private const string MiningDifficultyEndpoint = "order/mining/difficulty";
 
-        private readonly CoinExClientSpotApi _baseClient;
+        private readonly CoinExRestClientSpotApi _baseClient;
 
-        internal CoinExClientSpotApiExchangeData(CoinExClientSpotApi baseClient)
+        internal CoinExRestClientSpotApiExchangeData(CoinExRestClientSpotApi baseClient)
         {
             _baseClient = baseClient;
         }

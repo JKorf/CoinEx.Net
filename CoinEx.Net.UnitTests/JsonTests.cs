@@ -12,14 +12,11 @@ namespace CoinEx.Net.UnitTests
     [TestFixture]
     public class JsonTests
     {
-        private JsonToObjectComparer<ICoinExClient> _comparer = new JsonToObjectComparer<ICoinExClient>((json) => TestHelpers.CreateResponseClient(json, new CoinExClientOptions()
-        { 
-            ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123"), 
-            SpotApiOptions = new CryptoExchange.Net.Objects.RestApiClientOptions
-            {
-                RateLimiters = new List<IRateLimiter>(),
-                OutputOriginalData = true,
-            }
+        private JsonToObjectComparer<ICoinExRestClient> _comparer = new JsonToObjectComparer<ICoinExRestClient>((json) => TestHelpers.CreateResponseClient(json, x => 
+        {
+            x.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123");
+            x.SpotOptions.RateLimiters = new List<IRateLimiter>();
+            x.SpotOptions.OutputOriginalData = true;
         }, System.Net.HttpStatusCode.OK));
 
         [Test]

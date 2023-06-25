@@ -4,87 +4,106 @@
         <name>CoinEx.Net</name>
     </assembly>
     <members>
-        <member name="T:CoinEx.Net.Clients.CoinExClient">
-            <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExClient" />
+        <member name="T:CoinEx.Net.Clients.CoinExRestClient">
+            <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExRestClient" />
         </member>
-        <member name="P:CoinEx.Net.Clients.CoinExClient.SpotApi">
+        <member name="P:CoinEx.Net.Clients.CoinExRestClient.SpotApi">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExClient.#ctor">
+        <member name="M:CoinEx.Net.Clients.CoinExRestClient.#ctor(System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions})">
             <summary>
-            Create a new instance of CoinExClient with default options
+            Create a new instance of the CoinExRestClient using provided options
+            </summary>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:CoinEx.Net.Clients.CoinExRestClient.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,System.Net.Http.HttpClient)">
+            <summary>
+            Create a new instance of the CoinExRestClient using default options
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExClient.#ctor(CoinEx.Net.Objects.CoinExClientOptions)">
+        <member name="M:CoinEx.Net.Clients.CoinExRestClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILoggerFactory,System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions})">
             <summary>
-            Create a new instance of CoinExClient using provided options
+            Create a new instance of the CoinExRestClient
             </summary>
-            <param name="options">The options to use for this client</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
+            <param name="loggerFactory">The logger factory</param>
+            <param name="httpClient">Http client for this client</param>
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExClient.SetDefaultOptions(CoinEx.Net.Objects.CoinExClientOptions)">
+        <member name="M:CoinEx.Net.Clients.CoinExRestClient.SetDefaultOptions(System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions})">
             <summary>
             Set the default options to be used when creating new clients
             </summary>
-            <param name="options">Options to use as default</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+        <member name="M:CoinEx.Net.Clients.CoinExRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.CoinExSocketClient">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient" />
         </member>
-        <member name="P:CoinEx.Net.Clients.CoinExSocketClient.SpotStreams">
+        <member name="P:CoinEx.Net.Clients.CoinExSocketClient.SpotApi">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor">
+        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)">
             <summary>
-            Create a new instance of CoinExSocketClient with default options
+            Create a new instance of the CoinExSocketClient
             </summary>
+            <param name="loggerFactory">The logger factory</param>
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(CoinEx.Net.Objects.CoinExSocketClientOptions)">
+        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions})">
             <summary>
-            Create a new instance of CoinExSocketClient using provided options
+            Create a new instance of the CoinExSocketClient
             </summary>
-            <param name="options">The options to use for this client</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetDefaultOptions(CoinEx.Net.Objects.CoinExSocketClientOptions)">
+        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            Create a new instance of the CoinExSocketClient
+            </summary>
+            <param name="loggerFactory">The logger factory</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetDefaultOptions(System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions})">
             <summary>
             Set the default options to be used when creating new clients
             </summary>
-            <param name="options">Options to use as default</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
         </member>
         <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi">
+        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExClientSpotApi" />
         </member>
-        <member name="E:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.OnOrderPlaced">
+        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.ClientOptions">
+            <inheritdoc />
+        </member>
+        <member name="E:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.OnOrderPlaced">
             <summary>
             Event triggered when an order is placed via this client
             </summary>
         </member>
-        <member name="E:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.OnOrderCanceled">
+        <member name="E:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.OnOrderCanceled">
             <summary>
             Event triggered when an order is canceled via this client. Note that this does not trigger when using CancelAllOrdersAsync
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.ExchangeName">
+        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.ExchangeName">
             <inheritdoc />
         </member>
-        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.Account">
+        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.Account">
             <inheritdoc />
         </member>
-        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.ExchangeData">
+        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.ExchangeData">
             <inheritdoc />
         </member>
-        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.Trading">
+        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.Trading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.GetSymbolName(System.String,System.String)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.GetSymbolName(System.String,System.String)">
             <summary>
             Get the name of a symbol for CoinEx based on the base and quote asset
             </summary>
@@ -92,203 +111,236 @@
             <param name="quoteAsset"></param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.TryParseErrorAsync(Newtonsoft.Json.Linq.JToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.TryParseErrorAsync(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.GetTimeSyncInfo">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.GetTimeSyncInfo">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.GetTimeOffset">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.GetTimeOffset">
             <inheritdoc />
         </member>
-        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApi.CommonSpotClient">
+        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.CommonSpotClient">
             <inheritdoc />
         </member>
-        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiAccount">
+        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiAccount">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiAccount.GetBalancesAsync(System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiAccount.GetBalancesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiAccount.GetDepositHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiAccount.GetDepositHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiAccount.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiAccount.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiAccount.WithdrawAsync(System.String,System.String,System.Boolean,System.Decimal,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.String,System.Boolean,System.Decimal,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiAccount.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiAccount.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiAccount.GetDepositAddressAsync(System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiAccount.GetDepositAddressAsync(System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData">
+        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetSymbolsAsync(System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetSymbolsAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetCurrencyRateAsync(System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetCurrencyRateAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetAssetsAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetAssetsAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetTickerAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetTickerAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetTickersAsync(System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetTickersAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetOrderBookAsync(System.String,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetOrderBookAsync(System.String,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetTradeHistoryAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetTradeHistoryAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetSymbolInfoAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetSymbolInfoAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetSymbolInfoAsync(System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetSymbolInfoAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiExchangeData.GetMiningDifficultyAsync(System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiExchangeData.GetMiningDifficultyAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading">
+        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderType,System.Decimal,System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.OrderOption},System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderType,System.Decimal,System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.OrderOption},System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.GetOpenOrdersAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.GetOpenOrdersAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.GetOpenStopOrdersAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.GetOpenStopOrdersAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.GetClosedOrdersAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.GetClosedOrdersAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.GetOrderTradesAsync(System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.GetOrderTradesAsync(System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.GetUserTradesAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.GetUserTradesAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.CancelAllOrdersAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.CancelAllOrdersAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExClientSpotApiTrading.CancelAllStopOrdersAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApiTrading.CancelAllStopOrdersAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams">
-            <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams" />
+        <member name="T:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi">
+            <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi" />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.#ctor(CryptoExchange.Net.Logging.Log,CoinEx.Net.Objects.CoinExSocketClientOptions)">
+        <member name="P:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.ClientOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.#ctor(Microsoft.Extensions.Logging.ILogger,CoinEx.Net.Objects.Options.CoinExSocketOptions)">
             <summary>
             Create a new instance of CoinExSocketClient with default options
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.PingAsync">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.PingAsync">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.GetServerTimeAsync">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetServerTimeAsync">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.GetTickerAsync(System.String,System.Int32)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetTickerAsync(System.String,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.GetOrderBookAsync(System.String,System.Int32,System.Int32)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetOrderBookAsync(System.String,System.Int32,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.GetTradeHistoryAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetTradeHistoryAsync(System.String,System.Int32,System.Nullable{System.Int32})">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.GetBalancesAsync(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetBalancesAsync(System.Collections.Generic.IEnumerable{System.String})">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.GetOpenOrdersAsync(System.String,CoinEx.Net.Enums.OrderSide,System.Int32,System.Int32)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetOpenOrdersAsync(System.String,CoinEx.Net.Enums.OrderSide,System.Int32,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToTickerUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToAllTickerUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToAllTickerUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolTrade}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExKline}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExKline}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExBalance}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExBalance}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToOrderUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.HandleQueryResponse``1(CryptoExchange.Net.Sockets.SocketConnection,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{``0}@)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.HandleQueryResponse``1(CryptoExchange.Net.Sockets.SocketConnection,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{``0}@)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.HandleSubscriptionResponse(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{System.Object}@)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.HandleSubscriptionResponse(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription,System.Object,Newtonsoft.Json.Linq.JToken,CryptoExchange.Net.Objects.CallResult{System.Object}@)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.ProcessTokenData(Newtonsoft.Json.Linq.JToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.ProcessTokenData(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.Object)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.String)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.MessageMatchesHandler(CryptoExchange.Net.Sockets.SocketConnection,Newtonsoft.Json.Linq.JToken,System.String)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.AuthenticateSocketAsync(CryptoExchange.Net.Sockets.SocketConnection)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.AuthenticateSocketAsync(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotStreams.UnsubscribeAsync(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.UnsubscribeAsync(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Sockets.SocketSubscription)">
             <inheritdoc />
+        </member>
+        <member name="T:CoinEx.Net.CoinExEnvironment">
+            <summary>
+            CoinEx environments
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.CoinExEnvironment.RestBaseAddress">
+            <summary>
+            Spot Rest client address
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.CoinExEnvironment.SocketBaseAddress">
+            <summary>
+            Spot V1 Socket client address
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.CoinExEnvironment.Live">
+            <summary>
+            Live environment
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.CoinExEnvironment.CreateCustom(System.String,System.String,System.String)">
+            <summary>
+            Create a custom environment
+            </summary>
+            <param name="name"></param>
+            <param name="restAddress"></param>
+            <param name="socketAddress"></param>
+            <returns></returns>
         </member>
         <member name="T:CoinEx.Net.CoinExHelpers">
             <summary>
             CoinEx helpers
             </summary>
         </member>
-        <member name="M:CoinEx.Net.CoinExHelpers.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.CoinExClientOptions,CoinEx.Net.Objects.CoinExSocketClientOptions},System.Nullable{Microsoft.Extensions.DependencyInjection.ServiceLifetime})">
+        <member name="M:CoinEx.Net.CoinExHelpers.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions},System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions},System.Nullable{Microsoft.Extensions.DependencyInjection.ServiceLifetime})">
             <summary>
             Add the ICoinExClient and ICoinExSocketClient to the sevice collection so they can be injected
             </summary>
             <param name="services">The service collection</param>
-            <param name="defaultOptionsCallback">Set default options for the client</param>
-            <param name="socketClientLifeTime">The lifetime of the ICoinExSocketClient for the service collection. Defaults to Scoped.</param>
+            <param name="defaultRestOptionsDelegate">Set default options for the rest client</param>
+            <param name="defaultSocketOptionsDelegate">Set default options for the socket client</param>
+            <param name="socketClientLifeTime">The lifetime of the ICoinExSocketClient for the service collection. Defaults to Singleton.</param>
             <returns></returns>
         </member>
         <member name="M:CoinEx.Net.CoinExHelpers.ToSeconds(CoinEx.Net.Enums.KlineInterval)">
@@ -556,17 +608,17 @@
             Failed
             </summary>
         </member>
-        <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExClient">
+        <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExRestClient">
             <summary>
             Client for accessing the CoinEx API. 
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExClient.SpotApi">
+        <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SpotApi">
             <summary>
             Spot endpoints
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>
             Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
             </summary>
@@ -577,7 +629,7 @@
             Client for accessing the CoinEx websocket API
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SpotStreams">
+        <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SpotApi">
             <summary>
             Spot streams
             </summary>
@@ -904,26 +956,26 @@
             <param name="ct">Cancellation token</param>
             <returns>Execution statut</returns>
         </member>
-        <member name="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams">
+        <member name="T:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi">
             <summary>
             Spot streams
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.PingAsync">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.PingAsync">
             <summary>
             Pings the server
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/048ping" /></para>
             </summary>
             <returns>True if server responded, false otherwise</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.GetServerTimeAsync">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.GetServerTimeAsync">
             <summary>
             Gets the server time
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/049time" /></para>
             </summary>
             <returns>The server time</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.GetTickerAsync(System.String,System.Int32)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.GetTickerAsync(System.String,System.Int32)">
             <summary>
             Get the symbol ticker
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/053state" /></para>
@@ -932,7 +984,7 @@
             <param name="cyclePeriod">The period to get data over, specified in seconds. i.e. one minute = 60, one day = 86400</param>
             <returns>Symbol state</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToTickerUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for a specific symbol
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/053state" /></para>
@@ -942,7 +994,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToAllTickerUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToAllTickerUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to ticker updates for all symbols
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/053state" /></para>
@@ -951,7 +1003,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.GetOrderBookAsync(System.String,System.Int32,System.Int32)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.GetOrderBookAsync(System.String,System.Int32,System.Int32)">
             <summary>
             Get an order book
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/044depth" /></para>
@@ -961,7 +1013,7 @@
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <returns>Order book of a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to order book updates
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/044depth" /></para>
@@ -973,7 +1025,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.GetTradeHistoryAsync(System.String,System.Int32,System.Nullable{System.Int32})">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.GetTradeHistoryAsync(System.String,System.Int32,System.Nullable{System.Int32})">
             <summary>
             Gets the latest trades on a symbol
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/045deals" /></para>
@@ -983,7 +1035,7 @@
             <param name="fromId">Return trades since this id</param>
             <returns>List of trades</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolTrade}}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol trade updates for a symbol
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/045deals" /></para>
@@ -993,7 +1045,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval)">
             <summary>
             Gets symbol kline data
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/046kline" /></para>
@@ -1002,7 +1054,7 @@
             <param name="interval">The interval of the candles</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExKline}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToKlineUpdatesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExKline}}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to kline updates for a symbol
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/046kline" /></para>
@@ -1013,7 +1065,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.GetBalancesAsync(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.GetBalancesAsync(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Get balances of assets. Requires API credentials
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/051asset" /></para>
@@ -1021,7 +1073,7 @@
             <param name="assets">The assets to get the balances for, empty for all</param>
             <returns>Dictionary of assets and their balances</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExBalance}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.CoinExBalance}}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to updates of your balances, Receives updates whenever the balance for an asset changes
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/051asset" /></para>
@@ -1030,7 +1082,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.GetOpenOrdersAsync(System.String,CoinEx.Net.Enums.OrderSide,System.Int32,System.Int32)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.GetOpenOrdersAsync(System.String,CoinEx.Net.Enums.OrderSide,System.Int32,System.Int32)">
             <summary>
             Gets a list of open orders for a symbol
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/052order" /></para>
@@ -1041,7 +1093,7 @@
             <param name="limit">The limit of results</param>
             <returns>List of open orders</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToOrderUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToOrderUpdatesAsync(System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/052order" /></para>
@@ -1050,7 +1102,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotStreams.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToOrderUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to updates of active orders. Receives updates whenever an order is placed, updated or finished
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/052order" /></para>
@@ -1059,6 +1111,19 @@
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.ICoinExOrderBookFactory">
+            <summary>
+            CoinEx order book factory
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExOrderBookFactory.CreateSpot(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
+            <summary>
+            Create a SymbolOrderBook for the Spot API
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="options">Order book options</param>
+            <returns></returns>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExApiAddresses">
             <summary>
@@ -1078,88 +1143,6 @@
         <member name="F:CoinEx.Net.Objects.CoinExApiAddresses.Default">
             <summary>
             The default addresses to connect to the CoinEx.com API
-            </summary>
-        </member>
-        <member name="T:CoinEx.Net.Objects.CoinExClientOptions">
-            <summary>
-            Client options
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExClientOptions.Default">
-            <summary>
-            Default options for the spot client
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExClientOptions.NonceProvider">
-            <summary>
-            Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExClientOptions.SpotApiOptions">
-            <summary>
-            Spot API options
-            </summary>
-        </member>
-        <member name="M:CoinEx.Net.Objects.CoinExClientOptions.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:CoinEx.Net.Objects.CoinExClientOptions.#ctor(CoinEx.Net.Objects.CoinExClientOptions)">
-            <summary>
-            ctor
-            </summary>
-            <param name="baseOn">Base the new options on other options</param>
-        </member>
-        <member name="T:CoinEx.Net.Objects.CoinExSocketClientOptions">
-            <summary>
-            Socket client options
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.Default">
-            <summary>
-            Default options for the spot client
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.NonceProvider">
-            <summary>
-            Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExSocketClientOptions.SpotStreamsOptions">
-            <summary>
-            Spot stream options
-            </summary>
-        </member>
-        <member name="M:CoinEx.Net.Objects.CoinExSocketClientOptions.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:CoinEx.Net.Objects.CoinExSocketClientOptions.#ctor(CoinEx.Net.Objects.CoinExSocketClientOptions)">
-            <summary>
-            ctor
-            </summary>
-            <param name="baseOn">Base the new options on other options</param>
-        </member>
-        <member name="T:CoinEx.Net.Objects.CoinExOrderBookOptions">
-            <summary>
-            Order book options
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExOrderBookOptions.InitialDataTimeout">
-            <summary>
-            After how much time we should consider the connection dropped if no data is received for this time after the initial subscriptions
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExOrderBookOptions.SocketClient">
-            <summary>
-            The client to use for the socket connection. When using the same client for multiple order books the connection can be shared.
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.CoinExOrderBookOptions.Limit">
-            <summary>
-            The amount of rows. Should be one of: 5/10/20/50
             </summary>
         </member>
         <member name="M:CoinEx.Net.Objects.Internal.CoinExNonceProvider.GetNonce">
@@ -2182,17 +2165,98 @@
             The quantity of the transaction
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Options.CoinExOrderBookOptions">
+            <summary>
+            Options for CoinEx SymbolOrderBook
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOrderBookOptions.Default">
+            <summary>
+            Default options for the CoinEx SymbolOrderBook
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOrderBookOptions.InitialDataTimeout">
+            <summary>
+            After how much time we should consider the connection dropped if no data is received for this time after the initial subscriptions
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOrderBookOptions.Limit">
+            <summary>
+            The amount of rows. Should be one of: 5/10/20/50
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Options.CoinExRestOptions">
+            <summary>
+            Options for the CoinExRestClient
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExRestOptions.Default">
+            <summary>
+            Default options for the CoinExRestClient
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExRestOptions.NonceProvider">
+            <summary>
+            Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExRestOptions.SpotOptions">
+            <summary>
+            Options for the Spot API
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Options.CoinExSocketOptions">
+            <summary>
+            Options for the CoinExSocketClient
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExSocketOptions.Default">
+            <summary>
+            Default options for the CoinExRestClient
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExSocketOptions.NonceProvider">
+            <summary>
+            Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExSocketOptions.SpotOptions">
+            <summary>
+            Options for the Spot API
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.#ctor(System.IServiceProvider)">
+            <summary>
+            ctor
+            </summary>
+            <param name="serviceProvider">Service provider for resolving logging and clients</param>
+        </member>
+        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.CreateSpot(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook">
             <summary>
             Symbol order book implementation
             </summary>
         </member>
-        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.#ctor(System.String,CoinEx.Net.Objects.CoinExOrderBookOptions)">
+        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.#ctor(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
             <summary>
             Create a new order book instance
             </summary>
-            <param name="symbol">The symbol of the order book</param>
-            <param name="options">The options for the order book</param>
+            <param name="symbol">The symbol the order book is for</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.#ctor(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions},Microsoft.Extensions.Logging.ILogger{CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook},CoinEx.Net.Interfaces.Clients.ICoinExSocketClient)">
+            <summary>
+            Create a new order book instance
+            </summary>
+            <param name="symbol">The symbol the order book is for</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
+            <param name="logger">Logger</param>
+            <param name="socketClient">Socket client instance</param>
         </member>
         <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.DoStartAsync(System.Threading.CancellationToken)">
             <inheritdoc />

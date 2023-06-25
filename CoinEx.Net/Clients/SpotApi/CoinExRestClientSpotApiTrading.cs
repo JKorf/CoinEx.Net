@@ -16,7 +16,7 @@ using CryptoExchange.Net.CommonObjects;
 namespace CoinEx.Net.Clients.SpotApi
 {
     /// <inheritdoc />
-    public class CoinExClientSpotApiTrading : ICoinExClientSpotApiTrading
+    public class CoinExRestClientSpotApiTrading : ICoinExClientSpotApiTrading
     {
         private const string PlaceLimitOrderEndpoint = "order/limit";
         private const string PlaceMarketOrderEndpoint = "order/market";
@@ -32,9 +32,9 @@ namespace CoinEx.Net.Clients.SpotApi
         private const string CancelOrderEndpoint = "order/pending";
         private const string CancelStopOrderEndpoint = "order/stop/pending";
 
-        private readonly CoinExClientSpotApi _baseClient;
+        private readonly CoinExRestClientSpotApi _baseClient;
 
-        internal CoinExClientSpotApiTrading(CoinExClientSpotApi baseClient)
+        internal CoinExRestClientSpotApiTrading(CoinExRestClientSpotApi baseClient)
         {
             _baseClient = baseClient;
         }

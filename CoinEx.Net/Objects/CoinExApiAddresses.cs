@@ -19,7 +19,7 @@
         /// </summary>
         public static CoinExApiAddresses Default = new CoinExApiAddresses
         {
-            RestClientAddress = "https://api.coinex.com/v1",
+            RestClientAddress = "https://api.coinex.com",
             SocketClientAddress = "wss://socket.coinex.com/"
         };
     }
