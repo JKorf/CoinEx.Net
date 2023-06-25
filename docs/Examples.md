@@ -34,8 +34,8 @@ var orderData = await coinexClient.SpotApi.Trading.PlaceOrderAsync(
                 OrderType.Limit,
                 0.001m,
                 50000);
-									
-													
+                                    
+                                                    
 // Place a stop loss order, place a limit order of 0.001 BTC at 39000USDT each when the last trade price drops below 40000USDT
 var orderData = await coinexClient.SpotApi.Trading.PlaceOrderAsync(
                 "BTCUSDT",
@@ -73,7 +73,7 @@ var userTradesResult = await coinexClient.SpotApi.Trading.GetUserTradesAsync("BT
 ```csharp
 var subscribeResult = await coinexSocket.SpotApi.SubscribeToAllTickerUpdatesAsync(data =>
 {
-	// Handle ticker data
+    // Handle ticker data
 });
 ```
 
@@ -81,6 +81,6 @@ var subscribeResult = await coinexSocket.SpotApi.SubscribeToAllTickerUpdatesAsyn
 ```csharp
 var subscribeResult = await kucoinSocketClient.SpotApi.SubscribeToOrderUpdatesAsync(data =>
 {
-	// Handle order updates
+    // Handle order updates
 });
 ```
