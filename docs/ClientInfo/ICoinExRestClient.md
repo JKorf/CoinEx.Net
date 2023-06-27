@@ -1,9 +1,9 @@
 ---
-title: ICoinExRestClient
+title: Rest API documentation
 has_children: true
 ---
 *[generated documentation]*  
-### CoinExClient  
+### CoinExRestClient  
 *Client for accessing the CoinEx API.*
   
 ***
@@ -11,4 +11,4 @@ has_children: true
 **void SetApiCredentials(ApiCredentials credentials);**  
 ***
 *Spot endpoints*  
-**[ICoinExClientSpotApi](SpotApi/ICoinExClientSpotApi.html) SpotApi { get; }**  
+**ICoinExClientSpotApi SpotApi { get; }**  

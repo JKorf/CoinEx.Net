@@ -4,7 +4,7 @@ has_children: true
 parent: Rest API documentation
 ---
 *[generated documentation]*  
-`CoinExClient > SpotApi`  
+`CoinExRestClient > SpotApi`  
 *Spot API*
   
 ***
@@ -12,10 +12,10 @@ parent: Rest API documentation
 **ISpotClient CommonSpotClient { get; }**  
 ***
 *Endpoints related to account settings, info or actions*  
-**[ICoinExClientSpotApiAccount](ICoinExClientSpotApiAccount.html) Account { get; }**  
+**ICoinExClientSpotApiAccount Account { get; }**  
 ***
 *Endpoints related to retrieving market and system data*  
-**[ICoinExClientSpotApiExchangeData](ICoinExClientSpotApiExchangeData.html) ExchangeData { get; }**  
+**ICoinExClientSpotApiExchangeData ExchangeData { get; }**  
 ***
 *Endpoints related to orders and trades*  
-**[ICoinExClientSpotApiTrading](ICoinExClientSpotApiTrading.html) Trading { get; }**  
+**ICoinExClientSpotApiTrading Trading { get; }**  

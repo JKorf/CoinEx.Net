@@ -1,11 +1,11 @@
 ---
 title: ICoinExClientSpotApiTrading
 has_children: false
-parent: ICoinExClientSpotApi
+parent: ICoinExRestClientSpotApi
 grand_parent: Rest API documentation
 ---
 *[generated documentation]*  
-`CoinExClient > SpotApi > Trading`  
+`CoinExRestClient > SpotApi > Trading`  
 *CoinEx trading endpoints, placing and mananging orders.*
   
 
@@ -19,7 +19,7 @@ grand_parent: Rest API documentation
 *Cancels all orders. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.CancelAllOrdersAsync(/* parameters */);  
 ```  
 
@@ -43,7 +43,7 @@ Task<WebCallResult> CancelAllOrdersAsync(string symbol, CancellationToken ct = d
 *Cancels all stop orders. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.CancelAllStopOrdersAsync(/* parameters */);  
 ```  
 
@@ -68,7 +68,7 @@ Task<WebCallResult> CancelAllStopOrdersAsync(string symbol, CancellationToken ct
 *Cancels an order. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.CancelOrderAsync(/* parameters */);  
 ```  
 
@@ -94,7 +94,7 @@ Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, long orderId, C
 *Retrieves a list of executed orders for a symbol in the last 2 days. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.GetClosedOrdersAsync(/* parameters */);  
 ```  
 
@@ -121,7 +121,7 @@ Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetClosedOrdersAsync(string 
 *Retrieves a list of open orders for a symbol. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.GetOpenOrdersAsync();  
 ```  
 
@@ -148,7 +148,7 @@ Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string? s
 *Retrieves a list of open stop orders for a symbol. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.GetOpenStopOrdersAsync(/* parameters */);  
 ```  
 
@@ -175,7 +175,7 @@ Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenStopOrdersAsync(strin
 *Retrieves details of an order. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.GetOrderAsync(/* parameters */);  
 ```  
 
@@ -201,7 +201,7 @@ Task<WebCallResult<CoinExOrder>> GetOrderAsync(string symbol, long orderId, Canc
 *Retrieves execution details of a specific order. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.GetOrderTradesAsync(/* parameters */);  
 ```  
 
@@ -228,7 +228,7 @@ Task<WebCallResult<CoinExPagedResult<CoinExOrderTrade>>> GetOrderTradesAsync(lon
 *Gets a list of trades you executed on a specific symbol. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.GetUserTradesAsync(/* parameters */);  
 ```  
 
@@ -258,7 +258,7 @@ Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetUserTradesAs
 *Places an order. This is a single method for multiple place order endpoints. The called endpoint depends on the provided order type.*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Trading.PlaceOrderAsync(/* parameters */);  
 ```  
 

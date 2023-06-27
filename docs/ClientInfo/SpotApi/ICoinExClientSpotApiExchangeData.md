@@ -1,11 +1,11 @@
 ---
 title: ICoinExClientSpotApiExchangeData
 has_children: false
-parent: ICoinExClientSpotApi
+parent: ICoinExRestClientSpotApi
 grand_parent: Rest API documentation
 ---
 *[generated documentation]*  
-`CoinExClient > SpotApi > ExchangeData`  
+`CoinExRestClient > SpotApi > ExchangeData`  
 *CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.*
   
 
@@ -19,7 +19,7 @@ grand_parent: Rest API documentation
 *Gets the asset configs*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetAssetsAsync();  
 ```  
 
@@ -44,7 +44,7 @@ Task<WebCallResult<Dictionary<string, CoinExAssetConfig>>> GetAssetsAsync(string
 *Gets the exchange rates of currencies*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetCurrencyRateAsync();  
 ```  
 
@@ -68,7 +68,7 @@ Task<WebCallResult<Dictionary<string, decimal>>> GetCurrencyRateAsync(Cancellati
 *Retrieves kline data for a specific symbol*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetKlinesAsync(/* parameters */);  
 ```  
 
@@ -95,7 +95,7 @@ Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, Klin
 *Retrieve the mining difficulty. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetMiningDifficultyAsync();  
 ```  
 
@@ -119,7 +119,7 @@ Task<WebCallResult<CoinExMiningDifficulty>> GetMiningDifficultyAsync(Cancellatio
 *Gets the order book for a symbol*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetOrderBookAsync(/* parameters */);  
 ```  
 
@@ -146,7 +146,7 @@ Task<WebCallResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int mergeD
 *Retrieves market data for the exchange*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetSymbolInfoAsync(/* parameters */);  
 ```  
 
@@ -171,7 +171,7 @@ Task<WebCallResult<Dictionary<string, CoinExSymbol>>> GetSymbolInfoAsync(string 
 *Retrieves market data for the exchange*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetSymbolInfoAsync();  
 ```  
 
@@ -195,7 +195,7 @@ Task<WebCallResult<Dictionary<string, CoinExSymbol>>> GetSymbolInfoAsync(Cancell
 *Gets a list of symbols active on CoinEx*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetSymbolsAsync();  
 ```  
 
@@ -219,7 +219,7 @@ Task<WebCallResult<IEnumerable<string>>> GetSymbolsAsync(CancellationToken ct = 
 *Gets the state of a specific symbol*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetTickerAsync(/* parameters */);  
 ```  
 
@@ -244,7 +244,7 @@ Task<WebCallResult<CoinExSymbolState>> GetTickerAsync(string symbol, Cancellatio
 *Gets the states of all symbols*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetTickersAsync();  
 ```  
 
@@ -268,7 +268,7 @@ Task<WebCallResult<CoinExSymbolStatesList>> GetTickersAsync(CancellationToken ct
 *Gets the latest trades for a symbol*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.ExchangeData.GetTradeHistoryAsync(/* parameters */);  
 ```  
 

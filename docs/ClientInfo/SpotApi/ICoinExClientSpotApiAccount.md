@@ -1,11 +1,11 @@
 ---
 title: ICoinExClientSpotApiAccount
 has_children: false
-parent: ICoinExClientSpotApi
+parent: ICoinExRestClientSpotApi
 grand_parent: Rest API documentation
 ---
 *[generated documentation]*  
-`CoinExClient > SpotApi > Account`  
+`CoinExRestClient > SpotApi > Account`  
 *CoinEx account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings*
   
 
@@ -19,7 +19,7 @@ grand_parent: Rest API documentation
 *Cancel a specific withdrawal. Requires API credentials and withdrawal permission on the API key*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Account.CancelWithdrawalAsync(/* parameters */);  
 ```  
 
@@ -44,7 +44,7 @@ Task<WebCallResult<bool>> CancelWithdrawalAsync(long withdrawId, CancellationTok
 *Retrieves a list of balances. Requires API credentials*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Account.GetBalancesAsync();  
 ```  
 
@@ -68,7 +68,7 @@ Task<WebCallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(Cancella
 *Get the deposit address of an asset*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Account.GetDepositAddressAsync(/* parameters */);  
 ```  
 
@@ -94,7 +94,7 @@ Task<WebCallResult<CoinExDepositAddress>> GetDepositAddressAsync(string asset, s
 *Retrieves a list of deposits. Requires API credentials and withdrawal permission on the API key*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Account.GetDepositHistoryAsync();  
 ```  
 
@@ -121,7 +121,7 @@ Task<WebCallResult<CoinExPagedResult<CoinExDeposit>>> GetDepositHistoryAsync(str
 *Retrieves a list of withdrawals. Requires API credentials and withdrawal permission on the API key*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Account.GetWithdrawalHistoryAsync();  
 ```  
 
@@ -149,7 +149,7 @@ Task<WebCallResult<CoinExPagedResult<CoinExWithdrawal>>> GetWithdrawalHistoryAsy
 *Withdraw assets from CoinEx to a specific address. Requires API credentials and withdrawal permission on the API key*  
 
 ```csharp  
-var client = new CoinExClient();  
+var client = new CoinExRestClient();  
 var result = await client.SpotApi.Account.WithdrawAsync(/* parameters */);  
 ```  
 
