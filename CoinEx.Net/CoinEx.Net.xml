@@ -114,7 +114,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.TryParseErrorAsync(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.ParseErrorResponse(Newtonsoft.Json.Linq.JToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.ParseErrorResponse(System.Int32,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Collections.Generic.IEnumerable{System.String}}},System.String)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExRestClientSpotApi.GetTimeSyncInfo">

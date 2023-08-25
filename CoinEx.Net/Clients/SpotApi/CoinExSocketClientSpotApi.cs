@@ -54,7 +54,7 @@ namespace CoinEx.Net.Clients.SpotApi
             : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
             AddGenericHandler("Pong", (messageEvent) => { });
-            SendPeriodic("Ping", TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(NextId(), ServerSubject, PingAction));
+            SendPeriodic("Ping", TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, PingAction));
         }
         #endregion
 
@@ -68,14 +68,14 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<bool>> PingAsync()
         {
-            var result = await QueryAsync<string>(new CoinExSocketRequest(NextId(), ServerSubject, PingAction), false).ConfigureAwait(false);
+            var result = await QueryAsync<string>(new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, PingAction), false).ConfigureAwait(false);
             return result.As(result.Success);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<DateTime>> GetServerTimeAsync()
         {
-            var result = await QueryAsync<long>(new CoinExSocketRequest(NextId(), ServerSubject, ServerTimeAction), false).ConfigureAwait(false);
+            var result = await QueryAsync<long>(new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, ServerTimeAction), false).ConfigureAwait(false);
             if (!result)
                 return new CallResult<DateTime>(result.Error!);
             return new CallResult<DateTime>(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(result.Data));
@@ -85,7 +85,7 @@ namespace CoinEx.Net.Clients.SpotApi
         public async Task<CallResult<CoinExSocketSymbolState>> GetTickerAsync(string symbol, int cyclePeriod)
         {
             symbol.ValidateCoinExSymbol();
-            return await QueryAsync<CoinExSocketSymbolState>(new CoinExSocketRequest(NextId(), StateSubject, QueryAction, symbol, cyclePeriod), false).ConfigureAwait(false);
+            return await QueryAsync<CoinExSocketSymbolState>(new CoinExSocketRequest(ExchangeHelpers.NextId(), StateSubject, QueryAction, symbol, cyclePeriod), false).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -95,7 +95,7 @@ namespace CoinEx.Net.Clients.SpotApi
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
-            return await QueryAsync<CoinExSocketOrderBook>(new CoinExSocketRequest(NextId(), DepthSubject, QueryAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
+            return await QueryAsync<CoinExSocketOrderBook>(new CoinExSocketRequest(ExchangeHelpers.NextId(), DepthSubject, QueryAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -103,7 +103,7 @@ namespace CoinEx.Net.Clients.SpotApi
         {
             symbol.ValidateCoinExSymbol();
 
-            return await QueryAsync<IEnumerable<CoinExSocketSymbolTrade>>(new CoinExSocketRequest(NextId(), TransactionSubject, QueryAction, symbol, limit, fromId ?? 0), false).ConfigureAwait(false);
+            return await QueryAsync<IEnumerable<CoinExSocketSymbolTrade>>(new CoinExSocketRequest(ExchangeHelpers.NextId(), TransactionSubject, QueryAction, symbol, limit, fromId ?? 0), false).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -111,13 +111,13 @@ namespace CoinEx.Net.Clients.SpotApi
         {
             symbol.ValidateCoinExSymbol();
 
-            return await QueryAsync<CoinExKline>(new CoinExSocketRequest(NextId(), KlineSubject, QueryAction, symbol, interval.ToSeconds()), false).ConfigureAwait(false);
+            return await QueryAsync<CoinExKline>(new CoinExSocketRequest(ExchangeHelpers.NextId(), KlineSubject, QueryAction, symbol, interval.ToSeconds()), false).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable<string> assets)
         {
-            return await QueryAsync<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(NextId(), BalanceSubject, QueryAction, assets.ToArray()), true).ConfigureAwait(false);
+            return await QueryAsync<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(ExchangeHelpers.NextId(), BalanceSubject, QueryAction, assets.ToArray()), true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -125,7 +125,7 @@ namespace CoinEx.Net.Clients.SpotApi
         {
             symbol.ValidateCoinExSymbol();
             return await QueryAsync<CoinExSocketPagedResult<CoinExSocketOrder>>(
-                new CoinExSocketRequest(NextId(), OrderSubject, QueryAction, symbol, int.Parse(JsonConvert.SerializeObject(side, new OrderSideIntConverter(false))), offset, limit), true).ConfigureAwait(false);
+                new CoinExSocketRequest(ExchangeHelpers.NextId(), OrderSubject, QueryAction, symbol, int.Parse(JsonConvert.SerializeObject(side, new OrderSideIntConverter(false))), offset, limit), true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -146,7 +146,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 onMessage(data.As(result, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), StateSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -167,7 +167,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 onMessage(data.As(desResult.Data.Select(d => d.Value)));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), StateSubject, SubscribeAction), null, false, internalHandler, ct).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), StateSubject, SubscribeAction), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -197,7 +197,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), DepthSubject, SubscribeAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler, ct).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), DepthSubject, SubscribeAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -223,7 +223,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), TransactionSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), TransactionSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -248,7 +248,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 onMessage(data.As(desResult.Data, symbol));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), KlineSubject, SubscribeAction, symbol, interval.ToSeconds()), null, false, internalHandler, ct).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), KlineSubject, SubscribeAction, symbol, interval.ToSeconds()), null, false, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -278,7 +278,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 onMessage(data.As<IEnumerable<CoinExBalance>>(desResult.Data.Values, null));
             });
 
-            return await SubscribeAsync(new CoinExSocketRequest(NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler, ct).ConfigureAwait(false);
+            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -312,7 +312,7 @@ namespace CoinEx.Net.Clients.SpotApi
                 onMessage(data.As(result, result.Order.Symbol));
             });
 
-            var request = new CoinExSocketRequest(NextId(), OrderSubject, SubscribeAction, symbols.ToArray());
+            var request = new CoinExSocketRequest(ExchangeHelpers.NextId(), OrderSubject, SubscribeAction, symbols.ToArray());
             return await SubscribeAsync(request, null, true, internalHandler, ct).ConfigureAwait(false);
         }
 
@@ -423,9 +423,9 @@ namespace CoinEx.Net.Clients.SpotApi
                 return new CallResult<bool>(new NoApiCredentialsError());
 
             var authProvider = (CoinExAuthenticationProvider)s.ApiClient.AuthenticationProvider;
-            var request = new CoinExSocketRequest(NextId(), ServerSubject, AuthenticateAction, authProvider.GetSocketAuthParameters());
+            var request = new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, AuthenticateAction, authProvider.GetSocketAuthParameters());
             var result = new CallResult<bool>(new ServerError("No response from server"));
-            await s.SendAndWaitAsync(request, ClientOptions.RequestTimeout, null, data =>
+            await s.SendAndWaitAsync(request, ClientOptions.RequestTimeout, null, 1, data =>
             {
                 var idField = data["id"];
                 if (idField == null)

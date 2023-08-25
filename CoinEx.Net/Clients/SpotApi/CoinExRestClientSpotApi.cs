@@ -410,7 +410,10 @@ namespace CoinEx.Net.Clients.SpotApi
             {
                 if (data["code"]!.Value<int>() != 0)
                 {
-                    return Task.FromResult((ServerError?)ParseErrorResponse(data));
+                    if (data["code"] == null || data["message"] == null)
+                        return Task.FromResult((ServerError?)new ServerError(data.ToString()));
+
+                    return Task.FromResult((ServerError?)new ServerError((int)data["code"]!, (string)data["message"]!));
                 }
             }
 
@@ -418,12 +421,16 @@ namespace CoinEx.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        protected override Error ParseErrorResponse(JToken error)
+        protected override Error ParseErrorResponse(int httpStatusCode, IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, string data)
         {
-            if (error["code"] == null || error["message"] == null)
-                return new ServerError(error.ToString());
+            var errorData = ValidateJson(data);
+            if (!errorData)
+                return new ServerError(data);
 
-            return new ServerError((int)error["code"]!, (string)error["message"]!);
+            if (errorData.Data["code"] == null || errorData.Data["message"] == null)
+                return new ServerError(errorData.Data.ToString());
+
+            return new ServerError((int)errorData.Data["code"]!, (string)errorData.Data["message"]!);
         }
 
 
