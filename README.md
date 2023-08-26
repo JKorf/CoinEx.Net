@@ -1,11 +1,14 @@
 # CoinEx.Net
-[![.NET](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) ![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)  ![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)
+[![.NET](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) [![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)](https://www.nuget.org/packages/CoinEx.Net)  [![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)](https://www.nuget.org/packages/CoinEx.Net)
 
 CoinEx.Net is a wrapper around the CoinEx API as described on [CoinEx](https://github.com/coinexcom/coinex_exchange_api/wiki), including all features the API provides using clear and readable objects, both for the REST  as the websocket API's.
 
 **If you think something is broken, something is missing or have any questions, please open an [Issue](https://github.com/JKorf/CoinEx.Net/issues)**
 
 [Documentation](https://jkorf.github.io/CoinEx.Net/)
+
+## Installation
+`dotnet add package CoinEx.Net`
 
 ## Support the project
 I develop and maintain this package on my own for free in my spare time, any support is greatly appreciated.
