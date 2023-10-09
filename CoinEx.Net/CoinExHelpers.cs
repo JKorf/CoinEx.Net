@@ -61,6 +61,7 @@ namespace CoinEx.Net
 
             services.AddSingleton<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
             services.AddTransient<ICoinExRestClient, CoinExRestClient>();
+            services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApi.CommonSpotClient);
             if (socketClientLifeTime == null)
                 services.AddSingleton<ICoinExSocketClient, CoinExSocketClient>();
             else
