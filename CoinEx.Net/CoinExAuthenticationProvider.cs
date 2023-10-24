@@ -41,16 +41,13 @@ namespace CoinEx.Net
             headers.Add("Authorization", SignMD5(parameterString + "&secret_key=" + _credentials.Secret!.GetString()));
         }
 
-        public override string Sign(string toSign)
-        {
-            return SignMD5(toSign).ToUpper();
-        }
+        public string Sign(string toSign) => SignMD5(toSign).ToUpper();
 
         public object[] GetSocketAuthParameters()
         {
             var tonce = GetNonce();
             var parameterString = $"access_id={_credentials.Key!.GetString()}&tonce={tonce}&secret_key={_credentials.Secret!.GetString()}";
-            var auth = Sign(parameterString);
+            var auth = SignMD5(parameterString).ToUpper();
             return new object[] { _credentials.Key!.GetString(), auth, tonce };
         }
     }
