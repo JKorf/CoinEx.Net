@@ -26,6 +26,11 @@ namespace CoinEx.Net.Objects.Options
         /// </summary>
         public RestApiOptions SpotOptions { get; private set; } = new RestApiOptions();
 
+        /// <summary>
+        /// The broker reference id to use
+        /// </summary>
+        public string? BrokerId { get; set; }
+
         internal CoinExRestOptions Copy()
         {
             var options = Copy<CoinExRestOptions>();

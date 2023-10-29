@@ -2205,6 +2205,11 @@
             Options for the Spot API
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExRestOptions.BrokerId">
+            <summary>
+            The broker reference id to use
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Options.CoinExSocketOptions">
             <summary>
             Options for the CoinExSocketClient
