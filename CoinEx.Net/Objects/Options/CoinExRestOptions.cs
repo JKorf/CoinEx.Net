@@ -34,6 +34,7 @@ namespace CoinEx.Net.Objects.Options
         internal CoinExRestOptions Copy()
         {
             var options = Copy<CoinExRestOptions>();
+            options.BrokerId = BrokerId;
             options.NonceProvider = NonceProvider;
             options.SpotOptions = SpotOptions.Copy<RestApiOptions>();
             return options;
