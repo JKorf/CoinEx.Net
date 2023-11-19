@@ -1,88 +1,131 @@
 # CoinEx.Net
-![Build status](https://travis-ci.com/JKorf/CoinEx.Net.svg?branch=master) ![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)  ![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)
+[![.NET](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) [![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)](https://www.nuget.org/packages/CoinEx.Net)  [![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)](https://www.nuget.org/packages/CoinEx.Net)
 
 CoinEx.Net is a wrapper around the CoinEx API as described on [CoinEx](https://github.com/coinexcom/coinex_exchange_api/wiki), including all features the API provides using clear and readable objects, both for the REST  as the websocket API's.
 
 **If you think something is broken, something is missing or have any questions, please open an [Issue](https://github.com/JKorf/CoinEx.Net/issues)**
 
-## CryptoExchange.Net
-This library is build upon the CryptoExchange.Net library, make sure to check out the documentation on that for basic usage: [docs](https://github.com/JKorf/CryptoExchange.Net)
+[Documentation](https://jkorf.github.io/CoinEx.Net/)
 
-## Donations
-I develop and maintain this package on my own for free in my spare time. Donations are greatly appreciated. If you prefer to donate any other currency please contact me.
+## Installation
+`dotnet add package CoinEx.Net`
 
-**Btc**:  12KwZk3r2Y3JZ2uMULcjqqBvXmpDwjhhQS  
-**Eth**:  0x069176ca1a4b1d6e0b7901a6bc0dbf3bb0bf5cc2  
-**Nano**: xrb_1ocs3hbp561ef76eoctjwg85w5ugr8wgimkj8mfhoyqbx4s1pbc74zggw7gs  
+## Support the project
+I develop and maintain this package on my own for free in my spare time, any support is greatly appreciated.
+
+### Referral link
+Sign up using the following referral link to pay a small percentage of the trading fees you pay to support the project instead of paying them straight to CoinEx. This doesn't cost you a thing!
+[Link](https://www.coinex.com/register?refer_code=hd6gn)
+
+### Donate
+Make a one time donation in a crypto currency of your choice. If you prefer to donate a currency not listed here please contact me.
+
+**Btc**:  bc1qz0jv0my7fc60rxeupr23e75x95qmlq6489n8gh  
+**Eth**:  0x8E21C4d955975cB645589745ac0c46ECA8FAE504   
+
+### Sponsor
+Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Discord
 A Discord server is available [here](https://discord.gg/MSpeEtSY8t). Feel free to join for discussion and/or questions around the CryptoExchange.Net and implementation libraries.
 
-## Getting started
-Make sure you have installed the CoinEx.Net [Nuget](https://www.nuget.org/packages/CoinEx.Net/) package and add `using CoinEx.Net` to your usings.  You now have access to 2 clients:  
-**CoinExClient**  
-The client to interact with the CoinExREST API. Getting prices:
-````C#
-var client = new CoinExClient(new CoinExClientOptions(){
- // Specify options for the client
-});
-var callResult = await client.GetSymbolStatesAsync();
-// Make sure to check if the call was successful
-if(!callResult.Success)
-{
-  // Call failed, check callResult.Error for more info
-}
-else
-{
-  // Call succeeded, callResult.Data will have the resulting data
-}
-````
-
-Placing an order:
-````C#
-var client = new CoinExClient(new CoinExClientOptions(){
- // Specify options for the client
- ApiCredentials = new ApiCredentials("Key", "Secret")
-});
-var callResult = await client.PlaceLimitOrderAsync("BTC-USDT", TransactionType.Buy, 50, 10);
-// Make sure to check if the call was successful
-if(!callResult.Success)
-{
-  // Call failed, check callResult.Error for more info
-}
-else
-{
-  // Call succeeded, callResult.Data will have the resulting data
-}
-````
-
-**CoinExSocketClient**  
-The client to interact with the CoinEx websocket API. Basic usage:
-````C#
-var client = new CoinExSocketClient(new CoinExSocketClientOptions()
-{
-  // Specify options for the client
-});
-var subscribeResult = client.SubscribeToSymbolStateUpdatesAsync("ETHBTC", data => {
-  // Handle data when it is received
-});
-// Make sure to check if the subscritpion was successful
-if(!subscribeResult.Success)
-{
-  // Subscription failed, check callResult.Error for more info
-}
-else
-{
-  // Subscription succeeded, the handler will start receiving data when it is available
-}
-````
-
-## Client options
-For the basic client options see also the CryptoExchange.Net [docs](https://github.com/JKorf/CryptoExchange.Net#client-options). 
-
 ## Release notes
-* Version 4.2.5 - 13 Nov 2021
-    * Fix for invalid timestamp error
+* Version 6.0.5 - 14 Nov 2023
+    * Fix for broker reference
+
+* Version 6.0.4 - 29 Oct 2023
+    * Added broker reference option
+
+* Version 6.0.3 - 24 Oct 2023
+    * Updated CryptoExchange.Net
+
+* Version 6.0.2 - 09 Oct 2023
+    * Updated CryptoExchange.Net version
+    * Added ISpotClient to DI injection
+
+* Version 6.0.1 - 25 Aug 2023
+    * Updated CryptoExchange.Net
+
+* Version 6.0.0 - 25 Jun 2023
+    * Updated CryptoExchange.Net to version 6.0.0
+    * Renamed CoinExClient to CoinExRestClient
+    * Renamed SpotStreams to SpotApi on the CoinExSocketClient
+    * Updated endpoints to consistently use a base url without any path as basis to make switching environments/base urls clearer
+    * Added ICoinExOrderBookFactory and implementation for creating order books
+    * Updated dependency injection register method (AddCoinEx)
+
+* Version 5.1.2 - 18 Mar 2023
+    * Updated CryptoExchange.Net
+
+* Version 5.1.1 - 14 Feb 2023
+    * Updated CryptoExchange.Net
+    * Fixed issue with request signing with parameters containing special characters
+
+* Version 5.1.0 - 17 Nov 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.15 - 18 Jul 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.14 - 16 Jul 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.13 - 10 Jul 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.12 - 12 Jun 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.11 - 24 May 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.10 - 22 May 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.9 - 08 May 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.8 - 01 May 2022
+    * Updated CryptoExchange.Net which fixed an timing related issue in the websocket reconnection logic
+    * Added seconds representation to KlineInterval enum
+
+* Version 5.0.7 - 14 Apr 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.6 - 14 Mar 2022
+    * Fixed stopPrice serialization in PlaceOrderAsync
+
+* Version 5.0.5 - 10 Mar 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.4 - 08 Mar 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.3 - 01 Mar 2022
+    * Updated CryptoExchange.Net improving the websocket reconnection robustness
+
+* Version 5.0.2 - 27 Feb 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.1 - 24 Feb 2022
+    * Updated CryptoExchange.Net
+
+* Version 5.0.0 - 18 Feb 2022
+	* Added Github.io page for documentation: https://jkorf.github.io/CoinEx.Net/
+	*  unit tests for parsing the returned JSON for each endpoint and subscription
+	* Added AddCoinEx extension method on IServiceCollection for easy dependency injection
+	* Added URL reference to API endpoint documentation for each endpoint
+	* Added default rate limiter
+
+	* Refactored different PlaceOrderAsync methods to a single PlaceOrderAsync method to be consistent across exchange implementations
+	* Refactored client structure to be consistent across exchange implementations
+	* Renamed various properties to be consistent across exchange implementations
+
+	* Cleaned up project structure
+	* Fixed various models
+
+	* Updated CryptoExchange.Net, see https://github.com/JKorf/CryptoExchange.Net#release-notes
+	* See https://jkorf.github.io/CoinEx.Net/MigrationGuide.html for additional notes for updating from V4 to V5
 
 * Version 4.2.4 - 03 Nov 2021
     * Updated CoinExAssetConfig model

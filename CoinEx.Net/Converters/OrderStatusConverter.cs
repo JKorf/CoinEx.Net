@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Objects;
+﻿using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters;
 using System.Collections.Generic;
 

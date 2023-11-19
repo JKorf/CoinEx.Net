@@ -1,0 +1,34 @@
+{
+  "code": 0,
+  "data": {
+    "count": 1,                   
+    "curr_page": 1,               
+    "data": [                     
+     {
+        "amount": "56.5",          
+        "asset_fee": "0.01",
+        "avg_price": "11641.3",   
+        "create_time": 1496798479,    
+        "deal_amount": "56.5",       
+        "deal_fee": "1315.4669122",  
+        "deal_money": "657733.4561",  
+        "fee_asset": "BCH",          
+        "fee_discount": "0.01",      
+        "id": 300032,                
+        "left": "0",                
+        "maker_fee_rate": "0.001",    
+        "market": "BTCBCH",        
+        "money_fee": "0.01",          
+        "order_type": "limit",      
+        "price": "10",                
+        "source_id": "123",          
+        "status": "done",            
+        "taker_fee_rate": "0.002",   
+        "type": "sell",               
+        "client_id": "xxx",           
+      }
+    ],
+    "has_next": true             
+  },
+  "message": "Ok"
+}

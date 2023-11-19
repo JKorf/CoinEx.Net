@@ -1,6 +1,15 @@
-﻿using CoinEx.Net.Objects;
+﻿using CoinEx.Net.Clients;
+using CoinEx.Net.Enums;
+using CoinEx.Net.Interfaces.Clients;
+using CoinEx.Net.Objects;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Net.Http;
+using System.Net;
 using System.Text.RegularExpressions;
+using CoinEx.Net.Objects.Options;
+using CoinEx.Net.SymbolOrderBooks;
+using CoinEx.Net.Interfaces;
 
 namespace CoinEx.Net
 {
@@ -9,6 +18,57 @@ namespace CoinEx.Net
     /// </summary>
     public static class CoinExHelpers
     {
+        /// <summary>
+        /// Add the ICoinExClient and ICoinExSocketClient to the sevice collection so they can be injected
+        /// </summary>
+        /// <param name="services">The service collection</param>
+        /// <param name="defaultRestOptionsDelegate">Set default options for the rest client</param>
+        /// <param name="defaultSocketOptionsDelegate">Set default options for the socket client</param>
+        /// <param name="socketClientLifeTime">The lifetime of the ICoinExSocketClient for the service collection. Defaults to Singleton.</param>
+        /// <returns></returns>
+        public static IServiceCollection AddCoinEx(
+            this IServiceCollection services,
+            Action<CoinExRestOptions>? defaultRestOptionsDelegate = null,
+            Action<CoinExSocketOptions>? defaultSocketOptionsDelegate = null,
+            ServiceLifetime? socketClientLifeTime = null)
+        {
+            var restOptions = CoinExRestOptions.Default.Copy();
+
+            if (defaultRestOptionsDelegate != null)
+            {
+                defaultRestOptionsDelegate(restOptions);
+                CoinExRestClient.SetDefaultOptions(defaultRestOptionsDelegate);
+            }
+
+            if (defaultSocketOptionsDelegate != null)
+                CoinExSocketClient.SetDefaultOptions(defaultSocketOptionsDelegate);
+
+            services.AddHttpClient<ICoinExRestClient, CoinExRestClient>(options =>
+            {
+                options.Timeout = restOptions.RequestTimeout;
+            }).ConfigurePrimaryHttpMessageHandler(() => {
+                var handler = new HttpClientHandler();
+                if (restOptions.Proxy != null)
+                {
+                    handler.Proxy = new WebProxy
+                    {
+                        Address = new Uri($"{restOptions.Proxy.Host}:{restOptions.Proxy.Port}"),
+                        Credentials = restOptions.Proxy.Password == null ? null : new NetworkCredential(restOptions.Proxy.Login, restOptions.Proxy.Password)
+                    };
+                }
+                return handler;
+            });
+
+            services.AddSingleton<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
+            services.AddTransient<ICoinExRestClient, CoinExRestClient>();
+            services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApi.CommonSpotClient);
+            if (socketClientLifeTime == null)
+                services.AddSingleton<ICoinExSocketClient, CoinExSocketClient>();
+            else
+                services.Add(new ServiceDescriptor(typeof(ICoinExSocketClient), typeof(CoinExSocketClient), socketClientLifeTime.Value));
+            return services;
+        }
+
         /// <summary>
         /// Kline interval to seconds
         /// </summary>
@@ -19,17 +79,17 @@ namespace CoinEx.Net
             return interval switch
             {
                 KlineInterval.OneMinute => 1 * 60,
-                KlineInterval.ThreeMinute => 3 * 60,
-                KlineInterval.FiveMinute => 5 * 60,
-                KlineInterval.FifteenMinute => 15 * 60,
-                KlineInterval.ThirtyMinute => 30 * 60,
+                KlineInterval.ThreeMinutes => 3 * 60,
+                KlineInterval.FiveMinutes => 5 * 60,
+                KlineInterval.FifteenMinutes => 15 * 60,
+                KlineInterval.ThirtyMinutes => 30 * 60,
                 KlineInterval.OneHour => 1 * 60 * 60,
-                KlineInterval.TwoHour => 2 * 60 * 60,
-                KlineInterval.FourHour => 4 * 60 * 60,
-                KlineInterval.SixHour => 6 * 60 * 60,
-                KlineInterval.TwelveHour => 12 * 60 * 60,
+                KlineInterval.TwoHours => 2 * 60 * 60,
+                KlineInterval.FourHours => 4 * 60 * 60,
+                KlineInterval.SixHours => 6 * 60 * 60,
+                KlineInterval.TwelveHours => 12 * 60 * 60,
                 KlineInterval.OneDay => 1 * 24 * 60 * 60,
-                KlineInterval.ThreeDay => 3 * 24 * 60 * 60,
+                KlineInterval.ThreeDays => 3 * 24 * 60 * 60,
                 KlineInterval.OneWeek => 7 * 24 * 60 * 60,
                 _ => 0,
             };
@@ -63,7 +123,7 @@ namespace CoinEx.Net
                 throw new ArgumentException("Symbol is not provided");
 
             if (!Regex.IsMatch(symbolString, "^([0-9A-Z]{5,})$"))
-                throw new ArgumentException($"{symbolString} is not a valid CoinEx symbol. Should be [QuoteCurrency][BaseCurrency], e.g. ETHBTC");
+                throw new ArgumentException($"{symbolString} is not a valid CoinEx symbol. Should be [BaseAsset][QuoteAsset], e.g. ETHBTC");
         }
     }
 }

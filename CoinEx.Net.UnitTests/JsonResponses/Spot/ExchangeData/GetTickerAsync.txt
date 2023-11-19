@@ -1,0 +1,18 @@
+{
+  "code": 0,
+  "data": {
+    "date": 1513865441609,  
+    "ticker": {
+      "buy": "10.00",         
+      "buy_amount": "10.00", 
+      "open": "10",          
+      "high": "10",            
+      "last": "10.00",        
+      "low": "10",              
+      "sell": "10.00",          
+      "sell_amount": "0.78",   
+      "vol": "110"             
+    }
+  },
+  "message": "Ok"
+}
