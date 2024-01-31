@@ -1,7 +1,6 @@
 ﻿using CoinEx.Net.Clients;
 using CoinEx.Net.Enums;
 using CoinEx.Net.Interfaces.Clients;
-using CoinEx.Net.Objects;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;

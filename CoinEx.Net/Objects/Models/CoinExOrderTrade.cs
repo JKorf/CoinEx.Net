@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using CoinEx.Net.Converters;
 using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters;

@@ -1,5 +1,4 @@
-﻿using CoinEx.Net.Objects;
-using CryptoExchange.Net;
+﻿using CryptoExchange.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
