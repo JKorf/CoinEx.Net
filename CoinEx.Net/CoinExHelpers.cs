@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using CoinEx.Net.Objects.Options;
 using CoinEx.Net.SymbolOrderBooks;
 using CoinEx.Net.Interfaces;
+using CryptoExchange.Net.Clients;
 
 namespace CoinEx.Net
 {
@@ -58,8 +59,8 @@ namespace CoinEx.Net
                 return handler;
             });
 
+            services.AddTransient<ICryptoExchangeClient, CryptoExchangeClient>();
             services.AddSingleton<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
-            services.AddTransient<ICoinExRestClient, CoinExRestClient>();
             services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApi.CommonSpotClient);
             if (socketClientLifeTime == null)
                 services.AddSingleton<ICoinExSocketClient, CoinExSocketClient>();

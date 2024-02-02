@@ -23,14 +23,7 @@ namespace CoinEx.Net.Clients
         /// Create a new instance of the CoinExRestClient using provided options
         /// </summary>
         /// <param name="optionsDelegate">Option configuration delegate</param>
-        public CoinExRestClient(Action<CoinExRestOptions> optionsDelegate) : this(null, null, optionsDelegate)
-        {
-        }
-
-        /// <summary>
-        /// Create a new instance of the CoinExRestClient using default options
-        /// </summary>
-        public CoinExRestClient(ILoggerFactory? loggerFactory = null, HttpClient? httpClient = null) : this(httpClient, loggerFactory, null)
+        public CoinExRestClient(Action<CoinExRestOptions>? optionsDelegate = null) : this(null, null, optionsDelegate)
         {
         }
 
