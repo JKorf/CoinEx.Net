@@ -30,7 +30,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Balance
             foreach (var item in data.Data.Balances)
                 item.Value.Asset = item.Key;
 
-            _handler.Invoke(message.As(data.Data.Balances.Values.AsEnumerable(), null, SocketUpdateType.Update));//TODO
+            _handler.Invoke(message.As(data.Data.Balances.Values.AsEnumerable(), null, SocketUpdateType.Update));
             return Task.FromResult(new CallResult(null));
         }
 

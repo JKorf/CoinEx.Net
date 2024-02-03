@@ -29,8 +29,8 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Depth
 
         public override Task<CallResult> DoHandleMessageAsync(SocketConnection connection, DataEvent<object> message)
         {
-            var data = (CoinExOrderBookUpdate)message.Data;
-            _handler.Invoke(message.As(data.Book, _symbol, data.Snapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));//TODO
+            var data = (CoinExSocketUpdate<CoinExOrderBookUpdate>)message.Data;
+            _handler.Invoke(message.As(data.Data.Book, _symbol, data.Data.Snapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return Task.FromResult(new CallResult(null));
         }
 

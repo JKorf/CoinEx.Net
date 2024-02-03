@@ -37,26 +37,8 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public new CoinExSocketOptions ClientOptions => (CoinExSocketOptions)base.ClientOptions;
 
-        private const string ServerSubject = "server";
-        private const string StateSubject = "state";
-        private const string DepthSubject = "depth";
-        private const string TransactionSubject = "deals";
-        private const string KlineSubject = "kline";
-        private const string BalanceSubject = "asset";
-        private const string OrderSubject = "order";
-
-        private const string SubscribeAction = "subscribe";
-        private const string QueryAction = "query";
-        private const string ServerTimeAction = "time";
-        private const string PingAction = "ping";
-
-        private const string AuthenticateAction = "sign";
-
-        private const string SuccessString = "success";
-
         private static readonly MessagePath _idPath = MessagePath.Get().Property("id");
         private static readonly MessagePath _methodPath = MessagePath.Get().Property("method");
-        private static readonly MessagePath _symbolPathState = MessagePath.Get().Property("params").Index(0).PropertyName();
         private static readonly MessagePath _symbolPathDeals = MessagePath.Get().Property("params").Index(0);
         private static readonly MessagePath _symbolPathDepth = MessagePath.Get().Property("params").Index(2);
         #endregion
@@ -68,8 +50,7 @@ namespace CoinEx.Net.Clients.SpotApi
         internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
-            //AddGenericHandler("Pong", (messageEvent) => { });
-            //SendPeriodic("Ping", TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, PingAction));
+            QueryPeriodic("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery<string>("server.ping", new object[] { })), null);
         }
         #endregion
 

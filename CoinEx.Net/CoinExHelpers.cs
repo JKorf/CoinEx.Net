@@ -59,7 +59,7 @@ namespace CoinEx.Net
                 return handler;
             });
 
-            services.AddTransient<ICryptoExchangeClient, CryptoExchangeClient>();
+            services.AddTransient<ICryptoRestClient, CryptoRestClient>();
             services.AddSingleton<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
             services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApi.CommonSpotClient);
             if (socketClientLifeTime == null)

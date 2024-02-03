@@ -32,7 +32,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Deals
         public override Task<CallResult> DoHandleMessageAsync(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<CoinExDealsUpdate>)message.Data;
-            _handler.Invoke(message.As(data.Data.Trades, _symbol, SocketUpdateType.Update));//TODO
+            _handler.Invoke(message.As(data.Data.Trades, _symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return Task.FromResult(new CallResult(null));
         }
 

@@ -1985,11 +1985,6 @@
             The price of the last trade. Only filled on a full update.
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook.FullUpdate">
-            <summary>
-            Whether it is a full update or an update based on the last update
-            </summary>
-        </member>
         <member name="P:CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook.Timestamp">
             <summary>
             The timestamp of the data. Only filled on a full update.
@@ -2246,6 +2241,25 @@
             <summary>
             Dispose
             </summary>
+        </member>
+        <member name="T:CryptoExchange.Net.Clients.CryptoClientExtensions">
+            <summary>
+            Extensions for the ICryptoRestClient and ICryptoSocketClient interfaces
+            </summary>
+        </member>
+        <member name="M:CryptoExchange.Net.Clients.CryptoClientExtensions.CoinEx(CryptoExchange.Net.Clients.ICryptoRestClient)">
+            <summary>
+            Get the CoinEx REST Api client
+            </summary>
+            <param name="baseClient"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CryptoExchange.Net.Clients.CryptoClientExtensions.CoinEx(CryptoExchange.Net.Clients.ICryptoSocketClient)">
+            <summary>
+            Get the CoinEx Websocket Api client
+            </summary>
+            <param name="baseClient"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

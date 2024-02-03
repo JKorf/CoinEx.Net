@@ -17,11 +17,6 @@ namespace CoinEx.Net.Objects.Models.Socket
         public decimal? LastPrice { get; set; }
 
         /// <summary>
-        /// Whether it is a full update or an update based on the last update
-        /// </summary>
-        public bool FullUpdate { get; set; }
-
-        /// <summary>
         /// The timestamp of the data. Only filled on a full update.
         /// </summary>
         [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]

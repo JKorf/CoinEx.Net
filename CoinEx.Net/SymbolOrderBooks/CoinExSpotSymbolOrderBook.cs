@@ -92,7 +92,7 @@ namespace CoinEx.Net.SymbolOrderBooks
 
         private void HandleUpdate(DataEvent<CoinExSocketOrderBook> data)
         {
-            if (data.Data.FullUpdate)
+            if (data.UpdateType == SocketUpdateType.Snapshot)
             { 
                 SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Data.Bids, data.Data.Asks);
             }
