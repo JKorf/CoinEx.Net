@@ -7,9 +7,9 @@
   <PropertyGroup>
     <PackageId>CoinEx.Net</PackageId>
     <Authors>JKorf</Authors>
-    <PackageVersion>6.0.6</PackageVersion>
-    <AssemblyVersion>6.0.6</AssemblyVersion>
-    <FileVersion>6.0.6</FileVersion>
+    <PackageVersion>6.1.0-beta1</PackageVersion>
+    <AssemblyVersion>6.1.0-beta1</AssemblyVersion>
+    <FileVersion>6.1.0-beta1</FileVersion>
     <Description>CoinEx.Net is a .Net wrapper for the CoinEx API. It includes all features the API provides, REST API and Websocket, using clear and readable objects including but not limited to Reading market info, Placing and managing orders and Reading balances and funds</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>CoinEx CoinEx.Net C# .Net CryptoCurrency Exchange API wrapper</PackageTags>
@@ -21,7 +21,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>6.0.6 - Updated CryptoExchange.Net</PackageReleaseNotes>
+    <PackageReleaseNotes>6.1.0-beta1 - Updated CryptoExchange.Net and implemented reworked websocket message handling. For release notes for the CryptoExchange.Net base library see: https://github.com/JKorf/CryptoExchange.Net/tree/beta?tab=readme-ov-file#release-notes, Fixed issue in DI registration causing http client to not be correctly injected, Made various parameters in CoinExSocketClient optional, Removed excessive constructor overload for CoinExRestClient</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <DocumentationFile>CoinEx.Net.xml</DocumentationFile>
