@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CryptoExchange.Net.CommonObjects;
+using CoinEx.Net.ExtensionMethods;
 
 namespace CoinEx.Net.Clients.SpotApi
 {

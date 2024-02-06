@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Clients;
+using CoinEx.Net.ExtensionMethods;
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Objects.Models.Socket;
 using CoinEx.Net.Objects.Options;

@@ -27,6 +27,7 @@ using CoinEx.Net.Objects.Sockets.Subscriptions.Balance;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Depth;
 using CoinEx.Net.Objects.Sockets.Subscriptions.State;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Orders;
+using CoinEx.Net.ExtensionMethods;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
