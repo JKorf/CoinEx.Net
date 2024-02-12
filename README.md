@@ -7,6 +7,7 @@ CoinEx.Net is a wrapper around the CoinEx API as described on [CoinEx](https://g
 ## Get the library
 Available on Nuget  
  [![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)](https://www.nuget.org/packages/CoinEx.Net)  [![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)](https://www.nuget.org/packages/CoinEx.Net)
+ 
 `dotnet add package CoinEx.Net`
 
 ## How to use
@@ -15,7 +16,7 @@ Simplest usage
 // Get the ETH/USDT ticker via rest request
 var restClient = new CoinExRestClient();
 var tickerResult = await restClient.SpotApi.ExchangeData.GetTickerAsync("ETHUSDT");
-var lastPrice = tickerResult.Data.List.First().LastPrice;
+var lastPrice = tickerResult.Data.Ticker.LastPrice;
 ```
 
 ```csharp
