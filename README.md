@@ -1,21 +1,86 @@
-# CoinEx.Net
-[![.NET](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml/badge.svg)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) [![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg)](https://www.nuget.org/packages/CoinEx.Net)  [![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg)](https://www.nuget.org/packages/CoinEx.Net)
+# ![.CoinEx.Net](https://github.com/JKorf/CoinEx.Net/blob/master/CoinEx.Net/Icon/icon.png?raw=true) CoinEx.Net
+
+[![.NET](https://img.shields.io/github/actions/workflow/status/JKorf/CoinEx.Net/dotnet.yml?style=for-the-badge)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) ![License](https://img.shields.io/github/license/JKorf/CoinEx.Net?style=for-the-badge)
 
 CoinEx.Net is a wrapper around the CoinEx API as described on [CoinEx](https://github.com/coinexcom/coinex_exchange_api/wiki), including all features the API provides using clear and readable objects, both for the REST  as the websocket API's.
 
-**If you think something is broken, something is missing or have any questions, please open an [Issue](https://github.com/JKorf/CoinEx.Net/issues)**
+## Supported Frameworks
+The library is targeting both `.NET Standard 2.0` and `.NET Standard 2.1` for optimal compatibility
 
-[Documentation](https://jkorf.github.io/CoinEx.Net/)
+|.NET implementation|Version Support|
+|--|--|
+|.NET Core|`2.0` and higher|
+|.NET Framework|`4.6.1` and higher|
+|Mono|`5.4` and higher|
+|Xamarin.iOS|`10.14` and higher|
+|Xamarin.Android|`8.0` and higher|
+|UWP|`10.0.16299` and higher|
+|Unity|`2018.1` and higher|
 
-## Installation
-`dotnet add package CoinEx.Net`
+## Get the library
+[![Nuget version](https://img.shields.io/nuget/v/CoinEx.net.svg?style=for-the-badge)](https://www.nuget.org/packages/CoinEx.Net)  [![Nuget downloads](https://img.shields.io/nuget/dt/CoinEx.Net.svg?style=for-the-badge)](https://www.nuget.org/packages/CoinEx.Net)
+ 
+	dotnet add package CoinEx.Net
+
+## How to use
+* REST Endpoints
+	```csharp
+	// Get the ETH/USDT ticker via rest request
+	var restClient = new CoinExRestClient();
+	var tickerResult = await restClient.SpotApi.ExchangeData.GetTickerAsync("ETHUSDT");
+	var lastPrice = tickerResult.Data.Ticker.LastPrice;
+	```
+* Websocket streams
+	```csharp
+	// Subscribe to ETH/USDT ticker updates via the websocket API
+	var socketClient = new CoinExSocketClient();
+	var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", (update) =>
+	{
+		var lastPrice = update.Data.LastPrice;
+	});
+	```
+
+For information on the clients, dependency injection, response processing and more see the [documentation](https://jkorf.github.io/CryptoExchange.Net), or have a look at the examples  [here](https://github.com/JKorf/CryptoExchange.Net/tree/master/Examples).
+
+## CryptoExchange.Net
+CoinEx.Net is based on the [CryptoExchange.Net](https://github.com/JKorf/CryptoExchange.Net) base library. Other exchange API implementations based on the CryptoExchange.Net base library are available and follow the same logic.
+
+CryptoExchange.Net also allows for [easy access to different exchange API's](https://jkorf.github.io/CryptoExchange.Net#idocs_common).
+
+|Exchange|Repository|Nuget|
+|--|--|--|
+|Binance|[JKorf/Binance.Net](https://github.com/JKorf/Binance.Net)|[![Nuget version](https://img.shields.io/nuget/v/Binance.net.svg?style=flat-square)](https://www.nuget.org/packages/Binance.Net)|
+|Bitfinex|[JKorf/Bitfinex.Net](https://github.com/JKorf/Bitfinex.Net)|[![Nuget version](https://img.shields.io/nuget/v/Bitfinex.net.svg?style=flat-square)](https://www.nuget.org/packages/Bitfinex.Net)|
+|Bitget|[JKorf/Bitget.Net](https://github.com/JKorf/Bitget.Net)|[![Nuget version](https://img.shields.io/nuget/v/Bybit.net.svg?style=flat-square)](https://www.nuget.org/packages/JK.Bitget.Net)|
+|Bybit|[JKorf/Bybit.Net](https://github.com/JKorf/Bybit.Net)|[![Nuget version](https://img.shields.io/nuget/v/Bybit.net.svg?style=flat-square)](https://www.nuget.org/packages/Bybit.Net)|
+|CoinGecko|[JKorf/CoinGecko.Net](https://github.com/JKorf/CoinGecko.Net)|[![Nuget version](https://img.shields.io/nuget/v/CoinGecko.net.svg?style=flat-square)](https://www.nuget.org/packages/CoinGecko.Net)|
+|Huobi/HTX|[JKorf/Huobi.Net](https://github.com/JKorf/Huobi.Net)|[![Nuget version](https://img.shields.io/nuget/v/Huobi.net.svg?style=flat-square)](https://www.nuget.org/packages/Huobi.Net)|
+|Kraken|[JKorf/Kraken.Net](https://github.com/JKorf/Kraken.Net)|[![Nuget version](https://img.shields.io/nuget/v/KrakenExchange.net.svg?style=flat-square)](https://www.nuget.org/packages/KrakenExchange.Net)|
+|Kucoin|[JKorf/Kucoin.Net](https://github.com/JKorf/Kucoin.Net)|[![Nuget version](https://img.shields.io/nuget/v/Kucoin.net.svg?style=flat-square)](https://www.nuget.org/packages/Kucoin.Net)|
+|Mexc|[JKorf/Mexc.Net](https://github.com/JKorf/Mexc.Net)|[![Nuget version](https://img.shields.io/nuget/v/JK.Mexc.net.svg?style=flat-square)](https://www.nuget.org/packages/JK.Mexc.Net)|
+|OKX|[JKorf/OKX.Net](https://github.com/JKorf/OKX.Net)|[![Nuget version](https://img.shields.io/nuget/v/JK.OKX.net.svg?style=flat-square)](https://www.nuget.org/packages/JK.OKX.Net)|
+
+## Discord
+[![Nuget version](https://img.shields.io/discord/847020490588422145?style=for-the-badge)](https://discord.gg/MSpeEtSY8t)  
+A Discord server is available [here](https://discord.gg/MSpeEtSY8t). Feel free to join for discussion and/or questions around the CryptoExchange.Net and implementation libraries.
+
+## Supported functionality
+
+### Spot Api
+|API|Supported|Location|
+|--|--:|--|
+|Market Data API|✓|`restClient.SpotApi.ExchangeData`|
+|Account API|✓|`restClient.SpotApi.Account`|
+|Trading API|✓|`restClient.SpotApi.Trading`|
+|Websocket API|✓|`socketClient.SpotApi`|
+
+### Futures Api
+|API|Supported|Location|
+|--|--:|--|
+|*|X||
 
 ## Support the project
 I develop and maintain this package on my own for free in my spare time, any support is greatly appreciated.
-
-### Referral link
-Sign up using the following referral link to pay a small percentage of the trading fees you pay to support the project instead of paying them straight to CoinEx. This doesn't cost you a thing!
-[Link](https://www.coinex.com/register?refer_code=hd6gn)
 
 ### Donate
 Make a one time donation in a crypto currency of your choice. If you prefer to donate a currency not listed here please contact me.
@@ -26,10 +91,13 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 ### Sponsor
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
-## Discord
-A Discord server is available [here](https://discord.gg/MSpeEtSY8t). Feel free to join for discussion and/or questions around the CryptoExchange.Net and implementation libraries.
-
 ## Release notes
+* Version 6.1.0-beta1 - 06 Feb 2024
+    * Updated CryptoExchange.Net and implemented reworked websocket message handling. For release notes for the CryptoExchange.Net base library see: https://github.com/JKorf/CryptoExchange.Net/tree/beta?tab=readme-ov-file#release-notes
+    * Fixed issue in DI registration causing http client to not be correctly injected
+    * Made various parameters in CoinExSocketClient optional
+    * Removed excessive constructor overload for CoinExRestClient
+
 * Version 6.0.6 - 03 Dec 2023
     * Updated CryptoExchange.Net
 

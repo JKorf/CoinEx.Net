@@ -1,5 +1,4 @@
-﻿using CoinEx.Net.Objects;
-using CryptoExchange.Net;
+﻿using CryptoExchange.Net;
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Clients.SpotApi;

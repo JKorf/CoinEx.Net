@@ -17,6 +17,8 @@ using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 using CoinEx.Net.Clients;
 using CoinEx.Net.Clients.SpotApi;
+using CoinEx.Net.ExtensionMethods;
+using CryptoExchange.Net.Objects.Sockets;
 
 namespace CoinEx.Net.UnitTests
 {

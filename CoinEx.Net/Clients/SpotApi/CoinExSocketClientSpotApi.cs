@@ -1,8 +1,6 @@
 ﻿using CoinEx.Net.Converters;
-using CoinEx.Net.Objects;
 using CryptoExchange.Net;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +16,18 @@ using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Objects.Models.Socket;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.Sockets.MessageParsing.Interfaces;
+using CryptoExchange.Net.Sockets.MessageParsing;
+using CryptoExchange.Net.Objects.Sockets;
+using CoinEx.Net.Objects.Sockets.Queries;
+using CryptoExchange.Net.Converters;
+using CoinEx.Net.Objects.Sockets;
+using CoinEx.Net.Objects.Sockets.Subscriptions.Deals;
+using CoinEx.Net.Objects.Sockets.Subscriptions.Balance;
+using CoinEx.Net.Objects.Sockets.Subscriptions.Depth;
+using CoinEx.Net.Objects.Sockets.Subscriptions.State;
+using CoinEx.Net.Objects.Sockets.Subscriptions.Orders;
+using CoinEx.Net.ExtensionMethods;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -28,22 +38,10 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public new CoinExSocketOptions ClientOptions => (CoinExSocketOptions)base.ClientOptions;
 
-        private const string ServerSubject = "server";
-        private const string StateSubject = "state";
-        private const string DepthSubject = "depth";
-        private const string TransactionSubject = "deals";
-        private const string KlineSubject = "kline";
-        private const string BalanceSubject = "asset";
-        private const string OrderSubject = "order";
-
-        private const string SubscribeAction = "subscribe";
-        private const string QueryAction = "query";
-        private const string ServerTimeAction = "time";
-        private const string PingAction = "ping";
-
-        private const string AuthenticateAction = "sign";
-
-        private const string SuccessString = "success";
+        private static readonly MessagePath _idPath = MessagePath.Get().Property("id");
+        private static readonly MessagePath _methodPath = MessagePath.Get().Property("method");
+        private static readonly MessagePath _symbolPathDeals = MessagePath.Get().Property("params").Index(0);
+        private static readonly MessagePath _symbolPathDepth = MessagePath.Get().Property("params").Index(2);
         #endregion
 
         #region ctor
@@ -53,8 +51,7 @@ namespace CoinEx.Net.Clients.SpotApi
         internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
-            AddGenericHandler("Pong", (messageEvent) => { });
-            SendPeriodic("Ping", TimeSpan.FromMinutes(1), con => new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, PingAction));
+            RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery<string>("server.ping", new object[] { })), null);
         }
         #endregion
 
@@ -63,29 +60,60 @@ namespace CoinEx.Net.Clients.SpotApi
             => new CoinExAuthenticationProvider(credentials, ClientOptions.NonceProvider ?? new CoinExNonceProvider());
 
         #region methods
+
+        /// <inheritdoc />
+        public override string? GetListenerIdentifier(IMessageAccessor messageAccessor)
+        {
+            var id = messageAccessor.GetValue<string>(_idPath);
+            if (id != null)
+                return id;
+
+            var method = messageAccessor.GetValue<string>(_methodPath);
+            if (method == "deals.update")
+            {
+                var symbol = messageAccessor.GetValue<string>(_symbolPathDeals);
+                return method + symbol;
+            }
+
+            if (method == "depth.update")
+            {
+                var symbol = messageAccessor.GetValue<string>(_symbolPathDepth);
+                return method + symbol;
+            }
+
+            return method;
+        }
+
+        /// <inheritdoc />
+        protected override Query? GetAuthenticationRequest()
+        {
+            var authProvider = (CoinExAuthenticationProvider)AuthenticationProvider!;
+            var authParams = authProvider.GetSocketAuthParameters();
+            return new CoinExQuery<CoinExSubscriptionStatus>("server.sign", authParams, false);
+        }
+
         #region public
 
         /// <inheritdoc />
-        public async Task<CallResult<bool>> PingAsync()
+        public async Task<CallResult> PingAsync()
         {
-            var result = await QueryAsync<string>(new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, PingAction), false).ConfigureAwait(false);
-            return result.As(result.Success);
+            var query = await QueryAsync(new CoinExQuery<string>("server.ping", new object[] { })).ConfigureAwait(false);
+            return query.AsDataless();
         }
 
         /// <inheritdoc />
         public async Task<CallResult<DateTime>> GetServerTimeAsync()
         {
-            var result = await QueryAsync<long>(new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, ServerTimeAction), false).ConfigureAwait(false);
-            if (!result)
-                return new CallResult<DateTime>(result.Error!);
-            return new CallResult<DateTime>(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(result.Data));
+            var query = await QueryAsync(new CoinExQuery<long>("server.time", new object[] { })).ConfigureAwait(false);
+            return query.As(DateTimeConverter.ConvertFromSeconds(query.Data.Result));
         }
 
         /// <inheritdoc />
         public async Task<CallResult<CoinExSocketSymbolState>> GetTickerAsync(string symbol, int cyclePeriod)
         {
             symbol.ValidateCoinExSymbol();
-            return await QueryAsync<CoinExSocketSymbolState>(new CoinExSocketRequest(ExchangeHelpers.NextId(), StateSubject, QueryAction, symbol, cyclePeriod), false).ConfigureAwait(false);
+            var query = await QueryAsync(new CoinExQuery<CoinExSocketSymbolState>("state.query", new object[] { symbol, cyclePeriod })).ConfigureAwait(false);
+            return query.As<CoinExSocketSymbolState>(query.Data?.Result);
         }
 
         /// <inheritdoc />
@@ -95,79 +123,60 @@ namespace CoinEx.Net.Clients.SpotApi
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
-            return await QueryAsync<CoinExSocketOrderBook>(new CoinExSocketRequest(ExchangeHelpers.NextId(), DepthSubject, QueryAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), false).ConfigureAwait(false);
+            var query = await QueryAsync(new CoinExQuery<CoinExSocketOrderBook>("depth.query", new object[] { symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth) }, false)).ConfigureAwait(false);
+            return query.As<CoinExSocketOrderBook>(query.Data?.Result);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<IEnumerable<CoinExSocketSymbolTrade>>> GetTradeHistoryAsync(string symbol, int limit, int? fromId = null)
+        public async Task<CallResult<IEnumerable<CoinExSocketSymbolTrade>>> GetTradeHistoryAsync(string symbol, int? limit = null, int? fromId = null)
         {
             symbol.ValidateCoinExSymbol();
 
-            return await QueryAsync<IEnumerable<CoinExSocketSymbolTrade>>(new CoinExSocketRequest(ExchangeHelpers.NextId(), TransactionSubject, QueryAction, symbol, limit, fromId ?? 0), false).ConfigureAwait(false);
+            var query = await QueryAsync(new CoinExQuery<IEnumerable<CoinExSocketSymbolTrade>>("deals.query", new object[] { symbol, limit ?? 10, fromId ?? 0 }, false)).ConfigureAwait(false);
+            return query.As<IEnumerable<CoinExSocketSymbolTrade>>(query.Data?.Result);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<CoinExKline>> GetKlinesAsync(string symbol, KlineInterval interval)
+        public async Task<CallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval)
         {
             symbol.ValidateCoinExSymbol();
 
-            return await QueryAsync<CoinExKline>(new CoinExSocketRequest(ExchangeHelpers.NextId(), KlineSubject, QueryAction, symbol, interval.ToSeconds()), false).ConfigureAwait(false);
+            var startTime = DateTimeConverter.ConvertToSeconds(DateTime.UtcNow.AddDays(-1));
+            var endTime = DateTimeConverter.ConvertToSeconds(DateTime.UtcNow);
+            var query = await QueryAsync(new CoinExQuery<IEnumerable<CoinExKline>>("kline.query", new object[] { symbol, startTime, endTime, interval.ToSeconds() }, false)).ConfigureAwait(false);
+            return query.As<IEnumerable<CoinExKline>>(query.Data?.Result);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable<string> assets)
+        public async Task<CallResult<Dictionary<string, CoinExBalance>>> GetBalancesAsync(IEnumerable<string>? assets = null)
         {
-            return await QueryAsync<Dictionary<string, CoinExBalance>>(new CoinExSocketRequest(ExchangeHelpers.NextId(), BalanceSubject, QueryAction, assets.ToArray()), true).ConfigureAwait(false);
+            var query = await QueryAsync(new CoinExQuery<Dictionary<string, CoinExBalance>>("asset.query", assets?.Any() == true ? assets.ToArray() : Array.Empty<object>(), true)).ConfigureAwait(false);
+            return query.As<Dictionary<string, CoinExBalance>>(query.Data?.Result);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string symbol, OrderSide side, int offset, int limit)
+        public async Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string symbol, OrderSide? side = null, int? offset = null, int? limit = null)
         {
             symbol.ValidateCoinExSymbol();
-            return await QueryAsync<CoinExSocketPagedResult<CoinExSocketOrder>>(
-                new CoinExSocketRequest(ExchangeHelpers.NextId(), OrderSubject, QueryAction, symbol, int.Parse(JsonConvert.SerializeObject(side, new OrderSideIntConverter(false))), offset, limit), true).ConfigureAwait(false);
+
+            var query = await QueryAsync(new CoinExQuery<CoinExSocketPagedResult<CoinExSocketOrder>>("order.query", new object[] { symbol, int.Parse(JsonConvert.SerializeObject(side ?? OrderSide.Either, new OrderSideIntConverter(false))), offset ?? 0, limit ?? 10 }, true)).ConfigureAwait(false);
+            return query.As<CoinExSocketPagedResult<CoinExSocketOrder>>(query.Data?.Result);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol, Action<DataEvent<CoinExSocketSymbolState>> onMessage, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
-            var internalHandler = new Action<DataEvent<JToken[]>>(data =>
-            {
-                var desResult = Deserialize<Dictionary<string, CoinExSocketSymbolState>>(data.Data[0]);
-                if (!desResult)
-                {
-                    _logger.Log(LogLevel.Warning, "Received invalid state update: " + desResult.Error);
-                    return;
-                }
-                var result = desResult.Data.First().Value;
-                result.Symbol = symbol;
 
-                onMessage(data.As(result, symbol));
-            });
-
-            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), StateSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
+            var subscription = new CoinExStateSubscription(_logger, symbol, new object[] { symbol }, x => onMessage(x.As(x.Data.Single())));
+            return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToAllTickerUpdatesAsync(Action<DataEvent<IEnumerable<CoinExSocketSymbolState>>> onMessage, CancellationToken ct = default)
         {
-            var internalHandler = new Action<DataEvent<JToken[]>>(data =>
-            {
-                var desResult = Deserialize<Dictionary<string, CoinExSocketSymbolState>>(data.Data[0]);
-                if (!desResult)
-                {
-                    _logger.Log(LogLevel.Warning, "Received invalid state update: " + desResult.Error);
-                    return;
-                }
-
-                foreach (var item in desResult.Data)
-                    item.Value.Symbol = item.Key;
-
-                onMessage(data.As(desResult.Data.Select(d => d.Value)));
-            });
-
-            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), StateSubject, SubscribeAction), null, false, internalHandler, ct).ConfigureAwait(false);
+            var subscription = new CoinExStateSubscription(_logger, null, new object[] { }, onMessage);
+            return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -177,108 +186,24 @@ namespace CoinEx.Net.Clients.SpotApi
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
-            var internalHandler = new Action<DataEvent<JToken[]>>(data =>
-            {
-                if (data.Data.Length != 3)
-                {
-                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for depth update. Expected 3 objects, received {data.Data.Length}. Data: " + data);
-                    return;
-                }
-
-                var fullUpdate = (bool)data.Data[0];
-                var desResult = Deserialize<CoinExSocketOrderBook>(data.Data[1]);
-                if (!desResult)
-                {
-                    _logger.Log(LogLevel.Warning, "Received invalid depth update: " + desResult.Error);
-                    return;
-                }
-
-                desResult.Data.FullUpdate = fullUpdate;
-                onMessage(data.As(desResult.Data, symbol));
-            });
-
-            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), DepthSubject, SubscribeAction, symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth)), null, false, internalHandler, ct).ConfigureAwait(false);
+            var subscription = new CoinExDepthSubscription(_logger, symbol, new object[] { symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth), false }, onMessage);
+            return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExSocketSymbolTrade>>> onMessage, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
-            var internalHandler = new Action<DataEvent<JToken[]>>(data =>
-            {
-                if (data.Data.Length != 2 && data.Data.Length != 3)
-                {
-                    // Sometimes an extra True is send as 3rd parameter?
-                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for trade update. Expected 2 objects, received {data.Data.Length}. Data: {data.OriginalData}");
-                    return;
-                }
 
-                var desResult = Deserialize<IEnumerable<CoinExSocketSymbolTrade>>(data.Data[1]);
-                if (!desResult)
-                {
-                    _logger.Log(LogLevel.Warning, "Received invalid trade update: " + desResult.Error);
-                    return;
-                }
-
-                onMessage(data.As(desResult.Data, symbol));
-            });
-
-            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), TransactionSubject, SubscribeAction, symbol), null, false, internalHandler, ct).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<IEnumerable<CoinExKline>>> onMessage, CancellationToken ct = default)
-        {
-            symbol.ValidateCoinExSymbol();
-            var internalHandler = new Action<DataEvent<JToken[]>>(data =>
-            {
-                if (data.Data.Length > 2)
-                {
-                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for kline update. Expected 1 or 2 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
-                    return;
-                }
-
-                var desResult = Deserialize<IEnumerable<CoinExKline>>(new JArray(data.Data));
-                if (!desResult)
-                {
-                    _logger.Log(LogLevel.Warning, "Received invalid kline update: " + desResult.Error);
-                    return;
-                }
-
-                onMessage(data.As(desResult.Data, symbol));
-            });
-
-            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), KlineSubject, SubscribeAction, symbol, interval.ToSeconds()), null, false, internalHandler, ct).ConfigureAwait(false);
+            var subscription = new CoinExDealsSubscription(_logger, symbol, new object[] { symbol }, onMessage);
+            return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<IEnumerable<CoinExBalance>>> onMessage, CancellationToken ct = default)
         {
-            var internalHandler = new Action<DataEvent<JToken[]>>(data =>
-            {
-                if (data.Data.Length != 1)
-                {
-                    if (data.Data.Length != 2 || data.Data.Length == 2 && data.Data[1].ToString().Trim() != "0")
-                    {
-                        _logger.Log(LogLevel.Warning, $"Received unexpected data format for balance update. Expected 1 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
-                        return;
-                    }
-                }
-
-                var desResult = Deserialize<Dictionary<string, CoinExBalance>>(data.Data[0]);
-                if (!desResult)
-                {
-                    _logger.Log(LogLevel.Warning, "Received invalid balance update: " + desResult.Error);
-                    return;
-                }
-
-                foreach (var item in desResult.Data)
-                    item.Value.Asset = item.Key;
-
-                onMessage(data.As<IEnumerable<CoinExBalance>>(desResult.Data.Values, null));
-            });
-
-            return await SubscribeAsync(new CoinExSocketRequest(ExchangeHelpers.NextId(), BalanceSubject, SubscribeAction), null, true, internalHandler, ct).ConfigureAwait(false);
+            var subscription = new CoinExBalanceSubscription(_logger, onMessage);
+            return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -288,188 +213,10 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExSocketOrderUpdate>> onMessage, CancellationToken ct = default)
         {
-            var internalHandler = new Action<DataEvent<JToken[]>>(data =>
-            {
-                if (data.Data.Length != 2)
-                {
-                    _logger.Log(LogLevel.Warning, $"Received unexpected data format for order update. Expected 2 objects, received {data.Data.Length}. Data: [{string.Join(",", data.Data.Select(s => s.ToString()))}]");
-                    return;
-                }
-
-                var updateResult = JsonConvert.DeserializeObject<UpdateType>(data.Data[0].ToString(), new UpdateTypeConverter(false));
-                var desResult = Deserialize<CoinExSocketOrder>(data.Data[1]);
-                if (!desResult)
-                {
-                    _logger.Log(LogLevel.Warning, "Received invalid order update: " + desResult.Error);
-                    return;
-                }
-
-                var result = new CoinExSocketOrderUpdate()
-                {
-                    UpdateType = updateResult,
-                    Order = desResult.Data
-                };
-                onMessage(data.As(result, result.Order.Symbol));
-            });
-
-            var request = new CoinExSocketRequest(ExchangeHelpers.NextId(), OrderSubject, SubscribeAction, symbols.ToArray());
-            return await SubscribeAsync(request, null, true, internalHandler, ct).ConfigureAwait(false);
+            var subscription = new CoinExOrderSubscription(_logger, symbols, onMessage);
+            return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 
-        /// <inheritdoc />
-        protected override bool HandleQueryResponse<T>(SocketConnection s, object request, JToken data, out CallResult<T> callResult)
-        {
-            callResult = null!;
-            var cRequest = (CoinExSocketRequest)request;
-            var idField = data["id"];
-            if (idField == null)
-                return false;
-
-            if ((int)idField != cRequest.Id)
-                return false;
-
-            var error = data["error"];
-            if (error != null && error.Type != JTokenType.Null)
-            {
-                callResult = new CallResult<T>(new ServerError(error["code"]?.Value<int>() ?? 0, error["message"]?.ToString() ?? "Unknown error"));
-                return true;
-            }
-            else
-            {
-                var result = data["result"];
-                if (result == null)
-                {
-                    callResult = new CallResult<T>(new UnknownError("No data"));
-                    return true;
-                }
-
-                var desResult = Deserialize<T>(result);
-                if (!desResult)
-                {
-                    callResult = new CallResult<T>(desResult.Error!);
-                    return true;
-                }
-
-                callResult = new CallResult<T>(desResult.Data);
-                return true;
-            }
-        }
-
-        /// <inheritdoc />
-        protected override bool HandleSubscriptionResponse(SocketConnection s, SocketSubscription subscription, object request, JToken message, out CallResult<object>? callResult)
-        {
-            callResult = null;
-            if (message.Type != JTokenType.Object)
-                return false;
-
-            var idField = message["id"];
-            if (idField == null || idField.Type == JTokenType.Null)
-                return false;
-
-            var cRequest = (CoinExSocketRequest)request;
-            if ((int)idField != cRequest.Id)
-                return false;
-
-            var subResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(message);
-            if (!subResponse)
-            {
-                _logger.Log(LogLevel.Warning, "Subscription failed: " + subResponse.Error);
-                callResult = new CallResult<object>(subResponse.Error!);
-                return true;
-            }
-
-            if (subResponse.Data.Error != null)
-            {
-                _logger.Log(LogLevel.Debug, $"Failed to subscribe: {subResponse.Data.Error.Code} {subResponse.Data.Error.Message}");
-                callResult = new CallResult<object>(new ServerError(subResponse.Data.Error.Code, subResponse.Data.Error.Message));
-                return true;
-            }
-
-            _logger.Log(LogLevel.Debug, "Subscription completed");
-            callResult = new CallResult<object>(subResponse);
-            return true;
-        }
-
-        /// <inheritdoc />
-        protected override JToken ProcessTokenData(JToken data)
-        {
-            return data["params"]!;
-        }
-
-        /// <inheritdoc />
-        protected override bool MessageMatchesHandler(SocketConnection socketConnection, JToken message, object request)
-        {
-            var cRequest = (CoinExSocketRequest)request;
-            var method = message["method"]?.ToString();
-            if (method == null)
-                return false;
-
-            var subject = method.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
-            return cRequest.Subject == subject;
-        }
-
-        /// <inheritdoc />
-        protected override bool MessageMatchesHandler(SocketConnection socketConnection, JToken message, string identifier)
-        {
-            if (message.Type != JTokenType.Object)
-                return false;
-            return identifier == "Pong" && message["result"]?.ToString() == "pong";
-        }
-
-        /// <inheritdoc />
-        protected override async Task<CallResult<bool>> AuthenticateSocketAsync(SocketConnection s)
-        {
-            if (s.ApiClient.AuthenticationProvider == null)
-                return new CallResult<bool>(new NoApiCredentialsError());
-
-            var authProvider = (CoinExAuthenticationProvider)s.ApiClient.AuthenticationProvider;
-            var request = new CoinExSocketRequest(ExchangeHelpers.NextId(), ServerSubject, AuthenticateAction, authProvider.GetSocketAuthParameters());
-            var result = new CallResult<bool>(new ServerError("No response from server"));
-            await s.SendAndWaitAsync(request, ClientOptions.RequestTimeout, null, 1, data =>
-            {
-                var idField = data["id"];
-                if (idField == null)
-                    return false;
-
-                if ((int)idField != request.Id)
-                    return false; // Not for this request
-
-                var authResponse = Deserialize<CoinExSocketRequestResponse<CoinExSocketRequestResponseMessage>>(data);
-                if (!authResponse)
-                {
-                    _logger.Log(LogLevel.Warning, "Authorization failed: " + authResponse.Error);
-                    result = new CallResult<bool>(authResponse.Error!);
-                    return true;
-                }
-
-                if (authResponse.Data.Error != null)
-                {
-                    var error = new ServerError(authResponse.Data.Error.Code, authResponse.Data.Error.Message);
-                    _logger.Log(LogLevel.Debug, "Failed to authenticate: " + error);
-                    result = new CallResult<bool>(error);
-                    return true;
-                }
-
-                if (authResponse.Data.Result.Status != SuccessString)
-                {
-                    _logger.Log(LogLevel.Debug, "Failed to authenticate: " + authResponse.Data.Result.Status);
-                    result = new CallResult<bool>(new ServerError(authResponse.Data.Result.Status));
-                    return true;
-                }
-
-                _logger.Log(LogLevel.Debug, "Authorization completed");
-                result = new CallResult<bool>(true);
-                return true;
-            }).ConfigureAwait(false);
-
-            return result;
-        }
-
-        /// <inheritdoc />
-        protected override Task<bool> UnsubscribeAsync(SocketConnection connection, SocketSubscription s)
-        {
-            return Task.FromResult(true);
-        }
         #endregion
 
         #endregion
