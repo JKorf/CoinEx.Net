@@ -2,7 +2,7 @@
 
 [![.NET](https://img.shields.io/github/actions/workflow/status/JKorf/CoinEx.Net/dotnet.yml?style=for-the-badge)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) ![License](https://img.shields.io/github/license/JKorf/CoinEx.Net?style=for-the-badge)
 
-CoinEx.Net is a wrapper around the CoinEx API as described on [CoinEx](https://github.com/coinexcom/coinex_exchange_api/wiki), including all features the API provides using clear and readable objects, both for the REST  as the websocket API's.
+CoinEx.Net is a client library for accessing the [CoinEx REST and Websocket API](https://github.com/coinexcom/coinex_exchange_api/wiki). All data is mapped to readable models and enum values. Additional features include an implementation for maintaining a client side order book, easy integration with other exchange client libraries and more.
 
 ## Supported Frameworks
 The library is targeting both `.NET Standard 2.0` and `.NET Standard 2.1` for optimal compatibility
@@ -86,17 +86,18 @@ I develop and maintain this package on my own for free in my spare time, any sup
 Make a one time donation in a crypto currency of your choice. If you prefer to donate a currency not listed here please contact me.
 
 **Btc**:  bc1qz0jv0my7fc60rxeupr23e75x95qmlq6489n8gh  
-**Eth**:  0x8E21C4d955975cB645589745ac0c46ECA8FAE504   
+**Eth**:  0xcb1b63aCF9fef2755eBf4a0506250074496Ad5b7   
 
 ### Sponsor
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
-* Version 6.1.0-beta1 - 06 Feb 2024
-    * Updated CryptoExchange.Net and implemented reworked websocket message handling. For release notes for the CryptoExchange.Net base library see: https://github.com/JKorf/CryptoExchange.Net/tree/beta?tab=readme-ov-file#release-notes
+* Version 6.1.0 - 25 Feb 2024
+    * Updated CryptoExchange.Net and implemented reworked websocket message handling. For release notes for the CryptoExchange.Net base library see: https://github.com/JKorf/CryptoExchange.Net?tab=readme-ov-file#release-notes
     * Fixed issue in DI registration causing http client to not be correctly injected
     * Made various parameters in CoinExSocketClient optional
-    * Removed excessive constructor overload for CoinExRestClient
+    * Removed redundant CoinExRestClient constructor overload
+    * Updated some namespaces
 
 * Version 6.0.6 - 03 Dec 2023
     * Updated CryptoExchange.Net
