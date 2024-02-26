@@ -38,7 +38,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Orders
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExOrderUpdate>);
-        public override Query? GetSubQuery(SocketConnection connection) => new CoinExQuery<CoinExSubscriptionStatus>("order.subscribe", _symbols?.Any() != true ? Array.Empty<object>() : new object[] { _symbols! }, Authenticated);
-        public override Query? GetUnsubQuery() => new CoinExQuery<CoinExSubscriptionStatus>("order.unsubscribe", _symbols?.Any() != true ? Array.Empty<object>() : new object[] { _symbols! }, Authenticated);
+        public override Query? GetSubQuery(SocketConnection connection) => new CoinExQuery<CoinExSubscriptionStatus>("order.subscribe", _symbols?.Any() != true ? Array.Empty<object>() : _symbols.ToArray(), Authenticated);
+        public override Query? GetUnsubQuery() => new CoinExQuery<CoinExSubscriptionStatus>("order.unsubscribe", _symbols?.Any() != true ? Array.Empty<object>() : _symbols.ToArray(), Authenticated);
     }
 }
