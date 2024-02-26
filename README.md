@@ -92,6 +92,9 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 6.1.1 - 26 Feb 2024
+    * Fixed order subscription with symbol parameters
+
 * Version 6.1.0 - 25 Feb 2024
     * Updated CryptoExchange.Net and implemented reworked websocket message handling. For release notes for the CryptoExchange.Net base library see: https://github.com/JKorf/CryptoExchange.Net?tab=readme-ov-file#release-notes
     * Fixed issue in DI registration causing http client to not be correctly injected
