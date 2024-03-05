@@ -1,5 +1,6 @@
 ﻿using CoinEx.Net.Testing;
 using CryptoExchange.Net.Converters;
+using CryptoExchange.Net.Converters.JsonNet;
 using CryptoExchange.Net.Objects;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

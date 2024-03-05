@@ -86,7 +86,7 @@ namespace CoinEx.Net.Clients.SpotApi
         public async Task<WebCallResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
-            mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
+            //mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit?.ValidateIntValues(nameof(limit), 5, 10, 20);
 
             var parameters = new Dictionary<string, object>
