@@ -23,22 +23,25 @@ The library is targeting both `.NET Standard 2.0` and `.NET Standard 2.1` for op
 	dotnet add package CoinEx.Net
 
 ## How to use
-* REST Endpoints
-	```csharp
-	// Get the ETH/USDT ticker via rest request
-	var restClient = new CoinExRestClient();
-	var tickerResult = await restClient.SpotApi.ExchangeData.GetTickerAsync("ETHUSDT");
-	var lastPrice = tickerResult.Data.Ticker.LastPrice;
-	```
-* Websocket streams
-	```csharp
-	// Subscribe to ETH/USDT ticker updates via the websocket API
-	var socketClient = new CoinExSocketClient();
-	var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", (update) =>
-	{
-		var lastPrice = update.Data.LastPrice;
-	});
-	```
+*REST Endpoints*  
+
+```csharp
+// Get the ETH/USDT ticker via rest request
+var restClient = new CoinExRestClient();
+var tickerResult = await restClient.SpotApi.ExchangeData.GetTickerAsync("ETHUSDT");
+var lastPrice = tickerResult.Data.Ticker.LastPrice;
+```
+
+*Websocket streams*  
+
+```csharp
+// Subscribe to ETH/USDT ticker updates via the websocket API
+var socketClient = new CoinExSocketClient();
+var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", (update) =>
+{
+	var lastPrice = update.Data.LastPrice;
+});
+```
 
 For information on the clients, dependency injection, response processing and more see the [documentation](https://jkorf.github.io/CryptoExchange.Net), or have a look at the examples  [here](https://github.com/JKorf/CryptoExchange.Net/tree/master/Examples).
 
