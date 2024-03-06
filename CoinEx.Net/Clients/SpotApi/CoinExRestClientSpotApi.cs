@@ -18,6 +18,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Sockets.MessageParsing.Interfaces;
+using CryptoExchange.Net.Sockets.MessageParsing;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -429,11 +430,15 @@ namespace CoinEx.Net.Clients.SpotApi
             if (!accessor.IsJson)
                 return new ServerError(accessor.GetOriginalString());
 
-            var result = accessor.Deserialize<CoinExApiResult>();
-            if (!result)
+            var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
+            var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
+            if (msg == null)
                 return new ServerError(accessor.GetOriginalString());
 
-            return new ServerError(result.Data.Code!, result.Data.Message!);
+            if (code == null)
+                return new ServerError(msg);
+
+            return new ServerError(code.Value, msg);
         }
 
 
