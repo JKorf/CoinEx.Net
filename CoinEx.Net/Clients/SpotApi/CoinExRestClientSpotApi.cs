@@ -17,8 +17,9 @@ using CryptoExchange.Net.Interfaces.CommonClients;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using CoinEx.Net.Objects.Options;
-using CryptoExchange.Net.Sockets.MessageParsing.Interfaces;
-using CryptoExchange.Net.Sockets.MessageParsing;
+using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Converters.MessageParsing;
+using CryptoExchange.Net.Clients;
 
 namespace CoinEx.Net.Clients.SpotApi
 {

@@ -7,6 +7,7 @@ using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Interfaces;
 using CoinEx.Net.Objects.Internal;
 using System.Linq;
+using CryptoExchange.Net.Clients;
 
 namespace CoinEx.Net
 {

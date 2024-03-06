@@ -1,10 +1,10 @@
 ﻿using CoinEx.Net.Objects.Models.Socket;
 using CoinEx.Net.Objects.Sockets.Queries;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Balance;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
-using CryptoExchange.Net.Sockets.MessageParsing.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
