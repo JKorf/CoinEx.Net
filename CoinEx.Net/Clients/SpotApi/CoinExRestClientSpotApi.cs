@@ -76,12 +76,40 @@ namespace CoinEx.Net.Clients.SpotApi
         #region methods
         #region private
         internal async Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-            => GetResult(await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        {
+            var result = await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.As<T>(default);
+
+            if (result.Data.Code != 0)
+                return result.AsError<T>(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.As(result.Data.Data);
+        }
+
         internal async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
-            => GetResult(await SendRequestAsync<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        {
+            var result = await SendRequestAsync<CoinExApiResult>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.AsDataless();
+
+            if (result.Data.Code != 0)
+                return result.AsDatalessError(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.AsDataless();
+        }
 
         internal async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-            => GetResult(await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        {
+            var result = await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.As<CoinExPagedResult<T>>(default);
+
+            if (result.Data.Code != 0)
+                return result.AsError<CoinExPagedResult<T>>(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.As(result.Data.Data);
+        }
 
         internal Uri GetUrl(string endpoint)
         {
@@ -407,24 +435,6 @@ namespace CoinEx.Net.Clients.SpotApi
         }
         #endregion
 
-
-        ///// <inheritdoc />
-        //protected override Task<ServerError?> TryParseErrorAsync(JToken data)
-        //{
-        //    if (data["code"] != null && data["message"] != null)
-        //    {
-        //        if (data["code"]!.Value<int>() != 0)
-        //        {
-        //            if (data["code"] == null || data["message"] == null)
-        //                return Task.FromResult((ServerError?)new ServerError(data.ToString()));
-
-        //            return Task.FromResult((ServerError?)new ServerError((int)data["code"]!, (string)data["message"]!));
-        //        }
-        //    }
-
-        //    return Task.FromResult((ServerError?)null);
-        //}
-
         /// <inheritdoc />
         protected override Error ParseErrorResponse(int httpStatusCode, IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
         {
@@ -440,23 +450,6 @@ namespace CoinEx.Net.Clients.SpotApi
                 return new ServerError(msg);
 
             return new ServerError(code.Value, msg);
-        }
-
-
-        private static WebCallResult<T> GetResult<T>(WebCallResult<CoinExApiResult<T>> result) where T : class
-        {
-            if (result.Error != null || result.Data == null)
-                return result.AsError<T>(result.Error ?? new UnknownError("No data received"));
-
-            return result.As(result.Data.Data);
-        }
-
-        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result)
-        {
-            if (result.Error != null || result.Data == null)
-                return result.AsDatalessError(result.Error ?? new UnknownError("No data received"));
-
-            return result.AsDataless();
         }
 
         /// <inheritdoc />

@@ -17,7 +17,7 @@ using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Clients;
 using CoinEx.Net.Objects.Options;
 
-namespace CoinEx.Net.Testing
+namespace CoinEx.Net.UnitTests
 {
     public class TestHelpers
     {
@@ -128,7 +128,7 @@ namespace CoinEx.Net.Testing
                 return (decimal?)(i / 100m);
 
             if (type == typeof(int))
-                return i+1;
+                return i + 1;
 
             if (type == typeof(int?))
                 return (int?)i;
@@ -165,7 +165,7 @@ namespace CoinEx.Net.Testing
                 return result;
             }
 
-            if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>)))
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
                 var result = (IList)Activator.CreateInstance(type)!;
                 result.Add(GetTestValue(type.GetGenericArguments()[0], 0));

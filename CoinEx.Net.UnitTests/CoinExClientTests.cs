@@ -25,87 +25,44 @@ namespace CoinEx.Net.UnitTests
     [TestFixture]
     public class CoinExClientTests
     {
-        //[Test]
-        //public async Task GetKlines_Should_RespondWithKlines()
-        //{
-        //    // arrange
-        //    CoinExKline[] expected = new CoinExKline[] {
-        //        new CoinExKline(),
-        //        new CoinExKline(),
-        //    };
-        //    var objects = TestHelpers.PrepareClient(() => Construct(), CreateRequest(expected));
 
-        //    // act
-        //    var result = await objects.Client.GetKlinesAsync("ETHBTC", KlineInterval.FiveMinute);
+        [TestCase()]
+        public async Task ReceivingError_Should_ReturnErrorAndNotSuccess()
+        {
+            // arrange
+            var client = TestHelpers.CreateClient();
+            var resultObj = new CoinExApiResult()
+            {
+                Code = 400001,
+                Message = "Error occured"
+            };
 
-        //    // assert
-        //    Assert.AreEqual(true, result.Success);
-        //    TestHelpers.PublicInstancePropertiesEqual(expected[0], result.Data.ToList()[0]);
-        //    TestHelpers.PublicInstancePropertiesEqual(expected[1], result.Data.ToList()[1]);
-        //}
+            TestHelpers.SetResponse((CoinExRestClient)client, JsonConvert.SerializeObject(resultObj));
 
-        //[Test]
-        //public async Task ReceivingCoinExError_Should_ReturnCoinExErrorAndNotSuccess()
-        //{
-        //    // arrange
-        //    var response = JsonConvert.SerializeObject(new CoinExApiResult<object>() { Code = 101, Data = new object(), Message = "Some error" });
-        //    var objects = TestHelpers.PrepareClient(() => Construct(), response);
+            // act
+            var result = await client.SpotApi.ExchangeData.GetAssetsAsync();
 
-        //    // act
-        //    var result = await objects.Client.GetSymbolsAsync();
+            // assert
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Error);
+            Assert.IsTrue(result.Error!.Code == 400001);
+            Assert.IsTrue(result.Error.Message == "Error occured");
+        }
 
-        //    // assert
-        //    Assert.IsFalse(result.Success);
-        //    Assert.IsNotNull(result.Error);
-        //    Assert.IsTrue(result.Error.ToString().Contains("Some error"));
-        //}
+        [TestCase()]
+        public async Task ReceivingHttpErrorWithNoJson_Should_ReturnErrorAndNotSuccess()
+        {
+            // arrange
+            var client = TestHelpers.CreateClient();
+            TestHelpers.SetResponse((CoinExRestClient)client, "", System.Net.HttpStatusCode.BadRequest);
 
-        //[Test]
-        //public async Task ReceivingHttpError_Should_ReturnErrorAndNotSuccess()
-        //{
-        //    // arrange
-        //    var objects = TestHelpers.PrepareClient(() => Construct(), "Error request", HttpStatusCode.BadRequest);
+            // act
+            var result = await client.SpotApi.ExchangeData.GetAssetsAsync();
 
-        //    // act
-        //    var result = await objects.Client.GetSymbolsAsync();
-
-        //    // assert
-        //    Assert.IsFalse(result.Success);
-        //    Assert.IsNotNull(result.Error);
-        //    Assert.IsTrue(result.Error.ToString().Contains("Error request"));
-        //}
-      
-        //[Test]
-        //public async Task AuthenticatedRequests_Should_HaveAuthenticationHeader()
-        //{
-        //    // arrange
-        //    var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
-        //    {
-        //        ApiCredentials = new ApiCredentials("test", "test")
-        //    }), CreateRequest("{}"));
-
-        //    // act
-        //    var result = await objects.Client.GetBalancesAsync();
-
-        //    // assert
-        //    objects.Request.Verify(r => r.AddHeader("Authorization", It.IsAny<string>()));
-        //}
-
-        //[Test]
-        //public async Task PostRequests_Should_HaveContentBody()
-        //{
-        //    // arrange
-        //    var objects = TestHelpers.PrepareClient(() => Construct(new CoinExClientOptions()
-        //    {
-        //        ApiCredentials = new ApiCredentials("test", "test")
-        //    }), CreateRequest("{}"));
-
-        //    // act
-        //    var result = await objects.Client.PlaceOrderAsync("BTCETH", OrderType.Limit, OrderSide.Buy, 1, 1);
-
-        //    // assert
-        //    objects.Request.Verify(r => r.SetContent(It.IsAny<string>(), It.IsAny<string>()));
-        //}
+            // assert
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Error);
+        }
 
         [Test]
         public void ProvidingApiCredentials_Should_SaveApiCredentials()
