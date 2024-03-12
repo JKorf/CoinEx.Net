@@ -137,12 +137,12 @@ namespace CoinEx.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval)
+        public async Task<CallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? startTime = null, int? endTime = null)
         {
             symbol.ValidateCoinExSymbol();
 
-            var startTime = DateTimeConverter.ConvertToSeconds(DateTime.UtcNow.AddDays(-1));
-            var endTime = DateTimeConverter.ConvertToSeconds(DateTime.UtcNow);
+            startTime = startTime ?? DateTimeConverter.ConvertToSeconds(DateTime.UtcNow.AddDays(-1));
+            endTime = endTime ?? DateTimeConverter.ConvertToSeconds(DateTime.UtcNow);
             var query = await QueryAsync(new CoinExQuery<IEnumerable<CoinExKline>>("kline.query", new object[] { symbol, startTime, endTime, interval.ToSeconds() }, false)).ConfigureAwait(false);
             return query.As<IEnumerable<CoinExKline>>(query.Data?.Result);
         }
