@@ -28,7 +28,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.State
             ListenerIdentifiers = new HashSet<string> { "state.update" };
         }
 
-        public override Task<CallResult> DoHandleMessageAsync(SocketConnection connection, DataEvent<object> message)
+        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<IEnumerable<Dictionary<string, CoinExSocketSymbolState>>>)message.Data;
             foreach (var item in data.Data.First())
@@ -37,7 +37,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.State
             var relevant = data.Data.First().Where(d => _symbol == null || d.Key == _symbol).Select(d => d.Value);
 
             _handler.Invoke(message.As(relevant, _symbol, SocketUpdateType.Update));
-            return Task.FromResult(new CallResult(null));
+            return new CallResult(null);
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<IEnumerable<Dictionary<string, CoinExSocketSymbolState>>>);

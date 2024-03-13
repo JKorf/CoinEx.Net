@@ -27,11 +27,11 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Depth
             ListenerIdentifiers = new HashSet<string> { "depth.update" + symbol };
         }
 
-        public override Task<CallResult> DoHandleMessageAsync(SocketConnection connection, DataEvent<object> message)
+        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<CoinExOrderBookUpdate>)message.Data;
             _handler.Invoke(message.As(data.Data.Book, _symbol, data.Data.Snapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
-            return Task.FromResult(new CallResult(null));
+            return new CallResult(null);
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExOrderBookUpdate>);
