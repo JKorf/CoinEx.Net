@@ -73,7 +73,7 @@ namespace CoinEx.Net.UnitTests
             var authProvider = new CoinExAuthenticationProvider(new ApiCredentials("TestKey", "TestSecret"), null);
 
             // assert
-            Assert.ReferenceEquals(authProvider.GetApiKey(), "TestKey");
+            Assert.That(authProvider.GetApiKey() == "TestKey");
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace CoinEx.Net.UnitTests
             var sign = authProvider.Sign(input);
 
             // assert
-            Assert.ReferenceEquals(sign, output);
+            Assert.That(sign == output);
         }
 
         [TestCase("BTCUSDT", true)]
