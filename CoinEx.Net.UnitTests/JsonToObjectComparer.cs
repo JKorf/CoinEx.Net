@@ -1,9 +1,10 @@
-﻿using CoinEx.Net.Testing;
-using CryptoExchange.Net.Converters;
+﻿using CryptoExchange.Net.Converters;
+using CryptoExchange.Net.Converters.JsonNet;
 using CryptoExchange.Net.Objects;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,7 +85,7 @@ namespace CoinEx.Net.UnitTests
                 var result = (CallResult)await TestHelpers.InvokeAsync(method, getSubject(client), input.ToArray());
 
                 // asset
-                Assert.Null(result.Error, method.Name);
+                ClassicAssert.Null(result.Error, method.Name);
 
                 var resultProp = result.GetType().GetProperty("Data", BindingFlags.Public | BindingFlags.Instance);
                 if (resultProp == null)
@@ -226,10 +227,8 @@ namespace CoinEx.Net.UnitTests
 
             // Property has a value
             var property = resultProperties.SingleOrDefault(p => p.Item2?.PropertyName == prop.Name).p;
-            if (property is null)
-                property = resultProperties.SingleOrDefault(p => p.p.Name == prop.Name).p;
-            if (property is null)
-                property = resultProperties.SingleOrDefault(p => p.p.Name.ToUpperInvariant() == prop.Name.ToUpperInvariant()).p;
+            property ??= resultProperties.SingleOrDefault(p => p.p.Name == prop.Name).p;
+            property ??= resultProperties.SingleOrDefault(p => p.p.Name.ToUpperInvariant() == prop.Name.ToUpperInvariant()).p;
 
             if (property is null)
             {
@@ -341,7 +340,9 @@ namespace CoinEx.Net.UnitTests
                 {
                     if (info.GetCustomAttribute<JsonConverterAttribute>(true) == null
                         && info.GetCustomAttribute<JsonPropertyAttribute>(true)?.ItemConverterType == null)
+                    {
                         CheckValues(method, propertyName, (JValue)propValue, propertyValue);
+                    }
                 }
             }
         }
@@ -380,7 +381,9 @@ namespace CoinEx.Net.UnitTests
                     // timestamp, hard to check..
                 }
                 else if (jsonValue.Value<string>().ToLowerInvariant() != objectValue.ToString().ToLowerInvariant())
+                {
                     throw new Exception($"{method}: {property} not equal: {jsonValue.Value<string>()} vs {objectValue.ToString()}");
+                }
             }
             else if (jsonValue.Type == JTokenType.Integer)
             {

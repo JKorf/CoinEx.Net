@@ -33,8 +33,8 @@
 //            subTask.Wait(5000);
 
 //            // Assert
-//            Assert.IsTrue(subTask.IsCompleted);
-//            Assert.IsTrue(subTask.Result.Success);
+//            Assert.That(subTask.IsCompleted);
+//            Assert.That(subTask.Result.Success);
 //        }
 
 //        [Test]
@@ -56,7 +56,7 @@
 //            subTask.Wait();
 
 //            // Assert
-//            Assert.IsFalse(subTask.Result.Success);
+//            ClassicAssert.IsFalse(subTask.Result.Success);
 //        }
 
 //        [Test]
@@ -93,8 +93,8 @@
 //            InvokeSubUpdate(client, "state.update", receive);
 
 //            // Assert
-//            Assert.IsTrue(subTask.Result.Success);
-//            Assert.IsTrue(actual != null);
+//            Assert.That(subTask.Result.Success);
+//            Assert.That(actual != null);
 //            TestHelpers.PublicInstancePropertiesEqual(expected[0], actual[0]);
 //            TestHelpers.PublicInstancePropertiesEqual(expected[1], actual[1]);
 //        }
@@ -129,8 +129,8 @@
 //            InvokeSubUpdate(client, "deals.update", "ETHBTC", expected );
 
 //            // Assert
-//            Assert.IsTrue(subTask.Result.Success);
-//            Assert.IsTrue(actual != null);
+//            Assert.That(subTask.Result.Success);
+//            Assert.That(actual != null);
 //            TestHelpers.PublicInstancePropertiesEqual(expected, actual);
 //        }
 
@@ -163,8 +163,8 @@
 //            InvokeSubUpdate(client, "deals.update", "ETHBTC", expected);
 
 //            // Assert
-//            Assert.IsTrue(subTask.Result.Success);
-//            Assert.IsTrue(actual != null);
+//            Assert.That(subTask.Result.Success);
+//            Assert.That(actual != null);
 //            TestHelpers.PublicInstancePropertiesEqual(expected, actual);
 //        }
 
@@ -199,8 +199,8 @@
             
 
 //            // Assert
-//            Assert.IsTrue(subTask.Result.Success);
-//            Assert.IsTrue(actual != null);
+//            Assert.That(subTask.Result.Success);
+//            Assert.That(actual != null);
 //            TestHelpers.PublicInstancePropertiesEqual(expected, actual);
 //        }
 
@@ -234,8 +234,8 @@
 //            InvokeSubUpdate(client, "kline.update", expected);
 
 //            // Assert
-//            Assert.IsTrue(subTask.Result.Success);
-//            Assert.IsTrue(actual != null);
+//            Assert.That(subTask.Result.Success);
+//            Assert.That(actual != null);
 //            TestHelpers.PublicInstancePropertiesEqual(expected, actual);
 //        }
 
@@ -278,8 +278,8 @@
 //            InvokeSubUpdate(client, "asset.update", receive);
 
 //            // Assert
-//            Assert.IsTrue(subTask.Result.Success);
-//            Assert.IsTrue(actual != null);
+//            Assert.That(subTask.Result.Success);
+//            Assert.That(actual != null);
 //            TestHelpers.PublicInstancePropertiesEqual(expected, actual);
 //        }
 
@@ -313,8 +313,8 @@
 //            InvokeSubUpdate(client, "order.update", 1, expected);
 
 //            // Assert
-//            Assert.IsTrue(subTask.Result.Success);
-//            Assert.IsTrue(actual != null);
+//            Assert.That(subTask.Result.Success);
+//            Assert.That(actual != null);
 //            TestHelpers.PublicInstancePropertiesEqual(expected, actual);
 //        }
 
@@ -346,7 +346,7 @@
 //            //TestHelpers.CloseWebsocket(client);
 
 //            //// Assert
-//            //Assert.IsTrue(conWait.Result);
+//            //Assert.That(conWait.Result);
 //        }
 
 //        [Test]

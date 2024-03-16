@@ -17,6 +17,9 @@ using CryptoExchange.Net.Interfaces.CommonClients;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Converters.MessageParsing;
+using CryptoExchange.Net.Clients;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -59,7 +62,6 @@ namespace CoinEx.Net.Clients.SpotApi
             ExchangeData = new CoinExRestClientSpotApiExchangeData(this);
             Trading = new CoinExRestClientSpotApiTrading(this);
 
-            manualParseError = true;
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
 
             _brokerId = !string.IsNullOrEmpty(options.BrokerId) ? options.BrokerId! : "147866029";
@@ -74,12 +76,40 @@ namespace CoinEx.Net.Clients.SpotApi
         #region methods
         #region private
         internal async Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-            => GetResult(await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        {
+            var result = await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.As<T>(default);
+
+            if (result.Data.Code != 0)
+                return result.AsError<T>(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.As(result.Data.Data);
+        }
+
         internal async Task<WebCallResult> Execute(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
-            => GetResult(await SendRequestAsync<CoinExApiResult<object>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        {
+            var result = await SendRequestAsync<CoinExApiResult>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.AsDataless();
+
+            if (result.Data.Code != 0)
+                return result.AsDatalessError(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.AsDataless();
+        }
 
         internal async Task<WebCallResult<CoinExPagedResult<T>>> ExecutePaged<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
-            => GetResult(await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false));
+        {
+            var result = await SendRequestAsync<CoinExApiResult<CoinExPagedResult<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.As<CoinExPagedResult<T>>(default);
+
+            if (result.Data.Code != 0)
+                return result.AsError<CoinExPagedResult<T>>(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.As(result.Data.Data);
+        }
 
         internal Uri GetUrl(string endpoint)
         {
@@ -405,52 +435,21 @@ namespace CoinEx.Net.Clients.SpotApi
         }
         #endregion
 
-
         /// <inheritdoc />
-        protected override Task<ServerError?> TryParseErrorAsync(JToken data)
+        protected override Error ParseErrorResponse(int httpStatusCode, IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
         {
-            if (data["code"] != null && data["message"] != null)
-            {
-                if (data["code"]!.Value<int>() != 0)
-                {
-                    if (data["code"] == null || data["message"] == null)
-                        return Task.FromResult((ServerError?)new ServerError(data.ToString()));
+            if (!accessor.IsJson)
+                return new ServerError(accessor.GetOriginalString());
 
-                    return Task.FromResult((ServerError?)new ServerError((int)data["code"]!, (string)data["message"]!));
-                }
-            }
+            var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
+            var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
+            if (msg == null)
+                return new ServerError(accessor.GetOriginalString());
 
-            return Task.FromResult((ServerError?)null);
-        }
+            if (code == null)
+                return new ServerError(msg);
 
-        /// <inheritdoc />
-        protected override Error ParseErrorResponse(int httpStatusCode, IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, string data)
-        {
-            var errorData = ValidateJson(data);
-            if (!errorData)
-                return new ServerError(data);
-
-            if (errorData.Data["code"] == null || errorData.Data["message"] == null)
-                return new ServerError(errorData.Data.ToString());
-
-            return new ServerError((int)errorData.Data["code"]!, (string)errorData.Data["message"]!);
-        }
-
-
-        private static WebCallResult<T> GetResult<T>(WebCallResult<CoinExApiResult<T>> result) where T : class
-        {
-            if (result.Error != null || result.Data == null)
-                return result.AsError<T>(result.Error ?? new UnknownError("No data received"));
-
-            return result.As(result.Data.Data);
-        }
-
-        private static WebCallResult GetResult(WebCallResult<CoinExApiResult<object>> result)
-        {
-            if (result.Error != null || result.Data == null)
-                return result.AsDatalessError(result.Error ?? new UnknownError("No data received"));
-
-            return result.AsDataless();
+            return new ServerError(code.Value, msg);
         }
 
         /// <inheritdoc />

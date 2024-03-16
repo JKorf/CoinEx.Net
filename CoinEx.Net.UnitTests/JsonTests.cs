@@ -1,6 +1,5 @@
 ﻿using CoinEx.Net.Interfaces;
 using CoinEx.Net.Objects;
-using CoinEx.Net.Testing;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;

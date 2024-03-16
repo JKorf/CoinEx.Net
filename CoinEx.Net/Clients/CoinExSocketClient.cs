@@ -1,11 +1,11 @@
-﻿using CryptoExchange.Net;
-using CoinEx.Net.Interfaces.Clients;
+﻿using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Clients.SpotApi;
 using CryptoExchange.Net.Authentication;
 using Microsoft.Extensions.Logging;
 using System;
 using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.Clients;
 
 namespace CoinEx.Net.Clients
 {

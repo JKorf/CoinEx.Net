@@ -1,10 +1,10 @@
 ﻿using CoinEx.Net.Objects.Models.Socket;
 using CoinEx.Net.Objects.Sockets.Queries;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Balance;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
-using CryptoExchange.Net.Sockets.MessageParsing.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -29,11 +29,11 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Deals
         }
 
 
-        public override Task<CallResult> DoHandleMessageAsync(SocketConnection connection, DataEvent<object> message)
+        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<CoinExDealsUpdate>)message.Data;
             _handler.Invoke(message.As(data.Data.Trades, _symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
-            return Task.FromResult(new CallResult(null));
+            return new CallResult(null);
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExDealsUpdate>);

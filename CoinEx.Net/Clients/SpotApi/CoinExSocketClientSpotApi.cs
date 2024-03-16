@@ -16,8 +16,6 @@ using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Objects.Models.Socket;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Options;
-using CryptoExchange.Net.Sockets.MessageParsing.Interfaces;
-using CryptoExchange.Net.Sockets.MessageParsing;
 using CryptoExchange.Net.Objects.Sockets;
 using CoinEx.Net.Objects.Sockets.Queries;
 using CryptoExchange.Net.Converters;
@@ -28,6 +26,9 @@ using CoinEx.Net.Objects.Sockets.Subscriptions.Depth;
 using CoinEx.Net.Objects.Sockets.Subscriptions.State;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Orders;
 using CoinEx.Net.ExtensionMethods;
+using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Converters.MessageParsing;
+using CryptoExchange.Net.Clients;
 
 namespace CoinEx.Net.Clients.SpotApi
 {

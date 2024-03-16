@@ -21,12 +21,12 @@ namespace CoinEx.Net.Objects.Sockets.Queries
             ListenerIdentifiers = new HashSet<string>() { ((CoinExSocketRequest)Request).Id.ToString() };
         }
 
-        public override Task<CallResult<CoinExQueryResponse<T>>> HandleMessageAsync(SocketConnection connection, DataEvent<CoinExQueryResponse<T>> message)
+        public override CallResult<CoinExQueryResponse<T>> HandleMessage(SocketConnection connection, DataEvent<CoinExQueryResponse<T>> message)
         {
             if (message.Data.Error != null)
-                return Task.FromResult(new CallResult<CoinExQueryResponse<T>>(new ServerError(message.Data.Error.Code, message.Data.Error.Message)));
+                return new CallResult<CoinExQueryResponse<T>>(new ServerError(message.Data.Error.Code, message.Data.Error.Message));
 
-            return Task.FromResult(new CallResult<CoinExQueryResponse<T>>(message.Data, message.OriginalData, null));
+            return new CallResult<CoinExQueryResponse<T>>(message.Data, message.OriginalData, null);
         }
     }
 }
