@@ -42,8 +42,8 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <param name="socketClient">Socket client instance</param>
         public CoinExSpotSymbolOrderBook(string symbol,
             Action<CoinExOrderBookOptions>? optionsDelegate,
-            ILogger<CoinExSpotSymbolOrderBook>? logger,
-            ICoinExSocketClient? socketClient) : base(logger, "CoinEx", symbol)
+            ILoggerFactory? logger,
+            ICoinExSocketClient? socketClient) : base(logger, "CoinEx", "Spot", symbol)
         {
             var options = CoinExOrderBookOptions.Default.Copy();
             if (optionsDelegate != null)
@@ -125,11 +125,11 @@ namespace CoinEx.Net.SymbolOrderBooks
             var result = checkHexCrc32 == (uint)checksum;
             if (!result)
             {
-                _logger.Log(LogLevel.Debug, $"{Id} order book {Symbol} failed checksum. Expected {checkHexCrc32}, received {checksum}");
+                _logger.Log(LogLevel.Debug, $"{Api} order book {Symbol} failed checksum. Expected {checkHexCrc32}, received {checksum}");
             }
             else
             {
-                _logger.Log(LogLevel.Trace, $"{Id} order book {Symbol} checksum OK.");
+                _logger.Log(LogLevel.Trace, $"{Api} order book {Symbol} checksum OK.");
             }
             return result;
         }

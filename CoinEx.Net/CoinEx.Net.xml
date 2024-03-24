@@ -2207,7 +2207,7 @@
             <param name="symbol">The symbol the order book is for</param>
             <param name="optionsDelegate">Option configuration delegate</param>
         </member>
-        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.#ctor(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions},Microsoft.Extensions.Logging.ILogger{CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook},CoinEx.Net.Interfaces.Clients.ICoinExSocketClient)">
+        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExSpotSymbolOrderBook.#ctor(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions},Microsoft.Extensions.Logging.ILoggerFactory,CoinEx.Net.Interfaces.Clients.ICoinExSocketClient)">
             <summary>
             Create a new order book instance
             </summary>

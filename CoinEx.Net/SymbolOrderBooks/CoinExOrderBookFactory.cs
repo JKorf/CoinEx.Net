@@ -26,7 +26,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         public ISymbolOrderBook CreateSpot(string symbol, Action<CoinExOrderBookOptions>? options = null)
             => new CoinExSpotSymbolOrderBook(symbol,
                                         options,
-                                        _serviceProvider.GetRequiredService<ILogger<CoinExSpotSymbolOrderBook>>(),
+                                        _serviceProvider.GetRequiredService<ILoggerFactory>(),
                                         _serviceProvider.GetRequiredService<ICoinExSocketClient>());
     }
 }
