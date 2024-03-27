@@ -7,12 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add the Bitget services
+// Add the CoinEx services
 builder.Services.AddCoinEx();
 
 // OR to provide API credentials for accessing private endpoints, or setting other options:
 /*
-builder.Services.AddBitget(restOptions =>
+builder.Services.AddCoinEx(restOptions =>
 {
     restOptions.ApiCredentials = new ApiCredentials("<APIKEY>", "<APISECRET>");
     restOptions.RequestTimeout = TimeSpan.FromSeconds(5);
