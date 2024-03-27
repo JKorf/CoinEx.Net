@@ -70,13 +70,13 @@ namespace CoinEx.Net.Clients.SpotApi
                 return id;
 
             var method = messageAccessor.GetValue<string>(_methodPath);
-            if (method == "deals.update")
+            if (string.Equals(method, "deals.update", StringComparison.Ordinal))
             {
                 var symbol = messageAccessor.GetValue<string>(_symbolPathDeals);
                 return method + symbol;
             }
 
-            if (method == "depth.update")
+            if (string.Equals(method, "depth.update", StringComparison.Ordinal))
             {
                 var symbol = messageAccessor.GetValue<string>(_symbolPathDepth);
                 return method + symbol;
