@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ICryptoRestClient, CryptoRestClient>();
             services.AddTransient<ICryptoSocketClient, CryptoSocketClient>();
             services.AddSingleton<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
-            services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApi.CommonSpotClient);
+            services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV1.CommonSpotClient);
             if (socketClientLifeTime == null)
                 services.AddSingleton<ICoinExSocketClient, CoinExSocketClient>();
             else

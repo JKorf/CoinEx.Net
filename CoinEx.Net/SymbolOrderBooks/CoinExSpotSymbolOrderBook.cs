@@ -64,7 +64,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync(CancellationToken ct)
         {
-            var result = await _socketClient.SpotApi.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate).ConfigureAwait(false);
+            var result = await _socketClient.SpotApiV1.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 

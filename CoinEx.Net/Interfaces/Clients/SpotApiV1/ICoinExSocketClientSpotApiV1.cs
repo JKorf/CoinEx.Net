@@ -14,7 +14,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApi
     /// <summary>
     /// Spot streams
     /// </summary>
-    public interface ICoinExSocketClientSpotApi : ISocketApiClient, IDisposable
+    public interface ICoinExSocketClientSpotApiV1 : ISocketApiClient, IDisposable
     {
         /// <summary>
         /// Pings the server
