@@ -12,6 +12,7 @@ namespace CoinEx.Net.Interfaces.Clients
         /// <summary>
         /// Spot streams
         /// </summary>
+        public ICoinExSocketClientSpotApi SpotApi { get; }
         public ICoinExSocketClientSpotApiV1 SpotApiV1 { get; }
 
         /// <summary>

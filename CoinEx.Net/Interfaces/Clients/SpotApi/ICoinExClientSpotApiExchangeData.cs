@@ -28,5 +28,48 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApi
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<IEnumerable<CoinExTicker>>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get the orderbook for a symbol
+        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-depth" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="limit">Amount of rows, 5, 10, 20 or 50</param>
+        /// <param name="mergeLevel">The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int limit, string? mergeLevel = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get the trade history for a symbol
+        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-deals" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="limit">Max amount of results</param>
+        /// <param name="lastId">The starting point of the query, 0 means to acquire from the latest record</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExTrade>>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get klines/candlesticks
+        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-kline" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="interval">Kline interval</param>
+        /// <param name="limit">Max amount of results</param>
+        /// <param name="priceType">Price type, either LastPrice(default) or IndexPrice</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, PriceType? priceType = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get index prices
+        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-index" /></para>
+        /// </summary>
+        /// <param name="symbols">Filter by symbols</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExIndexPrice>>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
     }
 }

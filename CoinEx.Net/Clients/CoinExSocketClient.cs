@@ -15,7 +15,7 @@ namespace CoinEx.Net.Clients
         #region Api clients
 
         /// <inheritdoc />
-        //public ICoinExSocketClientSpotApi SpotApi { get; }
+        public ICoinExSocketClientSpotApi SpotApi { get; }
         public ICoinExSocketClientSpotApiV1 SpotApiV1 { get; }
 
         #endregion
@@ -49,6 +49,7 @@ namespace CoinEx.Net.Clients
             optionsDelegate(options);
             Initialize(options);
 
+            SpotApi = AddApiClient(new CoinExSocketClientSpotApi(_logger, options));
             SpotApiV1 = AddApiClient(new CoinExSocketClientSpotApiV1(_logger, options));
         }
         #endregion

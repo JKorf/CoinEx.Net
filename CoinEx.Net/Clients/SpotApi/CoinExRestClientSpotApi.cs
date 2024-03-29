@@ -411,22 +411,25 @@ namespace CoinEx.Net.Clients.SpotApi
         //}
         //#endregion
 
-        ///// <inheritdoc />
-        //protected override Error ParseErrorResponse(int httpStatusCode, IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
-        //{
-        //    if (!accessor.IsJson)
-        //        return new ServerError(accessor.GetOriginalString());
+        /// <inheritdoc />
+        protected override ServerError? TryParseError(IMessageAccessor accessor)
+        {
+            if (!accessor.IsJson)
+                return new ServerError(accessor.GetOriginalString());
 
-        //    var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
-        //    var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
-        //    if (msg == null)
-        //        return new ServerError(accessor.GetOriginalString());
+            var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
+            if (code == 0)
+                return null;
+            
+            var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
+            if (msg == null)
+                return new ServerError(accessor.GetOriginalString());
 
-        //    if (code == null)
-        //        return new ServerError(msg);
+            if (code == null)
+                return new ServerError(msg);
 
-        //    return new ServerError(code.Value, msg);
-        //}
+            return new ServerError(code.Value, msg);
+        }
 
         /// <inheritdoc />
         public override TimeSyncInfo? GetTimeSyncInfo() => null;
