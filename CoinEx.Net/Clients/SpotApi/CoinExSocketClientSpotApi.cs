@@ -101,7 +101,7 @@ namespace CoinEx.Net.Clients.SpotApi
             {
                 { "market_list", new object[] { } }
             }, onMessage);
-            return await SubscribeV2Async(subscription, ct).ConfigureAwait(false);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -111,7 +111,7 @@ namespace CoinEx.Net.Clients.SpotApi
             {
                 { "market_list", symbols }
             }, onMessage);
-            return await SubscribeV2Async(subscription, ct).ConfigureAwait(false);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 
         #endregion
