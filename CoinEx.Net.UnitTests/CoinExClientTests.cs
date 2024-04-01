@@ -41,7 +41,7 @@ namespace CoinEx.Net.UnitTests
             TestHelpers.SetResponse((CoinExRestClient)client, JsonConvert.SerializeObject(resultObj));
 
             // act
-            var result = await client.SpotApi.ExchangeData.GetAssetsAsync();
+            var result = await client.SpotApiV1.ExchangeData.GetAssetsAsync();
 
             // assert
             ClassicAssert.IsFalse(result.Success);
@@ -58,7 +58,7 @@ namespace CoinEx.Net.UnitTests
             TestHelpers.SetResponse((CoinExRestClient)client, "", System.Net.HttpStatusCode.BadRequest);
 
             // act
-            var result = await client.SpotApi.ExchangeData.GetAssetsAsync();
+            var result = await client.SpotApiV1.ExchangeData.GetAssetsAsync();
 
             // assert
             ClassicAssert.IsFalse(result.Success);
