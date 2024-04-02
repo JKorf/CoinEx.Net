@@ -381,7 +381,19 @@
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.GetAuthenticationRequest">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTickerUpdateWrapper}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.PreprocessStreamMessage(System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.CoinExEnvironment">
@@ -1311,6 +1323,49 @@
             <summary>
             Spot streams
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to symbol ticker updates for the specified symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
+            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
+            </summary>
+            <param name="symbols">The symbols to subscribe</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
+            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
+            </summary>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbol"></param>
+            <param name="depth"></param>
+            <param name="mergeLevel"></param>
+            <param name="fullBookUpdates"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbols"></param>
+            <param name="depth"></param>
+            <param name="mergeLevel"></param>
+            <param name="fullBookUpdates"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
         </member>
         <member name="T:CoinEx.Net.Interfaces.ICoinExOrderBookFactory">
             <summary>

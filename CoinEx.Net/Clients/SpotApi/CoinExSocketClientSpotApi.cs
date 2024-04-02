@@ -11,8 +11,6 @@ using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Objects.Sockets;
-using CoinEx.Net.Objects.Sockets.Queries;
-using CoinEx.Net.Objects.Sockets;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
@@ -20,6 +18,8 @@ using CoinEx.Net.Objects.Models.V2;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using System.Net.WebSockets;
 using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
+using CoinEx.Net.Objects.Sockets.V2.Queries;
+using System.Linq;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -43,7 +43,7 @@ namespace CoinEx.Net.Clients.SpotApi
         internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
-            RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery<string>("server.ping", new object[] { })), null);
+            RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery<string>("server.ping", new Dictionary<string, object>())), null);
         }
         #endregion
 
@@ -84,20 +84,22 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         protected override Query? GetAuthenticationRequest()
         {
-            var authProvider = (CoinExAuthenticationProvider)AuthenticationProvider!;
-            var authParams = authProvider.GetSocketAuthParameters();
-            return new CoinExQuery<CoinExSubscriptionStatus>("server.sign", authParams, false);
+            //var authProvider = (CoinExAuthenticationProvider)AuthenticationProvider!;
+            //var authParams = authProvider.GetSocketAuthParameters();
+            //return new CoinExQuery<CoinExSubscriptionStatus>("server.sign", authParams, false);
+            return null;
         }
 
+        /// <inheritdoc />
         public override ReadOnlyMemory<byte> PreprocessStreamMessage(WebSocketMessageType type, ReadOnlyMemory<byte> data)
             => data.DecompressGzip();
 
         #region public
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExTickerUpdateWrapper>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExTickerUpdateWrapper>(_logger, "state", new Dictionary<string, object>
+            var subscription = new CoinExTickerSubscription(_logger, null, new Dictionary<string, object>
             {
                 { "market_list", new object[] { } }
             }, onMessage);
@@ -105,11 +107,31 @@ namespace CoinEx.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTickerUpdateWrapper>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExTickerUpdateWrapper>(_logger, "state", new Dictionary<string, object>
+            var subscription = new CoinExTickerSubscription(_logger, symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols }
+            }, onMessage);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", new[] { symbol }, new Dictionary<string, object>
+            {
+                { "market_list", new object[] { new object[] { symbol, depth, mergeLevel ?? "0", fullBookUpdates } } }
+            }, onMessage);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToList() }
             }, onMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }

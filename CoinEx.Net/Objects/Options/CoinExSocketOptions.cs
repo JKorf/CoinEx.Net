@@ -13,7 +13,8 @@ namespace CoinEx.Net.Objects.Options
         /// </summary>
         public static CoinExSocketOptions Default { get; set; } = new CoinExSocketOptions
         {
-            Environment = CoinExEnvironment.Live
+            Environment = CoinExEnvironment.Live,
+            SocketSubscriptionsCombineTarget = 10
         };
 
         /// <summary>
