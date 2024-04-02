@@ -76,6 +76,10 @@ namespace CoinEx.Net.SymbolOrderBooks
 
             Status = OrderBookStatus.Syncing;
 
+            // Query the initial order book
+            var initialBook = await _socketClient.SpotApi.GetOrderBookAsync(Symbol, Levels!.Value, 0).ConfigureAwait(false);
+            SetInitialOrderBook(DateTime.UtcNow.Ticks, initialBook.Data.Bids, initialBook.Data.Asks);
+
             var setResult = await WaitForSetOrderBookAsync(_initialDataTimeout, ct).ConfigureAwait(false);
             return setResult ? result : new CallResult<UpdateSubscription>(setResult.Error!);
         }
@@ -83,6 +87,10 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<bool>> DoResyncAsync(CancellationToken ct)
         {
+            // Query the initial order book
+            var initialBook = await _socketClient.SpotApi.GetOrderBookAsync(Symbol, Levels!.Value, 0).ConfigureAwait(false);
+            SetInitialOrderBook(DateTime.UtcNow.Ticks, initialBook.Data.Bids, initialBook.Data.Asks);
+
             return await WaitForSetOrderBookAsync(_initialDataTimeout, ct).ConfigureAwait(false);
         }
 

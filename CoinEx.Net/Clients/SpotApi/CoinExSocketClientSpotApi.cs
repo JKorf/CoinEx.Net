@@ -187,7 +187,7 @@ namespace CoinEx.Net.Clients.SpotApi
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
-            var subscription = new CoinExDepthSubscription(_logger, symbol, new object[] { symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth), false }, onMessage);
+            var subscription = new CoinExDepthSubscription(_logger, symbol, new object[] { symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth), true }, onMessage);
             return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 
