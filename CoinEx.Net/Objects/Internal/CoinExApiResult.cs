@@ -15,4 +15,18 @@ namespace CoinEx.Net.Objects.Internal
         [JsonPropertyName("data")]
         public T Data { get; set; } = default!;
     }
+
+    internal class CoinExPageApiResult<T> : CoinExApiResult<T>
+    {
+        [JsonPropertyName("pagination")]
+        public CoinExPage Pagination { get; set; }
+    }
+
+    internal class CoinExPage
+    {
+        [JsonPropertyName("total")]
+        public int Total { get; set; }
+        [JsonPropertyName("has_next")]
+        public bool HasNext { get; set; }
+    }
 }

@@ -66,17 +66,14 @@ namespace CoinEx.Net.Clients.SpotApi
                 return id.ToString();
 
             var method = messageAccessor.GetValue<string>(_methodPath);
+            if (string.Equals(method, "deals.update", StringComparison.Ordinal))
+                return method;
+
             if (!string.Equals(method, "state.update", StringComparison.Ordinal))
             {
                 var symbol = messageAccessor.GetValue<string>(_symbolPath);
                 return method + symbol;
             }
-
-            //if (string.Equals(method, "depth.update", StringComparison.Ordinal))
-            //{
-            //    var symbol = messageAccessor.GetValue<string>(_symbolPathDepth);
-            //    return method + symbol;
-            //}
 
             return method;
         }
@@ -117,14 +114,8 @@ namespace CoinEx.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
-        {
-            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", new[] { symbol }, new Dictionary<string, object>
-            {
-                { "market_list", new object[] { new object[] { symbol, depth, mergeLevel ?? "0", fullBookUpdates } } }
-            }, onMessage);
-            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
-        }
+        public Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
+            => SubscribeToOrderBookUpdatesAsync(new [] { symbol }, depth, mergeLevel, fullBookUpdates, onMessage, ct);
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
@@ -132,10 +123,55 @@ namespace CoinEx.Net.Clients.SpotApi
             var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToList() }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+            => SubscribeToTradeUpdatesAsync(new[] { symbol }, onMessage, ct);
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+            => SubscribeToTradeUpdatesAsync(new string[] { }, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExTradesSubscription(_logger, symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols }
             }, onMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
+            => SubscribeToIndexPriceUpdatesAsync(new[] { symbol }, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, "index", symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
+            => SubscribeToBookPriceUpdatesAsync(new[] { symbol }, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, "bbo", symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
         #endregion
 
         #endregion

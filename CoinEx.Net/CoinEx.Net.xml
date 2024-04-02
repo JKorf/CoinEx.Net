@@ -396,6 +396,27 @@
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToIndexPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToBookPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToBookPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.CoinExEnvironment">
             <summary>
             CoinEx environments
@@ -1363,6 +1384,68 @@
             <param name="depth"></param>
             <param name="mergeLevel"></param>
             <param name="fullBookUpdates"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbol"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbols"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbol"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToIndexPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbols"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToBookPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbol"></param>
+            <param name="onMessage"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToBookPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="symbols"></param>
             <param name="onMessage"></param>
             <param name="ct"></param>
             <returns></returns>
@@ -2415,6 +2498,41 @@
             The quantity of the transaction
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate">
+            <summary>
+            Best book prices update
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate.UpdateTime">
+            <summary>
+            Update time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate.BestBidPrice">
+            <summary>
+            Current best bid price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate.BestBidQuantity">
+            <summary>
+            Current best bid quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate.BestAskPrice">
+            <summary>
+            Current best ask price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate.BestAskQuantity">
+            <summary>
+            Current best ask quantity
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExIndexPrice">
             <summary>
             Index price
@@ -2463,6 +2581,21 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExIndexPriceSource.Price">
             <summary>
             Price
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate">
+            <summary>
+            Index price update
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate.Price">
+            <summary>
+            Index price
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExKline">

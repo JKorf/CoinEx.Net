@@ -92,6 +92,18 @@ namespace CoinEx.Net.Clients.SpotApi
             return result.As(result.Data.Data);
         }
 
+        internal async Task<WebCallResult<T>> ExecutePaginatedAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+        {
+            var result = await SendRequestAsync<CoinExPageApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.As<T>(default);
+
+            if (result.Data.Code != 0)
+                return result.AsError<T>(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.As(result.Data.Data);
+        }
+
         internal Uri GetUri(string path) => new Uri(BaseAddress.AppendPath(path));
         #endregion
 

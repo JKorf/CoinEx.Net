@@ -6,6 +6,14 @@ using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
+    internal record CoinExTradeWrapper
+    {
+        [JsonPropertyName("market")]
+        public string Symbol { get; set; }
+        [JsonPropertyName("deal_list")]
+        public IEnumerable<CoinExTrade> Trades { get; set; } = Array.Empty<CoinExTrade>();
+    }
+
     /// <summary>
     /// Trade info
     /// </summary>
