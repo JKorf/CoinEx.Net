@@ -181,13 +181,13 @@ namespace CoinEx.Net.Clients.SpotApi
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<DataEvent<CoinExSocketOrderBook>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<DataEvent<CoinExSocketOrderBook>> onMessage, bool diffUpdates, CancellationToken ct = default)
         {
             symbol.ValidateCoinExSymbol();
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
-            var subscription = new CoinExDepthSubscription(_logger, symbol, new object[] { symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth), true }, onMessage);
+            var subscription = new CoinExDepthSubscription(_logger, symbol, new object[] { symbol, limit, CoinExHelpers.MergeDepthIntToString(mergeDepth), diffUpdates }, onMessage);
             return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
 

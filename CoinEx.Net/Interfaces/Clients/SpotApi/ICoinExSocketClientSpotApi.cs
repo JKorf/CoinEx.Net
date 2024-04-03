@@ -76,9 +76,10 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApi
         /// <param name="limit">The limit of results to receive in a update</param>
         /// <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
         /// <param name="onMessage">Data handler</param>
+        /// <param name="diffUpdates">Set to true to get snapshot first, then diff updates</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<DataEvent<CoinExSocketOrderBook>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<DataEvent<CoinExSocketOrderBook>> onMessage, bool diffUpdates = false, CancellationToken ct = default);
 
         /// <summary>
         /// Gets the latest trades on a symbol
