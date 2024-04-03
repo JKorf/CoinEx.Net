@@ -97,6 +97,11 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 6.2.2 - 03 Apr 2024
+    * Added parameter for SubscribeToOrderBookUpdatesAsync for full or dif updates
+    * Updated string comparision for improved performance
+    * Removed pre-send symbol validation
+
 * Version 6.2.1 - 24 Mar 2024
 	* Updated CryptoExchange.Net to 7.2.0, see https://github.com/JKorf/CryptoExchange.Net?tab=readme-ov-file#release-notes for release notes
 
