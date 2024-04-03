@@ -50,8 +50,6 @@ namespace CoinEx.Net.SymbolOrderBooks
                 optionsDelegate(options);
             Initialize(options);
 
-            symbol.ValidateCoinExSymbol();
-
             _strictLevels = false;
             _sequencesAreConsecutive = false;
             _initialDataTimeout = options?.InitialDataTimeout ?? TimeSpan.FromSeconds(30);

@@ -112,7 +112,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<CoinExSocketSymbolState>> GetTickerAsync(string symbol, int cyclePeriod)
         {
-            symbol.ValidateCoinExSymbol();
             var query = await QueryAsync(new CoinExQuery<CoinExSocketSymbolState>("state.query", new object[] { symbol, cyclePeriod })).ConfigureAwait(false);
             return query.As<CoinExSocketSymbolState>(query.Data?.Result);
         }
@@ -120,7 +119,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<CoinExSocketOrderBook>> GetOrderBookAsync(string symbol, int limit, int mergeDepth)
         {
-            symbol.ValidateCoinExSymbol();
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
@@ -131,8 +129,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<IEnumerable<CoinExSocketSymbolTrade>>> GetTradeHistoryAsync(string symbol, int? limit = null, int? fromId = null)
         {
-            symbol.ValidateCoinExSymbol();
-
             var query = await QueryAsync(new CoinExQuery<IEnumerable<CoinExSocketSymbolTrade>>("deals.query", new object[] { symbol, limit ?? 10, fromId ?? 0 }, false)).ConfigureAwait(false);
             return query.As<IEnumerable<CoinExSocketSymbolTrade>>(query.Data?.Result);
         }
@@ -140,8 +136,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval)
         {
-            symbol.ValidateCoinExSymbol();
-
             var startTime = DateTimeConverter.ConvertToSeconds(DateTime.UtcNow.AddDays(-1));
             var endTime = DateTimeConverter.ConvertToSeconds(DateTime.UtcNow);
             var query = await QueryAsync(new CoinExQuery<IEnumerable<CoinExKline>>("kline.query", new object[] { symbol, startTime, endTime, interval.ToSeconds() }, false)).ConfigureAwait(false);
@@ -158,8 +152,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<CoinExSocketPagedResult<CoinExSocketOrder>>> GetOpenOrdersAsync(string symbol, OrderSide? side = null, int? offset = null, int? limit = null)
         {
-            symbol.ValidateCoinExSymbol();
-
             var query = await QueryAsync(new CoinExQuery<CoinExSocketPagedResult<CoinExSocketOrder>>("order.query", new object[] { symbol, int.Parse(JsonConvert.SerializeObject(side ?? OrderSide.Either, new OrderSideIntConverter(false))), offset ?? 0, limit ?? 10 }, true)).ConfigureAwait(false);
             return query.As<CoinExSocketPagedResult<CoinExSocketOrder>>(query.Data?.Result);
         }
@@ -167,8 +159,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(string symbol, Action<DataEvent<CoinExSocketSymbolState>> onMessage, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
-
             var subscription = new CoinExStateSubscription(_logger, symbol, new object[] { symbol }, x => onMessage(x.As(x.Data.Single())));
             return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
@@ -183,7 +173,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int limit, int mergeDepth, Action<DataEvent<CoinExSocketOrderBook>> onMessage, bool diffUpdates, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit.ValidateIntValues(nameof(limit), 5, 10, 20);
 
@@ -194,8 +183,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExSocketSymbolTrade>>> onMessage, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
-
             var subscription = new CoinExDealsSubscription(_logger, symbol, new object[] { symbol }, onMessage);
             return await SubscribeAsync(subscription, ct).ConfigureAwait(false);
         }
