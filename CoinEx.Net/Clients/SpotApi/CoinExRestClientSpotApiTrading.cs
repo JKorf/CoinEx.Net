@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Models.V2;
+using System;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -44,7 +45,7 @@ namespace CoinEx.Net.Clients.SpotApi
             parameters.AddOptional("ccy", quantityAsset);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
-            return await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("spot/order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            return await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -74,7 +75,7 @@ namespace CoinEx.Net.Clients.SpotApi
             parameters.AddOptional("ccy", quantityAsset);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
-            return await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("spot/stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            return await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("v2/spot/stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -85,11 +86,105 @@ namespace CoinEx.Net.Clients.SpotApi
                 { "market", symbol },
                 { "order_id", orderId }
             };
-            return await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("spot/order-status"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            return await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/order-status"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExOrder>>> GetOpenOrdersAsync(string symbol, AccountType accountType, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPaginated<CoinExOrder>>> GetOpenOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddOptionalEnum("side", side);
+            parameters.AddOptional("market", symbol);
+            parameters.AddOptional("client_id", clientOrderId);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/pending-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExOrder>>> GetClosedOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddOptionalEnum("side", side);
+            parameters.AddOptional("market", symbol);
+            parameters.AddOptional("client_id", clientOrderId);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/finished-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetOpenStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddOptionalEnum("side", side);
+            parameters.AddOptional("market", symbol);
+            parameters.AddOptional("client_id", clientOrderId);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExStopOrder>(_baseClient.GetUri("v2/spot/pending-stop-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddOptionalEnum("side", side);
+            parameters.AddOptional("market", symbol);
+            parameters.AddOptional("client_id", clientOrderId);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExStopOrder>(_baseClient.GetUri("v2/spot/finished-stop-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExOrder>> EditOrderAsync(
+            string symbol,
+            AccountType accountType,
+            string orderId,
+            decimal quantity,
+            decimal? price = null,
+            CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "order_id", orderId }
+            };
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddString("amount", quantity);
+            parameters.AddOptionalString("price", price);
+            return await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/modify-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExStopOrder>> EditStopOrderAsync(
+            string symbol,
+            AccountType accountType,
+            string stopOrderId,
+            decimal quantity,
+            decimal triggerPrice,
+            decimal? price = null,
+            CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "stop_id", stopOrderId }
+            };
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddString("amount", quantity);
+            parameters.AddString("trigger_price", triggerPrice);
+            parameters.AddOptionalString("price", price);
+            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/spot/modify-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult> CancelAllOrdersAsync(string symbol, AccountType accountType, OrderSide? side = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -97,10 +192,87 @@ namespace CoinEx.Net.Clients.SpotApi
             };
             parameters.AddEnum("market_type", accountType);
             parameters.AddOptionalEnum("side", side);
-            parameters.AddOptional("client_id", clientOrderId);
+            return await _baseClient.ExecuteAsync(_baseClient.GetUri("v2/spot/cancel-all-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, AccountType accountType, string orderId, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "order_id", orderId }
+            };
+            parameters.AddEnum("market_type", accountType);
+            return await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/cancel-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExStopOrder>> CancelStopOrderAsync(string symbol, AccountType accountType, string stopOrderId, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "stop_id", stopOrderId }
+            };
+            parameters.AddEnum("market_type", accountType);
+            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/spot/cancel-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExOrder>> CancelOrderByClientOrderIdAsync(string symbol, AccountType accountType, string clientOrderId, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "client_id", clientOrderId }
+            };
+            parameters.AddEnum("market_type", accountType);
+            return await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/cancel-order-by-client-id"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExStopOrder>> CancelStopOrderByClientOrderIdAsync(string symbol, AccountType accountType, string clientStopOrderId, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "client_id", clientStopOrderId }
+            };
+            parameters.AddEnum("market_type", accountType);
+            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/spot/cancel-stop-order-by-client-id"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetUserTradesAsync(string symbol, AccountType accountType, OrderSide? side = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddOptionalEnum("side", side);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_Time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExOrder>>(_baseClient.GetUri("spot/pending-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            return await _baseClient.ExecutePaginatedAsync<CoinExUserTrade>(_baseClient.GetUri("v2/spot/user-deals"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetUserOrderTradesAsync(string symbol, AccountType accountType, long orderId, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "order_id", orderId }
+            };
+            parameters.AddEnum("market_type", accountType);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExUserTrade>(_baseClient.GetUri("v2/spot/order-deals"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        // TODO Batch endpoints
     }
 }

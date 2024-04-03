@@ -7,7 +7,6 @@ using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using CryptoExchange.Net.Authentication;
 using System.Threading;
-using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Objects.Sockets;
@@ -43,13 +42,13 @@ namespace CoinEx.Net.Clients.SpotApi
         internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
-            RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery<string>("server.ping", new Dictionary<string, object>())), null);
+            RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery("server.ping", new Dictionary<string, object>())), null);
         }
         #endregion
 
         /// <inheritdoc />
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
-            => new CoinExAuthenticationProvider(credentials, ClientOptions.NonceProvider ?? new CoinExNonceProvider());
+            => new CoinExV2AuthenticationProvider(credentials);
 
         #region methods
 
@@ -81,10 +80,9 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         protected override Query? GetAuthenticationRequest()
         {
-            //var authProvider = (CoinExAuthenticationProvider)AuthenticationProvider!;
-            //var authParams = authProvider.GetSocketAuthParameters();
-            //return new CoinExQuery<CoinExSubscriptionStatus>("server.sign", authParams, false);
-            return null;
+            var authProvider = (CoinExV2AuthenticationProvider)AuthenticationProvider!;
+            var authParams = authProvider.GetSocketAuthParameters();
+            return new CoinExQuery("server.sign", authParams, false, 0);
         }
 
         /// <inheritdoc />
@@ -170,6 +168,46 @@ namespace CoinEx.Net.Clients.SpotApi
             {
                 { "market_list", symbols }
             }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEvent<CoinExOrderUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExOrderUpdate>(_logger, "order", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "market_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data, x.Data.Order.Symbol, SocketUpdateType.Update)), true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToStopOrderUpdatesAsync(Action<DataEvent<CoinExStopOrderUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExStopOrderUpdate>(_logger, "stop", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "market_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data, x.Data.Order.Symbol, SocketUpdateType.Update)), true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(Action<DataEvent<CoinExUserTrade>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExUserTrade>(_logger, "user_deals", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "market_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol, SocketUpdateType.Update)), true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<IEnumerable<CoinExBalanceUpdate>>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExBalanceUpdateWrapper>(_logger, "balance", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "ccy_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data.Balances, null, SocketUpdateType.Update)), true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
         #endregion

@@ -21,6 +21,7 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
+using CoinEx.Net.Objects.Models.V2;
 
 namespace CoinEx.Net.Clients.SpotApi
 {
@@ -77,9 +78,21 @@ namespace CoinEx.Net.Clients.SpotApi
 
         /// <inheritdoc />
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
-            => new CoinExAuthenticationProvider(credentials, ClientOptions.NonceProvider ?? new CoinExNonceProvider());
+            => new CoinExV2AuthenticationProvider(credentials);
 
         #region methods
+        internal async Task<WebCallResult> ExecuteAsync(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
+        {
+            var result = await SendRequestAsync<CoinExApiResult>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            if (!result)
+                return result.AsDataless();
+
+            if (result.Data.Code != 0)
+                return result.AsDatalessError(new ServerError(result.Data.Code, result.Data.Message!));
+
+            return result.AsDataless();
+        }
+
         internal async Task<WebCallResult<T>> ExecuteAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
             var result = await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
@@ -92,16 +105,23 @@ namespace CoinEx.Net.Clients.SpotApi
             return result.As(result.Data.Data);
         }
 
-        internal async Task<WebCallResult<T>> ExecutePaginatedAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+        internal async Task<WebCallResult<CoinExPaginated<T>>> ExecutePaginatedAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
-            var result = await SendRequestAsync<CoinExPageApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            var result = await SendRequestAsync<CoinExPageApiResult<IEnumerable<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
             if (!result)
-                return result.As<T>(default);
+                return result.As<CoinExPaginated<T>>(default);
 
             if (result.Data.Code != 0)
-                return result.AsError<T>(new ServerError(result.Data.Code, result.Data.Message!));
+                return result.AsError<CoinExPaginated<T>>(new ServerError(result.Data.Code, result.Data.Message!));
 
-            return result.As(result.Data.Data);
+            var resultPage = new CoinExPaginated<T>
+            {
+                HasNext = result.Data.Pagination.HasNext,
+                Total = result.Data.Pagination.Total,
+                Items = result.Data.Data
+            };
+
+            return result.As(resultPage);
         }
 
         internal Uri GetUri(string path) => new Uri(BaseAddress.AppendPath(path));

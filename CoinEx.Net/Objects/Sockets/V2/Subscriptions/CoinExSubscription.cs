@@ -20,7 +20,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Action<DataEvent<T>> _handler;
 
         public override HashSet<string> ListenerIdentifiers { get; set; }
-        public CoinExSubscription(ILogger logger, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<T>> handler) : base(logger, false)
+        public CoinExSubscription(ILogger logger, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<T>> handler, bool authenticated = false) : base(logger, authenticated)
         {
             _topic = topic;
             _symbols = symbols;
@@ -42,9 +42,9 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<T>);
 
         public override Query? GetSubQuery(SocketConnection connection)
-            => new CoinExQuery<CoinExSocketResponse>(_topic + ".subscribe", _parameters, false, 1);
+            => new CoinExQuery(_topic + ".subscribe", _parameters, false, 1);
 
         public override Query? GetUnsubQuery()
-            => new CoinExQuery<CoinExSocketResponse>(_topic + ".unsubscribe", _parameters, false, 1);
+            => new CoinExQuery(_topic + ".unsubscribe", _parameters, false, 1);
     }
 }

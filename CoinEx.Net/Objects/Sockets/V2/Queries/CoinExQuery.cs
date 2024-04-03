@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CoinEx.Net.Objects.Sockets.V2.Queries
 {
-    internal class CoinExQuery<T> : Query<CoinExSocketResponse>
+    internal class CoinExQuery : Query<CoinExSocketResponse>
     {
         public override HashSet<string> ListenerIdentifiers { get; set; }
 

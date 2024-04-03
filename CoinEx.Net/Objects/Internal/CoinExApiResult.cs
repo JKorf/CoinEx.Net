@@ -19,13 +19,13 @@ namespace CoinEx.Net.Objects.Internal
     internal class CoinExPageApiResult<T> : CoinExApiResult<T>
     {
         [JsonPropertyName("pagination")]
-        public CoinExPage Pagination { get; set; }
+        public CoinExPage Pagination { get; set; } = null!;
     }
 
     internal class CoinExPage
     {
         [JsonPropertyName("total")]
-        public int Total { get; set; }
+        public int? Total { get; set; }
         [JsonPropertyName("has_next")]
         public bool HasNext { get; set; }
     }

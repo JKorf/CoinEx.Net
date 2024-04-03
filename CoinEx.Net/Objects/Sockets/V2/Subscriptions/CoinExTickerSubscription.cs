@@ -41,9 +41,9 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExTickerUpdateWrapper>);
 
         public override Query? GetSubQuery(SocketConnection connection)
-            => new CoinExQuery<CoinExSocketResponse>("state.subscribe", _parameters, false, 1);
+            => new CoinExQuery("state.subscribe", _parameters, false, 1);
 
         public override Query? GetUnsubQuery()
-            => new CoinExQuery<CoinExSocketResponse>("state.unsubscribe", _parameters, false, 1);
+            => new CoinExQuery("state.unsubscribe", _parameters, false, 1);
     }
 }
