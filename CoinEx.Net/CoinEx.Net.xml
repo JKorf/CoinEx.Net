@@ -258,7 +258,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToAllTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolState}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Boolean,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApi.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.Socket.CoinExSocketSymbolTrade}}},System.Threading.CancellationToken)">
@@ -982,7 +982,7 @@
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <returns>Order book of a symbol</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApi.ICoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.Int32,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.Socket.CoinExSocketOrderBook}},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Subscribe to order book updates
             <para><a href="https://github.com/coinexcom/coinex_exchange_api/wiki/044depth" /></para>
@@ -991,6 +991,7 @@
             <param name="limit">The limit of results to receive in a update</param>
             <param name="mergeDepth">The depth of merging, based on 8 decimals. 1 mergeDepth will merge the last decimals of all order in the book, 7 will merge the last 7 decimals of all orders together</param>
             <param name="onMessage">Data handler</param>
+            <param name="diffUpdates">Set to true to get snapshot first, then diff updates</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
