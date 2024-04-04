@@ -1029,12 +1029,6 @@
             Extension methods specific to using the CoinEx API
             </summary>
         </member>
-        <member name="M:CoinEx.Net.ExtensionMethods.CoinExExtensionMethods.ValidateCoinExSymbol(System.String)">
-            <summary>
-            Validate the string is a valid CoinEx symbol.
-            </summary>
-            <param name="symbolString">string to validate</param>
-        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExRestClient">
             <summary>
             Client for accessing the CoinEx API. 

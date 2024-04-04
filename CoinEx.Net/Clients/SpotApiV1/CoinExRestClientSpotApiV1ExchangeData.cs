@@ -60,7 +60,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExSymbolState>> GetTickerAsync(string symbol, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol }
@@ -85,7 +84,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int mergeDepth, int? limit = null, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             mergeDepth.ValidateIntBetween(nameof(mergeDepth), 0, 8);
             limit?.ValidateIntValues(nameof(limit), 5, 10, 20);
 
@@ -102,8 +100,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExSymbolTrade>>> GetTradeHistoryAsync(string symbol, long? fromId = null, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
-
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol }
@@ -132,7 +128,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             limit?.ValidateIntBetween(nameof(limit), 1, 1000);
             var parameters = new Dictionary<string, object>
             {

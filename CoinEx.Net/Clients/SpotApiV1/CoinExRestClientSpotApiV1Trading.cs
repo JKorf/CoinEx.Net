@@ -55,8 +55,6 @@ namespace CoinEx.Net.Clients.SpotApi
             string? sourceId = null,
             CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
-
             var endpoint = "";
             if (type == OrderType.Limit)
                 endpoint = PlaceLimitOrderEndpoint;
@@ -99,7 +97,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenOrdersAsync(string? symbol = null, int? page = null, int? limit = null, CancellationToken ct = default)
         {
-            symbol?.ValidateCoinExSymbol();
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
@@ -115,7 +112,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetOpenStopOrdersAsync(string symbol, int? page = null, int? limit = null, CancellationToken ct = default)
         {
-            symbol?.ValidateCoinExSymbol();
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
@@ -129,7 +125,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrder>>> GetClosedOrdersAsync(string symbol, int? page = null, int? limit = null, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
@@ -144,7 +139,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExOrder>> GetOrderAsync(string symbol, long orderId, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -171,7 +165,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPagedResult<CoinExOrderTradeExtended>>> GetUserTradesAsync(string symbol, int? page = null, int? limit = null, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             limit?.ValidateIntBetween(nameof(limit), 1, 100);
             var parameters = new Dictionary<string, object>
             {
@@ -186,7 +179,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, long orderId, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -202,7 +194,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult> CancelAllOrdersAsync(string symbol, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
@@ -214,7 +205,6 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult> CancelAllStopOrdersAsync(string symbol, CancellationToken ct = default)
         {
-            symbol.ValidateCoinExSymbol();
             var parameters = new Dictionary<string, object>
             {
                 { "market", symbol },
