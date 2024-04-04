@@ -7,7 +7,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order info
     /// </summary>
-    public record CoinExOrder
+    public record CoinExFuturesOrder
     {
         /// <summary>
         /// Order id
@@ -24,11 +24,6 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("market_type")]
         public AccountType AccountType { get; set; }
-        /// <summary>
-        /// Asset the quantity is in
-        /// </summary>
-        [JsonPropertyName("ccy")]
-        public string QuantityAsset { get; set; } = string.Empty;
         /// <summary>
         /// Order side
         /// </summary>
@@ -70,20 +65,15 @@ namespace CoinEx.Net.Objects.Models.V2
         [JsonPropertyName("client_id")]
         public string? ClientOrderId { get; set; }
         /// <summary>
-        /// Fee in base asset
+        /// Fee
         /// </summary>
-        [JsonPropertyName("base_fee")]
-        public decimal FeeBaseAsset { get; set; }
+        [JsonPropertyName("fee")]
+        public decimal Fee { get; set; }
         /// <summary>
-        /// Fee in quote asset
+        /// Fee asset
         /// </summary>
-        [JsonPropertyName("quote_fee")]
-        public decimal FeeQuoteAsset { get; set; }
-        /// <summary>
-        /// Fee discount
-        /// </summary>
-        [JsonPropertyName("discount_fee")]
-        public decimal FeeDiscount { get; set; }
+        [JsonPropertyName("fee_ccy")]
+        public string FeeAsset { get; set; } = string.Empty;
         /// <summary>
         /// Maker fee rate
         /// </summary>
@@ -104,6 +94,11 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("last_filled_price")]
         public decimal? LastFilledPrice { get; set; }
+        /// <summary>
+        /// Realized profit and loss
+        /// </summary>
+        [JsonPropertyName("realized_pnl")]
+        public decimal? RealizedPnl { get; set; }
         /// <summary>
         /// Timestamp order was created
         /// </summary>

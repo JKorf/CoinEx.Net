@@ -43,6 +43,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         internal CoinExSocketClientFuturesApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.FuturesOptions)
         {
+            HandleMessageBeforeConfirmation = true;
+
             RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery("server.ping", new Dictionary<string, object>())), null);
         }
         #endregion
@@ -93,13 +95,83 @@ namespace CoinEx.Net.Clients.FuturesApi
         #region public
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExFuturesTickerUpdate>>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExTickerSubscription(_logger, null, new Dictionary<string, object>
+            var subscription = new CoinExFuturesTickerSubscription(_logger, null, new Dictionary<string, object>
+            {
+                { "market_list", symbols }
+            }, onMessage);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<IEnumerable<CoinExFuturesTickerUpdate>>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExFuturesTickerSubscription(_logger, null, new Dictionary<string, object>
             {
                 { "market_list", new object[] { } }
             }, onMessage);
-            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
+            => SubscribeToOrderBookUpdatesAsync(new[] { symbol }, depth, mergeLevel, fullBookUpdates, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToList() }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+            => SubscribeToTradeUpdatesAsync(new[] { symbol }, onMessage, ct);
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+            => SubscribeToTradeUpdatesAsync(new string[] { }, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExTradesSubscription(_logger, symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols }
+            }, onMessage);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
+            => SubscribeToIndexPriceUpdatesAsync(new[] { symbol }, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, "index", symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
+            => SubscribeToBookPriceUpdatesAsync(new[] { symbol }, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, "bbo", symbols, new Dictionary<string, object>
+            {
+                { "market_list", symbols }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
         #endregion
 

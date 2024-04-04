@@ -15,5 +15,21 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     /// </summary>
     public interface ICoinExRestClientFuturesApiAccount
     {
+        /// <summary>
+        /// Get trading fees for a symbol
+        /// <para><a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExTradeFee>> GetTradingFeesAsync(string symbol, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get balances
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-futures-balance" /></para>
+        /// </summary>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExFuturesBalance>>> GetBalancesAsync(CancellationToken ct = default);
     }
 }

@@ -30,7 +30,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Asset the quantity is in
         /// </summary>
         [JsonPropertyName("ccy")]
-        public string QuantityAsset { get; set; } = string.Empty;
+        public string? QuantityAsset { get; set; }
         /// <summary>
         /// Order side
         /// </summary>

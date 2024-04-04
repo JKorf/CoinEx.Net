@@ -118,7 +118,10 @@
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiAccount">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiAccount.GetTradingFeesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiAccount.GetTradingFeesAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiAccount.GetBalancesAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData">
@@ -160,6 +163,54 @@
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetOpenOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetClosedOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetOpenStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetClosedStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.EditOrderAsync(System.String,System.Int64,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.EditStopOrderAsync(System.String,System.Int64,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelAllOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelStopOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelOrderByClientOrderIdAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelStopOrderByClientOrderIdAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetUserTradesAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetOrderTradesAsync(System.String,System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi" />
         </member>
@@ -189,7 +240,37 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToIndexPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToBookPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToBookPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi">
@@ -1183,6 +1264,26 @@
             Should trigger when the price is lower than the trigger price
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Enums.TriggerPriceType">
+            <summary>
+            Trigger price type
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TriggerPriceType.LastPrice">
+            <summary>
+            Last price
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TriggerPriceType.MarkPrice">
+            <summary>
+            Mark price
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TriggerPriceType.IndexPrice">
+            <summary>
+            Index price
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Enums.UpdateType">
             <summary>
             Type of update
@@ -1328,6 +1429,23 @@
             CoinEx account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiAccount.GetTradingFeesAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get trading fees for a symbol
+            <para><a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiAccount.GetBalancesAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get balances
+            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-futures-balance" /></para>
+            </summary>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData">
             <summary>
             CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
@@ -1454,10 +1572,319 @@
             CoinEx trading endpoints, placing and mananging orders.
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <summary>
+            Place a new order
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-order" /></para>
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="side">Order side</param>
+            <param name="type">Order type</param>
+            <param name="quantity">Quantity</param>
+            <param name="price">Price of the order</param>
+            <param name="clientOrderId">Client order id</param>
+            <param name="hide">Hide the order</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <summary>
+            Place a new stop order
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-stop-order" /></para>
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="side">Order side</param>
+            <param name="type">Order type</param>
+            <param name="quantity">Quantity</param>
+            <param name="price">Price of the order</param>
+            <param name="triggerPriceType">Price type for the trigger</param>
+            <param name="clientOrderId">Client order id</param>
+            <param name="triggerPrice">Price to trigger on</param>
+            <param name="hide">Hide the order</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Get an order by id
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/get-order-status" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="orderId">Order id</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetOpenOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get a list of open orders
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-pending-order" /></para>
+            </summary>
+            <param name="symbol">Filter by symbol</param>
+            <param name="side">Filter by side</param>
+            <param name="clientOrderId">Filter by client order id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetClosedOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get a list of closed orders. Note that orders canceled without having any trades will not be returned
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-finished-order" /></para>
+            </summary>
+            <param name="symbol">Filter by symbol</param>
+            <param name="side">Filter by side</param>
+            <param name="clientOrderId">Filter by client order id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetOpenStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get a list of open stop orders
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-pending-stop-order" /></para>
+            </summary>
+            <param name="symbol">Filter by symbol</param>
+            <param name="side">Filter by side</param>
+            <param name="clientOrderId">Filter by client order id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetClosedStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get a list of closed stop orders. Note that orders canceled without having any trades will not be returned
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-finished-stop-order" /></para>
+            </summary>
+            <param name="symbol">Filter by symbol</param>
+            <param name="side">Filter by side</param>
+            <param name="clientOrderId">Filter by client order id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.EditOrderAsync(System.String,System.Int64,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <summary>
+            Edit an active order
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/edit-order" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="orderId">Order id</param>
+            <param name="quantity">New quantity</param>
+            <param name="price">New price</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.EditStopOrderAsync(System.String,System.Int64,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <summary>
+            Edit an active stop order
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/edit-stop-order" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="stopOrderId">Order id</param>
+            <param name="quantity">New quantity</param>
+            <param name="price">New price</param>
+            <param name="triggerPrice">New trigger price</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelAllOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Threading.CancellationToken)">
+            <summary>
+            Cancel all orders for a symbol
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-all-order" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="side">Only cancel a specific order side</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active order
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-order" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="orderId">Id of order to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelStopOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active stop order
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-stop-order" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="stopOrderId">Id of stop order to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelOrderByClientOrderIdAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active order by its client order id
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-order-by-client-id" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="clientOrderId">Client order id of order to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelStopOrderByClientOrderIdAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active stop order by its client order id
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-stop-order-by-client-id" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="clientStopOrderId">Client order id of stop order to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetUserTradesAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get trade list
+            <para><a href="https://docs.coinex.com/api/v2/futures/deal/http/list-user-deals" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="side">Filter by side</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetOrderTradesAsync(System.String,System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get trades for a specific order
+            <para><a href="https://docs.coinex.com/api/v2/futures/deal/http/list-user-order-deals" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="orderId">The order id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi">
             <summary>
             Futures streams
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-state" /></para>
+            </summary>
+            <param name="symbols">The symbols to subscribe</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-state" /></para>
+            </summary>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to order book updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-depth" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="depth">Order book depth, 5, 10, 20 or 50</param>
+            <param name="mergeLevel">The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
+            <param name="fullBookUpdates">Whether updates should provide full update or only updates</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to order book updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-depth" /></para>
+            </summary>
+            <param name="symbols">Symbols</param>
+            <param name="depth">Order book depth, 5, 10, 20 or 50</param>
+            <param name="mergeLevel">The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
+            <param name="fullBookUpdates">Whether updates should provide full update or only updates</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to live trade updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-deals" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to live trade updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-deals" /></para>
+            </summary>
+            <param name="symbols">Symbols</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to live trade updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-deals" /></para>
+            </summary>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to index price updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-index" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToIndexPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to index price updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-index" /></para>
+            </summary>
+            <param name="symbols">Symbols</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToBookPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to book price updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-bbo" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToBookPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to book price updates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-bbo" /></para>
+            </summary>
+            <param name="symbols">Symbols</param>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExRestClient">
             <summary>
@@ -4270,6 +4697,151 @@
             Actual funding rate. The actual funding rate charged in the current period
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance">
+            <summary>
+            Futures balance info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance.Asset">
+            <summary>
+            Asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance.Available">
+            <summary>
+            Available balance
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance.Frozen">
+            <summary>
+            Frozen balance
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance.Margin">
+            <summary>
+            Position margin
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance.UnrealizedPnl">
+            <summary>
+            Unrealized profit and loss
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance.Transferable">
+            <summary>
+            Transferable balance
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder">
+            <summary>
+            Order info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.Id">
+            <summary>
+            Order id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.AccountType">
+            <summary>
+            Account type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.Side">
+            <summary>
+            Order side
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.OrderType">
+            <summary>
+            Order type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.Quantity">
+            <summary>
+            Order quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.Price">
+            <summary>
+            Order price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.QuantityRemaining">
+            <summary>
+            Quantity remaining
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.QuantityFilled">
+            <summary>
+            Quantity filled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.ValueFilled">
+            <summary>
+            Value of the filled part
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.ClientOrderId">
+            <summary>
+            Client order id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.Fee">
+            <summary>
+            Fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.FeeAsset">
+            <summary>
+            Fee asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.MakerFeeRate">
+            <summary>
+            Maker fee rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.TakerFeeRate">
+            <summary>
+            Taker fee rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.LastFilledQuantity">
+            <summary>
+            Filled amount of the last trade
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.LastFilledPrice">
+            <summary>
+            Price of the last trade
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.RealizedPnl">
+            <summary>
+            Realized profit and loss
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.CreateTime">
+            <summary>
+            Timestamp order was created
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.UpdateTime">
+            <summary>
+            Timestamp order was last updated
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesOrder.Status">
+            <summary>
+            Status of the order
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol">
             <summary>
             Futures symbol info
@@ -4343,6 +4915,36 @@
             Mark price
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate">
+            <summary>
+            Futures ticker update
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate.OpenInterestSize">
+            <summary>
+            Open interest size
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate.LastFundingRate">
+            <summary>
+            Last funding rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate.NextFundingRate">
+            <summary>
+            Next funding rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate.LastFundingTime">
+            <summary>
+            Last funding time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate.NextFundingTime">
+            <summary>
+            Next funding time
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExIndexPrice">
             <summary>
             Index price
@@ -4403,9 +5005,14 @@
             Symbol
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate.Price">
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate.IndexPrice">
             <summary>
             Index price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate.MarkPrice">
+            <summary>
+            Mark price
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExKline">

@@ -173,7 +173,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExStopOrder>> EditStopOrderAsync(
+        public async Task<WebCallResult<CoinExStopId>> EditStopOrderAsync(
             string symbol,
             AccountType accountType,
             long stopOrderId,
@@ -191,7 +191,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddString("amount", quantity);
             parameters.AddString("trigger_price", triggerPrice);
             parameters.AddOptionalString("price", price);
-            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/spot/modify-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            return await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("v2/spot/modify-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

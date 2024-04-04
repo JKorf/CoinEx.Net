@@ -166,7 +166,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="triggerPrice">New trigger price</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExStopOrder>> EditStopOrderAsync(
+        Task<WebCallResult<CoinExStopId>> EditStopOrderAsync(
             string symbol,
             AccountType accountType,
             long stopOrderId,
