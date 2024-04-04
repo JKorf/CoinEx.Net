@@ -6,6 +6,7 @@ using CoinEx.Net.Enums;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
+using System;
 
 namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
@@ -151,5 +152,100 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExDeposit>>> GetDepositHistoryAsync(string asset, string? transactionId = null, DepositStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Withdraw funds to an external address or another CoinEx user
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /></para>
+        /// </summary>
+        /// <param name="asset">Asset to withdraw</param>
+        /// <param name="quanity">Withdrawal quantity</param>
+        /// <param name="toAddress">Withdrawal address.The withdrawal address needs to be added to the IP whitelist via Developer Console</param>
+        /// <param name="method">Withdrawal methods (On-chain or inter-user transfer). Default as on-chain withdrawal</param>
+        /// <param name="network">Network name. Required for On-chain, not required for inter-user transfer</param>
+        /// <param name="remark">Withdrawal note</param>
+        /// <param name="extraParameters">If it is a withdrawal from the KDA chain, you need to append the chain_id field to the extra field</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quanity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancel a pending withdrawal
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/cancel-withdrawal" /></para>
+        /// </summary>
+        /// <param name="withdrawalId">The withdrawal id</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get withdrawal history
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-withdrawal-history" /></para>
+        /// </summary>
+        /// <param name="asset">Filter by asset</param>
+        /// <param name="withdrawId">Filter by withdrawal id</param>
+        /// <param name="status">Filter by status</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? asset = null, long? withdrawId = null, WithdrawStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get withdraw and deposit information for an asset
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /></para>
+        /// </summary>
+        /// <param name="asset">The asset</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExDepositWithdrawalConfig>> GetDepositWithdrawalConfigAsync(string asset, CancellationToken ct = default);
+
+        /// <summary>
+        /// Transfer between accounts
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /></para>
+        /// </summary>
+        /// <param name="asset">Asset to transfer</param>
+        /// <param name="fromAccount">From account</param>
+        /// <param name="toAccount">To account</param>
+        /// <param name="quantity">Quantity to transfer</param>
+        /// <param name="marginSymbol">Margin symbol, only needed when from or to account type is Margin</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult> TransferAsync(string asset, AccountType fromAccount, AccountType toAccount, decimal quantity, string? marginSymbol = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get transfer history
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/list-transfer-history" /></para>
+        /// </summary>
+        /// <param name="asset">Asset</param>
+        /// <param name="transferType">Transfer type. Must be either Margin or Futures</param>
+        /// <param name="marginSymbol">Filter by margin symbol</param>
+        /// <param name="status">Filter by status</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExTransfer>>> GetTransfersAsync(string asset, AccountType transferType, string? marginSymbol = null, TransferStatus? status = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Add AAM liquidity
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/add-liquidtiy" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="baseAssetQuantity">Base asset quantity to add</param>
+        /// <param name="quoteAssetQuantity">Quote asset quantity to add</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExAamLiquidity>> AddAutoMarketMakerLiquidityAsync(string symbol, decimal baseAssetQuantity, decimal quoteAssetQuantity, CancellationToken ct = default);
+
+        /// <summary>
+        /// Remove AAM liquidity. Currently only support withdrawing all liquidity
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExAamLiquidity>> RemoveAutoMarketMakerLiquidityAsync(string symbol, CancellationToken ct = default);
     }
 }

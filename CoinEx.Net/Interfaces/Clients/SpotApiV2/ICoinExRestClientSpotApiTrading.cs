@@ -77,7 +77,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="orderId">Order id</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExOrder>> GetOrderAsync(string symbol, string orderId, CancellationToken ct = default);
+        Task<WebCallResult<CoinExOrder>> GetOrderAsync(string symbol, long orderId, CancellationToken ct = default);
 
         /// <summary>
         /// Get a list of open orders
@@ -149,7 +149,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         Task<WebCallResult<CoinExOrder>> EditOrderAsync(
             string symbol,
             AccountType accountType,
-            string orderId,
+            long orderId,
             decimal quantity,
             decimal? price = null,
             CancellationToken ct = default);
@@ -169,7 +169,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         Task<WebCallResult<CoinExStopOrder>> EditStopOrderAsync(
             string symbol,
             AccountType accountType,
-            string stopOrderId,
+            long stopOrderId,
             decimal quantity,
             decimal triggerPrice,
             decimal? price = null,
@@ -195,7 +195,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="orderId">Id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, AccountType accountType, string orderId, CancellationToken ct = default);
+        Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, AccountType accountType, long orderId, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active stop order
@@ -206,7 +206,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="stopOrderId">Id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExStopOrder>> CancelStopOrderAsync(string symbol, AccountType accountType, string stopOrderId, CancellationToken ct = default);
+        Task<WebCallResult<CoinExStopOrder>> CancelStopOrderAsync(string symbol, AccountType accountType, long stopOrderId, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active order by its client order id
@@ -244,5 +244,18 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetUserTradesAsync(string symbol, AccountType accountType, OrderSide? side = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get trades for a specific order
+        /// <para><a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-order-deals" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="accountType">Account type</param>
+        /// <param name="orderId">The order id</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetOrderTradesAsync(string symbol, AccountType accountType, long orderId, int? page = null, int? pageSize = null, CancellationToken ct = default);
     }
 }

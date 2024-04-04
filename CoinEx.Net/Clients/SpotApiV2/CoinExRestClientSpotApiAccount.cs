@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.ExtensionMethods;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using System;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -158,5 +159,102 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return await _baseClient.ExecutePaginatedAsync<CoinExDeposit>(_baseClient.GetUri("v2/assets/deposit-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quanity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "ccy", asset },
+                { "to_address", toAddress },
+            };
+            parameters.AddOptionalEnum("withdraw_method", method);
+            parameters.AddString("amount", quanity);
+            parameters.AddOptional("chain", network);
+            parameters.AddOptional("remark", remark);
+            parameters.AddOptional("extra", extraParameters);
+            return await _baseClient.ExecuteAsync<CoinExWithdrawal>(_baseClient.GetUri("v2/assets/withdraw"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "withdraw_id", withdrawalId }
+            };
+            return await _baseClient.ExecuteAsync(_baseClient.GetUri("v2/assets/cancel-withdraw"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? asset = null, long? withdrawId = null, WithdrawStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddOptional("ccy", asset);
+            parameters.AddOptional("withdraw_id", withdrawId);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            parameters.AddOptionalEnum("status", status);
+            return await _baseClient.ExecutePaginatedAsync<CoinExWithdrawal>(_baseClient.GetUri("v2/assets/withdraw"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExDepositWithdrawalConfig>> GetDepositWithdrawalConfigAsync(string asset, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddOptional("ccy", asset);
+            return await _baseClient.ExecuteAsync<CoinExDepositWithdrawalConfig>(_baseClient.GetUri("v2/assets/deposit-withdraw-config"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult> TransferAsync(string asset, AccountType fromAccount, AccountType toAccount, decimal quantity, string? marginSymbol = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "ccy", asset }
+            };
+            parameters.AddEnum("from_account_type", fromAccount);
+            parameters.AddEnum("to_account_type", toAccount);
+            parameters.AddString("amount", quantity);
+            parameters.AddOptional("market", marginSymbol);
+            return await _baseClient.ExecuteAsync(_baseClient.GetUri("v2/assets/transfer"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExTransfer>>> GetTransfersAsync(string asset, AccountType transferType, string? marginSymbol = null, TransferStatus? status = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "ccy", asset }
+            };
+            parameters.AddEnum("transfer_type", transferType);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            parameters.AddOptionalEnum("status", status);
+            return await _baseClient.ExecutePaginatedAsync<CoinExTransfer>(_baseClient.GetUri("v2/assets/transfer-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExAamLiquidity>> AddAutoMarketMakerLiquidityAsync(string symbol, decimal baseAssetQuantity, decimal quoteAssetQuantity, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            parameters.AddString("base_ccy_amount", baseAssetQuantity);
+            parameters.AddString("quote_ccy_amount", quoteAssetQuantity);
+            return await _baseClient.ExecuteAsync<CoinExAamLiquidity>(_baseClient.GetUri("v2/amm/add-liquidity"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExAamLiquidity>> RemoveAutoMarketMakerLiquidityAsync(string symbol, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            return await _baseClient.ExecuteAsync<CoinExAamLiquidity>(_baseClient.GetUri("v2/amm/remove-liquidity"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
     }
 }

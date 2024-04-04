@@ -20,6 +20,8 @@ namespace CoinEx.Net.Objects.Internal
     {
         [JsonPropertyName("pagination")]
         public CoinExPage Pagination { get; set; } = null!;
+        [JsonPropertyName("paginatation")]
+        public CoinExPage PaginationTypo { set => Pagination = value; }
     }
 
     internal class CoinExPage

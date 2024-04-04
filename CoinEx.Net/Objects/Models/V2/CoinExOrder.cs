@@ -13,7 +13,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Order id
         /// </summary>
         [JsonPropertyName("order_id")]
-        public string OrderId { get; set; } = string.Empty;
+        public long Id { get; set; }
         /// <summary>
         /// Symbol
         /// </summary>
@@ -38,7 +38,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Order type
         /// </summary>
         [JsonPropertyName("type")]
-        public OrderTypeV2 Type { get; set; }
+        public OrderTypeV2 OrderType { get; set; }
         /// <summary>
         /// Order quantity
         /// </summary>

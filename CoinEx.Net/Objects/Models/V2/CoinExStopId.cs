@@ -14,6 +14,6 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Stop order id
         /// </summary>
         [JsonPropertyName("stop_id")]
-        public string StopId { get; set; } = string.Empty;
+        public long StopOrderId { get; set; }
     }
 }

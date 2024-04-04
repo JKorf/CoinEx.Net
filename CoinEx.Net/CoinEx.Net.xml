@@ -316,6 +316,14 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetSymbolName(System.String,System.String)">
+            <summary>
+            Get the name of a symbol for CoinEx based on the base and quote asset
+            </summary>
+            <param name="baseAsset"></param>
+            <param name="quoteAsset"></param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.TryParseError(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
@@ -373,6 +381,30 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetDepositHistoryAsync(System.String,System.String,System.Nullable{CoinEx.Net.Enums.DepositStatus},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.Decimal,System.String,System.Nullable{CoinEx.Net.Enums.MovementMethod},System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{CoinEx.Net.Enums.WithdrawStatus},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetDepositWithdrawalConfigAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.TransferAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.AccountType,System.Decimal,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetTransfersAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.TransferStatus},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.AddAutoMarketMakerLiquidityAsync(System.String,System.Decimal,System.Decimal,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.RemoveAutoMarketMakerLiquidityAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData">
             <inheritdoc />
         </member>
@@ -403,7 +435,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetOpenOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
@@ -418,19 +450,19 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetClosedStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.EditOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.EditOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.EditStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.EditStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelAllOrdersAsync(System.String,CoinEx.Net.Enums.AccountType,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelOrderByClientOrderIdAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
@@ -442,7 +474,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetUserTradesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetUserOrderTradesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetOrderTradesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi">
@@ -717,6 +749,21 @@
             1w
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Enums.MovementMethod">
+            <summary>
+            Deposit/Withdrawal method
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.MovementMethod.OnChain">
+            <summary>
+            On chain
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.MovementMethod.InterUser">
+            <summary>
+            Between users
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Enums.OrderOption">
             <summary>
             Options when placing an order
@@ -947,6 +994,31 @@
             Taker of an existing order book entry
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Enums.TransferStatus">
+            <summary>
+            Transfer status
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransferStatus.Created">
+            <summary>
+            Created
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransferStatus.Deducted">
+            <summary>
+            Asset deducted
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransferStatus.Failed">
+            <summary>
+            Failed to transfer
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransferStatus.Finished">
+            <summary>
+            Transfer completed
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Enums.TriggerDirection">
             <summary>
             Trigger direction
@@ -1025,6 +1097,56 @@
         <member name="F:CoinEx.Net.Enums.WithdrawStatus.Fail">
             <summary>
             Failed
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Enums.WithdrawStatusV2">
+            <summary>
+            Withdrawal status
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.Created">
+            <summary>
+            Created
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.AuditRequired">
+            <summary>
+            To be audited
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.Audited">
+            <summary>
+            Approved
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.Processing">
+            <summary>
+            Procesing
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.Confirming">
+            <summary>
+            Waiting for blockchain confirmation
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.Finished">
+            <summary>
+            Finished
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.Canceled">
+            <summary>
+            Withdrawal canceld
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.CancelationFailed">
+            <summary>
+            Cancelation failed
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.WithdrawStatusV2.Failed">
+            <summary>
+            Withdrawal failed
             </summary>
         </member>
         <member name="T:CoinEx.Net.ExtensionMethods.CoinExExtensionMethods">
@@ -1704,6 +1826,101 @@
             <param name="ct">Cancelation token</param>
             <returns></returns>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.Decimal,System.String,System.Nullable{CoinEx.Net.Enums.MovementMethod},System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <summary>
+            Withdraw funds to an external address or another CoinEx user
+            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /></para>
+            </summary>
+            <param name="asset">Asset to withdraw</param>
+            <param name="quanity">Withdrawal quantity</param>
+            <param name="toAddress">Withdrawal address.The withdrawal address needs to be added to the IP whitelist via Developer Console</param>
+            <param name="method">Withdrawal methods (On-chain or inter-user transfer). Default as on-chain withdrawal</param>
+            <param name="network">Network name. Required for On-chain, not required for inter-user transfer</param>
+            <param name="remark">Withdrawal note</param>
+            <param name="extraParameters">If it is a withdrawal from the KDA chain, you need to append the chain_id field to the extra field</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Cancel a pending withdrawal
+            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/cancel-withdrawal" /></para>
+            </summary>
+            <param name="withdrawalId">The withdrawal id</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{CoinEx.Net.Enums.WithdrawStatus},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get withdrawal history
+            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-withdrawal-history" /></para>
+            </summary>
+            <param name="asset">Filter by asset</param>
+            <param name="withdrawId">Filter by withdrawal id</param>
+            <param name="status">Filter by status</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetDepositWithdrawalConfigAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get withdraw and deposit information for an asset
+            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /></para>
+            </summary>
+            <param name="asset">The asset</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.TransferAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.AccountType,System.Decimal,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Transfer between accounts
+            <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /></para>
+            </summary>
+            <param name="asset">Asset to transfer</param>
+            <param name="fromAccount">From account</param>
+            <param name="toAccount">To account</param>
+            <param name="quantity">Quantity to transfer</param>
+            <param name="marginSymbol">Margin symbol, only needed when from or to account type is Margin</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetTransfersAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.TransferStatus},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get transfer history
+            <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/list-transfer-history" /></para>
+            </summary>
+            <param name="asset">Asset</param>
+            <param name="transferType">Transfer type. Must be either Margin or Futures</param>
+            <param name="marginSymbol">Filter by margin symbol</param>
+            <param name="status">Filter by status</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.AddAutoMarketMakerLiquidityAsync(System.String,System.Decimal,System.Decimal,System.Threading.CancellationToken)">
+            <summary>
+            Add AAM liquidity
+            <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/add-liquidtiy" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="baseAssetQuantity">Base asset quantity to add</param>
+            <param name="quoteAssetQuantity">Quote asset quantity to add</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.RemoveAutoMarketMakerLiquidityAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Remove AAM liquidity. Currently only support withdrawing all liquidity
+            <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData">
             <summary>
             CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
@@ -1809,7 +2026,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Get an order by id
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/get-order-status" /></para>
@@ -1875,7 +2092,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.EditOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.EditOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Edit an active order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/edit-order" /></para>
@@ -1888,7 +2105,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.EditStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.EditStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Edit an active stop order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/edit-stop-order" /></para>
@@ -1913,7 +2130,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel an active order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-order" /></para>
@@ -1924,7 +2141,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel an active stop order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-stop-order" /></para>
@@ -1967,6 +2184,19 @@
             <param name="side">Filter by side</param>
             <param name="startTime">Filter by start time</param>
             <param name="endTime">Filter by end time</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetOrderTradesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get trades for a specific order
+            <para><a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-order-deals" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="accountType">Account type</param>
+            <param name="orderId">The order id</param>
             <param name="page">Page number</param>
             <param name="pageSize">Page size</param>
             <param name="ct">Cancelation Token</param>
@@ -3175,6 +3405,31 @@
             The quantity of the transaction
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExAamLiquidity">
+            <summary>
+            Automated market maker liquidity info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAamLiquidity.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAamLiquidity.BaseAssetQuantity">
+            <summary>
+            Base asset amount in AMM account
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAamLiquidity.QuoteAssetQuantity">
+            <summary>
+            Quote asset amount in AMM account
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAamLiquidity.LiquidityProportion">
+            <summary>
+            Liquidity percentage in AMM account
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExAmmBalance">
             <summary>
             Automated Market Maker liquidity info
@@ -3505,6 +3760,121 @@
             Deposit address
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalConfig">
+            <summary>
+            Deposit and withdrawal configuration and info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalConfig.Asset">
+            <summary>
+            Asset information
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalConfig.Networks">
+            <summary>
+            Available networks
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalAsset">
+            <summary>
+            Asset infos
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalAsset.Asset">
+            <summary>
+            Asset name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalAsset.DepositEnabled">
+            <summary>
+            Is deposit enabled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalAsset.WithdrawEnabled">
+            <summary>
+            Is withdrawal enabled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalAsset.InterTransferEnabled">
+            <summary>
+            Is inter user transfer enabled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExDepositWithdrawalAsset.IsSt">
+            <summary>
+            Is st
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExNetwork">
+            <summary>
+            Network info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.Network">
+            <summary>
+            Network name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.MinDepositQuantity">
+            <summary>
+            Min deposit quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.MinWithdrawQuantity">
+            <summary>
+            Min withdraw quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.DepositEnabled">
+            <summary>
+            Is deposit enabled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.WithdrawEnabled">
+            <summary>
+            Is withdrawal enabled
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.SafeConfirmations">
+            <summary>
+            Number of confirmations needed
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.IrreversableConfirmations">
+            <summary>
+            Number of confirmations before transaction is irreversable
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.DeflationRate">
+            <summary>
+            Deflation rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.WithdrawalFee">
+            <summary>
+            Withdrawal fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.WithdrawalPrecision">
+            <summary>
+            Withdrawal precision
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.Memo">
+            <summary>
+            Memo
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.MemoRequired">
+            <summary>
+            Is memo required for deposits
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.ExplorerUrl">
+            <summary>
+            Blockchain explorer url
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExIndexPrice">
             <summary>
             Index price
@@ -3685,7 +4055,7 @@
             Order info
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrder.OrderId">
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrder.Id">
             <summary>
             Order id
             </summary>
@@ -3710,7 +4080,7 @@
             Order side
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrder.Type">
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrder.OrderType">
             <summary>
             Order type
             </summary>
@@ -3900,7 +4270,7 @@
             Stop order id
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopId.StopId">
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopId.StopOrderId">
             <summary>
             Stop order id
             </summary>
@@ -4155,6 +4525,46 @@
             Fee for taker trades
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExTransfer">
+            <summary>
+            Transfer info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransfer.MarginSymbol">
+            <summary>
+            Margin symbol if either from account or to account was Margin
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransfer.CreateTime">
+            <summary>
+            Creation time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransfer.FromAccountType">
+            <summary>
+            From account type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransfer.ToAccountType">
+            <summary>
+            To account type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransfer.Asset">
+            <summary>
+            Asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransfer.Quantity">
+            <summary>
+            Transfer quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransfer.Status">
+            <summary>
+            Transfer status
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExUserTrade">
             <summary>
             User trade info
@@ -4198,6 +4608,86 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExUserTrade.Quantity">
             <summary>
             Quantity traded
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal">
+            <summary>
+            Withdrawal info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Id">
+            <summary>
+            Withdrawal id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.CreateTime">
+            <summary>
+            Creation time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Asset">
+            <summary>
+            Asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Network">
+            <summary>
+            Network
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Memo">
+            <summary>
+            Memo
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.ActualQuantity">
+            <summary>
+            Actual withdrawal quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Fee">
+            <summary>
+            Fee
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.TransactionId">
+            <summary>
+            Transaction id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.ToAddress">
+            <summary>
+            Destination address
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Confirmations">
+            <summary>
+            Number of confirmations
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.TransactionExplorerUrl">
+            <summary>
+            Blockchain explorer url for the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.WithdrawalAddressExplorerUrl">
+            <summary>
+            Blockchain explorer url for the deposit address
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Remark">
+            <summary>
+            Remark
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Options.CoinExOrderBookOptions">
