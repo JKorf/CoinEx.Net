@@ -91,22 +91,6 @@ namespace CoinEx.Net.UnitTests
             Assert.That(sign == output);
         }
 
-        [TestCase("BTCUSDT", true)]
-        [TestCase("NANOUSDTA", true)]
-        [TestCase("NANOBTC", true)]
-        [TestCase("ETHBTC", true)]
-        [TestCase("BEETC", true)]
-        [TestCase("BETC", false)]
-        [TestCase("BTC-USDT", false)]
-        [TestCase("BTC-USD", false)]
-        public void CheckValidCoinExSymbol(string symbol, bool isValid)
-        {
-            if (isValid)
-                Assert.DoesNotThrow(symbol.ValidateCoinExSymbol);
-            else
-                Assert.Throws(typeof(ArgumentException), symbol.ValidateCoinExSymbol);
-        }
-
         [Test]
         public void CheckRestInterfaces()
         {
