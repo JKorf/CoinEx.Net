@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.Authentication;
+﻿using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net.Interfaces.Clients
@@ -16,6 +17,10 @@ namespace CoinEx.Net.Interfaces.Clients
         /// Spot V2 API endpoints
         /// </summary>
         SpotApiV2.ICoinExRestClientSpotApi SpotApiV2 { get; }
+        /// <summary>
+        /// Futures V2 API endpoints
+        /// </summary>
+        ICoinExRestClientFuturesApi FuturesApi { get; }
 
         /// <summary>
         /// Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.

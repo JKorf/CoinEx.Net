@@ -57,6 +57,6 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Price
         /// </summary>
         [JsonPropertyName("index_price")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
     }
 }

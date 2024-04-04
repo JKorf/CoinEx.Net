@@ -7,6 +7,9 @@
         <member name="T:CoinEx.Net.Clients.CoinExRestClient">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExRestClient" />
         </member>
+        <member name="P:CoinEx.Net.Clients.CoinExRestClient.FuturesApi">
+            <inheritdoc />
+        </member>
         <member name="P:CoinEx.Net.Clients.CoinExRestClient.SpotApi">
             <inheritdoc />
         </member>
@@ -38,6 +41,9 @@
         </member>
         <member name="T:CoinEx.Net.Clients.CoinExSocketClient">
             <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient" />
+        </member>
+        <member name="P:CoinEx.Net.Clients.CoinExSocketClient.FuturesApi">
+            <inheritdoc />
         </member>
         <member name="P:CoinEx.Net.Clients.CoinExSocketClient.SpotApiV2">
             <inheritdoc />
@@ -71,6 +77,119 @@
             <param name="optionsDelegate">Option configuration delegate</param>
         </member>
         <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
+        <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi">
+            <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi" />
+        </member>
+        <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.ClientOptions">
+            <inheritdoc />
+        </member>
+        <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.ExchangeName">
+            <inheritdoc />
+        </member>
+        <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.Account">
+            <inheritdoc />
+        </member>
+        <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.ExchangeData">
+            <inheritdoc />
+        </member>
+        <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.Trading">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateAccessor">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateSerializer">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.TryParseError(CryptoExchange.Net.Interfaces.IMessageAccessor)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetTimeSyncInfo">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetTimeOffset">
+            <inheritdoc />
+        </member>
+        <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiAccount">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiAccount.GetTradingFeesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetSymbolsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetTickersAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetOrderBookAsync(System.String,System.Int32,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetTradeHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Nullable{CoinEx.Net.Enums.PriceType},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetIndexPricesAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetFundingRatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetFundingRateHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetPositionLevelsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetLiquidationHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetBasisHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading">
+            <inheritdoc />
+        </member>
+        <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi">
+            <inheritdoc cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi" />
+        </member>
+        <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.ClientOptions">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.#ctor(Microsoft.Extensions.Logging.ILogger,CoinEx.Net.Objects.Options.CoinExSocketOptions)">
+            <summary>
+            Create a new instance of CoinExSocketClient with default options
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.CreateAccessor">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.CreateSerializer">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.GetAuthenticationRequest">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi">
@@ -644,6 +763,21 @@
             Has been repaid
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Enums.ContractType">
+            <summary>
+            Type of contract
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.ContractType.Linear">
+            <summary>
+            Linear contract
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.ContractType.Inverse">
+            <summary>
+            Inverse contract
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Enums.DepositStatus">
             <summary>
             Deposit status
@@ -939,6 +1073,21 @@
             Order finished
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Enums.PositionSide">
+            <summary>
+            Position side
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.PositionSide.Long">
+            <summary>
+            Long position
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.PositionSide.Short">
+            <summary>
+            Short position
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Enums.PriceType">
             <summary>
             Price type
@@ -1154,6 +1303,162 @@
             Extension methods specific to using the CoinEx API
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi">
+            <summary>
+            Futures API
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi.Account">
+            <summary>
+            Endpoints related to account settings, info or actions
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi.ExchangeData">
+            <summary>
+            Endpoints related to retrieving market and system data
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi.Trading">
+            <summary>
+            Endpoints related to orders and trades
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiAccount">
+            <summary>
+            CoinEx account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData">
+            <summary>
+            CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetSymbolsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Get list of support symbols
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market" /></para>
+            </summary>
+            <param name="symbols">Filter by symbol name; max 10</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetTickersAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Get symbol tickers
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-ticker" /></para>
+            </summary>
+            <param name="symbols">Fitler by symbol names; max 10</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetOrderBookAsync(System.String,System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get the orderbook for a symbol
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-depth" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="limit">Amount of rows, 5, 10, 20 or 50</param>
+            <param name="mergeLevel">The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetTradeHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Get the trade history for a symbol
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-deals" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="limit">Max amount of results</param>
+            <param name="lastId">The starting point of the query, 0 means to acquire from the latest record</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Nullable{CoinEx.Net.Enums.PriceType},System.Threading.CancellationToken)">
+            <summary>
+            Get klines/candlesticks
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-kline" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="interval">Kline interval</param>
+            <param name="limit">Max amount of results</param>
+            <param name="priceType">Price type, either LastPrice(default) or IndexPrice</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetIndexPricesAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Get index prices
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-index" /></para>
+            </summary>
+            <param name="symbols">Filter by symbols</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetFundingRatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Get funding rates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-funding-rate" /></para>
+            </summary>
+            <param name="symbols">Filter by symbols</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetFundingRateHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get historical funding rates
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-funding-rate-history" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetPositionLevelsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Get position levels
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-position-level" /></para>
+            </summary>
+            <param name="symbols">Filter by symbols; max 10</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetLiquidationHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get liquidation history
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-liquidation-history" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetBasisHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Get basis rate history
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-basis-history" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading">
+            <summary>
+            CoinEx trading endpoints, placing and mananging orders.
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi">
+            <summary>
+            Futures streams
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExRestClient">
             <summary>
             Client for accessing the CoinEx API. 
@@ -1169,6 +1474,11 @@
             Spot V2 API endpoints
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.FuturesApi">
+            <summary>
+            Futures V2 API endpoints
+            </summary>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>
             Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
@@ -1178,6 +1488,11 @@
         <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient">
             <summary>
             Client for accessing the CoinEx websocket API
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.FuturesApi">
+            <summary>
+            V2 API Futures streams
             </summary>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SpotApiV2">
@@ -3520,6 +3835,26 @@
             Update time
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExBasis">
+            <summary>
+            Basis rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBasis.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBasis.CreateTime">
+            <summary>
+            Create time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBasis.BasisRate">
+            <summary>
+            Basis rate
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate">
             <summary>
             Best book prices update
@@ -3875,6 +4210,139 @@
             Blockchain explorer url
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFundingRate">
+            <summary>
+            Funding rate info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.MarkPrice">
+            <summary>
+            Mark price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.LastFundingRate">
+            <summary>
+            Last funding rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.NextFundingRate">
+            <summary>
+            Next funding rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.LastFundingTime">
+            <summary>
+            Last funding time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.NextFundingTime">
+            <summary>
+            Next funding time
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFundingRateHistory">
+            <summary>
+            Historic funding rate info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRateHistory.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRateHistory.FundingTime">
+            <summary>
+            Funding time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRateHistory.TheoreticalFundingrate">
+            <summary>
+            Theoretical funding rate. The theoretical funding rate to be collected for the current period after calculation
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRateHistory.ActualFundingRate">
+            <summary>
+            Actual funding rate. The actual funding rate charged in the current period
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol">
+            <summary>
+            Futures symbol info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.Symbol">
+            <summary>
+            Symbol name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.ContractType">
+            <summary>
+            Contract type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.TakerFeeRate">
+            <summary>
+            Taker fee rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.MakerFeeRate">
+            <summary>
+            Maker fee rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.MinOrderQuantity">
+            <summary>
+            Min order quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.BaseAsset">
+            <summary>
+            Base asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.QuoteAsset">
+            <summary>
+            Quote asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.QuantityPrecision">
+            <summary>
+            Base asset precision
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.PricePrecision">
+            <summary>
+            Quote asset precision
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.Leverage">
+            <summary>
+            Leverage
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.OpenInterestVolume">
+            <summary>
+            Open interest volume
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesTicker">
+            <inheritdoc />
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesTicker.IndexPrice">
+            <summary>
+            Index price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesTicker.MarkPrice">
+            <summary>
+            Mark price
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExIndexPrice">
             <summary>
             Index price
@@ -3983,6 +4451,41 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExKline.Value">
             <summary>
             Value (Quote asset volume)
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExLiquidation">
+            <summary>
+            Liquidation record
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExLiquidation.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExLiquidation.Side">
+            <summary>
+            Position side
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExLiquidation.LiquidationPrice">
+            <summary>
+            Liquidation price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExLiquidation.LiquidationQuantity">
+            <summary>
+            Liquidation quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExLiquidation.BankruptcyPrice">
+            <summary>
+            Bankruptcy price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExLiquidation.CreateTime">
+            <summary>
+            Timestamp
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExMarginBalance">
@@ -4263,6 +4766,46 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPaginated`1.Items">
             <summary>
             Page items
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPositionLevels">
+            <summary>
+            Position levels info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPositionLevels.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPositionLevels.Levels">
+            <summary>
+            Levels
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPositionLevel">
+            <summary>
+            Position level info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPositionLevel.Amount">
+            <summary>
+            Upper limit of the current position
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPositionLevel.Leverage">
+            <summary>
+            Leverage of current level
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPositionLevel.MaintenanceMarginRate">
+            <summary>
+            Current maintenance margin rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPositionLevel.MinInitialMarginRate">
+            <summary>
+            Minimum initial margin rate for the current level
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExStopId">
@@ -4730,6 +5273,11 @@
             Options for the Spot API
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExRestOptions.FuturesOptions">
+            <summary>
+            Options for the Futures API
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Objects.Options.CoinExRestOptions.BrokerId">
             <summary>
             The broker reference id to use
@@ -4753,6 +5301,11 @@
         <member name="P:CoinEx.Net.Objects.Options.CoinExSocketOptions.SpotOptions">
             <summary>
             Options for the Spot API
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExSocketOptions.FuturesOptions">
+            <summary>
+            Options for the Futures API
             </summary>
         </member>
         <member name="T:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory">

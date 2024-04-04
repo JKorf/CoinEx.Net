@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.Authentication;
+﻿using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net.Interfaces.Clients
@@ -8,6 +9,10 @@ namespace CoinEx.Net.Interfaces.Clients
     /// </summary>
     public interface ICoinExSocketClient : ISocketClient
     {
+        /// <summary>
+        /// V2 API Futures streams
+        /// </summary>
+        public ICoinExSocketClientFuturesApi FuturesApi { get; }
         /// <summary>
         /// V2 API Spot streams
         /// </summary>

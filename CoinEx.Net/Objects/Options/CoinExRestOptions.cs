@@ -27,6 +27,11 @@ namespace CoinEx.Net.Objects.Options
         public RestApiOptions SpotOptions { get; private set; } = new RestApiOptions();
 
         /// <summary>
+        /// Options for the Futures API
+        /// </summary>
+        public RestApiOptions FuturesOptions { get; private set; } = new RestApiOptions();
+
+        /// <summary>
         /// The broker reference id to use
         /// </summary>
         public string? BrokerId { get; set; }
@@ -37,6 +42,7 @@ namespace CoinEx.Net.Objects.Options
             options.BrokerId = BrokerId;
             options.NonceProvider = NonceProvider;
             options.SpotOptions = SpotOptions.Copy<RestApiOptions>();
+            options.FuturesOptions = SpotOptions.Copy<RestApiOptions>();
             return options;
         }
     }

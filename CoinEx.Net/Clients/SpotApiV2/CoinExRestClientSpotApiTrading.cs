@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
 using System;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using CryptoExchange.Net;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -33,7 +34,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             bool? hide = null,
             CancellationToken ct = default)
         {
-            // TODO BROKERID, SAME WAY AS IN V1?
+            clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
 
             var parameters = new ParameterCollection()
             {
@@ -67,7 +68,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             bool? hide = null,
             CancellationToken ct = default)
         {
-            // TODO BROKERID, SAME WAY AS IN V1?
+            clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
 
             var parameters = new ParameterCollection()
             {

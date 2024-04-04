@@ -1,0 +1,27 @@
+﻿using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Interfaces.CommonClients;
+using System;
+
+namespace CoinEx.Net.Interfaces.Clients.FuturesApi
+{
+    /// <summary>
+    /// Futures API
+    /// </summary>
+    public interface ICoinExRestClientFuturesApi : IRestApiClient, IDisposable
+    {
+        /// <summary>
+        /// Endpoints related to account settings, info or actions
+        /// </summary>
+        ICoinExRestClientFuturesApiAccount Account { get; }
+
+        /// <summary>
+        /// Endpoints related to retrieving market and system data
+        /// </summary>
+        ICoinExRestClientFuturesApiExchangeData ExchangeData { get; }
+
+        /// <summary>
+        /// Endpoints related to orders and trades
+        /// </summary>
+        ICoinExRestClientFuturesApiTrading Trading { get; }
+    }
+}
