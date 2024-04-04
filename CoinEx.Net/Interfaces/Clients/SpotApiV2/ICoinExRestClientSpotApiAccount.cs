@@ -7,12 +7,12 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 
-namespace CoinEx.Net.Interfaces.Clients.SpotApi
+namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
     /// <summary>
     /// CoinEx account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
     /// </summary>
-    public interface ICoinExClientSpotApiAccount
+    public interface ICoinExRestClientSpotApiAccount
     {
         /// <summary>
         /// Get trading fees

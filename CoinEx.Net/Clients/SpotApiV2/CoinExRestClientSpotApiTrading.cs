@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Models.V2;
 using System;
+using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 
-namespace CoinEx.Net.Clients.SpotApi
+namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc />
-    public class CoinExRestClientSpotApiTrading : ICoinExClientSpotApiTrading
+    public class CoinExRestClientSpotApiTrading : ICoinExRestClientSpotApiTrading
     {
         private readonly CoinExRestClientSpotApi _baseClient;
 

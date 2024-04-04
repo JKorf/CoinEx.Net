@@ -14,26 +14,24 @@ using System.Threading;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Objects.Models.Socket;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Objects.Sockets;
 using CoinEx.Net.Objects.Sockets.Queries;
-using CryptoExchange.Net.Converters;
 using CoinEx.Net.Objects.Sockets;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Deals;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Balance;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Depth;
 using CoinEx.Net.Objects.Sockets.Subscriptions.State;
 using CoinEx.Net.Objects.Sockets.Subscriptions.Orders;
-using CoinEx.Net.ExtensionMethods;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
+using CoinEx.Net.Interfaces.Clients.SpotApiV1;
 
-namespace CoinEx.Net.Clients.SpotApi
+namespace CoinEx.Net.Clients.SpotApiV1
 {
-    /// <inheritdoc cref="ICoinExSocketClientSpotApiV1" />
-    public class CoinExSocketClientSpotApiV1 : SocketApiClient, ICoinExSocketClientSpotApiV1
+    /// <inheritdoc cref="ICoinExSocketClientSpotApi" />
+    public class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi
     {
         #region fields
         /// <inheritdoc />
@@ -49,7 +47,7 @@ namespace CoinEx.Net.Clients.SpotApi
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        internal CoinExSocketClientSpotApiV1(ILogger logger, CoinExSocketOptions options)
+        internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
             RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery<string>("server.ping", new object[] { })), null);

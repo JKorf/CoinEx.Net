@@ -16,10 +16,10 @@ using CoinEx.Net.Objects.Internal;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 using CoinEx.Net.Clients;
-using CoinEx.Net.Clients.SpotApi;
 using CoinEx.Net.ExtensionMethods;
 using CryptoExchange.Net.Objects.Sockets;
 using NUnit.Framework.Legacy;
+using CoinEx.Net.Clients.SpotApiV1;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -41,7 +41,7 @@ namespace CoinEx.Net.UnitTests
             TestHelpers.SetResponse((CoinExRestClient)client, JsonConvert.SerializeObject(resultObj));
 
             // act
-            var result = await client.SpotApiV1.ExchangeData.GetAssetsAsync();
+            var result = await client.SpotApi.ExchangeData.GetAssetsAsync();
 
             // assert
             ClassicAssert.IsFalse(result.Success);
@@ -58,7 +58,7 @@ namespace CoinEx.Net.UnitTests
             TestHelpers.SetResponse((CoinExRestClient)client, "", System.Net.HttpStatusCode.BadRequest);
 
             // act
-            var result = await client.SpotApiV1.ExchangeData.GetAssetsAsync();
+            var result = await client.SpotApi.ExchangeData.GetAssetsAsync();
 
             // assert
             ClassicAssert.IsFalse(result.Success);

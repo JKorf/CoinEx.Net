@@ -2,27 +2,27 @@
 using CryptoExchange.Net.Interfaces.CommonClients;
 using System;
 
-namespace CoinEx.Net.Interfaces.Clients.SpotApi
+namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
     /// <summary>
     /// Spot API
     /// </summary>
-    public interface ICoinExClientSpotApi : IRestApiClient, IDisposable
+    public interface ICoinExRestClientSpotApi : IRestApiClient, IDisposable
     {
         /// <summary>
         /// Endpoints related to account settings, info or actions
         /// </summary>
-        ICoinExClientSpotApiAccount Account { get; }
+        ICoinExRestClientSpotApiAccount Account { get; }
 
         /// <summary>
         /// Endpoints related to retrieving market and system data
         /// </summary>
-        ICoinExClientSpotApiExchangeData ExchangeData { get; }
+        ICoinExRestClientSpotApiExchangeData ExchangeData { get; }
 
         /// <summary>
         /// Endpoints related to orders and trades
         /// </summary>
-        ICoinExClientSpotApiTrading Trading { get; }
+        ICoinExRestClientSpotApiTrading Trading { get; }
 
         /// <summary>
         /// Get the ISpotClient for this client. This is a common interface which allows for some basic operations without knowing any details of the exchange.

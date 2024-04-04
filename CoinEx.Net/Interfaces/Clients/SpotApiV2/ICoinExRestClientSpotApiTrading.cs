@@ -6,12 +6,12 @@ using CoinEx.Net.Objects.Models.V2;
 using System.Collections.Generic;
 using System;
 
-namespace CoinEx.Net.Interfaces.Clients.SpotApi
+namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
     /// <summary>
     /// CoinEx trading endpoints, placing and mananging orders.
     /// </summary>
-    public interface ICoinExClientSpotApiTrading
+    public interface ICoinExRestClientSpotApiTrading
     {
         /// <summary>
         /// Place a new order

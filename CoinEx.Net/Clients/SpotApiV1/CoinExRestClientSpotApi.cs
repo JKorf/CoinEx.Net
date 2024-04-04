@@ -10,7 +10,6 @@ using CryptoExchange.Net.Authentication;
 using CoinEx.Net.Enums;
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CryptoExchange.Net.CommonObjects;
 using System.Globalization;
 using CryptoExchange.Net.Interfaces.CommonClients;
@@ -20,11 +19,12 @@ using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
+using CoinEx.Net.Interfaces.Clients.SpotApiV1;
 
-namespace CoinEx.Net.Clients.SpotApi
+namespace CoinEx.Net.Clients.SpotApiV1
 {
-    /// <inheritdoc cref="ICoinExClientSpotApiV1" />
-    public class CoinExRestClientSpotApiV1 : RestApiClient, ICoinExClientSpotApiV1, ISpotClient
+    /// <inheritdoc cref="ICoinExRestClientSpotApi" />
+    public class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi, ISpotClient
     {
         #region fields
         /// <inheritdoc />
@@ -45,22 +45,22 @@ namespace CoinEx.Net.Clients.SpotApi
 
         #region Api clients
         /// <inheritdoc />
-        public ICoinExClientSpotApiV1Account Account { get; }
+        public ICoinExRestClientSpotApiAccount Account { get; }
         /// <inheritdoc />
-        public ICoinExClientSpotApiV1ExchangeData ExchangeData { get; }
+        public ICoinExRestClientSpotApiExchangeData ExchangeData { get; }
         /// <inheritdoc />
-        public ICoinExClientSpotApiV1Trading Trading { get; }
+        public ICoinExRestClientSpotApiTrading Trading { get; }
         #endregion
 
         internal readonly string _brokerId;
 
         #region ctor
-        internal CoinExRestClientSpotApiV1(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
+        internal CoinExRestClientSpotApi(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
             base(logger, httpClient, options.Environment.RestBaseAddress, options, options.SpotOptions)
         {
-            Account = new CoinExRestClientSpotApiV1Account(this);
-            ExchangeData = new CoinExRestClientSpotApiV1ExchangeData(this);
-            Trading = new CoinExRestClientSpotApiV1Trading(this);
+            Account = new CoinExRestClientSpotApiAccount(this);
+            ExchangeData = new CoinExRestClientSpotApiExchangeData(this);
+            Trading = new CoinExRestClientSpotApiTrading(this);
 
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
 

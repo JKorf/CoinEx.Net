@@ -7,7 +7,6 @@ using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using CryptoExchange.Net.Authentication;
 using System.Threading;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Interfaces;
@@ -19,8 +18,9 @@ using System.Net.WebSockets;
 using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
+using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 
-namespace CoinEx.Net.Clients.SpotApi
+namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExSocketClientSpotApi" />
     public class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi

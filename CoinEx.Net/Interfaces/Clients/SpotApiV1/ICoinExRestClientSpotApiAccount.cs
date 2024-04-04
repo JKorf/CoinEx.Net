@@ -4,12 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
 
-namespace CoinEx.Net.Interfaces.Clients.SpotApi
+namespace CoinEx.Net.Interfaces.Clients.SpotApiV1
 {
     /// <summary>
     /// CoinEx account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
     /// </summary>
-    public interface ICoinExClientSpotApiV1Account
+    public interface ICoinExRestClientSpotApiAccount
     {
         /// <summary>
         /// Retrieves a list of balances. Requires API credentials

@@ -1,5 +1,4 @@
-﻿using CoinEx.Net.Interfaces.Clients.SpotApi;
-using CryptoExchange.Net.Authentication;
+﻿using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net.Interfaces.Clients
@@ -10,10 +9,13 @@ namespace CoinEx.Net.Interfaces.Clients
     public interface ICoinExSocketClient : ISocketClient
     {
         /// <summary>
-        /// Spot streams
+        /// V2 API Spot streams
         /// </summary>
-        public ICoinExSocketClientSpotApi SpotApi { get; }
-        public ICoinExSocketClientSpotApiV1 SpotApiV1 { get; }
+        public SpotApiV2.ICoinExSocketClientSpotApi SpotApiV2 { get; }
+        /// <summary>
+        /// V1 API Spot streams. Use V2 if possible, V1 will be removed at a later date
+        /// </summary>
+        public SpotApiV1.ICoinExSocketClientSpotApi SpotApi { get; }
 
         /// <summary>
         /// Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.

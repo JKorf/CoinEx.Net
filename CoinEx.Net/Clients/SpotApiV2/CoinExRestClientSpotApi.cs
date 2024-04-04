@@ -1,20 +1,14 @@
 ﻿using CryptoExchange.Net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
-using CoinEx.Net.Enums;
 using CoinEx.Net.Objects.Internal;
-using CoinEx.Net.Objects.Models;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
 using CryptoExchange.Net.CommonObjects;
-using System.Globalization;
 using CryptoExchange.Net.Interfaces.CommonClients;
-using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Interfaces;
@@ -22,11 +16,12 @@ using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CoinEx.Net.Objects.Models.V2;
+using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 
-namespace CoinEx.Net.Clients.SpotApi
+namespace CoinEx.Net.Clients.SpotApiV2
 {
-    /// <inheritdoc cref="ICoinExClientSpotApiV1" />
-    public class CoinExRestClientSpotApi : RestApiClient, ICoinExClientSpotApi//, ISpotClient
+    /// <inheritdoc cref="ICoinExRestClientSpotApi" />
+    public class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi//, ISpotClient
     {
         #region fields
         /// <inheritdoc />
@@ -47,11 +42,11 @@ namespace CoinEx.Net.Clients.SpotApi
 
         #region Api clients
         /// <inheritdoc />
-        public ICoinExClientSpotApiAccount Account { get; }
+        public ICoinExRestClientSpotApiAccount Account { get; }
         /// <inheritdoc />
-        public ICoinExClientSpotApiExchangeData ExchangeData { get; }
+        public ICoinExRestClientSpotApiExchangeData ExchangeData { get; }
         /// <inheritdoc />
-        public ICoinExClientSpotApiTrading Trading { get; }
+        public ICoinExRestClientSpotApiTrading Trading { get; }
         #endregion
 
         internal readonly string _brokerId;

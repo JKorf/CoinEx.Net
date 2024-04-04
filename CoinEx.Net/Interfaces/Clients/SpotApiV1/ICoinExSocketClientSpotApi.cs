@@ -9,12 +9,12 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 
-namespace CoinEx.Net.Interfaces.Clients.SpotApi
+namespace CoinEx.Net.Interfaces.Clients.SpotApiV1
 {
     /// <summary>
     /// Spot streams
     /// </summary>
-    public interface ICoinExSocketClientSpotApiV1 : ISocketApiClient, IDisposable
+    public interface ICoinExSocketClientSpotApi : ISocketApiClient, IDisposable
     {
         /// <summary>
         /// Pings the server

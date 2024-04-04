@@ -8,13 +8,12 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
-using CoinEx.Net.ExtensionMethods;
+using CoinEx.Net.Interfaces.Clients.SpotApiV1;
 
-namespace CoinEx.Net.Clients.SpotApi
+namespace CoinEx.Net.Clients.SpotApiV1
 {
     /// <inheritdoc />
-    public class CoinExRestClientSpotApiV1ExchangeData : ICoinExClientSpotApiV1ExchangeData
+    public class CoinExRestClientSpotApiExchangeData : ICoinExRestClientSpotApiExchangeData
     {
         private const string AssetConfigEndpoint = "common/asset/config";
         private const string CurrencyRateEndpoint = "common/currency/rate";
@@ -28,9 +27,9 @@ namespace CoinEx.Net.Clients.SpotApi
         private const string MarketInfoEndpoint = "market/info";
         private const string MiningDifficultyEndpoint = "order/mining/difficulty";
 
-        private readonly CoinExRestClientSpotApiV1 _baseClient;
+        private readonly CoinExRestClientSpotApi _baseClient;
 
-        internal CoinExRestClientSpotApiV1ExchangeData(CoinExRestClientSpotApiV1 baseClient)
+        internal CoinExRestClientSpotApiExchangeData(CoinExRestClientSpotApi baseClient)
         {
             _baseClient = baseClient;
         }

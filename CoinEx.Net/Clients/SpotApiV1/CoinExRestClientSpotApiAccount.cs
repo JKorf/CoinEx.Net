@@ -6,12 +6,12 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
+using CoinEx.Net.Interfaces.Clients.SpotApiV1;
 
-namespace CoinEx.Net.Clients.SpotApi
+namespace CoinEx.Net.Clients.SpotApiV1
 {
     /// <inheritdoc />
-    public class CoinExRestClientSpotApiV1Account : ICoinExClientSpotApiV1Account
+    public class CoinExRestClientSpotApiAccount : ICoinExRestClientSpotApiAccount
     {
         private const string AccountInfoEndpoint = "balance/info";
         private const string WithdrawalHistoryEndpoint = "balance/coin/withdraw";
@@ -21,9 +21,9 @@ namespace CoinEx.Net.Clients.SpotApi
         private const string DepositAddressEndpoint = "balance/deposit/address/";
 
 
-        private readonly CoinExRestClientSpotApiV1 _baseClient;
+        private readonly CoinExRestClientSpotApi _baseClient;
 
-        internal CoinExRestClientSpotApiV1Account(CoinExRestClientSpotApiV1 baseClient)
+        internal CoinExRestClientSpotApiAccount(CoinExRestClientSpotApi baseClient)
         {
             _baseClient = baseClient;
         }
