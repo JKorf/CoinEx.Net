@@ -93,6 +93,16 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #region public
 
         /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExMaintenance>>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<IEnumerable<CoinExMaintenance>>(_logger, "notice", null, new Dictionary<string, object>
+            {
+                { "channels", new object[] { 101 } }
+            }, onMessage, true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExTickerSubscription(_logger, null, new Dictionary<string, object>

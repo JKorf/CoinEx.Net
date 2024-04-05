@@ -15,6 +15,14 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     public interface ICoinExSocketClientSpotApi : ISocketApiClient, IDisposable
     {
         /// <summary>
+        /// Subscribe to system notification updates
+        /// </summary>
+        /// <param name="onMessage">Data handler</param>
+        /// <param name="ct">Cancellation token for closing this subscription</param>
+        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExMaintenance>>> onMessage, CancellationToken ct = default);
+
+        /// <summary>
         /// Subscribe to symbol ticker updates for the specified symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
         /// </summary>

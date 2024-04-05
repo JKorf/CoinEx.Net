@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
+using System;
 
 namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
@@ -12,6 +13,23 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     /// </summary>
     public interface ICoinExRestClientSpotApiExchangeData
     {
+        /// <summary>
+        /// Get server time
+        /// </summary>
+        /// <para><a href="https://docs.coinex.com/api/v2/common/http/time" /></para>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default);
+
+        // Doesn't seem to exist on the url specified in the docs
+        ///// <summary>
+        ///// Get maintenance info
+        ///// </summary>
+        ///// <para><a href="https://docs.coinex.com/api/v2/common/http/maintain" /></para>
+        ///// <param name="ct">Cancelation token</param>
+        ///// <returns></returns>
+        //Task<WebCallResult<IEnumerable<CoinExMaintenance>>> GetMaintenanceInfoAsync(CancellationToken ct = default);
+
         /// <summary>
         /// Get symbol information
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market" /></para>

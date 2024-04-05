@@ -22,6 +22,8 @@ namespace CoinEx.Net.Clients.FuturesApi
     public class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
     {
         #region fields
+        internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");
+
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
         #endregion
@@ -132,9 +134,14 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public override TimeSyncInfo? GetTimeSyncInfo() => null;
+        protected override async Task<WebCallResult<DateTime>> GetServerTimestampAsync() => await ExchangeData.GetServerTimeAsync().ConfigureAwait(false);
 
         /// <inheritdoc />
-        public override TimeSpan? GetTimeOffset() => null;
+        public override TimeSyncInfo? GetTimeSyncInfo()
+            => new TimeSyncInfo(_logger, (ApiOptions.AutoTimestamp ?? ClientOptions.AutoTimestamp), (ApiOptions.TimestampRecalculationInterval ?? ClientOptions.TimestampRecalculationInterval), _timeSyncState);
+
+        /// <inheritdoc />
+        public override TimeSpan? GetTimeOffset()
+            => _timeSyncState.TimeOffset;
     }
 }

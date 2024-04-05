@@ -109,6 +109,9 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.TryParseError(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetServerTimestampAsync">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetTimeSyncInfo">
             <inheritdoc />
         </member>
@@ -128,6 +131,9 @@
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetServerTimeAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetSymbolsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
@@ -575,6 +581,9 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.TryParseError(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetServerTimestampAsync">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetTimeSyncInfo">
             <inheritdoc />
         </member>
@@ -654,6 +663,9 @@
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData.GetServerTimeAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData.GetSymbolsAsync(System.Threading.CancellationToken)">
@@ -752,6 +764,9 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.PreprocessStreamMessage(System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExMaintenance}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
@@ -1559,6 +1574,14 @@
             <summary>
             CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetServerTimeAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get server time
+            <para><a href="https://docs.coinex.com/api/v2/common/http/time" /></para>
+            </summary>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetSymbolsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
             <summary>
@@ -2949,6 +2972,14 @@
             CoinEx exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetServerTimeAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get server time
+            </summary>
+            <para><a href="https://docs.coinex.com/api/v2/common/http/time" /></para>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetSymbolsAsync(System.Threading.CancellationToken)">
             <summary>
             Get symbol information
@@ -3229,6 +3260,14 @@
             <summary>
             Spot streams
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExMaintenance}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to system notification updates
+            </summary>
+            <param name="onMessage">Data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
             <summary>
@@ -5417,6 +5456,36 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExLiquidation.CreateTime">
             <summary>
             Timestamp
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExMaintenance">
+            <summary>
+            Maintenance info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExMaintenance.StartTime">
+            <summary>
+            Start time of the maintenance
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExMaintenance.EndTime">
+            <summary>
+            End time of the maintenance
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExMaintenance.Scope">
+            <summary>
+            Scope that's impacted
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExMaintenance.ProtectDurationStart">
+            <summary>
+            Protection period start time. The protection period refers to a continuous period following the system maintenance (It's an optional configuration, and may or may not be set). During the protection period, you can cancel orders, place orders (limited to Maker Only Limit Orders), and adjust (add or reduce) margins.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExMaintenance.ProtectDurationEnd">
+            <summary>
+            Protection period end time. The protection period refers to a continuous period following the system maintenance (It's an optional configuration, and may or may not be set). During the protection period, you can cancel orders, place orders (limited to Maker Only Limit Orders), and adjust (add or reduce) margins.
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExMarginBalance">

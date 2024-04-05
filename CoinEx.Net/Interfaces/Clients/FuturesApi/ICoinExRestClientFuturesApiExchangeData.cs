@@ -14,6 +14,14 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     public interface ICoinExRestClientFuturesApiExchangeData
     {
         /// <summary>
+        /// Get server time
+        /// <para><a href="https://docs.coinex.com/api/v2/common/http/time" /></para>
+        /// </summary>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default);
+
+        /// <summary>
         /// Get list of support symbols
         /// <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market" /></para>
         /// </summary>

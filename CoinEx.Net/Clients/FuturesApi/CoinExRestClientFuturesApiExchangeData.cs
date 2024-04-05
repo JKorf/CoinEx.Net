@@ -21,6 +21,13 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
+        public async Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
+        {
+            var result = await _baseClient.ExecuteAsync<CoinExServerTime>(_baseClient.GetUri("v2/time"), HttpMethod.Get, ct).ConfigureAwait(false);
+            return result.As(result.Data?.ServerTime ?? default);
+        }
+
+        /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExFuturesSymbol>>> GetSymbolsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection();

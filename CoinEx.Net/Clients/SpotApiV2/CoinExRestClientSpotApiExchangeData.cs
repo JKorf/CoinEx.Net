@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Enums;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using System;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -19,6 +20,20 @@ namespace CoinEx.Net.Clients.SpotApiV2
             _baseClient = baseClient;
         }
 
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
+        {
+            var result = await _baseClient.ExecuteAsync<CoinExServerTime>(_baseClient.GetUri("v2/time"), HttpMethod.Get, ct).ConfigureAwait(false);
+            return result.As(result.Data?.ServerTime ?? default);
+        }
+
+        // Doesn't seem to exist on the url specified in the docs
+        ///// <inheritdoc />
+        //public async Task<WebCallResult<IEnumerable<CoinExMaintenance>>> GetMaintenanceInfoAsync(CancellationToken ct = default)
+        //{
+        //    return await _baseClient.ExecuteAsync<IEnumerable<CoinExMaintenance>>(_baseClient.GetUri("v2/maintain-info"), HttpMethod.Get, ct).ConfigureAwait(false);
+        //}
 
         /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExSymbol>>> GetSymbolsAsync(CancellationToken ct = default)

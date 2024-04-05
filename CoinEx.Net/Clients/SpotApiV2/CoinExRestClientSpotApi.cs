@@ -27,6 +27,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
     public class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi, ISpotClient
     {
         #region fields
+        internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");
+
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
@@ -459,10 +461,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public override TimeSyncInfo? GetTimeSyncInfo() => null;
+        protected override async Task<WebCallResult<DateTime>> GetServerTimestampAsync() => await ExchangeData.GetServerTimeAsync().ConfigureAwait(false);
 
         /// <inheritdoc />
-        public override TimeSpan? GetTimeOffset() => null;
+        public override TimeSyncInfo? GetTimeSyncInfo()
+            => new TimeSyncInfo(_logger, (ApiOptions.AutoTimestamp ?? ClientOptions.AutoTimestamp), (ApiOptions.TimestampRecalculationInterval ?? ClientOptions.TimestampRecalculationInterval), _timeSyncState);
+
+        /// <inheritdoc />
+        public override TimeSpan? GetTimeOffset()
+            => _timeSyncState.TimeOffset;
 
         /// <inheritdoc />
         public ISpotClient CommonSpotClient => this;
