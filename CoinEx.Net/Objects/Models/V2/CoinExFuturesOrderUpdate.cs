@@ -9,7 +9,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order update
     /// </summary>
-    public record CoinExOrderUpdate
+    public record CoinExFuturesOrderUpdate
     {
         /// <summary>
         /// Event that triggered the update
@@ -20,6 +20,6 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Order data
         /// </summary>
         [JsonPropertyName("order")]
-        public CoinExStreamOrder Order { get; set; } = null!;
+        public CoinExFuturesOrder Order { get; set; } = null!;
     }
 }

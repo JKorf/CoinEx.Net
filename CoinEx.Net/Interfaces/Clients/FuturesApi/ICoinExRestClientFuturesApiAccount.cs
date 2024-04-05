@@ -31,5 +31,16 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<IEnumerable<CoinExFuturesBalance>>> GetBalancesAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Set leverage for a symbol
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/adjust-position-leverage" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="mode">Margin mode</param>
+        /// <param name="leverage">Leverage</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExLeverage>> SetLeverageAsync(string symbol, MarginMode mode, int leverage, CancellationToken ct = default);
     }
 }

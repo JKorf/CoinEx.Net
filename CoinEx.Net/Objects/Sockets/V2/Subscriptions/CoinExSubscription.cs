@@ -18,15 +18,17 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private IEnumerable<string>? _symbols;
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<T>> _handler;
+        private bool _firstUpdateIsSnapshot;
 
         public override HashSet<string> ListenerIdentifiers { get; set; }
-        public CoinExSubscription(ILogger logger, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<T>> handler, bool authenticated = false) : base(logger, authenticated)
+        public CoinExSubscription(ILogger logger, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<T>> handler, bool authenticated = false, bool firstUpdateIsSnapshot = false) : base(logger, authenticated)
         {
             _topic = topic;
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
-            if (symbols == null)
+            _firstUpdateIsSnapshot = firstUpdateIsSnapshot;
+            if (symbols?.Any() != true)
                 ListenerIdentifiers = new HashSet<string> { _topic + ".update" };
             else
                 ListenerIdentifiers = new HashSet<string>(_symbols.Select(x => _topic + ".update" + x));
@@ -35,7 +37,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<T>)message.Data;
-            _handler.Invoke(message.As(data.Data));
+            _handler.Invoke(message.As(data.Data, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return new CallResult(null);
         }
 

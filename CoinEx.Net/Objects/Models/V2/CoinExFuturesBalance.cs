@@ -40,5 +40,10 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("transferrable")]
         public decimal Transferable { get; set; }
+        /// <summary>
+        /// Equity
+        /// </summary>
+        [JsonPropertyName("equity")]
+        public decimal? Equity { get; set; }
     }
 }

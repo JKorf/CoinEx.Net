@@ -7,7 +7,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order info
     /// </summary>
-    public record CoinExFuturesOrder
+    public record CoinExStreamOrder
     {
         /// <summary>
         /// Order id
@@ -19,11 +19,6 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
-        /// <summary>
-        /// Account type
-        /// </summary>
-        [JsonPropertyName("market_type")]
-        public AccountType? AccountType { get; set; }
         /// <summary>
         /// Order side
         /// </summary>
@@ -53,27 +48,32 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Quantity filled
         /// </summary>
         [JsonPropertyName("filled_amount")]
-        public decimal? QuantityFilled { get; set; }
+        public decimal QuantityFilled { get; set; }
         /// <summary>
         /// Value of the filled part
         /// </summary>
         [JsonPropertyName("filled_value")]
-        public decimal? ValueFilled { get; set; }
+        public decimal ValueFilled { get; set; }
         /// <summary>
         /// Client order id
         /// </summary>
         [JsonPropertyName("client_id")]
         public string? ClientOrderId { get; set; }
         /// <summary>
-        /// Fee
+        /// Fee in base asset
         /// </summary>
-        [JsonPropertyName("fee")]
-        public decimal Fee { get; set; }
+        [JsonPropertyName("base_ccy_fee")]
+        public decimal FeeBaseAsset { get; set; }
         /// <summary>
-        /// Fee asset
+        /// Fee in quote asset
         /// </summary>
-        [JsonPropertyName("fee_ccy")]
-        public string FeeAsset { get; set; } = string.Empty;
+        [JsonPropertyName("quote_ccy_fee")]
+        public decimal FeeQuoteAsset { get; set; }
+        /// <summary>
+        /// Fee discount
+        /// </summary>
+        [JsonPropertyName("discount_ccy_fee")]
+        public decimal FeeDiscount { get; set; }
         /// <summary>
         /// Maker fee rate
         /// </summary>
@@ -95,11 +95,6 @@ namespace CoinEx.Net.Objects.Models.V2
         [JsonPropertyName("last_filled_price")]
         public decimal? LastFilledPrice { get; set; }
         /// <summary>
-        /// Realized profit and loss
-        /// </summary>
-        [JsonPropertyName("realized_pnl")]
-        public decimal? RealizedPnl { get; set; }
-        /// <summary>
         /// Timestamp order was created
         /// </summary>
         [JsonPropertyName("created_at")]
@@ -109,10 +104,5 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("updated_at")]
         public DateTime? UpdateTime { get; set; }
-        /// <summary>
-        /// Status of the order
-        /// </summary>
-        [JsonPropertyName("status")]
-        public OrderStatusV2? Status { get; set; }
     }
 }

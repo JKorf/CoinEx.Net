@@ -216,7 +216,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "stop_id", stopOrderId }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/spot/cancel-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/futures/cancel-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
             
         }
 
@@ -276,6 +276,147 @@ namespace CoinEx.Net.Clients.FuturesApi
             return await _baseClient.ExecutePaginatedAsync<CoinExUserTrade>(_baseClient.GetUri("v2/futures/order-deals"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExPosition>>> GetPositionsAsync(string? symbol = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddOptional("market", symbol);
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/pending-position"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExPosition>>> GetPositionHistoryAsync(string? symbol = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddOptional("market", symbol);
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/finished-position"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExFuturesOrder>> ClosePositionAsync(string symbol, OrderTypeV2 orderType, decimal? price = null, decimal? quantity = null, string? clientOrderId = null, bool? hidden = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddEnum("type", orderType);
+            parameters.AddOptionalString("price", price);
+            parameters.AddOptionalString("amount", quantity);
+            parameters.AddOptional("client_id", clientOrderId);
+            parameters.AddOptional("is_hide", hidden);
+            return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/close-position"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPosition>> AdjustPositionMarginAsync(string symbol, decimal quantity, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddString("amount", quantity);
+            return await _baseClient.ExecuteAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/adjust-position-margin"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddEnum("stop_loss_type", stopLossType);
+            parameters.AddString("stop_loss_price", stopLossPrice);
+            return await _baseClient.ExecuteAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/set-position-stop-loss"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddEnum("take_profit_type", takeProfitType);
+            parameters.AddString("take_profit_price", takeProfitPrice);
+            return await _baseClient.ExecuteAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/set-position-take-profit"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExPositionMargin>>> GetMarginHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "position_id", positionId },
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExPositionMargin>(_baseClient.GetUri("v2/futures/position-margin-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExPositionFundingRate>>> GetFundingRateHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "position_id", positionId },
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExPositionFundingRate>(_baseClient.GetUri("v2/futures/position-funding-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExPositionAdl>>> GetAutoDeleverageHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "position_id", positionId },
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExPositionAdl>(_baseClient.GetUri("v2/futures/position-adl-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExPositionSettlement>>> GetAutoSettlementHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "position_id", positionId },
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExPositionSettlement>(_baseClient.GetUri("v2/futures/position-settle-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
         // TODO Batch endpoints
     }
 }

@@ -238,5 +238,131 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetOrderTradesAsync(string symbol, long orderId, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get user positions
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-pending-position" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExPosition>>> GetPositionsAsync(string? symbol = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get position history
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-finished-position" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExPosition>>> GetPositionHistoryAsync(string? symbol = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// (partially) Close an open position
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/close-position" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="orderType">Order type to use</param>
+        /// <param name="price">Price of the order</param>
+        /// <param name="quantity">Quantity to close</param>
+        /// <param name="clientOrderId">Client order id</param>
+        /// <param name="hidden">Is hidden</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExFuturesOrder>> ClosePositionAsync(string symbol, OrderTypeV2 orderType, decimal? price = null, decimal? quantity = null, string? clientOrderId = null, bool? hidden = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Adjust the margin for a position. Positive quantity for increasing, negative quantity for decreasing
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/close-position" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="quantity">Quantity to increase (positive number) or decrease (negative number)</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPosition>> AdjustPositionMarginAsync(string symbol, decimal quantity, CancellationToken ct = default);
+
+        /// <summary>
+        /// Set stop loss for a position
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-stop-loss" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="stopLossType">Stop loss price type</param>
+        /// <param name="stopLossPrice">Stop loss price</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, CancellationToken ct = default);
+
+        /// <summary>
+        /// Set take profit for a position
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-take-profit" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="takeProfitType">Take profit price type</param>
+        /// <param name="takeProfitPrice">Take profit price</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get margin adjustment history
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-take-profit" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="positionId">Position id</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExPositionMargin>>> GetMarginHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get funding rate history
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-position-funding-history" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="positionId">Position id</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExPositionFundingRate>>> GetFundingRateHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get auto deleveraging history
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-positiing-adl-history" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="positionId">Position id</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExPositionAdl>>> GetAutoDeleverageHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get position settlement history
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-position-settle-history" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="positionId">Position id</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExPositionSettlement>>> GetAutoSettlementHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
     }
 }

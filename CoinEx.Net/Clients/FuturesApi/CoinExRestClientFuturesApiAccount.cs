@@ -45,5 +45,18 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return result;
         }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExLeverage>> SetLeverageAsync(string symbol, MarginMode mode, int leverage, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "leverage", leverage }
+            };
+            parameters.AddEnum("market_Type", AccountType.Futures);
+            parameters.AddEnum("margin_mode", mode);
+            return await _baseClient.ExecuteAsync<CoinExLeverage>(_baseClient.GetUri("v2/futures/adjust-position-leverage"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
     }
 }

@@ -67,10 +67,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return id.ToString();
 
             var method = messageAccessor.GetValue<string>(_methodPath);
-            if (string.Equals(method, "deals.update", StringComparison.Ordinal))
-                return method;
-
-            if (!string.Equals(method, "state.update", StringComparison.Ordinal))
+            if (!string.Equals(method, "state.update", StringComparison.Ordinal)
+                && !string.Equals(method, "deals.update", StringComparison.Ordinal)
+                && !string.Equals(method, "user_deals.update", StringComparison.Ordinal))
             {
                 var symbol = messageAccessor.GetValue<string>(_symbolPath);
                 return method + symbol;
@@ -123,7 +122,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToList() }
-            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol)), firstUpdateIsSnapshot: true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 

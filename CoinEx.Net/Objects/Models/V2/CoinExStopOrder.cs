@@ -25,7 +25,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Account type
         /// </summary>
         [JsonPropertyName("market_type")]
-        public AccountType AccountType { get; set; }
+        public AccountType? AccountType { get; set; }
         /// <summary>
         /// Asset the quantity is in
         /// </summary>
@@ -82,5 +82,15 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("trigger_price_type")]
         public PriceType TriggerPriceType { get; set; }
+        /// <summary>
+        /// Taker fee rate
+        /// </summary>
+        [JsonPropertyName("taker_fee_rate")]
+        public decimal TakerFeeRate { get; set; }
+        /// <summary>
+        /// Maker fee rate
+        /// </summary>
+        [JsonPropertyName("maker_fee_rate")]
+        public decimal MakerFeeRate { get; set; }
     }
 }

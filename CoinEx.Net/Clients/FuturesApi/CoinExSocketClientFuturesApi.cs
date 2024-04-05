@@ -68,10 +68,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return id.ToString();
 
             var method = messageAccessor.GetValue<string>(_methodPath);
-            if (string.Equals(method, "deals.update", StringComparison.Ordinal))
-                return method;
-
-            if (!string.Equals(method, "state.update", StringComparison.Ordinal))
+            if (!string.Equals(method, "state.update", StringComparison.Ordinal)
+                && !string.Equals(method, "deals.update", StringComparison.Ordinal)
+                && !string.Equals(method, "user_deals.update", StringComparison.Ordinal))
             {
                 var symbol = messageAccessor.GetValue<string>(_symbolPath);
                 return method + symbol;
@@ -171,6 +170,56 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 { "market_list", symbols }
             }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEvent<CoinExFuturesOrderUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExFuturesOrderUpdate>(_logger, "order", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "market_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data, x.Data.Order.Symbol, SocketUpdateType.Update)), true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToStopOrderUpdatesAsync(Action<DataEvent<CoinExStopOrderUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExStopOrderUpdate>(_logger, "stop", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "market_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data, x.Data.Order.Symbol, SocketUpdateType.Update)), true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(Action<DataEvent<CoinExUserTrade>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExUserTrade>(_logger, "user_deals", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "market_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data, x.Data.Symbol, SocketUpdateType.Update)), true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<IEnumerable<CoinExFuturesBalance>>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExFuturesBalanceUpdate>(_logger, "balance", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "ccy_list", Array.Empty<string>() }
+            }, x => onMessage(x.As(x.Data.Balances, null, SocketUpdateType.Update)), true);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToPositionUpdatesAsync(Action<DataEvent<CoinExPositionUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new CoinExSubscription<CoinExPositionUpdate>(_logger, "position", Array.Empty<string>(), new Dictionary<string, object>
+            {
+                { "market_list", Array.Empty<string>() }
+            }, onMessage, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
         #endregion

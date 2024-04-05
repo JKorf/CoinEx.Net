@@ -7,19 +7,19 @@ using System.Text.Json.Serialization;
 namespace CoinEx.Net.Objects.Models.V2
 {
     /// <summary>
-    /// Order update
+    /// Leverage info
     /// </summary>
-    public record CoinExOrderUpdate
+    public record CoinExLeverage
     {
         /// <summary>
-        /// Event that triggered the update
+        /// Margin mode
         /// </summary>
-        [JsonPropertyName("event")]
-        public OrderUpdateType Event { get; set; }
+        [JsonPropertyName("margin_mode")]
+        public MarginMode MarginMode { get; set; }
         /// <summary>
-        /// Order data
+        /// Leverage
         /// </summary>
-        [JsonPropertyName("order")]
-        public CoinExStreamOrder Order { get; set; } = null!;
+        [JsonPropertyName("leverage")]
+        public decimal Leverage { get; set; }
     }
 }

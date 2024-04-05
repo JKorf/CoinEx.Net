@@ -16,7 +16,7 @@ namespace CoinEx.Net.SymbolOrderBooks
     /// <summary>
     /// Symbol order book implementation
     /// </summary>
-    public class CoinExSpotSymbolOrderBook: SymbolOrderBook
+    public class CoinExFuturesSymbolOrderBook : SymbolOrderBook
     {
         private readonly ICoinExSocketClient _socketClient;
         private readonly bool _clientOwner;
@@ -27,7 +27,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// </summary>
         /// <param name="symbol">The symbol the order book is for</param>
         /// <param name="optionsDelegate">Option configuration delegate</param>
-        public CoinExSpotSymbolOrderBook(string symbol, Action<CoinExOrderBookOptions>? optionsDelegate = null)
+        public CoinExFuturesSymbolOrderBook(string symbol, Action<CoinExOrderBookOptions>? optionsDelegate = null)
             : this(symbol, optionsDelegate, null, null)
         {
         }
@@ -39,10 +39,10 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <param name="optionsDelegate">Option configuration delegate</param>
         /// <param name="logger">Logger</param>
         /// <param name="socketClient">Socket client instance</param>
-        public CoinExSpotSymbolOrderBook(string symbol,
+        public CoinExFuturesSymbolOrderBook(string symbol,
             Action<CoinExOrderBookOptions>? optionsDelegate,
             ILoggerFactory? logger,
-            ICoinExSocketClient? socketClient) : base(logger, "CoinEx", "Spot", symbol)
+            ICoinExSocketClient? socketClient) : base(logger, "CoinEx", "Futures", symbol)
         {
             var options = CoinExOrderBookOptions.Default.Copy();
             if (optionsDelegate != null)
@@ -61,7 +61,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync(CancellationToken ct)
         {
-            var result = await _socketClient.SpotApiV2.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, null, true, HandleUpdate).ConfigureAwait(false);
+            var result = await _socketClient.FuturesApi.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, null, true, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 

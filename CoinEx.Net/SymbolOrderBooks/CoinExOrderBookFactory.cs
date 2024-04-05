@@ -28,5 +28,12 @@ namespace CoinEx.Net.SymbolOrderBooks
                                         options,
                                         _serviceProvider.GetRequiredService<ILoggerFactory>(),
                                         _serviceProvider.GetRequiredService<ICoinExSocketClient>());
+
+        /// <inheritdoc />
+        public ISymbolOrderBook CreateFutures(string symbol, Action<CoinExOrderBookOptions>? options = null)
+            => new CoinExFuturesSymbolOrderBook(symbol,
+                                        options,
+                                        _serviceProvider.GetRequiredService<ILoggerFactory>(),
+                                        _serviceProvider.GetRequiredService<ICoinExSocketClient>());
     }
 }
