@@ -18,7 +18,6 @@ using System.Net.WebSockets;
 using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
-using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 
 namespace CoinEx.Net.Clients.FuturesApi

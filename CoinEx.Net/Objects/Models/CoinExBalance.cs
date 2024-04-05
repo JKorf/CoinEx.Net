@@ -1,6 +1,5 @@
 ﻿using System;
 using CoinEx.Net.Converters;
-using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Models

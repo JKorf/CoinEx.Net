@@ -3,7 +3,6 @@ using CryptoExchange.Net.Objects;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
-using System.Collections.Generic;
 using System;
 
 namespace CoinEx.Net.Interfaces.Clients.FuturesApi

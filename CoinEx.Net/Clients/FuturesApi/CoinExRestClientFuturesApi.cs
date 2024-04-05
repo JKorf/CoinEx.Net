@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CoinEx.Net.Objects.Internal;
-using CryptoExchange.Net.CommonObjects;
-using CryptoExchange.Net.Interfaces.CommonClients;
 using Microsoft.Extensions.Logging;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Interfaces;
@@ -16,10 +14,6 @@ using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CoinEx.Net.Objects.Models.V2;
-using CoinEx.Net.Interfaces.Clients.SpotApiV2;
-using CoinEx.Net.Enums;
-using System.Linq;
-using System.Globalization;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 
 namespace CoinEx.Net.Clients.FuturesApi

@@ -1,10 +1,8 @@
-﻿using CoinEx.Net.Objects.Sockets.V2;
-using CryptoExchange.Net;
+﻿using CryptoExchange.Net;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CoinEx.Net.Objects.Sockets.V2.Queries
 {

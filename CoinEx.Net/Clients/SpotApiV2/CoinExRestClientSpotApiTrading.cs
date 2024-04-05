@@ -1,6 +1,5 @@
 ﻿using CoinEx.Net.Enums;
 using CryptoExchange.Net.Objects;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;

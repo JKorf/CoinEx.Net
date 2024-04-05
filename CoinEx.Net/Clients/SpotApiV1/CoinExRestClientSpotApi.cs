@@ -13,7 +13,6 @@ using CoinEx.Net.Objects.Models;
 using CryptoExchange.Net.CommonObjects;
 using System.Globalization;
 using CryptoExchange.Net.Interfaces.CommonClients;
-using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Interfaces;

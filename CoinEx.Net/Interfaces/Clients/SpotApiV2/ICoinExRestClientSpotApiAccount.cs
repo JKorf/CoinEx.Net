@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Enums;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Text.RegularExpressions;
 using System;
 
 namespace CoinEx.Net.Interfaces.Clients.SpotApiV2

@@ -1,13 +1,9 @@
-﻿using CoinEx.Net.Converters;
-using CoinEx.Net.Enums;
-using CryptoExchange.Net;
+﻿using CoinEx.Net.Enums;
 using CryptoExchange.Net.Objects;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoinEx.Net.ExtensionMethods;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using System;

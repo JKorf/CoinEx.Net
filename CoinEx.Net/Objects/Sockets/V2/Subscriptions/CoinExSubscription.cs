@@ -1,5 +1,4 @@
 ﻿using CoinEx.Net.Objects.Sockets.V2.Queries;
-using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 {

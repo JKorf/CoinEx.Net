@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Enums;
-using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using System;
 

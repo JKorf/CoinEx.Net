@@ -1,7 +1,6 @@
 ﻿using System;
 using CoinEx.Net.Converters;
 using CoinEx.Net.Enums;
-using CryptoExchange.Net.Converters;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Models.Socket
