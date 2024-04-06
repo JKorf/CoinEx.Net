@@ -28,7 +28,7 @@ The library is targeting both `.NET Standard 2.0` and `.NET Standard 2.1` for op
 ```csharp
 // Get the ETH/USDT ticker via rest request
 var restClient = new CoinExRestClient();
-var tickerResult = await restClient.SpotApi.ExchangeData.GetTickerAsync("ETHUSDT");
+var tickerResult = await restClient.SpotApiV2.ExchangeData.GetTickerAsync(new [] { "ETHUSDT" });
 var lastPrice = tickerResult.Data.Ticker.LastPrice;
 ```
 
@@ -37,9 +37,9 @@ var lastPrice = tickerResult.Data.Ticker.LastPrice;
 ```csharp
 // Subscribe to ETH/USDT ticker updates via the websocket API
 var socketClient = new CoinExSocketClient();
-var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", (update) =>
+var tickerSubscriptionResult = socketClient.SpotApiV2.SubscribeToTickerUpdatesAsync(new [] { "ETHUSDT" }, (update) =>
 {
-	var lastPrice = update.Data.LastPrice;
+	var lastPrice = update.Data.First().LastPrice;
 });
 ```
 
