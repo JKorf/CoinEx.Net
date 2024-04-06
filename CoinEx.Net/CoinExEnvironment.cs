@@ -14,7 +14,7 @@ namespace CoinEx.Net
         public string RestBaseAddress { get; }
 
         /// <summary>
-        /// Spot V1 Socket client address
+        /// Spot Socket client address
         /// </summary>
         public string SocketBaseAddress { get; }
 

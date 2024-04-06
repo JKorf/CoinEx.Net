@@ -6,7 +6,7 @@
     public class CoinExApiAddresses
     {
         /// <summary>
-        /// The address used by the CoinExClient for the rest API
+        /// The address used by the CoinExRestClient for the rest API
         /// </summary>
         public string RestClientAddress { get; set; } = "";
         /// <summary>

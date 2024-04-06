@@ -1,4 +1,6 @@
-﻿namespace CoinEx.Net.Enums
+﻿using CryptoExchange.Net.Attributes;
+
+namespace CoinEx.Net.Enums
 {   
     /// <summary>
     /// Order side
@@ -12,10 +14,12 @@
         /// <summary>
         /// Buy
         /// </summary>
+        [Map("buy")]
         Buy,
         /// <summary>
         /// Sell
         /// </summary>
+        [Map("sell")]
         Sell
     }
 }

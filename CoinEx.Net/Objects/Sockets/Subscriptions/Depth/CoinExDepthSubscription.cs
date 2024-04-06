@@ -7,7 +7,6 @@ using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CoinEx.Net.Objects.Sockets.Subscriptions.Depth
 {

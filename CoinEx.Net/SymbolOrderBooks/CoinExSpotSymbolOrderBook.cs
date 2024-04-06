@@ -3,9 +3,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Clients;
-using CoinEx.Net.ExtensionMethods;
 using CoinEx.Net.Interfaces.Clients;
-using CoinEx.Net.Objects.Models.Socket;
+using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
@@ -62,7 +61,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync(CancellationToken ct)
         {
-            var result = await _socketClient.SpotApi.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, 0, HandleUpdate, diffUpdates: true).ConfigureAwait(false);
+            var result = await _socketClient.SpotApiV2.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, null, true, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 
@@ -74,10 +73,6 @@ namespace CoinEx.Net.SymbolOrderBooks
 
             Status = OrderBookStatus.Syncing;
 
-            // Query the initial order book
-            var initialBook = await _socketClient.SpotApi.GetOrderBookAsync(Symbol, Levels!.Value, 0).ConfigureAwait(false);
-            SetInitialOrderBook(DateTime.UtcNow.Ticks, initialBook.Data.Bids, initialBook.Data.Asks);
-
             var setResult = await WaitForSetOrderBookAsync(_initialDataTimeout, ct).ConfigureAwait(false);
             return setResult ? result : new CallResult<UpdateSubscription>(setResult.Error!);
         }
@@ -85,10 +80,6 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<bool>> DoResyncAsync(CancellationToken ct)
         {
-            // Query the initial order book
-            var initialBook = await _socketClient.SpotApi.GetOrderBookAsync(Symbol, Levels!.Value, 0).ConfigureAwait(false);
-            SetInitialOrderBook(DateTime.UtcNow.Ticks, initialBook.Data.Bids, initialBook.Data.Asks);
-
             return await WaitForSetOrderBookAsync(_initialDataTimeout, ct).ConfigureAwait(false);
         }
 
@@ -97,20 +88,10 @@ namespace CoinEx.Net.SymbolOrderBooks
         {
         }
 
-        private void HandleUpdate(DataEvent<CoinExSocketOrderBook> data)
+        private void HandleUpdate(DataEvent<CoinExOrderBook> data)
         {
-            if (data.UpdateType == SocketUpdateType.Snapshot)
-            { 
-                SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Data.Bids, data.Data.Asks);
-            }
-            else
-            {
-                UpdateOrderBook(DateTime.UtcNow.Ticks, data.Data.Bids, data.Data.Asks);
-            }
-            if (data.Data.Checksum != null)
-            {
-                AddChecksum((int)data.Data.Checksum.Value);
-            }
+            SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Data.Data.Bids, data.Data.Data.Asks);
+            AddChecksum((int)data.Data.Data.Checksum);
         }
 
         /// <inheritdoc />

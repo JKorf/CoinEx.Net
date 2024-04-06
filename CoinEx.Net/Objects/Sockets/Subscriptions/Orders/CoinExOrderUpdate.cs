@@ -3,7 +3,6 @@ using CoinEx.Net.Enums;
 using CoinEx.Net.Objects.Models.Socket;
 using CryptoExchange.Net.Attributes;
 using CryptoExchange.Net.Converters;
-using CryptoExchange.Net.Converters.JsonNet;
 using Newtonsoft.Json;
 
 namespace CoinEx.Net.Objects.Sockets.Subscriptions.Orders

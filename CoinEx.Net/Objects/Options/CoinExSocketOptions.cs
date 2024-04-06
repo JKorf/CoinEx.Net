@@ -13,7 +13,8 @@ namespace CoinEx.Net.Objects.Options
         /// </summary>
         public static CoinExSocketOptions Default { get; set; } = new CoinExSocketOptions
         {
-            Environment = CoinExEnvironment.Live
+            Environment = CoinExEnvironment.Live,
+            SocketSubscriptionsCombineTarget = 10
         };
 
         /// <summary>
@@ -26,11 +27,17 @@ namespace CoinEx.Net.Objects.Options
         /// </summary>
         public SocketApiOptions SpotOptions { get; private set; } = new SocketApiOptions();
 
+        /// <summary>
+        /// Options for the Futures API
+        /// </summary>
+        public SocketApiOptions FuturesOptions { get; private set; } = new SocketApiOptions();
+
         internal CoinExSocketOptions Copy()
         {
             var options = Copy<CoinExSocketOptions>();
             options.NonceProvider = NonceProvider;
             options.SpotOptions = SpotOptions.Copy<SocketApiOptions>();
+            options.FuturesOptions = SpotOptions.Copy<SocketApiOptions>();
             return options;
         }
     }

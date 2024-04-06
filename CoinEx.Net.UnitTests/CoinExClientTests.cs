@@ -16,10 +16,10 @@ using CoinEx.Net.Objects.Internal;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Sockets;
 using CoinEx.Net.Clients;
-using CoinEx.Net.Clients.SpotApi;
 using CoinEx.Net.ExtensionMethods;
 using CryptoExchange.Net.Objects.Sockets;
 using NUnit.Framework.Legacy;
+using CoinEx.Net.Clients.SpotApiV1;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -95,8 +95,8 @@ namespace CoinEx.Net.UnitTests
         public void CheckRestInterfaces()
         {
             var assembly = Assembly.GetAssembly(typeof(CoinExRestClientSpotApi));
-            var ignore = new string[] { "ICoinExClientSpot" };
-            var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExClient") && !ignore.Contains(t.Name));
+            var ignore = new string[] { "ICoinExRestClientSpot" };
+            var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExRestClient") && !ignore.Contains(t.Name));
 
             foreach (var clientInterface in clientInterfaces)
             {

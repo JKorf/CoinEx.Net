@@ -1,12 +1,12 @@
 ﻿using CoinEx.Net.Interfaces.Clients;
-using CoinEx.Net.Interfaces.Clients.SpotApi;
-using CoinEx.Net.Clients.SpotApi;
 using CryptoExchange.Net.Authentication;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Clients;
+using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CoinEx.Net.Clients.FuturesApi;
 
 namespace CoinEx.Net.Clients
 {
@@ -15,7 +15,11 @@ namespace CoinEx.Net.Clients
     {
         #region Api clients
         /// <inheritdoc />
-        public ICoinExClientSpotApi SpotApi { get; }
+        public ICoinExRestClientFuturesApi FuturesApi { get; }
+        /// <inheritdoc />
+        public Interfaces.Clients.SpotApiV1.ICoinExRestClientSpotApi SpotApi { get; }
+        /// <inheritdoc />
+        public Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi SpotApiV2 { get; }
         #endregion
 
         #region ctor
@@ -41,7 +45,9 @@ namespace CoinEx.Net.Clients
                 optionsDelegate(options);
             Initialize(options);
 
-            SpotApi = AddApiClient(new CoinExRestClientSpotApi(_logger, httpClient, options));
+            FuturesApi = AddApiClient(new CoinExRestClientFuturesApi(_logger, httpClient, options));
+            SpotApi = AddApiClient(new SpotApiV1.CoinExRestClientSpotApi(_logger, httpClient, options));
+            SpotApiV2 = AddApiClient(new SpotApiV2.CoinExRestClientSpotApi(_logger, httpClient, options));
         }
         #endregion
 
@@ -60,7 +66,9 @@ namespace CoinEx.Net.Clients
         /// <inheritdoc />
         public void SetApiCredentials(ApiCredentials credentials)
         {
+            FuturesApi.SetApiCredentials(credentials);
             SpotApi.SetApiCredentials(credentials);
+            SpotApiV2.SetApiCredentials(credentials);
         }
         #endregion
     }

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CoinEx.Net.Objects.Sockets.Subscriptions.State
 {
@@ -35,6 +34,8 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.State
                 item.Value.Symbol = item.Key;
 
             var relevant = data.Data.First().Where(d => _symbol == null || d.Key == _symbol).Select(d => d.Value);
+            if (!relevant.Any())
+                return new CallResult(null);
 
             _handler.Invoke(message.As(relevant, _symbol, SocketUpdateType.Update));
             return new CallResult(null);
