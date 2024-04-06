@@ -30,14 +30,14 @@ app.UseHttpsRedirection();
 // Map the endpoints and inject the CoinEx rest client
 app.MapGet("/{Symbol}", async ([FromServices] ICoinExRestClient client, string symbol) =>
 {
-    var result = await client.SpotApi.ExchangeData.GetTickerAsync(symbol);
+    var result = await client.SpotApiV2.ExchangeData.GetTickersAsync(new[] { symbol });
     return (object)(result.Success ? result.Data : result.Error!);
 })
 .WithOpenApi();
 
 app.MapGet("/Balances", async ([FromServices] ICoinExRestClient client) =>
 {
-    var result = await client.SpotApi.Account.GetBalancesAsync();
+    var result = await client.SpotApiV2.Account.GetBalancesAsync();
     return (object)(result.Success ? result.Data : result.Error!);
 })
 .WithOpenApi();

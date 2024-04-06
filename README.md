@@ -70,7 +70,7 @@ A Discord server is available [here](https://discord.gg/MSpeEtSY8t). Feel free t
 
 ## Supported functionality
 
-### Spot Api
+### Spot Api V1
 |API|Supported|Location|
 |--|--:|--|
 |Market Data API|✓|`restClient.SpotApi.ExchangeData`|
@@ -78,10 +78,49 @@ A Discord server is available [here](https://discord.gg/MSpeEtSY8t). Feel free t
 |Trading API|✓|`restClient.SpotApi.Trading`|
 |Websocket API|✓|`socketClient.SpotApi`|
 
-### Futures Api
+### Futures Api V1
 |API|Supported|Location|
 |--|--:|--|
 |*|X||
+
+### V2 Account
+|API|Supported|Location|
+|--|--:|--|
+|Sub-Account|X||
+|Fee Rate|✓|`restClient.SpotApiV2.ExchangeData`|
+|Set|✓|`restClient.SpotApiV2.Account`|
+
+### V2 Asset
+|API|Supported|Location|
+|--|--:|--|
+|Balance rest|✓|`restClient.SpotApiV2.Account`|
+|Balance websocket|✓|`socketClient.SpotApiV2`|
+|Loan & Repayment|✓|`restClient.SpotApiV2.Account`|
+|Deposit & Withdrawal|✓|`restClient.SpotApiV2.Account`|
+|Transfer|✓|`restClient.SpotApiV2.Account`|
+|Aam|✓|`restClient.SpotApiV2.Account`|
+
+### V2 Spot
+|API|Supported|Location|
+|--|--:|--|
+|Ticker rest|✓|`restClient.SpotApiV2.ExchangeData`|
+|Ticker websocket|✓|`socketClient.SpotApiV2`|
+|Orders rest|✓|`restClient.SpotApiV2.Trading`|
+|Orders websocket|✓|`socketClient.SpotApiV2`|
+|Executions rest|✓|`restClient.SpotApiV2.Trading`|
+|Executions websocket|✓|`socketClient.SpotApiV2`|
+
+### V2 Futures
+|API|Supported|Location|
+|--|--:|--|
+|Ticker rest|✓|`restClient.SpotApiV2.ExchangeData`|
+|Ticker websocket|✓|`socketClient.SpotApiV2`|
+|Orders rest|✓|`restClient.SpotApiV2.Trading`|
+|Orders websocket|✓|`socketClient.SpotApiV2`|
+|Executions rest|✓|`restClient.SpotApiV2.Trading`|
+|Executions websocket|✓|`socketClient.SpotApiV2`|
+|Position rest|✓|`restClient.SpotApiV2.Trading`|
+|Position websocket|✓|`socketClient.SpotApiV2`|
 
 ## Support the project
 I develop and maintain this package on my own for free in my spare time, any support is greatly appreciated.
