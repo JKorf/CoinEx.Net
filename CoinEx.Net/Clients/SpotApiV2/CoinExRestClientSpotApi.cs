@@ -83,7 +83,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #region methods
         internal async Task<WebCallResult> ExecuteAsync(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
         {
-            var result = await SendRequestAsync<CoinExApiResult>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            var result = await SendRequestAsync<CoinExApiResult>(uri, method, ct, parameters, signed, requestWeight: 0).ConfigureAwait(false);
             if (!result)
                 return result.AsDataless();
 
@@ -95,7 +95,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         internal async Task<WebCallResult<T>> ExecuteAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
-            var result = await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            var result = await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed, requestWeight: 0).ConfigureAwait(false);
             if (!result)
                 return result.As<T>(default);
 
@@ -107,7 +107,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         internal async Task<WebCallResult<CoinExPaginated<T>>> ExecutePaginatedAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
         {
-            var result = await SendRequestAsync<CoinExPageApiResult<IEnumerable<T>>>(uri, method, ct, parameters, signed).ConfigureAwait(false);
+            var result = await SendRequestAsync<CoinExPageApiResult<IEnumerable<T>>>(uri, method, ct, parameters, signed, requestWeight: 0).ConfigureAwait(false);
             if (!result)
                 return result.As<CoinExPaginated<T>>(default);
 
