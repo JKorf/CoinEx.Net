@@ -14,7 +14,7 @@ namespace CoinEx.Net.UnitTests
         private JsonToObjectComparer<ICoinExRestClient> _comparer = new JsonToObjectComparer<ICoinExRestClient>((json) => TestHelpers.CreateResponseClient(json, x => 
         {
             x.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "123");
-            x.RatelimiterEnabled = false;
+            x.RateLimiterEnabled = false;
             x.SpotOptions.OutputOriginalData = true;
         }, System.Net.HttpStatusCode.OK));
 
