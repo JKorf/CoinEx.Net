@@ -97,9 +97,6 @@
         <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.Trading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.FormatSymbol(System.String,System.String)">
-            <inheritdoc />
-        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateAccessor">
             <inheritdoc />
         </member>
@@ -267,9 +264,6 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.FormatSymbol(System.String,System.String)">
-            <inheritdoc />
-        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.CreateAccessor">
             <inheritdoc />
         </member>
@@ -362,9 +356,6 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi.GetSymbolName(System.String,System.String)">
@@ -491,9 +482,6 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExSocketClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExSocketClientSpotApi.FormatSymbol(System.String,System.String)">
-            <inheritdoc />
-        </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExSocketClientSpotApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
@@ -580,9 +568,6 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetSymbolName(System.String,System.String)">
@@ -764,9 +749,6 @@
             </summary>
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.FormatSymbol(System.String,System.String)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.CreateAccessor">
@@ -3440,16 +3422,6 @@
         <member name="T:CoinEx.Net.Interfaces.ICoinExOrderBookFactory">
             <summary>
             CoinEx order book factory
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Interfaces.ICoinExOrderBookFactory.Spot">
-            <summary>
-            Spot order book factory methods
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Interfaces.ICoinExOrderBookFactory.Futures">
-            <summary>
-            Futures order book factory methods
             </summary>
         </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExOrderBookFactory.CreateSpot(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
@@ -6911,12 +6883,6 @@
             </summary>
         </member>
         <member name="T:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory">
-            <inheritdoc />
-        </member>
-        <member name="P:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.Spot">
-            <inheritdoc />
-        </member>
-        <member name="P:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.Futures">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.#ctor(System.IServiceProvider)">

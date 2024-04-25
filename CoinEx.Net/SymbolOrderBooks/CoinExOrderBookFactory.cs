@@ -2,7 +2,6 @@
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.OrderBook;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,12 +13,6 @@ namespace CoinEx.Net.SymbolOrderBooks
     {
         private readonly IServiceProvider _serviceProvider;
 
-        /// <inheritdoc />
-        public IOrderBookFactory<CoinExOrderBookOptions> Spot { get; }
-
-        /// <inheritdoc />
-        public IOrderBookFactory<CoinExOrderBookOptions> Futures { get; }
-
         /// <summary>
         /// ctor
         /// </summary>
@@ -27,9 +20,6 @@ namespace CoinEx.Net.SymbolOrderBooks
         public CoinExOrderBookFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-
-            Spot = new OrderBookFactory<CoinExOrderBookOptions>((symbol, options) => CreateSpot(symbol, options), (baseAsset, quoteAsset, options) => CreateSpot(baseAsset + quoteAsset, options));
-            Futures = new OrderBookFactory<CoinExOrderBookOptions>((symbol, options) => CreateFutures(symbol, options), (baseAsset, quoteAsset, options) => CreateFutures(baseAsset + quoteAsset, options));
         }
 
         /// <inheritdoc />

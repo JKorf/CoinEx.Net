@@ -72,9 +72,6 @@ namespace CoinEx.Net.Clients.SpotApiV1
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
             => new CoinExAuthenticationProvider(credentials, ClientOptions.NonceProvider ?? new CoinExNonceProvider());
 
-        /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
-
         #region methods
         #region private
         internal async Task<WebCallResult<T>> Execute<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
