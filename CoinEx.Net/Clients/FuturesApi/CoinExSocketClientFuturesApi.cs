@@ -52,6 +52,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
+        /// <inheritdoc />
+        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
         #region methods
 
         /// <inheritdoc />
