@@ -843,6 +843,26 @@
             <param name="socketAddress"></param>
             <returns></returns>
         </member>
+        <member name="T:CoinEx.Net.CoinExExchange">
+            <summary>
+            CoinEx exchange information and configuration
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.CoinExExchange.ExchangeName">
+            <summary>
+            Exchange name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.CoinExExchange.Url">
+            <summary>
+            Url to the main website
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.CoinExExchange.ApiDocsUrl">
+            <summary>
+            Urls to the API documentation
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.CoinExHelpers">
             <summary>
             CoinEx helpers
