@@ -32,8 +32,8 @@ namespace CoinEx.Net
             var parameters = parameterPosition == HttpMethodParameterPosition.InUri ? uriParameters: bodyParameters;
             var parameterString = parameterPosition == HttpMethodParameterPosition.InUri ? (parameters.Any() ? "?" + parameters.CreateParamString(false, arraySerialization) : "") : new SystemTextJsonMessageSerializer().Serialize(parameters);
             var timestamp = GetMillisecondTimestamp(apiClient);
-            var signData = method.ToString().ToUpperInvariant() + uri.AbsolutePath + parameterString + timestamp + _credentials.Secret!.GetString();
-            var sign = SignSHA256(signData, SignOutputType.Hex);
+            var signData = method.ToString().ToUpperInvariant() + uri.AbsolutePath + parameterString + timestamp;
+            var sign = SignHMACSHA256(signData, SignOutputType.Hex);
             headers.Add("X-COINEX-KEY", _credentials.Key!.GetString());
             headers.Add("X-COINEX-SIGN", sign);
             headers.Add("X-COINEX-TIMESTAMP", timestamp);
@@ -42,8 +42,8 @@ namespace CoinEx.Net
         public Dictionary<string, object> GetSocketAuthParameters()
         {
             var timestamp = CryptoExchange.Net.Converters.SystemTextJson.DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow);
-            var signData = timestamp + _credentials.Secret!.GetString();
-            var sign = SignSHA256(signData, SignOutputType.Hex);
+            var signData = timestamp.ToString();
+            var sign = SignHMACSHA256(signData, SignOutputType.Hex);
             return new Dictionary<string, object>
             {
                 { "access_id", _credentials.Key!.GetString() },
