@@ -10,6 +10,16 @@ namespace CoinEx.Net.Interfaces
     public interface ICoinExOrderBookFactory
     {
         /// <summary>
+        /// Spot order book factory methods
+        /// </summary>
+        public IOrderBookFactory<CoinExOrderBookOptions> Spot { get; }
+
+        /// <summary>
+        /// Futures order book factory methods
+        /// </summary>
+        public IOrderBookFactory<CoinExOrderBookOptions> Futures { get; }
+
+        /// <summary>
         /// Create a SymbolOrderBook for the Spot API
         /// </summary>
         /// <param name="symbol">The symbol</param>
