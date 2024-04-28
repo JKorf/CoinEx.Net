@@ -136,6 +136,13 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 7.0.3 - 28 Apr 2024
+    * Added CoinExExchange static info class
+    * Added CoinExOrderBookFactory book creation method
+    * Updated signature generation based on API docs update
+    * Fixed CoinExOrderBookFactory injection issue
+    * Updated CryptoExchange.Net to v7.4.0, see https://github.com/JKorf/CryptoExchange.Net?tab=readme-ov-file#release-notes for release notes
+
 * Version 7.0.2 - 23 Apr 2024
     * Updated CryptoExchange.Net to 7.3.3, see https://github.com/JKorf/CryptoExchange.Net?tab=readme-ov-file#release-notes for release notes
 
