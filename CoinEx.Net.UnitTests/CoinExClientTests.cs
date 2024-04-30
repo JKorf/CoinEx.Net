@@ -20,6 +20,9 @@ using CoinEx.Net.ExtensionMethods;
 using CryptoExchange.Net.Objects.Sockets;
 using NUnit.Framework.Legacy;
 using CoinEx.Net.Clients.SpotApiV1;
+using CryptoExchange.Net.Clients;
+using System.Net.Http;
+using CryptoExchange.Net.Converters.JsonNet;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -92,44 +95,70 @@ namespace CoinEx.Net.UnitTests
         }
 
         [Test]
-        public void CheckRestInterfaces()
+        public void CheckSignatureExample1()
         {
-            var assembly = Assembly.GetAssembly(typeof(CoinExRestClientSpotApi));
-            var ignore = new string[] { "ICoinExRestClientSpot" };
-            var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExRestClient") && !ignore.Contains(t.Name));
+            var authProvider = new CoinExV2AuthenticationProvider(
+                new ApiCredentials("XXXXXXXXXX", "XXXXXXXXXX")
+                );
+            var client = (RestApiClient)new CoinExRestClient().SpotApiV2;
 
-            foreach (var clientInterface in clientInterfaces)
-            {
-                var implementation = assembly.GetTypes().Single(t => t.IsAssignableTo(clientInterface) && t != clientInterface);
-                int methods = 0;
-                foreach (var method in implementation.GetMethods().Where(m => m.ReturnType.IsAssignableTo(typeof(Task))))
+            CryptoExchange.Net.Testing.TestHelpers.CheckSignature(
+                client,
+                authProvider,
+                HttpMethod.Get,
+                "/v2/spot/pending-order",
+                (uriParams, bodyParams, headers) =>
                 {
-                    var interfaceMethod = clientInterface.GetMethod(method.Name, method.GetParameters().Select(p => p.ParameterType).ToArray());
-                    ClassicAssert.NotNull(interfaceMethod, $"Missing interface for method {method.Name} in {implementation.Name} implementing interface {clientInterface.Name}");
-                    methods++;
-                }
-                Debug.WriteLine($"{clientInterface.Name} {methods} methods validated");
-            }
+                    return headers["X-COINEX-SIGN"].ToString();
+                },
+                "444976F4F21D422AB7091B47D9201EB02A6614FF1F4C7B9F6CA57BFF632030A5",
+                new Dictionary<string, object>
+                {
+                    { "market", "BTCUSDT" },
+                    { "market_type", "SPOT" },
+                    { "side", "buy" },
+                    { "page", "1" },
+                    { "limit", "10" },
+                },
+                time: DateTimeConverter.ConvertFromMilliseconds(1700490703564),
+                disableOrdering: true);
         }
 
         [Test]
-        public void CheckSocketInterfaces()
+        public void CheckSignatureExample2()
         {
-            var assembly = Assembly.GetAssembly(typeof(CoinExSocketClient));
-            var clientInterfaces = assembly.GetTypes().Where(t => t.Name.StartsWith("ICoinExSocketClient"));
+            var authProvider = new CoinExV2AuthenticationProvider(
+                new ApiCredentials("XXXXXXXXXX", "XXXXXXXXXX")
+                );
+            var client = (RestApiClient)new CoinExRestClient().SpotApiV2;
 
-            foreach (var clientInterface in clientInterfaces)
-            {
-                var implementation = assembly.GetTypes().Single(t => t.IsAssignableTo(clientInterface) && t != clientInterface);
-                int methods = 0;
-                foreach (var method in implementation.GetMethods().Where(m => m.ReturnType.IsAssignableTo(typeof(Task<CallResult<UpdateSubscription>>))))
+            CryptoExchange.Net.Testing.TestHelpers.CheckSignature(
+                client,
+                authProvider,
+                HttpMethod.Post,
+                "/v2/spot/pending-order",
+                (uriParams, bodyParams, headers) =>
                 {
-                    var interfaceMethod = clientInterface.GetMethod(method.Name, method.GetParameters().Select(p => p.ParameterType).ToArray());
-                    ClassicAssert.NotNull(interfaceMethod, $"Missing interface for method {method.Name} in {implementation.Name} implementing interface {clientInterface.Name}");
-                    methods++;
-                }
-                Debug.WriteLine($"{clientInterface.Name} {methods} methods validated");
-            }
+                    return headers["X-COINEX-SIGN"].ToString();
+                },
+                "5128936CEDB75A512991A47BCCB0A78F6D9F6F540C07A17AE68D31F16E06A17F",
+                new Dictionary<string, object>
+                {
+                    { "market", "BTCUSDT" },
+                    { "market_type", "SPOT" },
+                    { "side", "buy" },
+                    { "page", "1" },
+                    { "limit", "10" },
+                },
+                time: DateTimeConverter.ConvertFromMilliseconds(1700490703564),
+                disableOrdering: true);
+        }
+
+        [Test]
+        public void CheckInterfaces()
+        {
+            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingRestInterfaces<CoinExRestClient>();
+            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingSocketInterfaces<CoinExSocketClient>();
         }
     }
 }
