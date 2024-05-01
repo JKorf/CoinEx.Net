@@ -15,7 +15,7 @@ namespace CoinEx.Net.UnitTests
             using var book = new CoinExSpotSymbolOrderBook("BTCUSDT");
 
             // act
-            await book.StartAsync();
+            var result = await book.StartAsync();
 
             // assert
             Assert.That(book.Status == OrderBookStatus.Synced);
