@@ -37,7 +37,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.State
             if (!relevant.Any())
                 return new CallResult(null);
 
-            _handler.Invoke(message.As(relevant, _symbol, SocketUpdateType.Update));
+            _handler.Invoke(message.As(relevant, data.Method, _symbol, SocketUpdateType.Update));
             return new CallResult(null);
         }
 

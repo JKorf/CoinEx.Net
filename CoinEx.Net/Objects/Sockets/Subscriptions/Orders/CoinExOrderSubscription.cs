@@ -32,7 +32,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Orders
             {
                 UpdateType = data.Data.UpdateType,
                 Order = data.Data.Order
-            }, data.Data.Order.Symbol, SocketUpdateType.Update));
+            }, data.Method, data.Data.Order.Symbol, SocketUpdateType.Update));
             return new CallResult(null);
         }
 

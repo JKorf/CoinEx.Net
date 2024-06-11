@@ -26,12 +26,22 @@ namespace CoinEx.Net
             _nonceProvider = nonceProvider ?? new CoinExNonceProvider();
         }
 
-        public override void AuthenticateRequest(RestApiClient apiClient, Uri uri, HttpMethod method, IDictionary<string, object> uriParams, IDictionary<string, object> bodyParams, Dictionary<string, string> headers, bool auth, ArrayParametersSerialization arraySerialization, HttpMethodParameterPosition parameterPosition, RequestBodyFormat bodyFormat)
+        public override void AuthenticateRequest(
+            RestApiClient apiClient,
+            Uri uri,
+            HttpMethod method,
+            IDictionary<string, object> uriParameters,
+            IDictionary<string, object> bodyParameters,
+            Dictionary<string, string> headers,
+            bool auth,
+            ArrayParametersSerialization arraySerialization,
+            HttpMethodParameterPosition parameterPosition,
+            RequestBodyFormat requestBodyFormat)
         {
             if (!auth)
                 return;
 
-            var parameters = parameterPosition == HttpMethodParameterPosition.InUri ? uriParams : bodyParams;
+            var parameters = parameterPosition == HttpMethodParameterPosition.InUri ? uriParameters : bodyParameters;
             parameters.Add("access_id", _credentials.Key!.GetString());
             parameters.Add("tonce", _nonceProvider.GetNonce());
             var parameterString = string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"));

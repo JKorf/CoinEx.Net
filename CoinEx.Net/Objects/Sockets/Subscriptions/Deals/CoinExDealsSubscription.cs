@@ -31,7 +31,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Deals
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<CoinExDealsUpdate>)message.Data;
-            _handler.Invoke(message.As(data.Data.Trades, _symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            _handler.Invoke(message.As(data.Data.Trades, data.Method, _symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return new CallResult(null);
         }
 

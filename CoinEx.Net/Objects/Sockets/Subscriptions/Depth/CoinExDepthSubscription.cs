@@ -29,7 +29,7 @@ namespace CoinEx.Net.Objects.Sockets.Subscriptions.Depth
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<CoinExOrderBookUpdate>)message.Data;
-            _handler.Invoke(message.As(data.Data.Book, _symbol, data.Data.Snapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            _handler.Invoke(message.As(data.Data.Book, data.Method, _symbol, data.Data.Snapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return new CallResult(null);
         }
 

@@ -124,7 +124,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToList() }
-            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -156,7 +156,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, "index", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols }
-            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -170,7 +170,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, "bbo", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols }
-            }, x => onMessage(x.As(x.Data, x.Data.Symbol)));
+            }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -180,7 +180,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExFuturesOrderUpdate>(_logger, "order", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, x => onMessage(x.As(x.Data, x.Data.Order.Symbol, SocketUpdateType.Update)), true);
+            }, x => onMessage(x.WithSymbol(x.Data.Order.Symbol).WithUpdateType(SocketUpdateType.Update)), true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -190,7 +190,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExStopOrderUpdate>(_logger, "stop", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, x => onMessage(x.As(x.Data, x.Data.Order.Symbol, SocketUpdateType.Update)), true);
+            }, x => onMessage(x.WithSymbol(x.Data.Order.Symbol).WithUpdateType(SocketUpdateType.Update)), true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -200,7 +200,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExUserTrade>(_logger, "user_deals", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, x => onMessage(x.As(x.Data, x.Data.Symbol, SocketUpdateType.Update)), true);
+            }, x => onMessage(x.WithSymbol(x.Data.Symbol).WithUpdateType(SocketUpdateType.Update)), true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -210,7 +210,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExFuturesBalanceUpdate>(_logger, "balance", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "ccy_list", Array.Empty<string>() }
-            }, x => onMessage(x.As(x.Data.Balances, null, SocketUpdateType.Update)), true);
+            }, x => onMessage(x.As(x.Data.Balances, "balance", null, SocketUpdateType.Update)), true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -220,7 +220,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var subscription = new CoinExSubscription<CoinExPositionUpdate>(_logger, "position", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, onMessage, true);
+            }, x => onMessage(x.WithSymbol(x.Symbol!)), true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
         #endregion

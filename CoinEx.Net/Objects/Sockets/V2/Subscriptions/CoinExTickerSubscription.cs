@@ -33,7 +33,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             if (!relevant.Any())
                 return new CallResult(null);
 
-            _handler.Invoke(message.As<IEnumerable<CoinExTicker>>(relevant, null, SocketUpdateType.Update));
+            _handler.Invoke(message.As<IEnumerable<CoinExTicker>>(relevant, data.Method, null, SocketUpdateType.Update));
             return new CallResult(null);
         }
 
