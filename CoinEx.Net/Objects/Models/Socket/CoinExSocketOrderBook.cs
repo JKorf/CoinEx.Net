@@ -7,7 +7,7 @@ namespace CoinEx.Net.Objects.Models.Socket
     /// <summary>
     /// Order book
     /// </summary>
-    public class CoinExSocketOrderBook
+    public record CoinExSocketOrderBook
     {
         /// <summary>
         /// The price of the last trade. Only filled on a full update.

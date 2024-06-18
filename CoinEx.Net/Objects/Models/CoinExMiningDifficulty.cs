@@ -6,7 +6,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Mining difficulty info
     /// </summary>
-    public class CoinExMiningDifficulty
+    public record CoinExMiningDifficulty
     {
         /// <summary>
         /// The difficulty in CET/Hour

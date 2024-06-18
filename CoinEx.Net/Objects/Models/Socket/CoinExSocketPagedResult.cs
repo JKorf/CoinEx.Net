@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models.Socket
     /// Paged result
     /// </summary>
     /// <typeparam name="T">Type of data</typeparam>
-    public class CoinExSocketPagedResult<T>
+    public record CoinExSocketPagedResult<T>
     {
         /// <summary>
         /// The number of results

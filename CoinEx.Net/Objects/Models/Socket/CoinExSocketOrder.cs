@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models.Socket
     /// <summary>
     /// Order info
     /// </summary>
-    public class CoinExSocketOrder
+    public record CoinExSocketOrder
     {
         /// <summary>
         /// The total quantity of the oder

@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Symbol state info
     /// </summary>
-    public class CoinExSymbolState
+    public record CoinExSymbolState
     {
         /// <summary>
         /// The timestamp of the data
@@ -25,7 +25,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Symbol state list
     /// </summary>
-    public class CoinExSymbolStatesList
+    public record CoinExSymbolStatesList
     {
         /// <summary>
         /// The timestamp of the data
@@ -42,7 +42,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Symbol state data
     /// </summary>
-    public class CoinExSymbolStateData
+    public record CoinExSymbolStateData
     {
         /// <summary>
         /// Symbol

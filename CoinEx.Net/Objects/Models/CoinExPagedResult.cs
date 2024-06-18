@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models
     /// Paged result
     /// </summary>
     /// <typeparam name="T">Type of data</typeparam>
-    public class CoinExPagedResult<T>
+    public record CoinExPagedResult<T>
     {
         /// <summary>
         /// The total number of results

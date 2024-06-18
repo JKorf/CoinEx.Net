@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Order transaction info
     /// </summary>
-    public class CoinExOrderTrade
+    public record CoinExOrderTrade
     {
         /// <summary>
         /// The quantity of the transaction
@@ -68,7 +68,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Order transaction info
     /// </summary>
-    public class CoinExOrderTradeExtended: CoinExOrderTrade
+    public record CoinExOrderTradeExtended: CoinExOrderTrade
     {
         /// <summary>
         /// The symbol of the transaction

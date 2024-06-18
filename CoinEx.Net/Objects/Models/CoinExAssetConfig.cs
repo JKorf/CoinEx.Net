@@ -5,7 +5,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Asset config
     /// </summary>
-    public class CoinExAssetConfig
+    public record CoinExAssetConfig
     {
         /// <summary>
         /// Asset

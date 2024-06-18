@@ -6,7 +6,7 @@ namespace CoinEx.Net.Objects.Models.Socket
     /// <summary>
     /// Symbol state info
     /// </summary>
-    public class CoinExSocketSymbolState
+    public record CoinExSocketSymbolState
     {
         /// <summary>
         /// The close price of the period

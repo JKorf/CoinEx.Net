@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models.Socket
     /// <summary>
     /// Transaction data
     /// </summary>
-    public class CoinExSocketSymbolTrade
+    public record CoinExSocketSymbolTrade
     {
         /// <summary>
         /// The orde side

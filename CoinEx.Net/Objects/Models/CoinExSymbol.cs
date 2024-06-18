@@ -6,7 +6,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Symbol Info
     /// </summary>
-    public class CoinExSymbol
+    public record CoinExSymbol
     {
         /// <summary>
         /// The name of the symbol

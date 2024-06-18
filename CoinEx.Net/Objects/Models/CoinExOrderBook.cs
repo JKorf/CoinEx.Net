@@ -10,7 +10,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Order book
     /// </summary>
-    public class CoinExOrderBook
+    public record CoinExOrderBook
     {
         /// <summary>
         /// The price of the last transaction
@@ -39,7 +39,7 @@ namespace CoinEx.Net.Objects.Models
     /// Depth info
     /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
-    public class CoinExDepthEntry: ISymbolOrderBookEntry
+    public record CoinExDepthEntry: ISymbolOrderBookEntry
     {
         /// <summary>
         /// The price per unit of the entry

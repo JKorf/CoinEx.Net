@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Order info
     /// </summary>
-    public class CoinExOrder
+    public record CoinExOrder
     {
         /// <summary>
         /// The quantity of the order

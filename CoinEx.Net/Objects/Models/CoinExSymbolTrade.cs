@@ -8,7 +8,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Symbol trade info
     /// </summary>
-    public class CoinExSymbolTrade
+    public record CoinExSymbolTrade
     {
         /// <summary>
         /// The quantity of the transaction

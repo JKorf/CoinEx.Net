@@ -7,7 +7,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Balance info
     /// </summary>
-    public class CoinExBalance
+    public record CoinExBalance
     {
         /// <summary>
         /// The asset

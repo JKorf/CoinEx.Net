@@ -9,7 +9,7 @@ namespace CoinEx.Net.Objects.Models
     /// Kline data
     /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
-    public class CoinExKline
+    public record CoinExKline
     {
         /// <summary>
         /// The open time of this kline

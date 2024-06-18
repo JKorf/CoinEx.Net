@@ -6,7 +6,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Deposit address
     /// </summary>
-    public class CoinExDepositAddress
+    public record CoinExDepositAddress
     {
         /// <summary>
         /// The address

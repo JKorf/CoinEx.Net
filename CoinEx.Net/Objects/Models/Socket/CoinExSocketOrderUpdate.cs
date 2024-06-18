@@ -5,7 +5,7 @@ namespace CoinEx.Net.Objects.Models.Socket
     /// <summary>
     /// Order update
     /// </summary>
-    public class CoinExSocketOrderUpdate
+    public record CoinExSocketOrderUpdate
     {
         /// <summary>
         /// The type of update

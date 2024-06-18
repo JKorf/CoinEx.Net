@@ -7,7 +7,7 @@ namespace CoinEx.Net.Objects.Models
     /// <summary>
     /// Deposit info
     /// </summary>
-    public class CoinExDeposit
+    public record CoinExDeposit
     {
         /// <summary>
         /// The actual quantity of the deposit
