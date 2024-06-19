@@ -42,8 +42,6 @@ namespace CoinEx.Net.Clients.FuturesApi
         internal CoinExSocketClientFuturesApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.FuturesOptions)
         {
-            HandleMessageBeforeConfirmation = true;
-
             RegisterPeriodicQuery("Ping", TimeSpan.FromMinutes(1), q => (new CoinExQuery("server.ping", new Dictionary<string, object>())), null);
         }
         #endregion
@@ -81,7 +79,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        protected override Query? GetAuthenticationRequest()
+        protected override Query? GetAuthenticationRequest(SocketConnection connection)
         {
             var authProvider = (CoinExV2AuthenticationProvider)AuthenticationProvider!;
             var authParams = authProvider.GetSocketAuthParameters();

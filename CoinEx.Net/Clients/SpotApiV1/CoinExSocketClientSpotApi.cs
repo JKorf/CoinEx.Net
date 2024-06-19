@@ -87,7 +87,7 @@ namespace CoinEx.Net.Clients.SpotApiV1
         }
 
         /// <inheritdoc />
-        protected override Query? GetAuthenticationRequest()
+        protected override Query? GetAuthenticationRequest(SocketConnection connection)
         {
             var authProvider = (CoinExAuthenticationProvider)AuthenticationProvider!;
             var authParams = authProvider.GetSocketAuthParameters();
