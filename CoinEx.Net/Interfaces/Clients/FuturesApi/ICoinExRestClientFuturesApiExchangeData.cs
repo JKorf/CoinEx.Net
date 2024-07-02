@@ -105,6 +105,19 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         Task<WebCallResult<CoinExPaginated<CoinExFundingRateHistory>>> GetFundingRateHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
+        /// Get historical premium index prices
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-premium-history" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page number</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExPremiumIndexHistory>>> GetPremiumIndexPriceHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        
+        /// <summary>
         /// Get position levels
         /// <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-position-level" /></para>
         /// </summary>

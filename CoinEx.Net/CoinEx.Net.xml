@@ -163,6 +163,9 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetFundingRateHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetPremiumIndexPriceHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetPositionLevelsAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -1695,6 +1698,19 @@
             <summary>
             Get historical funding rates
             <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-funding-rate-history" /></para>
+            </summary>
+            <param name="symbol">Symbol</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Page size</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetPremiumIndexPriceHistoryAsync(System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get historical premium index prices
+            <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-premium-history" /></para>
             </summary>
             <param name="symbol">Symbol</param>
             <param name="startTime">Filter by start time</param>
@@ -6279,6 +6295,26 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStreamPosition.LastFilledPrice">
             <summary>
             Last filled price
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPremiumIndexHistory">
+            <summary>
+            Historic premium index
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPremiumIndexHistory.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPremiumIndexHistory.Timestamp">
+            <summary>
+            Timestamp
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPremiumIndexHistory.PremiumIndex">
+            <summary>
+            	Premium index. The main basis for calculating the funding rate
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExStopId">

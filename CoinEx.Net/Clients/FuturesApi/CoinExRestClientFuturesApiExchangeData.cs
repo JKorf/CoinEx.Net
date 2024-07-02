@@ -111,6 +111,20 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExPremiumIndexHistory>>> GetPremiumIndexPriceHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol }
+            };
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExPremiumIndexHistory>>(_baseClient.GetUri("v2/futures/premium-index-history"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExPositionLevels>>> GetPositionLevelsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection();
