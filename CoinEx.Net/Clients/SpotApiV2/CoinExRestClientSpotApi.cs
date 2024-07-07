@@ -24,7 +24,7 @@ using System.Globalization;
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExRestClientSpotApi" />
-    public class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi, ISpotClient
+    internal class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi, ISpotClient
     {
         #region fields
         internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");

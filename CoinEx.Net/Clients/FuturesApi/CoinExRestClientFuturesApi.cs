@@ -19,7 +19,7 @@ using CoinEx.Net.Interfaces.Clients.FuturesApi;
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc cref="ICoinExRestClientFuturesApi" />
-    public class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
+    internal class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
     {
         #region fields
         internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");

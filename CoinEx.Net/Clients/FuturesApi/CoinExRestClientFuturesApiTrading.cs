@@ -11,7 +11,7 @@ using CoinEx.Net.Interfaces.Clients.FuturesApi;
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc />
-    public class CoinExRestClientFuturesApiTrading : ICoinExRestClientFuturesApiTrading
+    internal class CoinExRestClientFuturesApiTrading : ICoinExRestClientFuturesApiTrading
     {
         private readonly CoinExRestClientFuturesApi _baseClient;
 

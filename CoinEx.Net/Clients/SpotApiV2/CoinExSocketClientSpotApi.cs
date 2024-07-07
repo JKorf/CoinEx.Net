@@ -23,7 +23,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExSocketClientSpotApi" />
-    public class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi
+    internal class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi
     {
         #region fields
         /// <inheritdoc />

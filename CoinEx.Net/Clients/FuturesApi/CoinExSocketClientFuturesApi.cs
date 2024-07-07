@@ -23,7 +23,7 @@ using CoinEx.Net.Interfaces.Clients.FuturesApi;
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc cref="ICoinExSocketClientFuturesApi" />
-    public class CoinExSocketClientFuturesApi : SocketApiClient, ICoinExSocketClientFuturesApi
+    internal class CoinExSocketClientFuturesApi : SocketApiClient, ICoinExSocketClientFuturesApi
     {
         #region fields
         /// <inheritdoc />

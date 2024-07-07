@@ -11,7 +11,7 @@ using CryptoExchange.Net;
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc />
-    public class CoinExRestClientSpotApiTrading : ICoinExRestClientSpotApiTrading
+    internal class CoinExRestClientSpotApiTrading : ICoinExRestClientSpotApiTrading
     {
         private readonly CoinExRestClientSpotApi _baseClient;
 

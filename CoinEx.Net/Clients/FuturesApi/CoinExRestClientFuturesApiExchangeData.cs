@@ -11,7 +11,7 @@ using System;
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc />
-    public class CoinExRestClientFuturesApiExchangeData : ICoinExRestClientFuturesApiExchangeData
+    internal class CoinExRestClientFuturesApiExchangeData : ICoinExRestClientFuturesApiExchangeData
     {
         private readonly CoinExRestClientFuturesApi _baseClient;
 
