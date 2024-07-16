@@ -39,6 +39,14 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         Task<WebCallResult<IEnumerable<CoinExSymbol>>> GetSymbolsAsync(CancellationToken ct = default);
 
         /// <summary>
+        /// Get asset information
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-assets-info" /></para>
+        /// </summary>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExAsset>>> GetAssetsAsync(CancellationToken ct = default);
+
+        /// <summary>
         /// Get symbol tickers
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-ticker" /></para>
         /// </summary>

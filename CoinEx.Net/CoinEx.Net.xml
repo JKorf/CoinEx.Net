@@ -680,6 +680,9 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.RemoveAutoMarketMakerLiquidityAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetAssetsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData">
             <inheritdoc />
         </member>
@@ -687,6 +690,9 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData.GetSymbolsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData.GetAssetsAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData.GetTickersAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
@@ -3042,6 +3048,14 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetAssetsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get asset information
+            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-assets-info" /></para>
+            </summary>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetTickersAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
             <summary>
             Get symbol tickers
@@ -4597,6 +4611,56 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAmmBalance.LiquidityProportion">
             <summary>
             Liquidity percentage in AMM account
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExAsset">
+            <summary>
+            Asset info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAsset.ShortName">
+            <summary>
+            Short name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAsset.FullName">
+            <summary>
+            Full name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAsset.WebsiteUrl">
+            <summary>
+            Website url
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAsset.WhitePaperUrl">
+            <summary>
+            White paper url
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAsset.Networks">
+            <summary>
+            Network info
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExAssetNetwork">
+            <summary>
+            Asset network info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAssetNetwork.Name">
+            <summary>
+            Network name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAssetNetwork.Identity">
+            <summary>
+            Identity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExAssetNetwork.ExplorerUrl">
+            <summary>
+            Explorer url
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExBalance">

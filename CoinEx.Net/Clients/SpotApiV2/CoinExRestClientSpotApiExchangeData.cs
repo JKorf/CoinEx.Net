@@ -42,6 +42,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExAsset>>> GetAssetsAsync(CancellationToken ct = default)
+        {
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExAsset>>(_baseClient.GetUri("v2/assets/info"), HttpMethod.Get, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExTicker>>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection();

@@ -252,5 +252,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
             };
             return await _baseClient.ExecuteAsync<CoinExAamLiquidity>(_baseClient.GetUri("v2/amm/remove-liquidity"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
+
+        
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExSymbol>>> GetAssetsAsync(CancellationToken ct = default)
+        {
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExSymbol>>(_baseClient.GetUri("v2/spot/market"), HttpMethod.Get, ct).ConfigureAwait(false);
+        }
+
     }
 }
