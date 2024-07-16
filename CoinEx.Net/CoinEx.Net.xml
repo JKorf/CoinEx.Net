@@ -680,9 +680,6 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.RemoveAutoMarketMakerLiquidityAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetAssetsAsync(System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData">
             <inheritdoc />
         </member>
