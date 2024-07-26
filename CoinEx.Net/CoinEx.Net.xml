@@ -285,7 +285,7 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.GetAuthenticationRequest(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
@@ -787,7 +787,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.GetAuthenticationRequest(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.PreprocessStreamMessage(System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExMaintenance}}},System.Threading.CancellationToken)">
