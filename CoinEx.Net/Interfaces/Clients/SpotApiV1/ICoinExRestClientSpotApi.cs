@@ -10,17 +10,17 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV1
     public interface ICoinExRestClientSpotApi : IRestApiClient, IDisposable
     {
         /// <summary>
-        /// Endpoints related to account settings, info or actions
+        /// DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
         /// </summary>
         ICoinExRestClientSpotApiAccount Account { get; }
 
         /// <summary>
-        /// Endpoints related to retrieving market and system data
+        /// DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
         /// </summary>
         ICoinExRestClientSpotApiExchangeData ExchangeData { get; }
 
         /// <summary>
-        /// Endpoints related to orders and trades
+        /// DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
         /// </summary>
         ICoinExRestClientSpotApiTrading Trading { get; }
 

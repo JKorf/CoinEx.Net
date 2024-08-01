@@ -18,7 +18,7 @@ namespace CoinEx.Net.Interfaces.Clients
         /// </summary>
         public SpotApiV2.ICoinExSocketClientSpotApi SpotApiV2 { get; }
         /// <summary>
-        /// V1 API Spot streams. Use V2 if possible, V1 will be removed at a later date
+        /// DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
         /// </summary>
         public SpotApiV1.ICoinExSocketClientSpotApi SpotApi { get; }
 

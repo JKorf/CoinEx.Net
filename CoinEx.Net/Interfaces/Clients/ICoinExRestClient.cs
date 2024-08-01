@@ -10,7 +10,7 @@ namespace CoinEx.Net.Interfaces.Clients
     public interface ICoinExRestClient : IRestClient
     {
         /// <summary>
-        /// Spot V1 API endpoints. Use V2 API if possible, V1 API will be removed at a later date
+        /// DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
         /// </summary>
         SpotApiV1.ICoinExRestClientSpotApi SpotApi { get; }
         /// <summary>
