@@ -2253,7 +2253,7 @@
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SpotApi">
             <summary>
-            Spot V1 API endpoints. Use V2 API if possible, V1 API will be removed at a later date
+            DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
             </summary>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SpotApiV2">
@@ -2289,7 +2289,7 @@
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SpotApi">
             <summary>
-            V1 API Spot streams. Use V2 if possible, V1 will be removed at a later date
+            DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
             </summary>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
@@ -2305,17 +2305,17 @@
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV1.ICoinExRestClientSpotApi.Account">
             <summary>
-            Endpoints related to account settings, info or actions
+            DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
             </summary>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV1.ICoinExRestClientSpotApi.ExchangeData">
             <summary>
-            Endpoints related to retrieving market and system data
+            DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
             </summary>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV1.ICoinExRestClientSpotApi.Trading">
             <summary>
-            Endpoints related to orders and trades
+            DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
             </summary>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV1.ICoinExRestClientSpotApi.CommonSpotClient">
