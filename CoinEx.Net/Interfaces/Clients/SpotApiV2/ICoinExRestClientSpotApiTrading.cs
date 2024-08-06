@@ -16,7 +16,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Place a new order
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-order" /></para>
         /// </summary>
-        /// <param name="symbol">The symbol</param>
+        /// <param name="symbol">The symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type, Spot or Margin</param>
         /// <param name="side">Order side</param>
         /// <param name="type">Order type</param>
@@ -43,7 +43,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Place a new stop order
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">The symbol</param>
+        /// <param name="symbol">The symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type, Spot or Margin</param>
         /// <param name="side">Order side</param>
         /// <param name="type">Order type</param>
@@ -72,7 +72,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get an order by id
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/get-order-status" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="orderId">Order id</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -82,7 +82,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get a list of open orders
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-pending-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
@@ -96,7 +96,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get a list of closed orders. Note that orders canceled without having any trades will not be returned
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-finished-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
@@ -110,7 +110,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get a list of open stop orders
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-pending-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
@@ -124,7 +124,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get a list of closed stop orders. Note that orders canceled without having any trades will not be returned
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-finished-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
@@ -138,7 +138,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Edit an active order
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/edit-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="orderId">Order id</param>
         /// <param name="quantity">New quantity</param>
@@ -157,7 +157,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Edit an active stop order
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/edit-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="stopOrderId">Order id</param>
         /// <param name="quantity">New quantity</param>
@@ -178,7 +178,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Cancel all orders for a symbol
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-all-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="side">Only cancel a specific order side</param>
         /// <param name="ct">Cancelation Token</param>
@@ -189,7 +189,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Cancel an active order
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="orderId">Id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
@@ -200,7 +200,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Cancel an active stop order
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="stopOrderId">Id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
@@ -211,7 +211,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Cancel an active order by its client order id
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-order-by-client-id" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="clientOrderId">Client order id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
@@ -222,7 +222,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Cancel an active stop order by its client order id
         /// <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-stop-order-by-client-id" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="clientStopOrderId">Client order id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
@@ -233,7 +233,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get trade list
         /// <para><a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-deals" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="side">Filter by side</param>
         /// <param name="startTime">Filter by start time</param>
@@ -248,7 +248,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get trades for a specific order
         /// <para><a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-order-deals" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="orderId">The order id</param>
         /// <param name="page">Page number</param>

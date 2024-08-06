@@ -17,7 +17,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get trading fees
         /// <para><a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol name</param>
+        /// <param name="symbol">Symbol name, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -76,7 +76,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Apply for margin borrowing
         /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-borrow" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="asset">Asset</param>
         /// <param name="quantity">Quantity to borrow</param>
         /// <param name="autoRenew">Whether to renew automatically. Automatic renewal means that after the loan expires, the system will renew the loan based on the latest borrowing interest rate and cycle.</param>
@@ -88,7 +88,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Repay a margin loan
         /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-repay" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="asset">Asset</param>
         /// <param name="quantity">Quantity to repay</param>
         /// <param name="borrowId">Loan record ID</param>
@@ -100,7 +100,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get borrow history
         /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-borrow-history" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="status">Filter by status</param>
         /// <param name="page">Page number</param>
         /// <param name="pageSize">Page size</param>
@@ -112,7 +112,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get borrow limits
         /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-interest-limit" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="asset">Asset</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -122,7 +122,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get the deposit address for an asset
         /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-address" /></para>
         /// </summary>
-        /// <param name="asset">The asset to deposit</param>
+        /// <param name="asset">The asset to deposit, for example `ETH`</param>
         /// <param name="network">Network</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -132,7 +132,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Renew deposit address
         /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/update-deposit-address" /></para>
         /// </summary>
-        /// <param name="asset">The asset</param>
+        /// <param name="asset">The asset, for example `ETH`</param>
         /// <param name="network">Network</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -142,7 +142,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get deposit history
         /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-deposit-history" /></para>
         /// </summary>
-        /// <param name="asset">Asset</param>
+        /// <param name="asset">Asset, for example `ETH`</param>
         /// <param name="transactionId">Filter by transaction id</param>
         /// <param name="status">Filter by status</param>
         /// <param name="page">Page number</param>
@@ -155,7 +155,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Withdraw funds to an external address or another CoinEx user
         /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /></para>
         /// </summary>
-        /// <param name="asset">Asset to withdraw</param>
+        /// <param name="asset">Asset to withdraw, for example `ETH`</param>
         /// <param name="quanity">Withdrawal quantity</param>
         /// <param name="toAddress">Withdrawal address.The withdrawal address needs to be added to the IP whitelist via Developer Console</param>
         /// <param name="method">Withdrawal methods (On-chain or inter-user transfer). Default as on-chain withdrawal</param>
@@ -179,7 +179,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get withdrawal history
         /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-withdrawal-history" /></para>
         /// </summary>
-        /// <param name="asset">Filter by asset</param>
+        /// <param name="asset">Filter by asset, for example `ETH`</param>
         /// <param name="withdrawId">Filter by withdrawal id</param>
         /// <param name="status">Filter by status</param>
         /// <param name="page">Page number</param>
@@ -192,7 +192,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get withdraw and deposit information for an asset
         /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /></para>
         /// </summary>
-        /// <param name="asset">The asset</param>
+        /// <param name="asset">The asset, for example `ETH`</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExDepositWithdrawalConfig>> GetDepositWithdrawalConfigAsync(string asset, CancellationToken ct = default);
@@ -201,7 +201,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Transfer between accounts
         /// <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /></para>
         /// </summary>
-        /// <param name="asset">Asset to transfer</param>
+        /// <param name="asset">Asset to transfer, for example `ETH`</param>
         /// <param name="fromAccount">From account</param>
         /// <param name="toAccount">To account</param>
         /// <param name="quantity">Quantity to transfer</param>
@@ -214,7 +214,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Get transfer history
         /// <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/list-transfer-history" /></para>
         /// </summary>
-        /// <param name="asset">Asset</param>
+        /// <param name="asset">Asset, for example `ETH`</param>
         /// <param name="transferType">Transfer type. Must be either Margin or Futures</param>
         /// <param name="marginSymbol">Filter by margin symbol</param>
         /// <param name="status">Filter by status</param>
@@ -230,7 +230,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Add AAM liquidity
         /// <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/add-liquidtiy" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETH`</param>
         /// <param name="baseAssetQuantity">Base asset quantity to add</param>
         /// <param name="quoteAssetQuantity">Quote asset quantity to add</param>
         /// <param name="ct">Cancelation token</param>
@@ -241,7 +241,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Remove AAM liquidity. Currently only support withdrawing all liquidity
         /// <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExAamLiquidity>> RemoveAutoMarketMakerLiquidityAsync(string symbol, CancellationToken ct = default);

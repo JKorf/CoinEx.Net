@@ -16,7 +16,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Place a new order
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-order" /></para>
         /// </summary>
-        /// <param name="symbol">The symbol</param>
+        /// <param name="symbol">The symbol, for example `ETHUSDT`</param>
         /// <param name="side">Order side</param>
         /// <param name="type">Order type</param>
         /// <param name="quantity">Quantity</param>
@@ -39,7 +39,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Place a new stop order
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">The symbol</param>
+        /// <param name="symbol">The symbol, for example `ETHUSDT`</param>
         /// <param name="side">Order side</param>
         /// <param name="type">Order type</param>
         /// <param name="quantity">Quantity</param>
@@ -66,7 +66,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get an order by id
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/get-order-status" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="orderId">Order id</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -77,7 +77,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get a list of open orders
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-pending-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
         /// <param name="page">Page number</param>
@@ -90,7 +90,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get a list of closed orders. Note that orders canceled without having any trades will not be returned
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-finished-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
         /// <param name="page">Page number</param>
@@ -103,7 +103,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get a list of open stop orders
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-pending-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
         /// <param name="page">Page number</param>
@@ -116,7 +116,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get a list of closed stop orders. Note that orders canceled without having any trades will not be returned
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-finished-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol</param>
+        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="side">Filter by side</param>
         /// <param name="clientOrderId">Filter by client order id</param>
         /// <param name="page">Page number</param>
@@ -129,7 +129,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Edit an active order
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/edit-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="orderId">Order id</param>
         /// <param name="quantity">New quantity</param>
         /// <param name="price">New price</param>
@@ -146,7 +146,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Edit an active stop order
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/edit-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="stopOrderId">Order id</param>
         /// <param name="quantity">New quantity</param>
         /// <param name="price">New price</param>
@@ -165,7 +165,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Cancel all orders for a symbol
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-all-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="side">Only cancel a specific order side</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -175,7 +175,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Cancel an active order
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="orderId">Id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -185,7 +185,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Cancel an active stop order
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-stop-order" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="stopOrderId">Id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -195,7 +195,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Cancel an active order by its client order id
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-order-by-client-id" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="clientOrderId">Client order id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -205,7 +205,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Cancel an active stop order by its client order id
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-stop-order-by-client-id" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="clientStopOrderId">Client order id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -216,7 +216,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get trade list
         /// <para><a href="https://docs.coinex.com/api/v2/futures/deal/http/list-user-deals" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="side">Filter by side</param>
         /// <param name="startTime">Filter by start time</param>
         /// <param name="endTime">Filter by end time</param>
@@ -230,7 +230,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get trades for a specific order
         /// <para><a href="https://docs.coinex.com/api/v2/futures/deal/http/list-user-order-deals" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="orderId">The order id</param>
         /// <param name="page">Page number</param>
         /// <param name="pageSize">Page size</param>
@@ -242,7 +242,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get user positions
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-pending-position" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="page">Page number</param>
         /// <param name="pageSize">Page size</param>
         /// <param name="ct">Cancelation Token</param>
@@ -253,7 +253,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get position history
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-finished-position" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="startTime">Filter by start time</param>
         /// <param name="endTime">Filter by end time</param>
         /// <param name="page">Page number</param>
@@ -266,7 +266,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// (partially) Close an open position
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/close-position" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="orderType">Order type to use</param>
         /// <param name="price">Price of the order</param>
         /// <param name="quantity">Quantity to close</param>
@@ -280,7 +280,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Adjust the margin for a position. Positive quantity for increasing, negative quantity for decreasing
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/close-position" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="quantity">Quantity to increase (positive number) or decrease (negative number)</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -290,7 +290,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Set stop loss for a position
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-stop-loss" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="stopLossType">Stop loss price type</param>
         /// <param name="stopLossPrice">Stop loss price</param>
         /// <param name="ct">Cancelation Token</param>
@@ -301,7 +301,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Set take profit for a position
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-take-profit" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="takeProfitType">Take profit price type</param>
         /// <param name="takeProfitPrice">Take profit price</param>
         /// <param name="ct">Cancelation Token</param>
@@ -312,7 +312,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get margin adjustment history
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-take-profit" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="positionId">Position id</param>
         /// <param name="startTime">Filter by start time</param>
         /// <param name="endTime">Filter by end time</param>
@@ -326,7 +326,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get funding rate history
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-position-funding-history" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="positionId">Position id</param>
         /// <param name="startTime">Filter by start time</param>
         /// <param name="endTime">Filter by end time</param>
@@ -340,7 +340,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get auto deleveraging history
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-positiing-adl-history" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="positionId">Position id</param>
         /// <param name="startTime">Filter by start time</param>
         /// <param name="endTime">Filter by end time</param>
@@ -354,7 +354,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get position settlement history
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/list-position-settle-history" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="positionId">Position id</param>
         /// <param name="startTime">Filter by start time</param>
         /// <param name="endTime">Filter by end time</param>

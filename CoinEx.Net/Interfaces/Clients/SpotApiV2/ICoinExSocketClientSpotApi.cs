@@ -26,7 +26,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to symbol ticker updates for the specified symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
         /// </summary>
-        /// <param name="symbols">The symbols to subscribe</param>
+        /// <param name="symbols">The symbols to subscribe, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
@@ -45,7 +45,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to order book updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="depth">Order book depth, 5, 10, 20 or 50</param>
         /// <param name="mergeLevel">The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
         /// <param name="fullBookUpdates">Whether updates should provide full update or only updates</param>
@@ -58,7 +58,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to order book updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /></para>
         /// </summary>
-        /// <param name="symbols">Symbols</param>
+        /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="depth">Order book depth, 5, 10, 20 or 50</param>
         /// <param name="mergeLevel">The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
         /// <param name="fullBookUpdates">Whether updates should provide full update or only updates</param>
@@ -71,7 +71,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to live trade updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
@@ -81,7 +81,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to live trade updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
         /// </summary>
-        /// <param name="symbols">Symbols</param>
+        /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
@@ -100,7 +100,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to index price updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
@@ -110,7 +110,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to index price updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /></para>
         /// </summary>
-        /// <param name="symbols">Symbols</param>
+        /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
@@ -120,7 +120,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to book price updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
@@ -130,7 +130,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// Subscribe to book price updates
         /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /></para>
         /// </summary>
-        /// <param name="symbols">Symbols</param>
+        /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
