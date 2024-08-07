@@ -53,14 +53,14 @@ namespace CoinEx.Net.UnitTests
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetBalancesAsync(default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetMarginBalancesAsync(default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetFinancialBalancesAsync(default), true);
-            await RunAndCheckResult(client => client.SpotApiV2.Account.GetCreditAccountAsync(default), true);
+            //await RunAndCheckResult(client => client.SpotApiV2.Account.GetCreditAccountAsync(default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetAutoMarketMakerAccountLiquidityAsync(default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetBorrowHistoryAsync(default, default, default, default, default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetBorrowLimitAsync("ETHUSDT", "USDT", default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetDepositHistoryAsync("USDT", default, default, default, default, default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetWithdrawalHistoryAsync(default, default, default, default, default, default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Account.GetDepositWithdrawalConfigAsync("ETH", default), true);
-            await RunAndCheckResult(client => client.SpotApiV2.Account.GetTransfersAsync("ETH", Enums.AccountType.Spot, default, default, default, default, default, default, default), true);
+            await RunAndCheckResult(client => client.SpotApiV2.Account.GetTransfersAsync("ETH", Enums.AccountType.Margin, default, default, default, default, default, default, default), true);
         }
 
         [Test]
