@@ -12,8 +12,6 @@ namespace CoinEx.Net
 {
     internal class CoinExV2AuthenticationProvider : AuthenticationProvider
     {
-        public string GetApiKey() => _credentials.Key!.GetString();
-
         public CoinExV2AuthenticationProvider(ApiCredentials credentials): base(credentials)
         {
             if (credentials.CredentialType != ApiCredentialsType.Hmac)
@@ -24,9 +22,9 @@ namespace CoinEx.Net
             RestApiClient apiClient,
             Uri uri,
             HttpMethod method,
-            IDictionary<string, object> uriParameters,
-            IDictionary<string, object> bodyParameters,
-            Dictionary<string, string> headers,
+            ref IDictionary<string, object>? uriParameters,
+            ref IDictionary<string, object>? bodyParameters,
+            ref Dictionary<string, string>? headers,
             bool auth,
             ArrayParametersSerialization arraySerialization,
             HttpMethodParameterPosition parameterPosition,
@@ -35,12 +33,24 @@ namespace CoinEx.Net
             if (!auth)
                 return;
 
-            var parameters = parameterPosition == HttpMethodParameterPosition.InUri ? uriParameters : bodyParameters;
+            IDictionary<string, object> parameters;
+            if (parameterPosition == HttpMethodParameterPosition.InUri)
+            {
+                uriParameters ??= new Dictionary<string, object>();
+                parameters = uriParameters;
+            }
+            else
+            {
+                bodyParameters ??= new Dictionary<string, object>();
+                parameters = bodyParameters;
+            }
+
             var parameterString = parameterPosition == HttpMethodParameterPosition.InUri ? (parameters.Any() ? "?" + parameters.CreateParamString(false, arraySerialization) : "") : new SystemTextJsonMessageSerializer().Serialize(parameters);
             var timestamp = GetMillisecondTimestamp(apiClient);
             var signData = method.ToString().ToUpperInvariant() + uri.AbsolutePath + parameterString + timestamp;
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
-            headers.Add("X-COINEX-KEY", _credentials.Key!.GetString());
+            headers ??= new Dictionary<string, string>();
+            headers.Add("X-COINEX-KEY", _credentials.Key);
             headers.Add("X-COINEX-SIGN", sign);
             headers.Add("X-COINEX-TIMESTAMP", timestamp);
         }
@@ -52,7 +62,7 @@ namespace CoinEx.Net
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
             return new Dictionary<string, object>
             {
-                { "access_id", _credentials.Key!.GetString() },
+                { "access_id", _credentials.Key },
                 { "signed_str", sign },
                 { "timestamp", timestamp }
             };
