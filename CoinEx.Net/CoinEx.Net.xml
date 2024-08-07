@@ -6833,6 +6833,16 @@
             Quantity traded
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExUserTrade.Fee">
+            <summary>
+            Fee paid
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExUserTrade.FeeAsset">
+            <summary>
+            Fee asest
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal">
             <summary>
             Withdrawal info

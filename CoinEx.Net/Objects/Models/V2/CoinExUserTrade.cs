@@ -49,5 +49,15 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("amount")]
         public decimal Quantity { get; set; }
+        /// <summary>
+        /// Fee paid
+        /// </summary>
+        [JsonPropertyName("fee")]
+        public decimal Fee { get; set; }
+        /// <summary>
+        /// Fee asest
+        /// </summary>
+        [JsonPropertyName("fee_ccy")]
+        public string FeeAsset { get; set; } = string.Empty;
     }
 }
