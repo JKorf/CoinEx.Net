@@ -58,7 +58,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        public override string FormatSymbol(string baseAsset, string quoteAsset, FuturesType? futuresType = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
 
         /// <inheritdoc />
         protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor();
