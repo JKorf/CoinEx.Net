@@ -14,6 +14,8 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     /// </summary>
     public interface ICoinExSocketClientSpotApi : ISocketApiClient, IDisposable
     {
+        ICoinExSocketClientSpotApiShared SharedClient { get; }
+
         /// <summary>
         /// Subscribe to system notification updates
         /// </summary>
