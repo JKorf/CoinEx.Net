@@ -1,7 +1,8 @@
 ﻿using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
-using CryptoExchange.Net.SharedApis.Interfaces;
+using CryptoExchange.Net.SharedApis.Interfaces.Socket;
+using CryptoExchange.Net.SharedApis.Models.Socket;
 using CryptoExchange.Net.SharedApis.RequestModels;
 using CryptoExchange.Net.SharedApis.ResponseModels;
 using CryptoExchange.Net.SharedApis.SubscribeModels;
@@ -21,13 +22,27 @@ namespace CoinEx.Net.Clients.SpotApiV2
         async Task<CallResult<UpdateSubscription>> ITickerSocketClient.SubscribeToTickerUpdatesAsync(TickerSubscribeRequest request, Action<DataEvent<SharedTicker>> handler, CancellationToken ct)
         {
             var symbol = FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType);
-            var result = await SubscribeToTickerUpdatesAsync(new[] { symbol }, update => handler(update.As(new SharedTicker
+            var result = await SubscribeToTickerUpdatesAsync(new[] { symbol }, update =>
             {
-                Symbol = symbol,
-                HighPrice = update.Data.Single().HighPrice,
-                LastPrice = update.Data.Single().LastPrice,
-                LowPrice = update.Data.Single().LowPrice
-            })), ct).ConfigureAwait(false);
+                var ticker = update.Data.Single();
+                handler(update.As(new SharedTicker(symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice)));
+            }, ct).ConfigureAwait(false);
+
+            return result;
+        }
+
+        async Task<CallResult<UpdateSubscription>> ITradeSocketClient.SubscribeToTradeUpdatesAsync(TradeSubscribeRequest request, Action<DataEvent<IEnumerable<SharedTrade>>> handler, CancellationToken ct)
+        {
+            var symbol = FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType);
+            var result = await SubscribeToTradeUpdatesAsync(symbol, update => handler(update.As(update.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)))), ct).ConfigureAwait(false);
+
+            return result;
+        }
+
+        async Task<CallResult<UpdateSubscription>> IBookTickerSocketClient.SubscribeToBookTickerUpdatesAsync(BookTickerSubscribeRequest request, Action<DataEvent<SharedBookTicker>> handler, CancellationToken ct)
+        {
+            var symbol = FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType);
+            var result = await SubscribeToBookPriceUpdatesAsync(symbol, update => handler(update.As(new SharedBookTicker(update.Data.BestAskPrice, update.Data.BestAskQuantity, update.Data.BestBidPrice, update.Data.BestBidQuantity))), ct).ConfigureAwait(false);
 
             return result;
         }
