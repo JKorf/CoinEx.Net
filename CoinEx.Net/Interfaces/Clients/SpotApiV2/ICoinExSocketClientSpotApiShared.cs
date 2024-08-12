@@ -8,7 +8,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     public interface ICoinExSocketClientSpotApiShared :
         ITickerSocketClient,
         ITradeSocketClient,
-        IBookTickerSocketClient
+        IBookTickerSocketClient,
+        IBalanceSocketClient,
+        ISpotOrderSocketClient
     {
     }
 }
