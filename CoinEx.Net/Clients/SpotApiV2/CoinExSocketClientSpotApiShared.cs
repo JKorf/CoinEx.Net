@@ -83,6 +83,27 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return result;
         }
 
+        async Task<CallResult<UpdateSubscription>> ISpotUserTradeSocketClient.SubscribeToUserTradeUpdatesAsync(SharedRequest request, Action<DataEvent<IEnumerable<SharedUserTrade>>> handler, CancellationToken ct)
+        {
+            var result = await SubscribeToUserTradeUpdatesAsync(
+                update => handler(update.As<IEnumerable<SharedUserTrade>>(new[] {
+                    new SharedUserTrade(
+                        update.Data.OrderId.ToString(),
+                        update.Data.Id.ToString(),
+                        update.Data.Quantity,
+                        update.Data.Price,                        
+                        update.Data.CreateTime)
+                    {
+                        Fee = update.Data.Fee,
+                        FeeAsset = update.Data.FeeAsset,
+                        Role = update.Data.Role == Enums.TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker
+                    }
+                } )),
+                ct: ct).ConfigureAwait(false);
+
+            return result;
+        }
+
         private SharedOrderStatus GetOrderStatus(CoinExOrderUpdate update)
         {
             if (update.Order.QuantityFilled == update.Order.Quantity)
@@ -90,10 +111,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             if (update.Event != Enums.OrderUpdateType.Finish) 
             {
-                if (update.Order.QuantityFilled != 0)
-                    return SharedOrderStatus.PartiallyFilled;
-                else
-                    return SharedOrderStatus.Open;
+                return SharedOrderStatus.Open;
             }
             else
             {

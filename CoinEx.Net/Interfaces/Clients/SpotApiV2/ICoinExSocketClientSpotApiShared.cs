@@ -10,7 +10,8 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         ITradeSocketClient,
         IBookTickerSocketClient,
         IBalanceSocketClient,
-        ISpotOrderSocketClient
+        ISpotOrderSocketClient,
+        ISpotUserTradeSocketClient
     {
     }
 }

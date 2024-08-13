@@ -6840,7 +6840,12 @@
         </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExUserTrade.FeeAsset">
             <summary>
-            Fee asest
+            Fee asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExUserTrade.Role">
+            <summary>
+            Role
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal">

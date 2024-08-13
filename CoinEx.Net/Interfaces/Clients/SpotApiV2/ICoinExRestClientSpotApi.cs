@@ -29,5 +29,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <returns></returns>
         public ISpotClient CommonSpotClient { get; }
+        ICoinExRestClientSpotApiShared SharedClient { get; }
+
     }
 }
