@@ -10,7 +10,8 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         ISpotSymbolRestClient,
         IKlineRestClient,
         ITradeRestClient,
-        IBalanceRestClient
+        IBalanceRestClient,
+        ISpotOrderRestClient
     {
     }
 }
