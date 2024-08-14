@@ -88,6 +88,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             var result = await SubscribeToUserTradeUpdatesAsync(
                 update => handler(update.As<IEnumerable<SharedUserTrade>>(new[] {
                     new SharedUserTrade(
+                        update.Data.Symbol,
                         update.Data.OrderId.ToString(),
                         update.Data.Id.ToString(),
                         update.Data.Quantity,
