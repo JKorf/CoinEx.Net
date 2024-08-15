@@ -92,11 +92,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return result.AsExchangeResult<IEnumerable<SharedTicker>>(Exchange, result.Data.Select(x => new SharedTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice)));
         }
 
-        async Task<ExchangeWebResult<IEnumerable<SharedTrade>>> ITradeRestClient.GetTradesAsync(GetTradesRequest request, CancellationToken ct)
+        async Task<ExchangeWebResult<IEnumerable<SharedTrade>>> IRecentTradeRestClient.GetRecentTradesAsync(GetRecentTradesRequest request, CancellationToken ct)
         {
-            if (request.StartTime != null || request.EndTime != null)
-                return new ExchangeWebResult<IEnumerable<SharedTrade>>(Exchange, new ArgumentError("Start/EndTime filtering not supported"));
-
             var result = await ExchangeData.GetTradeHistoryAsync(
                 FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType),
                 limit: request.Limit,
@@ -249,11 +246,32 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }));
         }
 
-        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetUserTradesAsync(GetUserTradesRequest request, CancellationToken ct)
+        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetUserTradesAsync(GetUserTradesRequest request, INextPageToken pageToken, CancellationToken ct)
         {
-            var orders = await Trading.GetUserTradesAsync(FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType), AccountType.Spot, startTime: request.StartTime, endTime: request.EndTime).ConfigureAwait(false);
+            // Determine page token
+            int page = 1;
+            int pageSize = request.Limit ?? 500;
+            if (pageToken is PageToken token)
+            {
+                page = token.Page;
+                pageSize = token.PageSize;
+            }
+
+            // Get data
+            var orders = await Trading.GetUserTradesAsync(
+                FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType),
+                AccountType.Spot,
+                startTime: request.StartTime,
+                endTime: request.EndTime,
+                page: page,
+                pageSize: pageSize).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, default);
+
+            // Get next token
+            PageToken? nextToken = null;
+            if (orders.Data.HasNext)
+                nextToken = new PageToken(page + 1, pageSize);
 
             return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
                 x.Symbol,
@@ -266,7 +284,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
-            }));
+            }), nextToken);
         }
 
         async Task<ExchangeWebResult<SharedOrderId>> ISpotOrderRestClient.CancelOrderAsync(CancelOrderRequest request, CancellationToken ct)
