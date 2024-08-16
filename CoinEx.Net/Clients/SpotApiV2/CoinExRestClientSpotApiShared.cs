@@ -41,22 +41,47 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 SharedQuantityType.Both,
                 SharedQuantityType.Both);
 
-        async Task<ExchangeWebResult<IEnumerable<SharedKline>>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, CancellationToken ct)
+        async Task<ExchangeWebResult<IEnumerable<SharedKline>>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
             if (!Enum.IsDefined(typeof(Enums.KlineInterval), interval))
                 return new ExchangeWebResult<IEnumerable<SharedKline>>(Exchange, new ArgumentError("Interval not supported"));
 
+            // Determine the amount of data points we need to match the requested time
+            var apiLimit = 1000;
+            int limit = request.Filter?.Limit ?? apiLimit;
+            if (request.Filter?.StartTime.HasValue == true)
+                limit = (int)Math.Ceiling((DateTime.UtcNow - request.Filter.StartTime!.Value).TotalSeconds / (int)request.Interval);
+
+            if (limit > apiLimit)
+            {
+                // Not available via the API
+                var cutoff = DateTime.UtcNow.AddSeconds(-(int)request.Interval * apiLimit);
+                return new ExchangeWebResult<IEnumerable<SharedKline>>(Exchange, new ArgumentError($"Time filter outside of supported range. Can only request the most recent {apiLimit} klines i.e. data later than {cutoff} at this interval"));
+            }
+
+            // Pagination not supported, no time filter available
+
+            // Get data
             var result = await ExchangeData.GetKlinesAsync(
-                FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType),
+                request.GetSymbol(FormatSymbol),
                 interval,
-                limit: request.Limit,
+                limit: limit,
                 ct: ct
                 ).ConfigureAwait(false);
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedKline>>(Exchange, default);
 
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume)));
+            // Filter the data based on requested timestamps
+            var data = result.Data;
+            if (request.Filter?.StartTime.HasValue == true)
+                data = data.Where(d => d.OpenTime >= request.Filter.StartTime.Value);
+            if (request.Filter?.EndTime.HasValue == true)
+                data = data.Where(d => d.OpenTime < request.Filter.EndTime.Value);
+            if (request.Filter?.Limit.HasValue == true)
+                data = data.Take(request.Filter.Limit.Value);
+
+            return result.AsExchangeResult(Exchange, data.Select(x => new SharedKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume)));
         }
 
         async Task<ExchangeWebResult<IEnumerable<SharedSpotSymbol>>> ISpotSymbolRestClient.GetSymbolsAsync(SharedRequest request, CancellationToken ct)
@@ -75,7 +100,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         async Task<ExchangeWebResult<SharedTicker>> ITickerRestClient.GetTickerAsync(GetTickerRequest request, CancellationToken ct)
         {
-            var result = await ExchangeData.GetTickersAsync(new[] { FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType) }, ct).ConfigureAwait(false);
+            var result = await ExchangeData.GetTickersAsync(new[] { request.GetSymbol(FormatSymbol) }, ct).ConfigureAwait(false);
             if (!result)
                 return result.AsExchangeResult<SharedTicker>(Exchange, default);
 
@@ -95,7 +120,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         async Task<ExchangeWebResult<IEnumerable<SharedTrade>>> IRecentTradeRestClient.GetRecentTradesAsync(GetRecentTradesRequest request, CancellationToken ct)
         {
             var result = await ExchangeData.GetTradeHistoryAsync(
-                FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType),
+                request.GetSymbol(FormatSymbol),
                 limit: request.Limit,
                 ct: ct).ConfigureAwait(false);
             if (!result)
@@ -119,7 +144,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 throw new ArgumentException("OrderType can't be `Other`", nameof(request.OrderType));
 
             var result = await Trading.PlaceOrderAsync(
-                FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType),
+                request.GetSymbol(FormatSymbol),
                 AccountType.Spot,
                 request.Side == SharedOrderSide.Buy ? OrderSide.Buy : OrderSide.Sell,
                 GetOrderType(request.OrderType, request.TimeInForce),
@@ -140,7 +165,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedSpotOrder>(Exchange, new ArgumentError("Invalid order id"));
 
-            var orders = await Trading.GetOrderAsync(FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType), orderId).ConfigureAwait(false);
+            var orders = await Trading.GetOrderAsync(request.GetSymbol(FormatSymbol), orderId).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<SharedSpotOrder>(Exchange, default);
 
@@ -196,11 +221,30 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }));
         }
 
-        async Task<ExchangeWebResult<IEnumerable<SharedSpotOrder>>> ISpotOrderRestClient.GetClosedOrdersAsync(GetSpotClosedOrdersRequest request, CancellationToken ct)
+        async Task<ExchangeWebResult<IEnumerable<SharedSpotOrder>>> ISpotOrderRestClient.GetClosedOrdersAsync(GetSpotClosedOrdersRequest request, INextPageToken? pageToken, CancellationToken ct)
         {
-            var orders = await Trading.GetClosedOrdersAsync(AccountType.Spot, FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType)).ConfigureAwait(false);
+            // Determine page token
+            int page = 1;
+            int pageSize = request.Filter?.Limit ?? 500;
+            if (pageToken is PageToken token)
+            {
+                page = token.Page;
+                pageSize = token.PageSize;
+            }
+
+            // Get data
+            var orders = await Trading.GetClosedOrdersAsync(
+                AccountType.Spot,
+                request.GetSymbol(FormatSymbol),
+                page: page,
+                pageSize: pageSize).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedSpotOrder>>(Exchange, default);
+
+            // Get next token
+            PageToken? nextToken = null;
+            if (orders.Data.HasNext == true)
+                nextToken = new PageToken(page + 1, pageSize);
 
             return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedSpotOrder(
                 x.Symbol,
@@ -220,7 +264,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
                 FeeAsset = x.FeeBaseAsset > 0 ? request.BaseAsset : x.FeeQuoteAsset > 0 ? request.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
-            }));
+            }), nextToken);
         }
 
         async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetOrderTradesAsync(GetOrderTradesRequest request, CancellationToken ct)
@@ -228,7 +272,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<IEnumerable<SharedUserTrade>>(Exchange, new ArgumentError("Invalid order id"));
 
-            var orders = await Trading.GetOrderTradesAsync(FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType), AccountType.Spot, orderId: orderId).ConfigureAwait(false);
+            var orders = await Trading.GetOrderTradesAsync(request.GetSymbol(FormatSymbol), AccountType.Spot, orderId: orderId).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, default);
 
@@ -246,11 +290,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }));
         }
 
-        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetUserTradesAsync(GetUserTradesRequest request, INextPageToken pageToken, CancellationToken ct)
+        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetUserTradesAsync(GetUserTradesRequest request, INextPageToken? pageToken, CancellationToken ct)
         {
             // Determine page token
             int page = 1;
-            int pageSize = request.Limit ?? 500;
+            int pageSize = request.Filter?.Limit ?? 500;
             if (pageToken is PageToken token)
             {
                 page = token.Page;
@@ -259,10 +303,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Get data
             var orders = await Trading.GetUserTradesAsync(
-                FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType),
+                request.GetSymbol(FormatSymbol),
                 AccountType.Spot,
-                startTime: request.StartTime,
-                endTime: request.EndTime,
+                startTime: request.Filter?.StartTime,
+                endTime: request.Filter?.EndTime,
                 page: page,
                 pageSize: pageSize).ConfigureAwait(false);
             if (!orders)
@@ -292,7 +336,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedOrderId>(Exchange, new ArgumentError("Invalid order id"));
 
-            var order = await Trading.CancelOrderAsync(FormatSymbol(request.BaseAsset, request.QuoteAsset, request.ApiType), AccountType.Spot, orderId).ConfigureAwait(false);
+            var order = await Trading.CancelOrderAsync(request.GetSymbol(FormatSymbol), AccountType.Spot, orderId).ConfigureAwait(false);
             if (!order)
                 return order.AsExchangeResult<SharedOrderId>(Exchange, default);
 
