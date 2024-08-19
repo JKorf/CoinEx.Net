@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
 using System;
+using System.Collections.Generic;
 
 namespace CoinEx.Net.Interfaces.Clients.FuturesApi
 {
@@ -23,6 +24,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="price">Price of the order</param>
         /// <param name="clientOrderId">Client order id</param>
         /// <param name="hide">Hide the order</param>
+        /// <param name="stpMode">Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExFuturesOrder>> PlaceOrderAsync(
@@ -33,6 +35,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default);
 
         /// <summary>
@@ -48,6 +51,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="clientOrderId">Client order id</param>
         /// <param name="triggerPrice">Price to trigger on</param>
         /// <param name="hide">Hide the order</param>
+        /// <param name="stpMode">Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExStopId>> PlaceStopOrderAsync(
@@ -60,6 +64,29 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
+            CancellationToken ct = default);
+
+        /// <summary>
+        /// Place multiple orders in a single call
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-multi-order" /></para>
+        /// </summary>
+        /// <param name="requests">Orders to place</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> PlaceMultipleOrdersAsync(
+            IEnumerable<CoinExFuturesPlaceOrderRequest> requests,
+            CancellationToken ct = default);
+
+        /// <summary>
+        /// Place multiple stop orders in a single call
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-multi-stop-order" /></para>
+        /// </summary>
+        /// <param name="requests">Stop orders to place</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopId>>>> PlaceMultipleStopOrdersAsync(
+            IEnumerable<CoinExFuturesPlaceStopOrderRequest> requests,
             CancellationToken ct = default);
 
         /// <summary>
@@ -211,6 +238,25 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <returns></returns>
         Task<WebCallResult<CoinExStopOrder>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default);
 
+        /// <summary>
+        /// Cancel multiple orders
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-batch-order" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="orderIds">Ids of orders to cancel</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancel multiple stop orders
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-batch-stop-order" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="orderIds">Ids of stop orders to cancel</param>
+        /// <param name="ct">Cancelation Token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
 
         /// <summary>
         /// Get trade list

@@ -178,10 +178,16 @@
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceMultipleStopOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
@@ -218,6 +224,12 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelStopOrderByClientOrderIdAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelStopOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetUserTradesAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
@@ -710,10 +722,16 @@
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceMultipleStopOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
@@ -743,6 +761,9 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -750,6 +771,9 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelStopOrderByClientOrderIdAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.CancelStopOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetUserTradesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
@@ -1271,6 +1295,11 @@
             Order updated
             </summary>
         </member>
+        <member name="F:CoinEx.Net.Enums.OrderUpdateType.Edit">
+            <summary>
+            Order was edited
+            </summary>
+        </member>
         <member name="F:CoinEx.Net.Enums.OrderUpdateType.Finish">
             <summary>
             Order finished
@@ -1344,6 +1373,26 @@
         <member name="F:CoinEx.Net.Enums.PriceType.IndexPrice">
             <summary>
             Index price
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Enums.SelfTradePreventionMode">
+            <summary>
+            Self trade prevention mode
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.SelfTradePreventionMode.CancelMaker">
+            <summary>
+            Cancel the maker order
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.SelfTradePreventionMode.CancelTaker">
+            <summary>
+            Cancel the taker order
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.SelfTradePreventionMode.CancelBoth">
+            <summary>
+            Cancel both orders
             </summary>
         </member>
         <member name="T:CoinEx.Net.Enums.StopOrderUpdateType">
@@ -1761,7 +1810,7 @@
             CoinEx trading endpoints, placing and mananging orders.
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new order
             <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-order" /></para>
@@ -1773,10 +1822,11 @@
             <param name="price">Price of the order</param>
             <param name="clientOrderId">Client order id</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new stop order
             <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-stop-order" /></para>
@@ -1790,6 +1840,25 @@
             <param name="clientOrderId">Client order id</param>
             <param name="triggerPrice">Price to trigger on</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest},System.Threading.CancellationToken)">
+            <summary>
+            Place multiple orders in a single call
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-multi-order" /></para>
+            </summary>
+            <param name="requests">Orders to place</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceMultipleStopOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest},System.Threading.CancellationToken)">
+            <summary>
+            Place multiple stop orders in a single call
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-multi-stop-order" /></para>
+            </summary>
+            <param name="requests">Stop orders to place</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
@@ -1927,6 +1996,26 @@
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="clientStopOrderId">Client order id of stop order to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel multiple orders
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-batch-order" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="orderIds">Ids of orders to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelStopOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel multiple stop orders
+            <para><a href="https://docs.coinex.com/api/v2/futures/order/http/cancel-batch-stop-order" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="orderIds">Ids of stop orders to cancel</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
@@ -3110,7 +3199,7 @@
             CoinEx trading endpoints, placing and mananging orders.
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-order" /></para>
@@ -3124,10 +3213,11 @@
             <param name="quantityAsset">The asset the quantity is in, for market orders van be the base or quote asset</param>
             <param name="clientOrderId">Client order id</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new stop order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-stop-order" /></para>
@@ -3142,6 +3232,25 @@
             <param name="clientOrderId">Client order id</param>
             <param name="triggerPrice">Price to trigger on</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest},System.Threading.CancellationToken)">
+            <summary>
+            Place multiple orders in a single call
+            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-multi-order" /></para>
+            </summary>
+            <param name="requests">The orders to place</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceMultipleStopOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest},System.Threading.CancellationToken)">
+            <summary>
+            Place multiple stop orders in a single call
+            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-multi-stop-order" /></para>
+            </summary>
+            <param name="requests">The stop orders to place</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
@@ -3260,6 +3369,16 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel multiple orders
+            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-batch-order" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="orderIds">Ids of orders to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel an active stop order
@@ -3290,6 +3409,16 @@
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
             <param name="clientStopOrderId">Client order id of stop order to cancel</param>
+            <param name="ct">Cancelation Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelStopOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel multiple stop orders
+            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-batch-stop-order" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="orderIds">Stop order ids to cancel</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
@@ -4735,6 +4864,52 @@
             Basis rate
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExBatchOrderResult">
+            <summary>
+            Batch operation result
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBatchOrderResult.Code">
+            <summary>
+            Result code
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBatchOrderResult.Message">
+            <summary>
+            Result message
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBatchOrderResult.Success">
+            <summary>
+            Whether the operation was successful
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExBatchResult`1">
+            <summary>
+            Batch operation result
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBatchResult`1.Code">
+            <summary>
+            Result code
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBatchResult`1.Message">
+            <summary>
+            Result message
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBatchResult`1.Data">
+            <summary>
+            The result data, only available when Success is true
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExBatchResult`1.Success">
+            <summary>
+            Whether the operation was successful
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate">
             <summary>
             Best book prices update
@@ -5315,6 +5490,116 @@
             Order data
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest">
+            <summary>
+            Place order request
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.Symbol">
+            <summary>
+            The symbol, for example `ETHUSDT`
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.AccountType">
+            <summary>
+            The account type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.Side">
+            <summary>
+            The side
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.OrderType">
+            <summary>
+            The order type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.Quantity">
+            <summary>
+            The quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.Price">
+            <summary>
+            The limit price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.ClientOrderId">
+            <summary>
+            The client order id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.Hide">
+            <summary>
+            Whether to hide the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceOrderRequest.StpMode">
+            <summary>
+            Self trade prevention mode
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest">
+            <summary>
+            Place stop order request
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.Symbol">
+            <summary>
+            The symbol, for example `ETHUSDT`
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.AccountType">
+            <summary>
+            The account type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.Side">
+            <summary>
+            The side
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.OrderType">
+            <summary>
+            The order type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.Quantity">
+            <summary>
+            The quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.Price">
+            <summary>
+            The limit price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.TriggerPrice">
+            <summary>
+            The trigger price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.TriggerPriceType">
+            <summary>
+            The trigger price type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.ClientOrderId">
+            <summary>
+            The client order id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.Hide">
+            <summary>
+            Whether to hide the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesPlaceStopOrderRequest.StpMode">
+            <summary>
+            Self trade prevention mode
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol">
             <summary>
             Futures symbol info
@@ -5891,6 +6176,121 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPaginated`1.Items">
             <summary>
             Page items
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest">
+            <summary>
+            Place order request
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.Symbol">
+            <summary>
+            The symbol, for example `ETHUSDT`
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.AccountType">
+            <summary>
+            The account type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.Side">
+            <summary>
+            The side
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.OrderType">
+            <summary>
+            The order type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.QuantityAsset">
+            <summary>
+            The asset the quantity is in, for market orders van be the base or quote asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.Quantity">
+            <summary>
+            The quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.Price">
+            <summary>
+            The limit price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.ClientOrderId">
+            <summary>
+            The client order id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.Hide">
+            <summary>
+            Whether to hide the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest.StpMode">
+            <summary>
+            Self trade prevention mode
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest">
+            <summary>
+            Place stop order request
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.Symbol">
+            <summary>
+            The symbol, for example `ETHUSDT`
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.AccountType">
+            <summary>
+            The account type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.Side">
+            <summary>
+            The side
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.OrderType">
+            <summary>
+            The order type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.QuantityAsset">
+            <summary>
+            The asset the quantity is in, for market orders van be the base or quote asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.Quantity">
+            <summary>
+            The quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.Price">
+            <summary>
+            The limit price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.TriggerPrice">
+            <summary>
+            The trigger price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.ClientOrderId">
+            <summary>
+            The client order id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.Hide">
+            <summary>
+            Whether to hide the order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest.StpMode">
+            <summary>
+            Self trade prevention mode
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPosition">

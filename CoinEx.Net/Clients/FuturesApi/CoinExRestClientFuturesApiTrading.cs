@@ -7,6 +7,7 @@ using CoinEx.Net.Objects.Models.V2;
 using System;
 using CryptoExchange.Net;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using System.Collections.Generic;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
@@ -29,6 +30,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
             clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
@@ -44,6 +46,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalString("price", price);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
+            parameters.AddOptionalEnum("stp_mode", stpMode);
             return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
@@ -58,6 +61,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
             clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
@@ -75,7 +79,38 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalString("price", price);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
+            parameters.AddOptionalEnum("stp_mode", stpMode);
             return await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("v2/futures/stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> PlaceMultipleOrdersAsync(
+            IEnumerable<CoinExFuturesPlaceOrderRequest> requests,
+            CancellationToken ct = default)
+        {
+            foreach (var order in requests)
+                order.ClientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
+
+            var parameters = new ParameterCollection()
+            {
+                { "orders", requests }
+            };
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(_baseClient.GetUri("v2/futures/batch-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopId>>>> PlaceMultipleStopOrdersAsync(
+            IEnumerable<CoinExFuturesPlaceStopOrderRequest> requests,
+            CancellationToken ct = default)
+        {
+            foreach (var order in requests)
+                order.ClientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
+
+            var parameters = new ParameterCollection()
+            {
+                { "orders", requests }
+            };
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExStopId>>>(_baseClient.GetUri("v2/futures/batch-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -241,7 +276,30 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/futures/cancel-stop-order-by-client-id"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
-            
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "order_ids", orderIds }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(_baseClient.GetUri("v2/futures/cancel-batch-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "stop_ids", orderIds }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(_baseClient.GetUri("v2/futures/cancel-batch-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
