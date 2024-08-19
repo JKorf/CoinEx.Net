@@ -23,6 +23,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="price">Price of the order</param>
         /// <param name="clientOrderId">Client order id</param>
         /// <param name="hide">Hide the order</param>
+        /// <param name="stpMode">Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExFuturesOrder>> PlaceOrderAsync(
@@ -33,6 +34,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default);
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="clientOrderId">Client order id</param>
         /// <param name="triggerPrice">Price to trigger on</param>
         /// <param name="hide">Hide the order</param>
+        /// <param name="stpMode">Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExStopId>> PlaceStopOrderAsync(
@@ -60,6 +63,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default);
 
         /// <summary>

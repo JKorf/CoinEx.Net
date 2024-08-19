@@ -18,9 +18,14 @@ namespace CoinEx.Net.Enums
         [Map("update")]
         Update,
         /// <summary>
+        /// Order was edited
+        /// </summary>
+        [Map("modify")]
+        Edit,
+        /// <summary>
         /// Order finished
         /// </summary>
         [Map("finish")]
-        Finish
+        Finish,
     }
 }

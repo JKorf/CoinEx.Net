@@ -178,10 +178,10 @@
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
@@ -710,10 +710,10 @@
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
@@ -1271,6 +1271,11 @@
             Order updated
             </summary>
         </member>
+        <member name="F:CoinEx.Net.Enums.OrderUpdateType.Edit">
+            <summary>
+            Order was edited
+            </summary>
+        </member>
         <member name="F:CoinEx.Net.Enums.OrderUpdateType.Finish">
             <summary>
             Order finished
@@ -1344,6 +1349,26 @@
         <member name="F:CoinEx.Net.Enums.PriceType.IndexPrice">
             <summary>
             Index price
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Enums.SelfTradePreventionMode">
+            <summary>
+            Self trade prevention mode
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.SelfTradePreventionMode.CancelMaker">
+            <summary>
+            Cancel the maker order
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.SelfTradePreventionMode.CancelTaker">
+            <summary>
+            Cancel the taker order
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.SelfTradePreventionMode.CancelBoth">
+            <summary>
+            Cancel both orders
             </summary>
         </member>
         <member name="T:CoinEx.Net.Enums.StopOrderUpdateType">
@@ -1761,7 +1786,7 @@
             CoinEx trading endpoints, placing and mananging orders.
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new order
             <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-order" /></para>
@@ -1773,10 +1798,11 @@
             <param name="price">Price of the order</param>
             <param name="clientOrderId">Client order id</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,CoinEx.Net.Enums.TriggerPriceType,System.Nullable{System.Decimal},System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new stop order
             <para><a href="https://docs.coinex.com/api/v2/futures/order/http/put-stop-order" /></para>
@@ -1790,6 +1816,7 @@
             <param name="clientOrderId">Client order id</param>
             <param name="triggerPrice">Price to trigger on</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
@@ -3110,7 +3137,7 @@
             CoinEx trading endpoints, placing and mananging orders.
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-order" /></para>
@@ -3124,10 +3151,11 @@
             <param name="quantityAsset">The asset the quantity is in, for market orders van be the base or quote asset</param>
             <param name="clientOrderId">Client order id</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new stop order
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-stop-order" /></para>
@@ -3142,6 +3170,7 @@
             <param name="clientOrderId">Client order id</param>
             <param name="triggerPrice">Price to trigger on</param>
             <param name="hide">Hide the order</param>
+            <param name="stpMode">Self trade prevention mode</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>

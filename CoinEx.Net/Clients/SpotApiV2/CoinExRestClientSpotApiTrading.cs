@@ -31,6 +31,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             string? quantityAsset = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
             clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
@@ -47,6 +48,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddOptional("ccy", quantityAsset);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
+            parameters.AddOptionalEnum("stp_mode", stpMode);
             var result = await _baseClient.ExecuteAsync<CoinExOrder>(_baseClient.GetUri("v2/spot/order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
             if (result)
                 _baseClient.InvokeOrderPlaced(new CryptoExchange.Net.CommonObjects.OrderId { Id = result.Data.Id.ToString(), SourceObject = result.Data });
@@ -65,6 +67,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             string? quantityAsset = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
             clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
@@ -82,6 +85,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddOptional("ccy", quantityAsset);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
+            parameters.AddOptionalEnum("stp_mode", stpMode);
             var result = await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("v2/spot/stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
             if (result)
                 _baseClient.InvokeOrderPlaced(new CryptoExchange.Net.CommonObjects.OrderId { Id = result.Data.StopOrderId.ToString(), SourceObject = result.Data });

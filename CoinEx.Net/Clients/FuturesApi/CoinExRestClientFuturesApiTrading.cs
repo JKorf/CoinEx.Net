@@ -29,6 +29,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
             clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
@@ -44,6 +45,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalString("price", price);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
+            parameters.AddOptionalEnum("stp_mode", stpMode);
             return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
@@ -58,6 +60,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
             clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
@@ -75,6 +78,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalString("price", price);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
+            parameters.AddOptionalEnum("stp_mode", stpMode);
             return await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("v2/futures/stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
 
