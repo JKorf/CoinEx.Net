@@ -157,6 +157,11 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 7.6.0 - 19 Aug 2024
+    * Added futures API batch endpoints:FuturesApi.Trading.PlaceMultipleOrdersAsync, PlaceMultipleStopOrdersAsync, CancelOrdersAsync and CancelStopOrdersAsync
+    * Added spot API batch endpoints: SpotApiV2.Trading.PlaceMultipleOrdersAsync, PlaceMultipleStopOrdersAsync, CancelOrdersAsync and CancelStopOrdersAsync
+    * Added stpMode paramaters to spot and futures PlaceOrderAsync and PlaceStopOrderAsync endpoints
+
 * Version 7.5.0 - 07 Aug 2024
     * Updated CryptoExchange.Net to version 7.11.0, see https://github.com/JKorf/CryptoExchange.Net/releases/tag/7.11.0
     * Updated XML code comments
