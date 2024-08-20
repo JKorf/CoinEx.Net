@@ -6,12 +6,18 @@ using System.Text;
 namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
     public interface ICoinExRestClientSpotApiShared :
-        ITickerRestClient,
-        ISpotSymbolRestClient,
-        IKlineRestClient,
-        IRecentTradeRestClient,
+        IAssetRestClient,
         IBalanceRestClient,
-        ISpotOrderRestClient
+        IDepositRestClient,
+        IKlineRestClient,
+        IOrderBookRestClient,
+        IRecentTradeRestClient,
+        ISpotOrderRestClient,
+        ISpotSymbolRestClient,
+        ITickerRestClient,
+        //ITradeHistoryRestClient,
+        IWithdrawalRestClient,
+        IWithdrawRestClient
     {
     }
 }

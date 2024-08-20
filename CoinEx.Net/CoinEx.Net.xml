@@ -668,7 +668,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetDepositHistoryAsync(System.String,System.String,System.Nullable{CoinEx.Net.Enums.DepositStatus},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.Decimal,System.String,System.Nullable{CoinEx.Net.Enums.MovementMethod},System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.Decimal,System.String,System.Nullable{CoinEx.Net.Enums.MovementMethod},System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
@@ -3018,17 +3018,18 @@
             <param name="ct">Cancelation token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.Decimal,System.String,System.Nullable{CoinEx.Net.Enums.MovementMethod},System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.Decimal,System.String,System.Nullable{CoinEx.Net.Enums.MovementMethod},System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
             <summary>
             Withdraw funds to an external address or another CoinEx user
             <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /></para>
             </summary>
             <param name="asset">Asset to withdraw, for example `ETH`</param>
-            <param name="quanity">Withdrawal quantity</param>
+            <param name="quantity">Withdrawal quantity</param>
             <param name="toAddress">Withdrawal address.The withdrawal address needs to be added to the IP whitelist via Developer Console</param>
             <param name="method">Withdrawal methods (On-chain or inter-user transfer). Default as on-chain withdrawal</param>
             <param name="network">Network name. Required for On-chain, not required for inter-user transfer</param>
             <param name="remark">Withdrawal note</param>
+            <param name="memo">Memo for the withdrawal, required for some deposits</param>
             <param name="extraParameters">If it is a withdrawal from the KDA chain, you need to append the chain_id field to the extra field</param>
             <param name="ct">Cancelation token</param>
             <returns></returns>
