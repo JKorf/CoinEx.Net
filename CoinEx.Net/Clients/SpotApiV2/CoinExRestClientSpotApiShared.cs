@@ -55,7 +55,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Get data
             var result = await ExchangeData.GetKlinesAsync(
-                request.GetSymbol(FormatSymbol),
+                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 interval,
                 limit: limit,
                 ct: ct
@@ -109,7 +109,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (validationError != null)
                 return new ExchangeWebResult<SharedTicker>(Exchange, validationError);
 
-            var result = await ExchangeData.GetTickersAsync(new[] { request.GetSymbol(FormatSymbol) }, ct).ConfigureAwait(false);
+            var result = await ExchangeData.GetTickersAsync(new[] { request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)) }, ct).ConfigureAwait(false);
             if (!result)
                 return result.AsExchangeResult<SharedTicker>(Exchange, default);
 
@@ -144,7 +144,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<IEnumerable<SharedTrade>>(Exchange, validationError);
 
             var result = await ExchangeData.GetTradeHistoryAsync(
-                request.GetSymbol(FormatSymbol),
+                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 limit: request.Limit,
                 ct: ct).ConfigureAwait(false);
             if (!result)
@@ -201,14 +201,14 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedId>(Exchange, validationError);
 
             var result = await Trading.PlaceOrderAsync(
-                request.GetSymbol(FormatSymbol),
+                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 AccountType.Spot,
                 request.Side == SharedOrderSide.Buy ? OrderSide.Buy : OrderSide.Sell,
                 GetOrderType(request.OrderType, request.TimeInForce),
                 quantity: request.Quantity ?? request.QuoteQuantity ?? 0,
                 price: request.Price,
                 clientOrderId: request.ClientOrderId,
-                quantityAsset: request.OrderType == SharedOrderType.Market ? (request.Quantity != null ? request.BaseAsset : request.QuoteAsset) : null
+                quantityAsset: request.OrderType == SharedOrderType.Market ? (request.Quantity != null ? request.Symbol.BaseAsset : request.Symbol.QuoteAsset) : null
                 ).ConfigureAwait(false);
 
             if (!result)
@@ -217,17 +217,17 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return result.AsExchangeResult(Exchange, new SharedId(result.Data.Id.ToString()));
         }
 
-        EndpointOptions<GetOrderRequest> ISpotOrderRestClient.GetOrderOptions { get; } = new EndpointOptions<GetOrderRequest>(true);
-        async Task<ExchangeWebResult<SharedSpotOrder>> ISpotOrderRestClient.GetOrderAsync(GetOrderRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        EndpointOptions<GetOrderRequest> ISpotOrderRestClient.GetSpotOrderOptions { get; } = new EndpointOptions<GetOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedSpotOrder>> ISpotOrderRestClient.GetSpotOrderAsync(GetOrderRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ISpotOrderRestClient)this).GetOrderOptions.ValidateRequest(Exchange, request, exchangeParameters);
+            var validationError = ((ISpotOrderRestClient)this).GetSpotOrderOptions.ValidateRequest(Exchange, request, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<SharedSpotOrder>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedSpotOrder>(Exchange, new ArgumentError("Invalid order id"));
 
-            var orders = await Trading.GetOrderAsync(request.GetSymbol(FormatSymbol), orderId).ConfigureAwait(false);
+            var orders = await Trading.GetOrderAsync(request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)), orderId).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<SharedSpotOrder>(Exchange, default);
 
@@ -241,27 +241,25 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = orders.Data.ClientOrderId,
                 Price = orders.Data.Price,
-                Quantity = orders.Data.QuantityAsset == null || orders.Data.QuantityAsset == request.BaseAsset ? orders.Data.Quantity : null,
+                Quantity = orders.Data.QuantityAsset == null || orders.Data.QuantityAsset == request.Symbol.BaseAsset ? orders.Data.Quantity : null,
                 QuantityFilled = orders.Data.QuantityFilled,
                 UpdateTime = orders.Data.UpdateTime,
-                QuoteQuantity = orders.Data.QuantityAsset == request.QuoteAsset ? orders.Data.Quantity : null,
+                QuoteQuantity = orders.Data.QuantityAsset == request.Symbol.QuoteAsset ? orders.Data.Quantity : null,
                 QuoteQuantityFilled = orders.Data.ValueFilled,
                 Fee = orders.Data.FeeBaseAsset > 0 ? orders.Data.FeeBaseAsset : orders.Data.FeeQuoteAsset,
-                FeeAsset = orders.Data.FeeBaseAsset > 0 ? request.BaseAsset : orders.Data.FeeQuoteAsset > 0 ? request.QuoteAsset : null,
+                FeeAsset = orders.Data.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : orders.Data.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(orders.Data.OrderType)
             });
         }
 
-        EndpointOptions<GetSpotOpenOrdersRequest> ISpotOrderRestClient.GetOpenOrdersOptions { get; } = new EndpointOptions<GetSpotOpenOrdersRequest>(true);
-        async Task<ExchangeWebResult<IEnumerable<SharedSpotOrder>>> ISpotOrderRestClient.GetOpenOrdersAsync(GetSpotOpenOrdersRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        EndpointOptions<GetOpenOrdersRequest> ISpotOrderRestClient.GetOpenSpotOrdersOptions { get; } = new EndpointOptions<GetOpenOrdersRequest>(true);
+        async Task<ExchangeWebResult<IEnumerable<SharedSpotOrder>>> ISpotOrderRestClient.GetOpenSpotOrdersAsync(GetOpenOrdersRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ISpotOrderRestClient)this).GetOpenOrdersOptions.ValidateRequest(Exchange, request, exchangeParameters);
+            var validationError = ((ISpotOrderRestClient)this).GetOpenSpotOrdersOptions.ValidateRequest(Exchange, request, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedSpotOrder>>(Exchange, validationError);
 
-            string? symbol = null;
-            if (request.BaseAsset != null && request.QuoteAsset != null)
-                symbol = FormatSymbol(request.BaseAsset, request.QuoteAsset, ApiType.Spot);
+            string? symbol = request.Symbol?.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, ApiType.Spot));
 
             var orders = await Trading.GetOpenOrdersAsync(AccountType.Spot, symbol).ConfigureAwait(false);
             if (!orders)
@@ -277,21 +275,21 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = x.ClientOrderId,
                 Price = x.Price,
-                Quantity = x.QuantityAsset == null || x.QuantityAsset == request.BaseAsset ? x.Quantity : null,
+                Quantity = x.QuantityAsset == null || x.QuantityAsset == request.Symbol?.BaseAsset ? x.Quantity : null,
                 QuantityFilled = x.QuantityFilled,
                 UpdateTime = x.UpdateTime,
-                QuoteQuantity = x.QuantityAsset == request.QuoteAsset ? x.Quantity : null,
+                QuoteQuantity = x.QuantityAsset == request.Symbol?.QuoteAsset ? x.Quantity : null,
                 QuoteQuantityFilled = x.ValueFilled,
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
-                FeeAsset = x.FeeBaseAsset > 0 ? request.BaseAsset : x.FeeQuoteAsset > 0 ? request.QuoteAsset : null,
+                FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
             }));
         }
 
-        PaginatedEndpointOptions<GetSpotClosedOrdersRequest> ISpotOrderRestClient.GetClosedOrdersOptions { get; } = new PaginatedEndpointOptions<GetSpotClosedOrdersRequest>(true, true);
-        async Task<ExchangeWebResult<IEnumerable<SharedSpotOrder>>> ISpotOrderRestClient.GetClosedOrdersAsync(GetSpotClosedOrdersRequest request, INextPageToken? pageToken, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        PaginatedEndpointOptions<GetClosedOrdersRequest> ISpotOrderRestClient.GetClosedSpotOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(true, true);
+        async Task<ExchangeWebResult<IEnumerable<SharedSpotOrder>>> ISpotOrderRestClient.GetClosedSpotOrdersAsync(GetClosedOrdersRequest request, INextPageToken? pageToken, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ISpotOrderRestClient)this).GetClosedOrdersOptions.ValidateRequest(Exchange, request, exchangeParameters);
+            var validationError = ((ISpotOrderRestClient)this).GetClosedSpotOrdersOptions.ValidateRequest(Exchange, request, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedSpotOrder>>(Exchange, validationError);
 
@@ -307,7 +305,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             // Get data
             var orders = await Trading.GetClosedOrdersAsync(
                 AccountType.Spot,
-                request.GetSymbol(FormatSymbol),
+                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 page: page,
                 pageSize: pageSize).ConfigureAwait(false);
             if (!orders)
@@ -328,28 +326,28 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = x.ClientOrderId,
                 Price = x.Price,
-                Quantity = x.QuantityAsset == null || x.QuantityAsset == request.BaseAsset ? x.Quantity : null,
+                Quantity = x.QuantityAsset == null || x.QuantityAsset == request.Symbol.BaseAsset ? x.Quantity : null,
                 QuantityFilled = x.QuantityFilled,
                 UpdateTime = x.UpdateTime,
-                QuoteQuantity = x.QuantityAsset == request.QuoteAsset ? x.Quantity : null,
+                QuoteQuantity = x.QuantityAsset == request.Symbol.QuoteAsset ? x.Quantity : null,
                 QuoteQuantityFilled = x.ValueFilled,
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
-                FeeAsset = x.FeeBaseAsset > 0 ? request.BaseAsset : x.FeeQuoteAsset > 0 ? request.QuoteAsset : null,
+                FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
             }), nextToken);
         }
 
-        EndpointOptions<GetOrderTradesRequest> ISpotOrderRestClient.GetOrderTradesOptions { get; } = new EndpointOptions<GetOrderTradesRequest>(true);
-        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetOrderTradesAsync(GetOrderTradesRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        EndpointOptions<GetOrderTradesRequest> ISpotOrderRestClient.GetSpotOrderTradesOptions { get; } = new EndpointOptions<GetOrderTradesRequest>(true);
+        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetSpotOrderTradesAsync(GetOrderTradesRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ISpotOrderRestClient)this).GetOrderTradesOptions.ValidateRequest(Exchange, request, exchangeParameters);
+            var validationError = ((ISpotOrderRestClient)this).GetSpotOrderTradesOptions.ValidateRequest(Exchange, request, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedUserTrade>>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<IEnumerable<SharedUserTrade>>(Exchange, new ArgumentError("Invalid order id"));
 
-            var orders = await Trading.GetOrderTradesAsync(request.GetSymbol(FormatSymbol), AccountType.Spot, orderId: orderId).ConfigureAwait(false);
+            var orders = await Trading.GetOrderTradesAsync(request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)), AccountType.Spot, orderId: orderId).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, default);
 
@@ -367,10 +365,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }));
         }
 
-        PaginatedEndpointOptions<GetUserTradesRequest> ISpotOrderRestClient.GetUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(true, true);
-        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetUserTradesAsync(GetUserTradesRequest request, INextPageToken? pageToken, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        PaginatedEndpointOptions<GetUserTradesRequest> ISpotOrderRestClient.GetSpotUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(true, true);
+        async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> ISpotOrderRestClient.GetSpotUserTradesAsync(GetUserTradesRequest request, INextPageToken? pageToken, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ISpotOrderRestClient)this).GetUserTradesOptions.ValidateRequest(Exchange, request, exchangeParameters);
+            var validationError = ((ISpotOrderRestClient)this).GetSpotUserTradesOptions.ValidateRequest(Exchange, request, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedUserTrade>>(Exchange, validationError);
 
@@ -385,7 +383,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Get data
             var orders = await Trading.GetUserTradesAsync(
-                request.GetSymbol(FormatSymbol),
+                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 AccountType.Spot,
                 startTime: request.Filter?.StartTime,
                 endTime: request.Filter?.EndTime,
@@ -413,17 +411,17 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }), nextToken);
         }
                 
-        EndpointOptions<CancelOrderRequest> ISpotOrderRestClient.CancelOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
-        async Task<ExchangeWebResult<SharedId>> ISpotOrderRestClient.CancelOrderAsync(CancelOrderRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        EndpointOptions<CancelOrderRequest> ISpotOrderRestClient.CancelSpotOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedId>> ISpotOrderRestClient.CancelSpotOrderAsync(CancelOrderRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ISpotOrderRestClient)this).CancelOrderOptions.ValidateRequest(Exchange, request, exchangeParameters);
+            var validationError = ((ISpotOrderRestClient)this).CancelSpotOrderOptions.ValidateRequest(Exchange, request, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<SharedId>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedId>(Exchange, new ArgumentError("Invalid order id"));
 
-            var order = await Trading.CancelOrderAsync(request.GetSymbol(FormatSymbol), AccountType.Spot, orderId).ConfigureAwait(false);
+            var order = await Trading.CancelOrderAsync(request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)), AccountType.Spot, orderId).ConfigureAwait(false);
             if (!order)
                 return order.AsExchangeResult<SharedId>(Exchange, default);
 
@@ -465,11 +463,35 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         #region Asset client
-        EndpointOptions IAssetRestClient.GetAssetsOptions { get; } = new EndpointOptions("GetAssetsRequest", false);
 
-        async Task<ExchangeWebResult<IEnumerable<SharedAsset>>> IAssetRestClient.GetAssetsAsync(ExchangeParameters? exchangeParameters, CancellationToken ct)
+        EndpointOptions<GetAssetRequest> IAssetsRestClient.GetAssetOptions { get; } = new EndpointOptions<GetAssetRequest>(false);
+        async Task<ExchangeWebResult<SharedAsset>> IAssetsRestClient.GetAssetAsync(GetAssetRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((IAssetRestClient)this).GetAssetsOptions.ValidateRequest(Exchange, exchangeParameters);
+            var validationError = ((IAssetsRestClient)this).GetAssetOptions.ValidateRequest(Exchange, request, exchangeParameters);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedAsset>(Exchange, validationError);
+
+            var asset = await Account.GetDepositWithdrawalConfigAsync(request.Asset, ct: ct).ConfigureAwait(false);
+            if (!asset)
+                return asset.AsExchangeResult<SharedAsset>(Exchange, default);
+
+            return asset.AsExchangeResult<SharedAsset>(Exchange, new SharedAsset(asset.Data.Asset.Asset)
+            {
+                Networks = asset.Data.Networks.Select(x => new SharedAssetNetwork(x.Network)
+                {
+                    DepositEnabled = x.DepositEnabled,
+                    WithdrawEnabled = x.WithdrawEnabled,
+                    WithdrawFee = x.WithdrawalFee,
+                    MinWithdrawQuantity = x.MinWithdrawQuantity,
+                    MinConfirmations = x.SafeConfirmations
+                })
+            });
+        }
+
+        EndpointOptions IAssetsRestClient.GetAssetsOptions { get; } = new EndpointOptions("GetAssetsRequest", false);
+        async Task<ExchangeWebResult<IEnumerable<SharedAsset>>> IAssetsRestClient.GetAssetsAsync(ExchangeParameters? exchangeParameters, CancellationToken ct)
+        {
+            var validationError = ((IAssetsRestClient)this).GetAssetsOptions.ValidateRequest(Exchange, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedAsset>>(Exchange, validationError);
 
@@ -568,7 +590,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedOrderBook>(Exchange, validationError);
 
             var result = await ExchangeData.GetOrderBookAsync(
-                request.GetSymbol(FormatSymbol),
+                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 limit: request.Limit ?? 20,
                 ct: ct).ConfigureAwait(false);
             if (!result)

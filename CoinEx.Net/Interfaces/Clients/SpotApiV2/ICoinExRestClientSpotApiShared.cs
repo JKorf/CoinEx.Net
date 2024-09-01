@@ -6,7 +6,7 @@ using System.Text;
 namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
     public interface ICoinExRestClientSpotApiShared :
-        IAssetRestClient,
+        IAssetsRestClient,
         IBalanceRestClient,
         IDepositRestClient,
         IKlineRestClient,

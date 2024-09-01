@@ -3,6 +3,7 @@ using CoinEx.Net.Interfaces;
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Objects.Options;
 using CoinEx.Net.SymbolOrderBooks;
+using CryptoExchange.Net;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Interfaces;
 using System;
@@ -61,6 +62,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ICryptoSocketClient, CryptoSocketClient>();
             services.AddTransient<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
             services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.CommonSpotClient);
+
+            services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
+            services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient);
+
             if (socketClientLifeTime == null)
                 services.AddSingleton<ICoinExSocketClient, CoinExSocketClient>();
             else
