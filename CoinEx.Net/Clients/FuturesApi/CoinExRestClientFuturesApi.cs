@@ -19,7 +19,7 @@ using CoinEx.Net.Interfaces.Clients.FuturesApi;
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc cref="ICoinExRestClientFuturesApi" />
-    internal class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
+    internal partial class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
     {
         #region fields
         internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");
@@ -64,6 +64,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor();
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer();
+
+        public ICoinExRestClientFuturesApiShared SharedClient => this;
 
         /// <inheritdoc />
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)

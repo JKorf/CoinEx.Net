@@ -48,12 +48,12 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Base asset precision
         /// </summary>
         [JsonPropertyName("base_ccy_precision")]
-        public decimal QuantityPrecision { get; set; }
+        public int QuantityPrecision { get; set; }
         /// <summary>
         /// Quote asset precision
         /// </summary>
         [JsonPropertyName("quote_ccy_precision")]
-        public decimal PricePrecision { get; set; }
+        public int PricePrecision { get; set; }
         /// <summary>
         /// Leverage
         /// </summary>

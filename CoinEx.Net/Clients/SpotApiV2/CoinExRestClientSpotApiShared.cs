@@ -103,10 +103,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #region Ticker client
 
-        EndpointOptions<GetTickerRequest> ITickerRestClient.GetTickerOptions { get; } = new EndpointOptions<GetTickerRequest>(false);
-        async Task<ExchangeWebResult<SharedSpotTicker>> ITickerRestClient.GetTickerAsync(GetTickerRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        EndpointOptions<GetTickerRequest> ISpotTickerRestClient.GetSpotTickerOptions { get; } = new EndpointOptions<GetTickerRequest>(false);
+        async Task<ExchangeWebResult<SharedSpotTicker>> ISpotTickerRestClient.GetSpotTickerAsync(GetTickerRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ITickerRestClient)this).GetTickerOptions.ValidateRequest(Exchange, exchangeParameters);
+            var validationError = ((ISpotTickerRestClient)this).GetSpotTickerOptions.ValidateRequest(Exchange, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<SharedSpotTicker>(Exchange, validationError);
 
@@ -118,10 +118,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return result.AsExchangeResult(Exchange, new SharedSpotTicker(ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume));
         }
 
-        EndpointOptions ITickerRestClient.GetTickersOptions { get; } = new EndpointOptions("GetTickerRequest", false);
-        async Task<ExchangeWebResult<IEnumerable<SharedSpotTicker>>> ITickerRestClient.GetTickersAsync(ApiType? apiType, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        EndpointOptions ISpotTickerRestClient.GetSpotTickersOptions { get; } = new EndpointOptions("GetTickerRequest", false);
+        async Task<ExchangeWebResult<IEnumerable<SharedSpotTicker>>> ISpotTickerRestClient.GetSpotTickersAsync(ApiType? apiType, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((ITickerRestClient)this).GetTickerOptions.ValidateRequest(Exchange, exchangeParameters);
+            var validationError = ((ISpotTickerRestClient)this).GetSpotTickerOptions.ValidateRequest(Exchange, exchangeParameters);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedSpotTicker>>(Exchange, validationError);
 

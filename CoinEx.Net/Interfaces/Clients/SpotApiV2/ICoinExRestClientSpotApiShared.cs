@@ -15,7 +15,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         IRecentTradeRestClient,
         ISpotOrderRestClient,
         ISpotSymbolRestClient,
-        ITickerRestClient,
+        ISpotTickerRestClient,
         //ITradeHistoryRestClient,
         IWithdrawalRestClient,
         IWithdrawRestClient
