@@ -116,7 +116,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             var data = result.Data;
             if (apiType != null)
-                data = result.Data.Where(x => x.ContractType == (apiType == ApiType.LinearFutures ? ContractType.Linear : ContractType.Inverse));
+                data = result.Data.Where(x => x.ContractType == ((apiType == ApiType.PerpetualLinear || apiType == ApiType.DeliveryLinear) ? ContractType.Linear : ContractType.Inverse));
 
             return result.AsExchangeResult(Exchange, data.Select(s => new SharedFuturesSymbol(
                 s.ContractType == ContractType.Inverse ? SharedSymbolType.PerpetualInverse : SharedSymbolType.PerpetualLinear,
@@ -691,7 +691,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeWebResult<SharedOpenInterest>(Exchange, validationError);
 
-            var result = await ExchangeData.GetSymbolsAsync(new[] { request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, ApiType.InverseFutures)) }, ct: ct).ConfigureAwait(false);
+            var result = await ExchangeData.GetSymbolsAsync(new[] { request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)) }, ct: ct).ConfigureAwait(false);
             if (!result)
                 return result.AsExchangeResult<SharedOpenInterest>(Exchange, default);
 
@@ -723,7 +723,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Get data
             var result = await ExchangeData.GetFundingRateHistoryAsync(
-                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, ApiType.InverseFutures)),
+                request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 startTime: request.StartTime,
                 endTime: request.EndTime,
                 page: page,
