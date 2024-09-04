@@ -21,6 +21,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
     internal partial class CoinExSocketClientSpotApi : ICoinExSocketClientSpotApiShared
     {
         public string Exchange => CoinExExchange.ExchangeName;
+        public ApiType[] SupportedApiTypes { get; } = new[] { ApiType.Spot };
 
         async Task<ExchangeResult<UpdateSubscription>> ITickerSocketClient.SubscribeToTickerUpdatesAsync(TickerSubscribeRequest request, Action<DataEvent<SharedSpotTicker>> handler, CancellationToken ct)
         {
