@@ -118,7 +118,9 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (apiType != null)
                 data = result.Data.Where(x => x.ContractType == (apiType == ApiType.LinearFutures ? ContractType.Linear : ContractType.Inverse));
 
-            return result.AsExchangeResult(Exchange, data.Select(s => new SharedFuturesSymbol(s.BaseAsset, s.QuoteAsset, s.Symbol)
+            return result.AsExchangeResult(Exchange, data.Select(s => new SharedFuturesSymbol(
+                s.ContractType == ContractType.Inverse ? SharedSymbolType.PerpetualInverse : SharedSymbolType.PerpetualLinear,
+                s.BaseAsset, s.QuoteAsset, s.Symbol)
             {
                 MinTradeQuantity = s.MinOrderQuantity,
                 QuantityDecimals = s.QuantityPrecision,
