@@ -5661,6 +5661,16 @@
             Open interest volume
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.TradingAvailable">
+            <summary>
+            Is trading available
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.CopyTradingAvailable">
+            <summary>
+            Is copy trading available
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesTicker">
             <inheritdoc />
         </member>

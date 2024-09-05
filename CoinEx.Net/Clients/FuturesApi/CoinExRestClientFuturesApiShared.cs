@@ -24,7 +24,7 @@ namespace CoinEx.Net.Clients.FuturesApi
     internal partial class CoinExRestClientFuturesApi : ICoinExRestClientFuturesApiShared
     {
         public string Exchange => CoinExExchange.ExchangeName;
-        public ApiType[] SupportedApiTypes { get; } = new[] { ApiType.PerpetualLinear, ApiType.DeliveryLinear };
+        public ApiType[] SupportedApiTypes { get; } = new[] { ApiType.PerpetualLinear, ApiType.PerpetualInverse };
 
         #region Balance Client
         EndpointOptions IBalanceRestClient.GetBalancesOptions { get; } = new EndpointOptions("GetBalancesRequest", true);
@@ -119,13 +119,12 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedFuturesSymbol>>(Exchange, default);
 
-            var data = result.Data;
-            if (apiType != null)
-                data = result.Data.Where(x => x.ContractType == ((apiType == ApiType.PerpetualLinear || apiType == ApiType.DeliveryLinear) ? ContractType.Linear : ContractType.Inverse));
+            var data = result.Data.Where(x => 
+                apiType == ApiType.PerpetualLinear ? x.ContractType == ContractType.Linear : x.ContractType == ContractType.Inverse);
 
             return result.AsExchangeResult(Exchange, data.Select(s => new SharedFuturesSymbol(
                 s.ContractType == ContractType.Inverse ? SharedSymbolType.PerpetualInverse : SharedSymbolType.PerpetualLinear,
-                s.BaseAsset, s.QuoteAsset, s.Symbol)
+                s.BaseAsset, s.QuoteAsset, s.Symbol, s.TradingAvailable)
             {
                 MinTradeQuantity = s.MinOrderQuantity,
                 QuantityDecimals = s.QuantityPrecision,
