@@ -163,11 +163,11 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             var result = await Trading.PlaceOrderAsync(
                 request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
-                request.Side == SharedOrderSide.Buy ? Enums.OrderSide.Buy : Enums.OrderSide.Sell,
+                GetOrderSide(request.Side, request.PositionSide),
                 GetOrderType(request.OrderType, request.TimeInForce),
                 quantity: request.Quantity ?? 0,
                 price: request.Price,                
-#warning check how to specify long/short
+#warning check how to specify long/short. Do we adjust Side based on position side? So Buy + Short = Sell ?
                 clientOrderId: request.ClientOrderId).ConfigureAwait(false);
 
             if (!result)
@@ -340,8 +340,8 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Get data
             var orders = await Trading.GetUserTradesAsync(request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
-                startTime: request.Filter?.StartTime,
-                endTime: request.Filter?.EndTime,
+                startTime: request.StartTime,
+                endTime: request.EndTime,
                 page: page,
                 pageSize: pageSize,
                 ct: ct
@@ -398,7 +398,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedPosition>>(Exchange, default);
 
-            return result.AsExchangeResult<IEnumerable<SharedPosition>>(Exchange, result.Data.Items.Select(x => new SharedPosition(x.Symbol, x.OpenInterest, x.UpdateTime ?? default)
+            return result.AsExchangeResult<IEnumerable<SharedPosition>>(Exchange, result.Data.Items.Select(x => new SharedPosition(x.Symbol, x.OpenInterest, x.UpdateTime)
             {
                 UnrealizedPnl = x.UnrealizedPnl,
                 LiquidationPrice = x.LiquidationPrice,
@@ -422,6 +422,21 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return result.AsExchangeResult<SharedId>(Exchange, default);
 
             return result.AsExchangeResult(Exchange, new SharedId(result.Data.Id.ToString()));
+        }
+
+        private OrderSide GetOrderSide(SharedOrderSide side, SharedPositionSide? posSide)
+        {
+            if (posSide == null)
+                return side == SharedOrderSide.Sell ? OrderSide.Sell : OrderSide.Buy;
+
+            if (posSide == SharedPositionSide.Long)
+            {
+                if (side == SharedOrderSide.Buy) return OrderSide.Buy;
+                return OrderSide.Sell;
+            }
+
+            if (side == SharedOrderSide.Buy) return OrderSide.Sell;
+            return OrderSide.Sell;
         }
 
         private OrderTypeV2 GetOrderType(SharedOrderType type, SharedTimeInForce? tif)
@@ -486,7 +501,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var result = await ExchangeData.GetKlinesAsync(
                 request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 interval,
-                request.Filter?.Limit ?? 1000,
+                request.Limit ?? 1000,
                 ct: ct
                 ).ConfigureAwait(false);
             if (!result)
@@ -494,10 +509,10 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Get next token
             DateTimeToken? nextToken = null;
-            if (request.Filter?.StartTime != null && result.Data.Any())
+            if (request.StartTime != null && result.Data.Any())
             {
                 var maxOpenTime = result.Data.Max(x => x.OpenTime);
-                if (maxOpenTime < request.Filter.EndTime!.Value.AddSeconds(-(int)request.Interval))
+                if (maxOpenTime < request.EndTime!.Value.AddSeconds(-(int)request.Interval))
                     nextToken = new DateTimeToken(maxOpenTime.AddSeconds((int)interval));
             }
 
@@ -532,7 +547,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var result = await ExchangeData.GetKlinesAsync(
                 request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 interval,
-                request.Filter?.Limit ?? 1000,
+                request.Limit ?? 1000,
                 priceType: PriceType.MarkPrice,
                 ct: ct
                 ).ConfigureAwait(false);
@@ -541,10 +556,10 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Get next token
             DateTimeToken? nextToken = null;
-            if (request.Filter?.StartTime != null && result.Data.Any())
+            if (request.StartTime != null && result.Data.Any())
             {
                 var maxOpenTime = result.Data.Max(x => x.OpenTime);
-                if (maxOpenTime < request.Filter.EndTime!.Value.AddSeconds(-(int)request.Interval))
+                if (maxOpenTime < request.EndTime!.Value.AddSeconds(-(int)request.Interval))
                     nextToken = new DateTimeToken(maxOpenTime.AddSeconds((int)interval));
             }
 
@@ -579,7 +594,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var result = await ExchangeData.GetKlinesAsync(
                 request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 interval,
-                request.Filter?.Limit ?? 1000,
+                request.Limit ?? 1000,
                 priceType: PriceType.IndexPrice,
                 ct: ct
                 ).ConfigureAwait(false);
@@ -588,10 +603,10 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Get next token
             DateTimeToken? nextToken = null;
-            if (request.Filter?.StartTime != null && result.Data.Any())
+            if (request.StartTime != null && result.Data.Any())
             {
                 var maxOpenTime = result.Data.Max(x => x.OpenTime);
-                if (maxOpenTime < request.Filter.EndTime!.Value.AddSeconds(-(int)request.Interval))
+                if (maxOpenTime < request.EndTime!.Value.AddSeconds(-(int)request.Interval))
                     nextToken = new DateTimeToken(maxOpenTime.AddSeconds((int)interval));
             }
 
@@ -634,7 +649,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<SharedLeverage>(Exchange, default);
 
-            var sideData =  result.Data.Items.FirstOrDefault();
+            var sideData =  result.Data.Items.FirstOrDefault(); // Leverage can't be changed per side, so doesn't matter which we take
             return result.AsExchangeResult(Exchange, new SharedLeverage(sideData?.Leverage ?? 0)
             {
                 Side = request.Side
@@ -742,6 +757,25 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Return
             return result.AsExchangeResult(Exchange, result.Data.Items.Select(x => new SharedFundingRate(x.ActualFundingRate, x.FundingTime ?? default)), nextToken);
+        }
+        #endregion
+
+        #region Position Mode client
+
+        GetPositionModeOptions IPositionModeRestClient.GetPositionModeOptions { get; } = new GetPositionModeOptions(false);
+        async Task<ExchangeWebResult<SharedPositionModeResult>> IPositionModeRestClient.GetPositionModeAsync(GetPositionModeRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        {
+            // Only support one mode, so never actually needs to change
+            return new ExchangeWebResult<SharedPositionModeResult>(Exchange, new WebCallResult<SharedPositionModeResult>(
+                null, null, null, null, null, null, null, null, null, null, ResultDataSource.Server, new SharedPositionModeResult(SharedPositionMode.OneWay), null));
+        }
+
+        SetPositionModeOptions IPositionModeRestClient.SetPositionModeOptions { get; } = new SetPositionModeOptions(true, false, false);
+        async Task<ExchangeWebResult<SharedPositionModeResult>> IPositionModeRestClient.SetPositionModeAsync(SetPositionModeRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        {
+            // Only support one mode, so never actually needs to change
+            return new ExchangeWebResult<SharedPositionModeResult>(Exchange, new WebCallResult<SharedPositionModeResult>(
+                null, null, null, null, null, null, null, null, null, null, ResultDataSource.Server, new SharedPositionModeResult(request.Mode), null));
         }
         #endregion
     }

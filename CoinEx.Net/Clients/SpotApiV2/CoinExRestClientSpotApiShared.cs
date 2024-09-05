@@ -42,9 +42,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Determine the amount of data points we need to match the requested time
             var apiLimit = 1000;
-            int limit = request.Filter?.Limit ?? apiLimit;
-            if (request.Filter?.StartTime.HasValue == true)
-                limit = (int)Math.Ceiling((DateTime.UtcNow - request.Filter.StartTime!.Value).TotalSeconds / (int)request.Interval);
+            int limit = request.Limit ?? apiLimit;
+            if (request.StartTime.HasValue == true)
+                limit = (int)Math.Ceiling((DateTime.UtcNow - request.StartTime!.Value).TotalSeconds / (int)request.Interval);
 
             if (limit > apiLimit)
             {
@@ -67,12 +67,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Filter the data based on requested timestamps
             var data = result.Data;
-            if (request.Filter?.StartTime.HasValue == true)
-                data = data.Where(d => d.OpenTime >= request.Filter.StartTime.Value);
-            if (request.Filter?.EndTime.HasValue == true)
-                data = data.Where(d => d.OpenTime < request.Filter.EndTime.Value);
-            if (request.Filter?.Limit.HasValue == true)
-                data = data.Take(request.Filter.Limit.Value);
+            if (request.StartTime.HasValue == true)
+                data = data.Where(d => d.OpenTime >= request.StartTime.Value);
+            if (request.EndTime.HasValue == true)
+                data = data.Where(d => d.OpenTime < request.EndTime.Value);
+            if (request.Limit.HasValue == true)
+                data = data.Take(request.Limit.Value);
 
             return result.AsExchangeResult(Exchange, data.Select(x => new SharedKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume)));
         }
@@ -297,7 +297,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Determine page token
             int page = 1;
-            int pageSize = request.Filter?.Limit ?? 500;
+            int pageSize = request.Limit ?? 500;
             if (pageToken is PageToken token)
             {
                 page = token.Page;
@@ -376,7 +376,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Determine page token
             int page = 1;
-            int pageSize = request.Filter?.Limit ?? 500;
+            int pageSize = request.Limit ?? 500;
             if (pageToken is PageToken token)
             {
                 page = token.Page;
@@ -387,8 +387,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             var orders = await Trading.GetUserTradesAsync(
                 request.Symbol.GetSymbol((baseAsset, quoteAsset) => FormatSymbol(baseAsset, quoteAsset, request.ApiType)),
                 AccountType.Spot,
-                startTime: request.Filter?.StartTime,
-                endTime: request.Filter?.EndTime,
+                startTime: request.StartTime,
+                endTime: request.EndTime,
                 page: page,
                 pageSize: pageSize).ConfigureAwait(false);
             if (!orders)
@@ -552,7 +552,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Determine page token
             int page = 1;
-            int pageSize = request.Filter?.Limit ?? 500;
+            int pageSize = request.Limit ?? 500;
             if (pageToken is PageToken token)
             {
                 page = token.Page;
@@ -562,7 +562,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             // Get data
             var deposits = await Account.GetDepositHistoryAsync(
                 request.Asset!,
-                pageSize: request.Filter?.Limit ?? 100,
+                pageSize: request.Limit ?? 100,
                 page: page,
                 ct: ct).ConfigureAwait(false);
             if (!deposits)
@@ -613,7 +613,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Determine page token
             int page = 1;
-            int pageSize = request.Filter?.Limit ?? 500;
+            int pageSize = request.Limit ?? 500;
             if (pageToken is PageToken token)
             {
                 page = token.Page;
@@ -623,7 +623,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             // Get data
             var withdrawals = await Account.GetWithdrawalHistoryAsync(
                 request.Asset,
-                pageSize: request.Filter?.Limit ?? 100,
+                pageSize: request.Limit ?? 100,
                 page: page,
                 ct: ct).ConfigureAwait(false);
             if (!withdrawals)
