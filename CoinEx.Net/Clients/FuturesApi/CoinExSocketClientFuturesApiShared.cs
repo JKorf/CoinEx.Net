@@ -1,4 +1,5 @@
-﻿using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+﻿using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CoinEx.Net.Objects.Models.V2;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
@@ -17,12 +18,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CoinEx.Net.Clients.SpotApiV2
+namespace CoinEx.Net.Clients.FuturesApi
 {
-    internal partial class CoinExSocketClientSpotApi : ICoinExSocketClientSpotApiShared
+    internal partial class CoinExSocketClientFuturesApi : ICoinExSocketClientFuturesApiShared
     {
         public string Exchange => CoinExExchange.ExchangeName;
-        public ApiType[] SupportedApiTypes { get; } = new[] { ApiType.Spot };
+        public ApiType[] SupportedApiTypes { get; } = new[] { ApiType.PerpetualLinear, ApiType.PerpetualInverse };
 
         #region Tickers client
         SubscriptionOptions ITickersSocketClient.SubscribeAllTickersOptions { get; } = new SubscriptionOptions("SubscribeTickersRequest", false);
@@ -122,15 +123,16 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #region Spot Order client
 
-        SubscriptionOptions ISpotOrderSocketClient.SubscribeSpotOrderOptions { get; } = new SubscriptionOptions("SubscribeSpotOrderRequest", false);
-        async Task<ExchangeResult<UpdateSubscription>> ISpotOrderSocketClient.SubscribeToSpotOrderUpdatesAsync(Action<ExchangeEvent<IEnumerable<SharedSpotOrder>>> handler, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        SubscriptionOptions IFuturesOrderSocketClient.SubscribeFuturesOrderOptions { get; } = new SubscriptionOptions("SubscribeFuturesOrderRequest", false);
+        async Task<ExchangeResult<UpdateSubscription>> IFuturesOrderSocketClient.SubscribeToFuturesOrderUpdatesAsync(ApiType apiType, Action<ExchangeEvent<IEnumerable<SharedFuturesOrder>>> handler, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
-            var validationError = ((IBalanceSocketClient)this).SubscribeBalanceOptions.ValidateRequest(Exchange, exchangeParameters, ApiType.Spot, SupportedApiTypes);
+            var validationError = ((IFuturesOrderSocketClient)this).SubscribeFuturesOrderOptions.ValidateRequest(Exchange, exchangeParameters, apiType, SupportedApiTypes);
             if (validationError != null)
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
+
             var result = await SubscribeToOrderUpdatesAsync(
-                update => handler(update.AsExchangeEvent<IEnumerable<SharedSpotOrder>>(Exchange, new[] {
-                    new SharedSpotOrder(
+                update => handler(update.AsExchangeEvent<IEnumerable<SharedFuturesOrder>>(Exchange, new[] {
+                    new SharedFuturesOrder(
                         update.Data.Order.Symbol,
                         update.Data.Order.Id.ToString(),
                         update.Data.Order.OrderType == Enums.OrderTypeV2.Limit ? CryptoExchange.Net.SharedApis.Enums.SharedOrderType.Limit : update.Data.Order.OrderType == Enums.OrderTypeV2.Market ? CryptoExchange.Net.SharedApis.Enums.SharedOrderType.Market : CryptoExchange.Net.SharedApis.Enums.SharedOrderType.Other,
@@ -143,7 +145,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
                         QuantityFilled = update.Data.Order.QuantityFilled,
                         QuoteQuantityFilled = update.Data.Order.ValueFilled,
                         UpdateTime = update.Data.Order.UpdateTime,
-                        Price = update.Data.Order.Price
+                        Price = update.Data.Order.Price,
+                        Fee = update.Data.Order.Fee,
+                        FeeAsset = update.Data.Order.FeeAsset
                     }
                 })),
                 ct: ct).ConfigureAwait(false);
@@ -167,26 +171,26 @@ namespace CoinEx.Net.Clients.SpotApiV2
                         update.Data.OrderId.ToString(),
                         update.Data.Id.ToString(),
                         update.Data.Quantity,
-                        update.Data.Price,                        
+                        update.Data.Price,
                         update.Data.CreateTime)
                     {
                         Fee = update.Data.Fee,
                         FeeAsset = update.Data.FeeAsset,
                         Role = update.Data.Role == Enums.TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker
                     }
-                } )),
+                })),
                 ct: ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
         }
         #endregion
 
-        private SharedOrderStatus GetOrderStatus(CoinExOrderUpdate update)
+        private SharedOrderStatus GetOrderStatus(CoinExFuturesOrderUpdate update)
         {
             if (update.Order.QuantityFilled == update.Order.Quantity)
                 return SharedOrderStatus.Filled;
 
-            if (update.Event != Enums.OrderUpdateType.Finish) 
+            if (update.Event != Enums.OrderUpdateType.Finish)
             {
                 return SharedOrderStatus.Open;
             }

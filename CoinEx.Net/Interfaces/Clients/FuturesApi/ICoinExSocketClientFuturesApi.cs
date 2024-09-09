@@ -14,6 +14,8 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     /// </summary>
     public interface ICoinExSocketClientFuturesApi : ISocketApiClient, IDisposable
     {
+        ICoinExSocketClientFuturesApiShared SharedClient { get; }
+
         /// <summary>
         /// Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
         /// <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-state" /></para>
