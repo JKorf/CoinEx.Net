@@ -97,7 +97,7 @@
         <member name="P:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.Trading">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.FormatSymbol(System.String,System.String,System.Nullable{CryptoExchange.Net.Objects.ApiType})">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.Objects.ApiType,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateAccessor">
@@ -282,7 +282,7 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.FormatSymbol(System.String,System.String,System.Nullable{CryptoExchange.Net.Objects.ApiType})">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.Objects.ApiType,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.CreateAccessor">
@@ -379,7 +379,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String,System.Nullable{CryptoExchange.Net.Objects.ApiType})">
+        <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.Objects.ApiType,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExRestClientSpotApi.GetSymbolName(System.String,System.String)">
@@ -506,7 +506,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExSocketClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExSocketClientSpotApi.FormatSymbol(System.String,System.String,System.Nullable{CryptoExchange.Net.Objects.ApiType})">
+        <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExSocketClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.Objects.ApiType,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV1.CoinExSocketClientSpotApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
@@ -597,7 +597,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String,System.Nullable{CryptoExchange.Net.Objects.ApiType})">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.Objects.ApiType,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetSymbolName(System.String,System.String)">
@@ -796,7 +796,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.FormatSymbol(System.String,System.String,System.Nullable{CryptoExchange.Net.Objects.ApiType})">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.Objects.ApiType,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.CreateAccessor">
