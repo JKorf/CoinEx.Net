@@ -5,6 +5,7 @@ using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.SharedApis.Enums;
 using CryptoExchange.Net.SharedApis.Interfaces.Socket;
+using CryptoExchange.Net.SharedApis.Interfaces.Socket.Futures;
 using CryptoExchange.Net.SharedApis.Models;
 using CryptoExchange.Net.SharedApis.Models.FilterOptions;
 using CryptoExchange.Net.SharedApis.Models.Socket;
@@ -185,6 +186,31 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
         #endregion
 
+        #region Position client
+        SubscriptionOptions IPositionSocketClient.SubscribePositionOptions { get; } = new SubscriptionOptions("SubscribePositionRequest", true);
+        async Task<ExchangeResult<UpdateSubscription>> IPositionSocketClient.SubscribeToPositionUpdatesAsync(Action<ExchangeEvent<IEnumerable<SharedPosition>>> handler, ApiType? apiType, ExchangeParameters? exchangeParameters, CancellationToken ct)
+        {
+            var validationError = ((IUserTradeSocketClient)this).SubscribeUserTradeOptions.ValidateRequest(Exchange, exchangeParameters, ApiType.Spot, SupportedApiTypes);
+            if (validationError != null)
+                return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
+
+            var result = await SubscribeToPositionUpdatesAsync(
+                update => handler(update.AsExchangeEvent<IEnumerable<SharedPosition>>(Exchange, new[] { new SharedPosition(update.Data.Position.Symbol, update.Data.Position.OpenInterest, update.Data.Position.UpdateTime)
+                {
+                    AverageEntryPrice = update.Data.Position.AverageEntryPrice,
+                    PositionSide = update.Data.Position.Side == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,
+                    LiquidationPrice = update.Data.Position.LiquidationPrice,
+#warning Maintenance margin rate vs value? What do we use for the value? Other exchanges..?
+                    MaintenanceMargin = update.Data.Position.MaintenanceMarginRate,
+                    Leverage = update.Data.Position.Leverage,
+                    UnrealizedPnl = update.Data.Position.UnrealizedPnl
+                } })),
+                ct: ct).ConfigureAwait(false);
+
+            return new ExchangeResult<UpdateSubscription>(Exchange, result);
+        }
+
+        #endregion
         private SharedOrderStatus GetOrderStatus(CoinExFuturesOrderUpdate update)
         {
             if (update.Order.QuantityFilled == update.Order.Quantity)
