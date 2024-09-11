@@ -157,6 +157,9 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 7.6.1 - 11 Sep 2024
+    * Added SpotApiV2.Account.GetTransactionHistoryAsync endpoint
+
 * Version 7.6.0 - 19 Aug 2024
     * Added futures API batch endpoints:FuturesApi.Trading.PlaceMultipleOrdersAsync, PlaceMultipleStopOrdersAsync, CancelOrdersAsync and CancelStopOrdersAsync
     * Added spot API batch endpoints: SpotApiV2.Trading.PlaceMultipleOrdersAsync, PlaceMultipleStopOrdersAsync, CancelOrdersAsync and CancelStopOrdersAsync

@@ -246,5 +246,19 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExAamLiquidity>> RemoveAutoMarketMakerLiquidityAsync(string symbol, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get account transaction history
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-transcation-history" /></para>
+        /// </summary>
+        /// <param name="transactionType"></param>
+        /// <param name="asset">Filter by asset, for example `ETH`</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<CoinExPaginated<CoinExTransaction>>> GetTransactionHistoryAsync(TransactionType transactionType, string? asset = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
     }
 }
