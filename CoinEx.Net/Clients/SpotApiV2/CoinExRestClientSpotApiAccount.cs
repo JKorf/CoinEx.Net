@@ -252,5 +252,18 @@ namespace CoinEx.Net.Clients.SpotApiV2
             };
             return await _baseClient.ExecuteAsync<CoinExAamLiquidity>(_baseClient.GetUri("v2/amm/remove-liquidity"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPaginated<CoinExTransaction>>> GetTransactionHistoryAsync(TransactionType transactionType, string? asset = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection();
+            parameters.AddOptional("ccy", asset);
+            parameters.AddEnum("type", transactionType);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
+            parameters.AddOptional("page", page);
+            parameters.AddOptional("limit", pageSize);
+            return await _baseClient.ExecutePaginatedAsync<CoinExTransaction>(_baseClient.GetUri("v2/assets/spot/transcation-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+        }
     }
 }

@@ -692,6 +692,9 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.RemoveAutoMarketMakerLiquidityAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetTransactionHistoryAsync(CoinEx.Net.Enums.TransactionType,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiExchangeData">
             <inheritdoc />
         </member>
@@ -1428,6 +1431,31 @@
         <member name="F:CoinEx.Net.Enums.TransactionRole.Taker">
             <summary>
             Taker of an existing order book entry
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Enums.TransactionType">
+            <summary>
+            Transaction type
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransactionType.Deposit">
+            <summary>
+            Deposit
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransactionType.Withdrawal">
+            <summary>
+            Withdrawal
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransactionType.Trade">
+            <summary>
+            Trade
+            </summary>
+        </member>
+        <member name="F:CoinEx.Net.Enums.TransactionType.MakerCashback">
+            <summary>
+            Maker cashback
             </summary>
         </member>
         <member name="T:CoinEx.Net.Enums.TransferStatus">
@@ -3110,6 +3138,20 @@
             <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /></para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetTransactionHistoryAsync(CoinEx.Net.Enums.TransactionType,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get account transaction history
+            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-transcation-history" /></para>
+            </summary>
+            <param name="transactionType"></param>
+            <param name="asset">Filter by asset, for example `ETH`</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="page">Page</param>
+            <param name="pageSize">Page size</param>
             <param name="ct">Cancelation token</param>
             <returns></returns>
         </member>
@@ -7146,6 +7188,36 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTradeFee.TakerFeeRate">
             <summary>
             Fee for taker trades
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExTransaction">
+            <summary>
+            Transaction info
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransaction.CreateTime">
+            <summary>
+            Creation time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransaction.Asset">
+            <summary>
+            Asset
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransaction.Balance">
+            <summary>
+            Balance after change
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransaction.Change">
+            <summary>
+            Quantity of the transaction
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExTransaction.Type">
+            <summary>
+            Transfer status
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExTransfer">
