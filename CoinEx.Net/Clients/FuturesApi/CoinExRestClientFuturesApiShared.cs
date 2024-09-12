@@ -152,10 +152,10 @@ namespace CoinEx.Net.Clients.FuturesApi
                 SharedTimeInForce.FillOrKill
             },
             new SharedQuantitySupport(
-                SharedQuantityType.BaseAssetQuantity,
-                SharedQuantityType.BaseAssetQuantity,
-                SharedQuantityType.BaseAssetQuantity,
-                SharedQuantityType.BaseAssetQuantity));
+                SharedQuantityType.BaseAsset,
+                SharedQuantityType.BaseAsset,
+                SharedQuantityType.BaseAsset,
+                SharedQuantityType.BaseAsset));
 
         async Task<ExchangeWebResult<SharedId>> IFuturesOrderRestClient.PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, ExchangeParameters? exchangeParameters, CancellationToken ct)
         {
