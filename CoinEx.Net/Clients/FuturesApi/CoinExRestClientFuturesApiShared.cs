@@ -39,7 +39,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedBalance>>(Exchange, default);
 
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)));
+            return result.AsExchangeResult<IEnumerable<SharedBalance>>(Exchange, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray());
         }
 
         #endregion
@@ -67,7 +67,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (ticker == null || funding == null)
                 return resultTicker.Result.AsExchangeError<SharedFuturesTicker>(Exchange, new ServerError("Not found"));
 
-            return resultTicker.Result.AsExchangeResult(Exchange, new SharedFuturesTicker(ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100, 2))
+            return resultTicker.Result.AsExchangeResult(Exchange, new SharedFuturesTicker(ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
             {
                 IndexPrice = ticker.IndexPrice,
                 MarkPrice = ticker.MarkPrice,
@@ -94,14 +94,14 @@ namespace CoinEx.Net.Clients.FuturesApi
             return resultTickers.Result.AsExchangeResult<IEnumerable<SharedFuturesTicker>>(Exchange, resultTickers.Result.Data.Select(x =>
             {
                 var funding = resultFunding.Result.Data.Single(p => p.Symbol == x.Symbol);
-                return new SharedFuturesTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, Math.Round(x.LastPrice / x.OpenPrice * 100, 2))
+                return new SharedFuturesTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
                 {
                     IndexPrice = x.IndexPrice,
                     MarkPrice = x.MarkPrice,
                     FundingRate = funding.NextFundingRate,
                     NextFundingTime = funding.NextFundingTime
                 };
-            }));
+            }).ToArray());
         }
 
         #endregion
@@ -124,7 +124,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 data = data.Where(x =>
                     request.ApiType == ApiType.PerpetualLinear ? x.ContractType == ContractType.Linear : x.ContractType == ContractType.Inverse);
 
-            return result.AsExchangeResult(Exchange, data.Select(s => new SharedFuturesSymbol(
+            return result.AsExchangeResult<IEnumerable<SharedFuturesSymbol>>(Exchange, data.Select(s => new SharedFuturesSymbol(
                 s.ContractType == ContractType.Inverse ? SharedSymbolType.PerpetualInverse : SharedSymbolType.PerpetualLinear,
                 s.BaseAsset, s.QuoteAsset, s.Symbol, s.TradingAvailable)
             {
@@ -132,7 +132,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 QuantityDecimals = s.QuantityPrecision,
                 PriceDecimals = s.PricePrecision,
                 ContractSize = 1
-            }));
+            }).ToArray());
         }
 
         #endregion
@@ -157,6 +157,10 @@ namespace CoinEx.Net.Clients.FuturesApi
                 SharedQuantityType.BaseAsset,
                 SharedQuantityType.BaseAsset));
 
+#warning check
+        SharedFeeDeductionType IFuturesOrderRestClient.FuturesFeeDeductionType => SharedFeeDeductionType.AddToCost;
+        SharedFeeAssetType IFuturesOrderRestClient.FuturesFeeAssetType => SharedFeeAssetType.QuoteAsset;
+
         async Task<ExchangeWebResult<SharedId>> IFuturesOrderRestClient.PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
         {
             var validationError = ((IFuturesOrderRestClient)this).PlaceFuturesOrderOptions.ValidateRequest(Exchange, request, request.Symbol.ApiType, SupportedApiTypes);
@@ -170,7 +174,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 quantity: request.Quantity ?? 0,
                 price: request.Price,                
 #warning check how to specify long/short. Do we adjust Side based on position side? So Buy + Short = Sell ?
-                clientOrderId: request.ClientOrderId).ConfigureAwait(false);
+                clientOrderId: request.ClientOrderId,
+                ct: ct).ConfigureAwait(false);
 
             if (!result)
                 return result.AsExchangeResult<SharedId>(Exchange, default);
@@ -188,7 +193,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedFuturesOrder>(Exchange, new ArgumentError("Invalid order id"));
 
-            var order = await Trading.GetOrderAsync(request.Symbol.GetSymbol(FormatSymbol), orderId).ConfigureAwait(false);
+            var order = await Trading.GetOrderAsync(request.Symbol.GetSymbol(FormatSymbol), orderId, ct: ct).ConfigureAwait(false);
             if (!order)
                 return order.AsExchangeResult<SharedFuturesOrder>(Exchange, default);
 
@@ -220,11 +225,11 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return new ExchangeWebResult<IEnumerable<SharedFuturesOrder>>(Exchange, validationError);
 
             var symbol = request.Symbol?.GetSymbol(FormatSymbol);
-            var orders = await Trading.GetOpenOrdersAsync(symbol).ConfigureAwait(false);
+            var orders = await Trading.GetOpenOrdersAsync(symbol, ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedFuturesOrder>>(Exchange, default);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedFuturesOrder(
+            return orders.AsExchangeResult<IEnumerable<SharedFuturesOrder>>(Exchange, orders.Data.Items.Select(x => new SharedFuturesOrder(
                 x.Symbol,
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
@@ -241,10 +246,10 @@ namespace CoinEx.Net.Clients.FuturesApi
                 UpdateTime = x.UpdateTime,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset
-            }));
+            }).ToArray());
         }
 
-        PaginatedEndpointOptions<GetClosedOrdersRequest> IFuturesOrderRestClient.GetClosedFuturesOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(SharedPaginationType.Ascending, true);
+        PaginatedEndpointOptions<GetClosedOrdersRequest> IFuturesOrderRestClient.GetClosedFuturesOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(SharedPaginationType.Descending, true);
         async Task<ExchangeWebResult<IEnumerable<SharedFuturesOrder>>> IFuturesOrderRestClient.GetClosedFuturesOrdersAsync(GetClosedOrdersRequest request, INextPageToken? pageToken, CancellationToken ct)
         {
             var validationError = ((IFuturesOrderRestClient)this).GetClosedFuturesOrdersOptions.ValidateRequest(Exchange, request, request.Symbol.ApiType, SupportedApiTypes);
@@ -253,7 +258,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Determine page token
             int page = 1;
-            int pageSize = 50;
+            int pageSize = request.Limit ?? 50;
             if (pageToken is PageToken token)
             {
                 page = token.Page;
@@ -274,7 +279,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (orders.Data.HasNext)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedFuturesOrder(
+            return orders.AsExchangeResult<IEnumerable<SharedFuturesOrder>>(Exchange, orders.Data.Items.Select(x => new SharedFuturesOrder(
                 x.Symbol,
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
@@ -291,7 +296,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 UpdateTime = x.UpdateTime,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset
-            }));
+            }).ToArray(), nextToken);
         }
 
         EndpointOptions<GetOrderTradesRequest> IFuturesOrderRestClient.GetFuturesOrderTradesOptions { get; } = new EndpointOptions<GetOrderTradesRequest>(true);
@@ -304,11 +309,11 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<IEnumerable<SharedUserTrade>>(Exchange, new ArgumentError("Invalid order id"));
 
-            var orders = await Trading.GetOrderTradesAsync(request.Symbol.GetSymbol(FormatSymbol), orderId: orderId).ConfigureAwait(false);
+            var orders = await Trading.GetOrderTradesAsync(request.Symbol.GetSymbol(FormatSymbol), orderId: orderId, ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, default);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
+            return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
@@ -321,10 +326,10 @@ namespace CoinEx.Net.Clients.FuturesApi
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker
-            }));
+            }).ToArray());
         }
 
-        PaginatedEndpointOptions<GetUserTradesRequest> IFuturesOrderRestClient.GetFuturesUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(SharedPaginationType.Ascending, true);
+        PaginatedEndpointOptions<GetUserTradesRequest> IFuturesOrderRestClient.GetFuturesUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(SharedPaginationType.Descending, true);
         async Task<ExchangeWebResult<IEnumerable<SharedUserTrade>>> IFuturesOrderRestClient.GetFuturesUserTradesAsync(GetUserTradesRequest request, INextPageToken? pageToken, CancellationToken ct)
         {
             var validationError = ((IFuturesOrderRestClient)this).GetFuturesUserTradesOptions.ValidateRequest(Exchange, request, request.Symbol.ApiType, SupportedApiTypes);
@@ -333,7 +338,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             // Determine page token
             int page = 1;
-            int pageSize = 50;
+            int pageSize = request.Limit ?? 50;
             if (pageToken is PageToken token)
             {
                 page = token.Page;
@@ -356,7 +361,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (orders.Data.HasNext)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
+            return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
@@ -369,7 +374,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker
-            }), nextToken);
+            }).ToArray(), nextToken);
         }
 
         EndpointOptions<CancelOrderRequest> IFuturesOrderRestClient.CancelFuturesOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
@@ -382,7 +387,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedId>(Exchange, new ArgumentError("Invalid order id"));
 
-            var order = await Trading.CancelOrderAsync(request.Symbol.GetSymbol(FormatSymbol), orderId).ConfigureAwait(false);
+            var order = await Trading.CancelOrderAsync(request.Symbol.GetSymbol(FormatSymbol), orderId, ct: ct).ConfigureAwait(false);
             if (!order)
                 return order.AsExchangeResult<SharedId>(Exchange, default);
 
@@ -392,7 +397,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         EndpointOptions<GetPositionsRequest> IFuturesOrderRestClient.GetPositionsOptions { get; } = new EndpointOptions<GetPositionsRequest>(true);
         async Task<ExchangeWebResult<IEnumerable<SharedPosition>>> IFuturesOrderRestClient.GetPositionsAsync(GetPositionsRequest request, CancellationToken ct)
         {
-            var validationError = ((IFuturesOrderRestClient)this).GetPositionsOptions.ValidateRequest(Exchange, request, request.Symbol.ApiType, SupportedApiTypes);
+            var validationError = ((IFuturesOrderRestClient)this).GetPositionsOptions.ValidateRequest(Exchange, request, request.Symbol?.ApiType ?? request.ApiType, SupportedApiTypes);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedPosition>>(Exchange, validationError);
 
@@ -408,7 +413,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 Leverage = x.Leverage,
                 MaintenanceMargin = x.MaintenanceMarginRate,
                 PositionSide = x.Side == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long
-            }).ToList());
+            }).ToArray());
         }
 
         EndpointOptions<ClosePositionRequest> IFuturesOrderRestClient.ClosePositionOptions { get; } = new EndpointOptions<ClosePositionRequest>(true);
@@ -494,12 +499,6 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedKline>>(Exchange, validationError);
 
-#warning determine pagination
-            // Determine page token
-            DateTime? fromTimestamp = null;
-            if (pageToken is DateTimeToken dateTimeToken)
-                fromTimestamp = dateTimeToken.LastTime;
-
             var result = await ExchangeData.GetKlinesAsync(
                 request.Symbol.GetSymbol(FormatSymbol),
                 interval,
@@ -509,23 +508,14 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedKline>>(Exchange, default);
 
-            // Get next token
-            DateTimeToken? nextToken = null;
-            if (request.StartTime != null && result.Data.Any())
-            {
-                var maxOpenTime = result.Data.Max(x => x.OpenTime);
-                if (maxOpenTime < request.EndTime!.Value.AddSeconds(-(int)request.Interval))
-                    nextToken = new DateTimeToken(maxOpenTime.AddSeconds((int)interval));
-            }
-
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume)), nextToken);
+            return result.AsExchangeResult<IEnumerable<SharedKline>>(Exchange, result.Data.Select(x => new SharedKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume)).ToArray());
         }
 
         #endregion
 
         #region Mark Price Klines client
 
-        GetKlinesOptions IMarkPriceKlineRestClient.GetMarkPriceKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationType.Ascending, false)
+        GetKlinesOptions IMarkPriceKlineRestClient.GetMarkPriceKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationType.Descending, false)
         {
             MaxTotalDataPoints = 1000
         };
@@ -540,12 +530,6 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedMarkKline>>(Exchange, validationError);
 
-#warning determine pagination
-            // Determine page token
-            DateTime? fromTimestamp = null;
-            if (pageToken is DateTimeToken dateTimeToken)
-                fromTimestamp = dateTimeToken.LastTime;
-
             var result = await ExchangeData.GetKlinesAsync(
                 request.Symbol.GetSymbol(FormatSymbol),
                 interval,
@@ -556,16 +540,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedMarkKline>>(Exchange, default);
 
-            // Get next token
-            DateTimeToken? nextToken = null;
-            if (request.StartTime != null && result.Data.Any())
-            {
-                var maxOpenTime = result.Data.Max(x => x.OpenTime);
-                if (maxOpenTime < request.EndTime!.Value.AddSeconds(-(int)request.Interval))
-                    nextToken = new DateTimeToken(maxOpenTime.AddSeconds((int)interval));
-            }
-
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedMarkKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice)), nextToken);
+            return result.AsExchangeResult<IEnumerable<SharedMarkKline>>(Exchange, result.Data.Select(x => new SharedMarkKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice)).ToArray());
         }
 
         #endregion
@@ -587,12 +562,6 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedMarkKline>>(Exchange, validationError);
 
-#warning determine pagination
-            // Determine page token
-            DateTime? fromTimestamp = null;
-            if (pageToken is DateTimeToken dateTimeToken)
-                fromTimestamp = dateTimeToken.LastTime;
-
             var result = await ExchangeData.GetKlinesAsync(
                 request.Symbol.GetSymbol(FormatSymbol),
                 interval,
@@ -603,16 +572,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedMarkKline>>(Exchange, default);
 
-            // Get next token
-            DateTimeToken? nextToken = null;
-            if (request.StartTime != null && result.Data.Any())
-            {
-                var maxOpenTime = result.Data.Max(x => x.OpenTime);
-                if (maxOpenTime < request.EndTime!.Value.AddSeconds(-(int)request.Interval))
-                    nextToken = new DateTimeToken(maxOpenTime.AddSeconds((int)interval));
-            }
-
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedMarkKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice)), nextToken);
+            return result.AsExchangeResult<IEnumerable<SharedMarkKline>>(Exchange, result.Data.Select(x => new SharedMarkKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice)).ToArray());
         }
 
         #endregion
@@ -633,14 +593,17 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedTrade>>(Exchange, default);
 
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)));
+            return result.AsExchangeResult<IEnumerable<SharedTrade>>(Exchange, result.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)).ToArray());
         }
 
         #endregion
 
         #region Leverage client
 
-        EndpointOptions<GetLeverageRequest> ILeverageRestClient.GetLeverageOptions { get; } = new EndpointOptions<GetLeverageRequest>(true);
+        EndpointOptions<GetLeverageRequest> ILeverageRestClient.GetLeverageOptions { get; } = new EndpointOptions<GetLeverageRequest>(true)
+        {
+            ExchangeRequestInfo = "Leverage can only be retrieved when there is an open position, else it will return 0"
+        };
         async Task<ExchangeWebResult<SharedLeverage>> ILeverageRestClient.GetLeverageAsync(GetLeverageRequest request, CancellationToken ct)
         {
             var validationError = ((ILeverageRestClient)this).GetLeverageOptions.ValidateRequest(Exchange, request, request.Symbol.ApiType, SupportedApiTypes);
@@ -758,26 +721,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 nextToken = new PageToken(page + 1, pageSize);
 
             // Return
-            return result.AsExchangeResult(Exchange, result.Data.Items.Select(x => new SharedFundingRate(x.ActualFundingRate, x.FundingTime ?? default)), nextToken);
-        }
-        #endregion
-
-        #region Position Mode client
-
-        GetPositionModeOptions IPositionModeRestClient.GetPositionModeOptions { get; } = new GetPositionModeOptions(false);
-        async Task<ExchangeWebResult<SharedPositionModeResult>> IPositionModeRestClient.GetPositionModeAsync(GetPositionModeRequest request, CancellationToken ct)
-        {
-            // Only support one mode, so never actually needs to change
-            return new ExchangeWebResult<SharedPositionModeResult>(Exchange, new WebCallResult<SharedPositionModeResult>(
-                null, null, null, null, null, null, null, null, null, null, ResultDataSource.Server, new SharedPositionModeResult(SharedPositionMode.OneWay), null));
-        }
-
-        SetPositionModeOptions IPositionModeRestClient.SetPositionModeOptions { get; } = new SetPositionModeOptions(true, false, false);
-        async Task<ExchangeWebResult<SharedPositionModeResult>> IPositionModeRestClient.SetPositionModeAsync(SetPositionModeRequest request, CancellationToken ct)
-        {
-            // Only support one mode, so never actually needs to change
-            return new ExchangeWebResult<SharedPositionModeResult>(Exchange, new WebCallResult<SharedPositionModeResult>(
-                null, null, null, null, null, null, null, null, null, null, ResultDataSource.Server, new SharedPositionModeResult(request.Mode), null));
+            return result.AsExchangeResult<IEnumerable<SharedFundingRate>>(Exchange, result.Data.Items.Select(x => new SharedFundingRate(x.ActualFundingRate, x.FundingTime ?? default)).ToArray(), nextToken);
         }
         #endregion
 
@@ -815,19 +759,18 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (orders.Data.HasNext)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedPositionHistory(
+            return orders.AsExchangeResult<IEnumerable<SharedPositionHistory>>(Exchange, orders.Data.Items.Select(x => new SharedPositionHistory(
                 x.Symbol,
                 x.Side == PositionSide.Long ? SharedPositionSide.Long : SharedPositionSide.Short,
                 x.AverageEntryPrice,
                 x.SettlePrice,
-#warning OpenInterest doesn't seem to be correct, but what is..?
-                x.OpenInterest,
+                x.AthPositionQuantity,
                 x.RealizedPnl,
                 x.UpdateTime ?? x.CreateTime)
             {
                 Leverage = x.Leverage,
                 PositionId = x.Id.ToString()
-            }), nextToken);
+            }).ToArray(), nextToken);
         }
         #endregion
     }

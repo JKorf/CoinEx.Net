@@ -32,7 +32,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (validationError != null)
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
 
-            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedSpotTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, Math.Round(x.LastPrice / x.OpenPrice * 100, 2))))), ct).ConfigureAwait(false);
+            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.AsExchangeEvent<IEnumerable<SharedSpotTicker>>(Exchange, update.Data.Select(x => new SharedSpotTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))).ToArray())), ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
         }
@@ -51,7 +51,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             var result = await SubscribeToTickerUpdatesAsync(new[] { symbol }, update =>
             {
                 var ticker = update.Data.Single();
-                handler(update.AsExchangeEvent(Exchange, new SharedSpotTicker(symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100, 2))));
+                handler(update.AsExchangeEvent(Exchange, new SharedSpotTicker(symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))));
             }, ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
@@ -68,7 +68,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
 
             var symbol = request.Symbol.GetSymbol(FormatSymbol);
-            var result = await SubscribeToTradeUpdatesAsync(symbol, update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)))), ct).ConfigureAwait(false);
+            var result = await SubscribeToTradeUpdatesAsync(symbol, update => handler(update.AsExchangeEvent<IEnumerable<SharedTrade>>(Exchange, update.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)).ToArray())), ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
         }
@@ -113,7 +113,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (validationError != null)
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
             var result = await SubscribeToBalanceUpdatesAsync(
-                update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)))),
+                update => handler(update.AsExchangeEvent<IEnumerable<SharedBalance>>(Exchange, update.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray())),
                 ct: ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
@@ -143,7 +143,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
                         QuantityFilled = update.Data.Order.QuantityFilled,
                         QuoteQuantityFilled = update.Data.Order.ValueFilled,
                         UpdateTime = update.Data.Order.UpdateTime,
-                        Price = update.Data.Order.Price
+                        Price = update.Data.Order.Price == 0 ? null : update.Data.Order.Price,
+                        Fee = update.Data.Order.FeeBaseAsset + update.Data.Order.FeeQuoteAsset
                     }
                 })),
                 ct: ct).ConfigureAwait(false);

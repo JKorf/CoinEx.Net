@@ -27,7 +27,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationType.Descending, false)
         {
-            MaxRequestDataPoints = 1000
+            MaxRequestDataPoints = 1000,
+            MaxTotalDataPoints = 1000
         };
 
         async Task<ExchangeWebResult<IEnumerable<SharedKline>>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
@@ -74,7 +75,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (request.Limit.HasValue == true)
                 data = data.Take(request.Limit.Value);
 
-            return result.AsExchangeResult(Exchange, data.Select(x => new SharedKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume)));
+            return result.AsExchangeResult<IEnumerable<SharedKline>>(Exchange, data.Reverse().Select(x => new SharedKline(x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume)).ToArray());
         }
 
         #endregion
@@ -92,12 +93,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedSpotSymbol>>(Exchange, default);
 
-            return result.AsExchangeResult(Exchange, result.Data.Select(s => new SharedSpotSymbol(s.BaseAsset, s.QuoteAsset, s.Name, true)
+            return result.AsExchangeResult<IEnumerable<SharedSpotSymbol>>(Exchange, result.Data.Select(s => new SharedSpotSymbol(s.BaseAsset, s.QuoteAsset, s.Name, true)
             {
                 MinTradeQuantity = s.MinOrderQuantity,
                 PriceDecimals = s.PricePrecision,
                 QuantityDecimals = s.QuantityPrecision
-            }));
+            }).ToArray());
         }
 
         #endregion
@@ -116,7 +117,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return result.AsExchangeResult<SharedSpotTicker>(Exchange, default);
 
             var ticker = result.Data.Single();
-            return result.AsExchangeResult(Exchange, new SharedSpotTicker(ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100, 2)));
+            return result.AsExchangeResult(Exchange, new SharedSpotTicker(ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2)));
         }
 
         EndpointOptions<GetTickersRequest> ISpotTickerRestClient.GetSpotTickersOptions { get; } = new EndpointOptions<GetTickersRequest>(false);
@@ -130,7 +131,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedSpotTicker>>(Exchange, default);
 
-            return result.AsExchangeResult<IEnumerable<SharedSpotTicker>>(Exchange, result.Data.Select(x => new SharedSpotTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, Math.Round(x.LastPrice / x.OpenPrice * 100, 2))));
+            return result.AsExchangeResult<IEnumerable<SharedSpotTicker>>(Exchange, result.Data.Select(x => new SharedSpotTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))).ToArray());
         }
 
         #endregion
@@ -152,7 +153,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedTrade>>(Exchange, default);
 
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)));
+            return result.AsExchangeResult<IEnumerable<SharedTrade>>(Exchange, result.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)).ToArray());
         }
 
         #endregion
@@ -170,7 +171,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedBalance>>(Exchange, default);
 
-            return result.AsExchangeResult(Exchange, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)));
+            return result.AsExchangeResult<IEnumerable<SharedBalance>>(Exchange, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray());
         }
 
         #endregion
@@ -196,6 +197,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 SharedQuantityType.BaseAndQuoteAsset,
                 SharedQuantityType.BaseAndQuoteAsset));
 
+#warning check
+        SharedFeeDeductionType ISpotOrderRestClient.SpotFeeDeductionType => SharedFeeDeductionType.DeductFromTrade;
+        SharedFeeAssetType ISpotOrderRestClient.SpotFeeAssetType => SharedFeeAssetType.OutputAsset;
+
         async Task<ExchangeWebResult<SharedId>> ISpotOrderRestClient.PlaceSpotOrderAsync(PlaceSpotOrderRequest request, CancellationToken ct)
         {
             var validationError = ((ISpotOrderRestClient)this).PlaceSpotOrderOptions.ValidateRequest(Exchange, request, request.Symbol.ApiType, SupportedApiTypes);
@@ -210,7 +215,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 quantity: request.Quantity ?? request.QuoteQuantity ?? 0,
                 price: request.Price,
                 clientOrderId: request.ClientOrderId,
-                quantityAsset: request.OrderType == SharedOrderType.Market ? (request.Quantity != null ? request.Symbol.BaseAsset : request.Symbol.QuoteAsset) : null
+                quantityAsset: request.OrderType == SharedOrderType.Market ? (request.Quantity != null ? request.Symbol.BaseAsset : request.Symbol.QuoteAsset) : null,
+                ct: ct
                 ).ConfigureAwait(false);
 
             if (!result)
@@ -229,7 +235,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedSpotOrder>(Exchange, new ArgumentError("Invalid order id"));
 
-            var orders = await Trading.GetOrderAsync(request.Symbol.GetSymbol(FormatSymbol), orderId).ConfigureAwait(false);
+            var orders = await Trading.GetOrderAsync(request.Symbol.GetSymbol(FormatSymbol), orderId, ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<SharedSpotOrder>(Exchange, default);
 
@@ -263,11 +269,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             string? symbol = request.Symbol?.GetSymbol(FormatSymbol);
 
-            var orders = await Trading.GetOpenOrdersAsync(AccountType.Spot, symbol).ConfigureAwait(false);
+            var orders = await Trading.GetOpenOrdersAsync(AccountType.Spot, symbol, ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedSpotOrder>>(Exchange, default);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedSpotOrder(
+            return orders.AsExchangeResult<IEnumerable<SharedSpotOrder>>(Exchange, orders.Data.Items.Select(x => new SharedSpotOrder(
                 x.Symbol,
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
@@ -285,7 +291,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
                 FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
-            }));
+            }).ToArray());
         }
 
         PaginatedEndpointOptions<GetClosedOrdersRequest> ISpotOrderRestClient.GetClosedSpotOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(SharedPaginationType.Ascending, true);
@@ -309,7 +315,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 AccountType.Spot,
                 request.Symbol.GetSymbol(FormatSymbol),
                 page: page,
-                pageSize: pageSize).ConfigureAwait(false);
+                pageSize: pageSize,
+                ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedSpotOrder>>(Exchange, default);
 
@@ -318,7 +325,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (orders.Data.HasNext == true)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedSpotOrder(
+            return orders.AsExchangeResult<IEnumerable<SharedSpotOrder>>(Exchange, orders.Data.Items.Select(x => new SharedSpotOrder(
                 x.Symbol,
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
@@ -336,7 +343,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
                 FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
-            }), nextToken);
+            }).ToArray(), nextToken);
         }
 
         EndpointOptions<GetOrderTradesRequest> ISpotOrderRestClient.GetSpotOrderTradesOptions { get; } = new EndpointOptions<GetOrderTradesRequest>(true);
@@ -349,11 +356,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<IEnumerable<SharedUserTrade>>(Exchange, new ArgumentError("Invalid order id"));
 
-            var orders = await Trading.GetOrderTradesAsync(request.Symbol.GetSymbol(FormatSymbol), AccountType.Spot, orderId: orderId).ConfigureAwait(false);
+            var orders = await Trading.GetOrderTradesAsync(request.Symbol.GetSymbol(FormatSymbol), AccountType.Spot, orderId: orderId, ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, default);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
+            return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
@@ -364,7 +371,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
-            }));
+            }).ToArray());
         }
 
         PaginatedEndpointOptions<GetUserTradesRequest> ISpotOrderRestClient.GetSpotUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(SharedPaginationType.Ascending, true);
@@ -390,7 +397,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 startTime: request.StartTime,
                 endTime: request.EndTime,
                 page: page,
-                pageSize: pageSize).ConfigureAwait(false);
+                pageSize: pageSize,
+                ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, default);
 
@@ -399,7 +407,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (orders.Data.HasNext)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return orders.AsExchangeResult(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
+            return orders.AsExchangeResult<IEnumerable<SharedUserTrade>>(Exchange, orders.Data.Items.Select(x => new SharedUserTrade(
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
@@ -410,7 +418,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
-            }), nextToken);
+            }).ToArray(), nextToken);
         }
                 
         EndpointOptions<CancelOrderRequest> ISpotOrderRestClient.CancelSpotOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
@@ -423,7 +431,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!long.TryParse(request.OrderId, out var orderId))
                 return new ExchangeWebResult<SharedId>(Exchange, new ArgumentError("Invalid order id"));
 
-            var order = await Trading.CancelOrderAsync(request.Symbol.GetSymbol(FormatSymbol), AccountType.Spot, orderId).ConfigureAwait(false);
+            var order = await Trading.CancelOrderAsync(request.Symbol.GetSymbol(FormatSymbol), AccountType.Spot, orderId, ct: ct).ConfigureAwait(false);
             if (!order)
                 return order.AsExchangeResult<SharedId>(Exchange, default);
 
@@ -477,7 +485,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!asset)
                 return asset.AsExchangeResult<SharedAsset>(Exchange, default);
 
-            return asset.AsExchangeResult<SharedAsset>(Exchange, new SharedAsset(asset.Data.Asset.Asset)
+            return asset.AsExchangeResult(Exchange, new SharedAsset(asset.Data.Asset.Asset)
             {
                 Networks = asset.Data.Networks.Select(x => new SharedAssetNetwork(x.Network)
                 {
@@ -505,7 +513,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 FullName = x.FullName,
                 Networks = x.Networks.Select(x => new SharedAssetNetwork(x.Name))
-            }).ToList());
+            }).ToArray());
         }
 
         #endregion
@@ -515,7 +523,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             RequiredOptionalParameters = new List<ParameterDescription>
             {
-                new ParameterDescription(nameof(GetDepositAddressesRequest.Network), typeof(string), "The network for the deposit address", "ETH")
+                new ParameterDescription(nameof(GetDepositAddressesRequest.Network), typeof(string), "The network for the deposit address", "ERC20")
             }
         };
 
@@ -532,7 +540,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return depositAddresses.AsExchangeResult<IEnumerable<SharedDepositAddress>>(Exchange, new[] { new SharedDepositAddress(request.Asset, depositAddresses.Data.Address)
             {
                 Network = request.Network,
-                Tag = depositAddresses.Data.Memo
+                TagOrMemo = depositAddresses.Data.Memo
             }
             });
         }
@@ -573,12 +581,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (deposits.Data.HasNext == true)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return deposits.AsExchangeResult(Exchange, deposits.Data.Items.Select(x => new SharedDeposit(x.Asset, x.Quantity, x.Status == DepositStatus.Finished, x.CreateTime)
+            return deposits.AsExchangeResult<IEnumerable<SharedDeposit>>(Exchange, deposits.Data.Items.Select(x => new SharedDeposit(x.Asset, x.Quantity, x.Status == DepositStatus.Finished, x.CreateTime)
             {
+                Id = x.Id.ToString(),
                 Confirmations = x.Confirmations,
                 Network = x.Network,
                 TransactionId = x.TransactionId
-            }), nextToken);
+            }).ToArray(), nextToken);
         }
 
         #endregion
@@ -634,14 +643,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (withdrawals.Data.HasNext == true)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return withdrawals.AsExchangeResult(Exchange, withdrawals.Data.Items.Select(x => new SharedWithdrawal(x.Asset, x.ToAddress, x.Quantity, x.Status == WithdrawStatusV2.Finished, x.CreateTime)
+            return withdrawals.AsExchangeResult<IEnumerable<SharedWithdrawal>>(Exchange, withdrawals.Data.Items.Select(x => new SharedWithdrawal(x.Asset, x.ToAddress, x.Quantity, x.Status == WithdrawStatusV2.Finished, x.CreateTime)
             {
+                Id = x.Id.ToString(),
                 Confirmations = x.Confirmations,
                 Network = x.Network,
                 Tag = x.Memo,
                 TransactionId = x.TransactionId,
                 Fee = x.Fee
-            }));
+            }).ToArray());
         }
 
         #endregion

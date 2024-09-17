@@ -20,7 +20,6 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         IOrderBookRestClient,
         IOpenInterestRestClient,
         IFundingRateRestClient,
-        IPositionModeRestClient,
         IPositionHistoryRestClient
     {
     }
