@@ -605,7 +605,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         EndpointOptions<GetLeverageRequest> ILeverageRestClient.GetLeverageOptions { get; } = new EndpointOptions<GetLeverageRequest>(true)
         {
-            ExchangeRequestInfo = "Leverage can only be retrieved when there is an open position, else it will return 0"
+            RequestNotes = "Leverage can only be retrieved when there is an open position, else it will return 0"
         };
         async Task<ExchangeWebResult<SharedLeverage>> ILeverageRestClient.GetLeverageAsync(GetLeverageRequest request, CancellationToken ct)
         {
