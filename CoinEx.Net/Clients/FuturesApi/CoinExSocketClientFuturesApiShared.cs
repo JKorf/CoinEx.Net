@@ -24,7 +24,7 @@ namespace CoinEx.Net.Clients.FuturesApi
     internal partial class CoinExSocketClientFuturesApi : ICoinExSocketClientFuturesApiShared
     {
         public string Exchange => CoinExExchange.ExchangeName;
-        public ApiType[] SupportedApiTypes { get; } = new[] { ApiType.PerpetualLinear, ApiType.PerpetualInverse };
+        public TradingMode[] SupportedApiTypes { get; } = new[] { TradingMode.PerpetualLinear, TradingMode.PerpetualInverse };
         public void SetDefaultExchangeParameter(string key, object value) => ExchangeParameters.SetStaticParameter(Exchange, key, value);
         public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
 
@@ -202,8 +202,6 @@ namespace CoinEx.Net.Clients.FuturesApi
                     AverageEntryPrice = update.Data.Position.AverageEntryPrice,
                     PositionSide = update.Data.Position.Side == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,
                     LiquidationPrice = update.Data.Position.LiquidationPrice,
-#warning Maintenance margin rate vs value? What do we use for the value? Other exchanges..?
-                    MaintenanceMargin = update.Data.Position.MaintenanceMarginRate,
                     Leverage = update.Data.Position.Leverage,
                     UnrealizedPnl = update.Data.Position.UnrealizedPnl
                 } })),
