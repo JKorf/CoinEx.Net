@@ -1,11 +1,10 @@
-﻿using CryptoExchange.Net.SharedApis.Interfaces.Rest;
-using CryptoExchange.Net.SharedApis.Interfaces.Rest.Spot;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 {
+    /// <summary>
+    /// Shared interface for Spot rest API usage
+    /// </summary>
     public interface ICoinExRestClientSpotApiShared :
         IAssetsRestClient,
         IBalanceRestClient,

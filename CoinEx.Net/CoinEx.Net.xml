@@ -1658,6 +1658,11 @@
             Endpoints related to orders, trades and managing positions
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi.SharedClient">
+            <summary>
+            Get the shared rest requests client
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiAccount">
             <summary>
             CoinEx account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
@@ -1832,6 +1837,11 @@
             <param name="endTime">Filter by end time</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiShared">
+            <summary>
+            Shared interface for Futures rest API usage
+            </summary>
         </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading">
             <summary>
@@ -2204,6 +2214,11 @@
             Futures streams
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SharedClient">
+            <summary>
+            Get the shared socket subscription client
+            </summary>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
@@ -2362,6 +2377,11 @@
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApiShared">
+            <summary>
+            Get the shared socket subscription client
+            </summary>
         </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.ICoinExRestClient">
             <summary>
@@ -2903,6 +2923,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi.SharedClient">
+            <summary>
+            Get the shared rest requests client
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount">
             <summary>
             CoinEx account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
@@ -3237,6 +3262,11 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiShared">
+            <summary>
+            Shared interface for Spot rest API usage
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading">
             <summary>
             CoinEx trading endpoints, placing and mananging orders.
@@ -3498,6 +3528,11 @@
             Spot streams
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SharedClient">
+            <summary>
+            Get the shared socket subscription client
+            </summary>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExMaintenance}}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to system notification updates
@@ -3655,6 +3690,11 @@
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApiShared">
+            <summary>
+            Get the shared socket subscription client
+            </summary>
         </member>
         <member name="T:CoinEx.Net.Interfaces.ICoinExOrderBookFactory">
             <summary>

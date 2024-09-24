@@ -1,23 +1,12 @@
-﻿using CoinEx.Net.Interfaces.Clients.SpotApiV2;
-using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.SharedApis.Enums;
-using CryptoExchange.Net.SharedApis.Interfaces;
-using CryptoExchange.Net.SharedApis.Models.Rest;
-using CryptoExchange.Net.SharedApis.ResponseModels;
+﻿using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.SharedApis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Enums;
-using CryptoExchange.Net.SharedApis.Models;
-using CryptoExchange.Net.SharedApis.Interfaces.Rest.Spot;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
-using CryptoExchange.Net.SharedApis.Interfaces.Rest.Futures;
-using CryptoExchange.Net.SharedApis.Models.Options.Endpoints;
-using CryptoExchange.Net.SharedApis.Interfaces.Rest;
-using CryptoExchange.Net.SharedApis.Models.Options;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
@@ -70,7 +59,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (ticker == null || funding == null)
                 return resultTicker.Result.AsExchangeError<SharedFuturesTicker>(Exchange, new ServerError("Not found"));
 
-            return resultTicker.Result.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedFuturesTicker(ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
+            return resultTicker.Result.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedFuturesTicker(ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
             {
                 IndexPrice = ticker.IndexPrice,
                 MarkPrice = ticker.MarkPrice,
@@ -97,7 +86,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             return resultTickers.Result.AsExchangeResult<IEnumerable<SharedFuturesTicker>>(Exchange, SupportedTradingModes, resultTickers.Result.Data.Select(x =>
             {
                 var funding = resultFunding.Result.Data.Single(p => p.Symbol == x.Symbol);
-                return new SharedFuturesTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
+                return new SharedFuturesTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
                 {
                     IndexPrice = x.IndexPrice,
                     MarkPrice = x.MarkPrice,
@@ -174,8 +163,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 GetOrderSide(request.Side, request.PositionSide),
                 GetOrderType(request.OrderType, request.TimeInForce),
                 quantity: request.Quantity ?? 0,
-                price: request.Price,                
-#warning check how to specify long/short. Do we adjust Side based on position side? So Buy + Short = Sell ?
+                price: request.Price,
                 clientOrderId: request.ClientOrderId,
                 ct: ct).ConfigureAwait(false);
 
@@ -319,6 +307,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
+                x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
                 x.Quantity,
                 x.Price,
                 x.CreateTime)
@@ -367,6 +356,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
+                x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
                 x.Quantity,
                 x.Price,
                 x.CreateTime)

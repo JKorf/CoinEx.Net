@@ -23,6 +23,9 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// </summary>
         ICoinExRestClientFuturesApiTrading Trading { get; }
 
+        /// <summary>
+        /// Get the shared rest requests client
+        /// </summary>
         ICoinExRestClientFuturesApiShared SharedClient { get; }
     }
 }

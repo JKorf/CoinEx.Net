@@ -19,7 +19,6 @@ using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
-using CryptoExchange.Net.SharedApis.Interfaces;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
