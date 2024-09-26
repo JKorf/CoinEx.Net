@@ -19,6 +19,7 @@ using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {

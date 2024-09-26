@@ -19,6 +19,7 @@ using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -54,6 +55,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         /// <inheritdoc />
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        
         #region methods
 
         /// <inheritdoc />

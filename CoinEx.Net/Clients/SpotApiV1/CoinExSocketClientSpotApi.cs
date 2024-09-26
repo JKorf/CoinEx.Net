@@ -27,6 +27,7 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
 using CoinEx.Net.Interfaces.Clients.SpotApiV1;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.SpotApiV1
 {

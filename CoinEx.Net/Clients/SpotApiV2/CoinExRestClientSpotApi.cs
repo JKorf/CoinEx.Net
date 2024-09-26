@@ -20,6 +20,7 @@ using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CoinEx.Net.Enums;
 using System.Linq;
 using System.Globalization;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {

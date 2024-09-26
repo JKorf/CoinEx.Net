@@ -15,6 +15,7 @@ using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
