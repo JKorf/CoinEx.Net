@@ -65,6 +65,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient);
+            services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedClient);
+            services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().FuturesApi.SharedClient);
 
             if (socketClientLifeTime == null)
                 services.AddSingleton<ICoinExSocketClient, CoinExSocketClient>();
