@@ -48,12 +48,12 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Base asset precision
         /// </summary>
         [JsonPropertyName("base_ccy_precision")]
-        public decimal QuantityPrecision { get; set; }
+        public int QuantityPrecision { get; set; }
         /// <summary>
         /// Quote asset precision
         /// </summary>
         [JsonPropertyName("quote_ccy_precision")]
-        public decimal PricePrecision { get; set; }
+        public int PricePrecision { get; set; }
         /// <summary>
         /// Leverage
         /// </summary>
@@ -64,5 +64,15 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("open_interest_volume")]
         public decimal OpenInterestVolume { get; set; }
+        /// <summary>
+        /// Is trading available
+        /// </summary>
+        [JsonPropertyName("is_market_available")]
+        public bool TradingAvailable { get; set; }
+        /// <summary>
+        /// Is copy trading available
+        /// </summary>
+        [JsonPropertyName("is_copy_trading_available")]
+        public bool CopyTradingAvailable { get; set; }
     }
 }

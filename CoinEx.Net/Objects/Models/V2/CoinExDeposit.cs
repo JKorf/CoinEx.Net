@@ -38,12 +38,12 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Quantity deposited
         /// </summary>
         [JsonPropertyName("amount")]
-        public long Quantity { get; set; }
+        public decimal Quantity { get; set; }
         /// <summary>
         /// Actual amount received
         /// </summary>
         [JsonPropertyName("actual_amount")]
-        public long QuantityCredited { get; set; }
+        public decimal? QuantityCredited { get; set; }
         /// <summary>
         /// Deposit address
         /// </summary>

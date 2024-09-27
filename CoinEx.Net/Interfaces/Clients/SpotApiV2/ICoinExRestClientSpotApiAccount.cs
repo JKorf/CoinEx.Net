@@ -156,15 +156,16 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /></para>
         /// </summary>
         /// <param name="asset">Asset to withdraw, for example `ETH`</param>
-        /// <param name="quanity">Withdrawal quantity</param>
+        /// <param name="quantity">Withdrawal quantity</param>
         /// <param name="toAddress">Withdrawal address.The withdrawal address needs to be added to the IP whitelist via Developer Console</param>
         /// <param name="method">Withdrawal methods (On-chain or inter-user transfer). Default as on-chain withdrawal</param>
         /// <param name="network">Network name. Required for On-chain, not required for inter-user transfer</param>
         /// <param name="remark">Withdrawal note</param>
+        /// <param name="memo">Memo for the withdrawal, required for some deposits</param>
         /// <param name="extraParameters">If it is a withdrawal from the KDA chain, you need to append the chain_id field to the extra field</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quanity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quantity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, string? memo = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel a pending withdrawal

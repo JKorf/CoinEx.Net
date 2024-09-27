@@ -22,5 +22,10 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Endpoints related to orders, trades and managing positions
         /// </summary>
         ICoinExRestClientFuturesApiTrading Trading { get; }
+
+        /// <summary>
+        /// Get the shared rest requests client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+        /// </summary>
+        ICoinExRestClientFuturesApiShared SharedClient { get; }
     }
 }

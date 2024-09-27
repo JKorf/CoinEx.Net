@@ -20,11 +20,12 @@ using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CoinEx.Net.Enums;
 using System.Linq;
 using System.Globalization;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExRestClientSpotApi" />
-    internal class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi, ISpotClient
+    internal partial class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi, ISpotClient
     {
         #region fields
         internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");
@@ -81,7 +82,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             => new CoinExV2AuthenticationProvider(credentials);
 
         /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
 
         #region methods
         internal async Task<WebCallResult> ExecuteAsync(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
@@ -476,5 +477,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         /// <inheritdoc />
         public ISpotClient CommonSpotClient => this;
+        public ICoinExRestClientSpotApiShared SharedClient => this;
+
     }
 }

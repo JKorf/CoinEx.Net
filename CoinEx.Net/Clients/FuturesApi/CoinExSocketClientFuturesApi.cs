@@ -19,11 +19,12 @@ using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc cref="ICoinExSocketClientFuturesApi" />
-    internal class CoinExSocketClientFuturesApi : SocketApiClient, ICoinExSocketClientFuturesApi
+    internal partial class CoinExSocketClientFuturesApi : SocketApiClient, ICoinExSocketClientFuturesApi
     {
         #region fields
         /// <inheritdoc />
@@ -51,13 +52,16 @@ namespace CoinEx.Net.Clients.FuturesApi
             => new CoinExV2AuthenticationProvider(credentials);
 
         /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        
         #region methods
 
         /// <inheritdoc />
         protected override IByteMessageAccessor CreateAccessor() => new SystemTextJsonByteMessageAccessor();
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer();
+
+        public ICoinExSocketClientFuturesApiShared SharedClient => this;
 
         /// <inheritdoc />
         public override string? GetListenerIdentifier(IMessageAccessor messageAccessor)
@@ -95,7 +99,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExFuturesTickerUpdate>>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExFuturesTickerSubscription(_logger, null, new Dictionary<string, object>
+            var subscription = new CoinExFuturesTickerSubscription(_logger, symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols }
             }, onMessage);

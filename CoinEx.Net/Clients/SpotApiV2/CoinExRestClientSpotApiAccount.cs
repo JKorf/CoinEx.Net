@@ -156,7 +156,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quanity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quanity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, string? memo = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -167,6 +167,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddString("amount", quanity);
             parameters.AddOptional("chain", network);
             parameters.AddOptional("remark", remark);
+            parameters.AddOptional("memo", memo);
             parameters.AddOptional("extra", extraParameters);
             return await _baseClient.ExecuteAsync<CoinExWithdrawal>(_baseClient.GetUri("v2/assets/withdraw"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
         }

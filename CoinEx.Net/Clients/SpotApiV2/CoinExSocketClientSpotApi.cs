@@ -19,11 +19,12 @@ using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExSocketClientSpotApi" />
-    internal class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi
+    internal partial class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi
     {
         #region fields
         /// <inheritdoc />
@@ -50,14 +51,18 @@ namespace CoinEx.Net.Clients.SpotApiV2
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
+        public ICoinExSocketClientSpotApiShared SharedClient => this;
+
         /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        
         #region methods
 
         /// <inheritdoc />
         protected override IByteMessageAccessor CreateAccessor() => new SystemTextJsonByteMessageAccessor();
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer();
+
 
         /// <inheritdoc />
         public override string? GetListenerIdentifier(IMessageAccessor messageAccessor)

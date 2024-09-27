@@ -19,6 +19,7 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
 using CoinEx.Net.Interfaces.Clients.SpotApiV1;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.SpotApiV1
 {
@@ -73,7 +74,7 @@ namespace CoinEx.Net.Clients.SpotApiV1
             => new CoinExAuthenticationProvider(credentials, ClientOptions.NonceProvider ?? new CoinExNonceProvider());
 
         /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
 
         #region methods
         #region private

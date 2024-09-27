@@ -15,11 +15,12 @@ using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc cref="ICoinExRestClientFuturesApi" />
-    internal class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
+    internal partial class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
     {
         #region fields
         internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");
@@ -58,12 +59,14 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
 
         /// <inheritdoc />
         protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor();
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer();
+
+        public ICoinExRestClientFuturesApiShared SharedClient => this;
 
         /// <inheritdoc />
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
