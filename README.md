@@ -157,6 +157,18 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 7.7.0 - 27 Sep 2024
+    * Updated CryptoExchange.Net to version 8.0.0, see https://github.com/JKorf/CryptoExchange.Net/releases/tag/8.0.0
+    * Added Shared client interfaces implementation for Spot and Futures Rest and Socket clients
+    * Added memo parameter to SpotApi.Account.WithdrawAsync
+    * Added Role property to CoinExUserTrade model
+    * Updated Sourcelink package version
+    * Updated QuantityPrecision and PricePrecision property types from decimal to int on CoinExFuturesSymbol
+    * Fixed Quantity property type from long to decimal in CoinExDeposit model
+    * Fixed QuantityCredited property type from long to decimal? in CoinExDepositModel
+    * Fixed FuturesApi.SubscribeToTickerUpdatesAsync subscription
+    * Marked ISpotClient references as deprecated
+
 * Version 7.6.1 - 11 Sep 2024
     * Added SpotApiV2.Account.GetTransactionHistoryAsync endpoint
 
