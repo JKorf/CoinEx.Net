@@ -242,10 +242,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = orders.Data.ClientOrderId,
                 OrderPrice = orders.Data.Price,
-                Quantity = orders.Data.QuantityAsset == null || orders.Data.QuantityAsset == request.Symbol.BaseAsset ? orders.Data.Quantity : null,
+                Quantity = orders.Data.QuantityAsset == null || !orders.Data.Symbol.EndsWith(orders.Data.QuantityAsset) ? orders.Data.Quantity : null,
                 QuantityFilled = orders.Data.QuantityFilled,
                 UpdateTime = orders.Data.UpdateTime,
-                QuoteQuantity = orders.Data.QuantityAsset == request.Symbol.QuoteAsset ? orders.Data.Quantity : null,
+                QuoteQuantity = orders.Data.Symbol.EndsWith(orders.Data.QuantityAsset) ? orders.Data.Quantity : null,
                 QuoteQuantityFilled = orders.Data.ValueFilled,
                 Fee = orders.Data.FeeBaseAsset > 0 ? orders.Data.FeeBaseAsset : orders.Data.FeeQuoteAsset,
                 FeeAsset = orders.Data.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : orders.Data.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
@@ -276,10 +276,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
-                Quantity = x.QuantityAsset == null || x.QuantityAsset == request.Symbol?.BaseAsset ? x.Quantity : null,
+                Quantity = x.QuantityAsset == null || !x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null,
                 QuantityFilled = x.QuantityFilled,
                 UpdateTime = x.UpdateTime,
-                QuoteQuantity = x.QuantityAsset == request.Symbol?.QuoteAsset ? x.Quantity : null,
+                QuoteQuantity = x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null,
                 QuoteQuantityFilled = x.ValueFilled,
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
                 FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
@@ -328,13 +328,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
-                Quantity = x.QuantityAsset == null || x.QuantityAsset == request.Symbol.BaseAsset ? x.Quantity : null,
+                Quantity = x.QuantityAsset == null || !x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null,
                 QuantityFilled = x.QuantityFilled,
                 UpdateTime = x.UpdateTime,
-                QuoteQuantity = x.QuantityAsset == request.Symbol.QuoteAsset ? x.Quantity : null,
+                QuoteQuantity = x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null,
                 QuoteQuantityFilled = x.ValueFilled,
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
-                FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
+                FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
             }).ToArray(), nextToken);
         }
