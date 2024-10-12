@@ -271,7 +271,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
                 x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                ParseOrderStatus(x.Status),
+                SharedOrderStatus.Open,
                 x.CreateTime)
             {
                 ClientOrderId = x.ClientOrderId,
@@ -323,7 +323,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
                 x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                ParseOrderStatus(x.Status),
+                SharedOrderStatus.Filled, // Canceled orders are not returned
                 x.CreateTime)
             {
                 ClientOrderId = x.ClientOrderId,
