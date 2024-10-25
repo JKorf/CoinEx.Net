@@ -914,6 +914,16 @@
             Urls to the API documentation
             </summary>
         </member>
+        <member name="M:CoinEx.Net.CoinExExchange.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
+            <summary>
+            Format a base and quote asset to a CoinEx recognized symbol 
+            </summary>
+            <param name="baseAsset">Base asset</param>
+            <param name="quoteAsset">Quote asset</param>
+            <param name="tradingMode">Trading mode</param>
+            <param name="deliverTime">Delivery time for delivery futures</param>
+            <returns></returns>
+        </member>
         <member name="T:CoinEx.Net.CoinExHelpers">
             <summary>
             CoinEx helpers
@@ -932,6 +942,18 @@
             </summary>
             <param name="depth"></param>
             <returns></returns>
+        </member>
+        <member name="T:CoinEx.Net.CoinExTrackerFactory">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.#ctor(System.IServiceProvider)">
+            <summary>
+            ctor
+            </summary>
+            <param name="serviceProvider">Service provider for resolving logging and clients</param>
+        </member>
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Enums.AccountType">
             <summary>
@@ -3710,6 +3732,14 @@
             Futures order book factory methods
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExOrderBookFactory.Create(CryptoExchange.Net.SharedApis.SharedSymbol,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
+            <summary>
+            Create a SymbolOrderBook for the symbol
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="options">Book options</param>
+            <returns></returns>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.ICoinExOrderBookFactory.CreateSpot(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
             <summary>
             Create a SymbolOrderBook for the Spot API
@@ -3724,6 +3754,20 @@
             </summary>
             <param name="symbol">The symbol</param>
             <param name="options">Order book options</param>
+            <returns></returns>
+        </member>
+        <member name="T:CoinEx.Net.Interfaces.ICoinExTrackerFactory">
+            <summary>
+            Tracker factory
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
+            <summary>
+            Create a new trade tracker for a symbol
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="limit">The max amount of klines to retain</param>
+            <param name="period">The max period the data should be retained</param>
             <returns></returns>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExApiAddresses">
@@ -7578,6 +7622,9 @@
             ctor
             </summary>
             <param name="serviceProvider">Service provider for resolving logging and clients</param>
+        </member>
+        <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.Create(CryptoExchange.Net.SharedApis.SharedSymbol,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
+            <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.CreateSpot(System.String,System.Action{CoinEx.Net.Objects.Options.CoinExOrderBookOptions})">
             <inheritdoc />

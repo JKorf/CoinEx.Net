@@ -1,5 +1,6 @@
 ﻿using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.SharedApis;
 using System;
 
 namespace CoinEx.Net.Interfaces
@@ -18,6 +19,14 @@ namespace CoinEx.Net.Interfaces
         /// Futures order book factory methods
         /// </summary>
         public IOrderBookFactory<CoinExOrderBookOptions> Futures { get; }
+
+        /// <summary>
+        /// Create a SymbolOrderBook for the symbol
+        /// </summary>
+        /// <param name="symbol">The symbol</param>
+        /// <param name="options">Book options</param>
+        /// <returns></returns>
+        ISymbolOrderBook Create(SharedSymbol symbol, Action<CoinExOrderBookOptions>? options = null);
 
         /// <summary>
         /// Create a SymbolOrderBook for the Spot API

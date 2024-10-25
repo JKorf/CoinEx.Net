@@ -1,4 +1,5 @@
-﻿using CoinEx.Net.Clients;
+﻿using CoinEx.Net;
+using CoinEx.Net.Clients;
 using CoinEx.Net.Interfaces;
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Objects.Options;
@@ -61,6 +62,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ICryptoRestClient, CryptoRestClient>();
             services.AddTransient<ICryptoSocketClient, CryptoSocketClient>();
             services.AddTransient<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
+            services.AddTransient<ICoinExTrackerFactory, CoinExTrackerFactory>();
             services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.CommonSpotClient);
 
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
