@@ -1,7 +1,7 @@
-﻿using CoinEx.Net.Interfaces;
+﻿using CoinEx.Net.Clients;
+using CoinEx.Net.Interfaces;
 using CoinEx.Net.Interfaces.Clients;
 using CryptoExchange.Net.SharedApis;
-using CryptoExchange.Net.Trackers.Klines;
 using CryptoExchange.Net.Trackers.Trades;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,7 +12,14 @@ namespace CoinEx.Net
     /// <inheritdoc />
     public class CoinExTrackerFactory : ICoinExTrackerFactory
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceProvider? _serviceProvider;
+
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public CoinExTrackerFactory()
+        {
+        }
 
         /// <summary>
         /// ctor
@@ -26,23 +33,27 @@ namespace CoinEx.Net
         /// <inheritdoc />
         public ITradeTracker CreateTradeTracker(SharedSymbol symbol, int? limit = null, TimeSpan? period = null)
         {
-            IRecentTradeRestClient restClient;
-            ITradeSocketClient socketClient;
+            var restClient = _serviceProvider?.GetRequiredService<ICoinExRestClient>() ?? new CoinExRestClient();
+            var socketClient = _serviceProvider?.GetRequiredService<ICoinExSocketClient>() ?? new CoinExSocketClient();
+
+            IRecentTradeRestClient sharedRestClient;
+            ITradeSocketClient sharedSocketClient;
             if (symbol.TradingMode == TradingMode.Spot)
             {
-                restClient = _serviceProvider.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient;
-                socketClient = _serviceProvider.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient;
+                sharedRestClient = restClient.SpotApiV2.SharedClient;
+                sharedSocketClient = socketClient.SpotApiV2.SharedClient;
             }
             else
             {
-                restClient = _serviceProvider.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient;
-                socketClient = _serviceProvider.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient;
+                sharedRestClient = restClient.FuturesApi.SharedClient;
+                sharedSocketClient = socketClient.FuturesApi.SharedClient;
             }
 
             return new TradeTracker(
-                _serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger(restClient.Exchange),
-                restClient,
-                socketClient,
+                _serviceProvider?.GetRequiredService<ILoggerFactory>().CreateLogger(restClient.Exchange),
+                sharedRestClient,
+                null,
+                sharedSocketClient,
                 symbol,
                 limit,
                 period
