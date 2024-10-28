@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Examples.Api", "Coin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Examples.Console", "CoinEx.Examples.Console\CoinEx.Examples.Console.csproj", "{FD4F95C8-D9B7-4F81-9245-4CE667DFD421}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Net", "..\CoinEx.Net\CoinEx.Net.csproj", "{22411347-12D7-4993-A7BA-E8CC6D52CA4D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Examples.OrderBook", "CoinEx.Examples.OrderBook\CoinEx.Examples.OrderBook.csproj", "{2668FF12-1C29-4CB0-B944-A938805CDF66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Examples.Tracker", "CoinEx.Examples.Tracker\CoinEx.Examples.Tracker.csproj", "{93B8A062-C9D7-497E-BD98-ACBF40666D8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +27,18 @@ Global
 		{FD4F95C8-D9B7-4F81-9245-4CE667DFD421}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD4F95C8-D9B7-4F81-9245-4CE667DFD421}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD4F95C8-D9B7-4F81-9245-4CE667DFD421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22411347-12D7-4993-A7BA-E8CC6D52CA4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22411347-12D7-4993-A7BA-E8CC6D52CA4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22411347-12D7-4993-A7BA-E8CC6D52CA4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22411347-12D7-4993-A7BA-E8CC6D52CA4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2668FF12-1C29-4CB0-B944-A938805CDF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2668FF12-1C29-4CB0-B944-A938805CDF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2668FF12-1C29-4CB0-B944-A938805CDF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2668FF12-1C29-4CB0-B944-A938805CDF66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93B8A062-C9D7-497E-BD98-ACBF40666D8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93B8A062-C9D7-497E-BD98-ACBF40666D8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93B8A062-C9D7-497E-BD98-ACBF40666D8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93B8A062-C9D7-497E-BD98-ACBF40666D8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

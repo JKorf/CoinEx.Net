@@ -946,6 +946,11 @@
         <member name="T:CoinEx.Net.CoinExTrackerFactory">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
         <member name="M:CoinEx.Net.CoinExTrackerFactory.#ctor(System.IServiceProvider)">
             <summary>
             ctor
