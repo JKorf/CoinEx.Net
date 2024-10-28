@@ -54,8 +54,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
         public ICoinExSocketClientSpotApiShared SharedClient => this;
 
         /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null) => $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
-        
+        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
+                => CoinExExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverTime);
+
         #region methods
 
         /// <inheritdoc />

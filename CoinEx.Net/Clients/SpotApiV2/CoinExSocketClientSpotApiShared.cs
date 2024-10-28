@@ -69,7 +69,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 if (update.UpdateType == SocketUpdateType.Snapshot)
                     return;
 
-                handler(update.AsExchangeEvent<IEnumerable<SharedTrade>>(Exchange, update.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)).ToArray()));
+                handler(update.AsExchangeEvent<IEnumerable<SharedTrade>>(Exchange, update.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)
+                {
+                    Side = x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell
+                }).ToArray()));
             }, ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
