@@ -85,11 +85,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        protected override Query? GetAuthenticationRequest(SocketConnection connection)
+        protected override Task<Query?> GetAuthenticationRequestAsync(SocketConnection connection)
         {
             var authProvider = (CoinExV2AuthenticationProvider)AuthenticationProvider!;
             var authParams = authProvider.GetSocketAuthParameters();
-            return new CoinExQuery("server.sign", authParams, false, 0);
+            return Task.FromResult<Query?>(new CoinExQuery("server.sign", authParams, false, 0));
         }
 
         /// <inheritdoc />
