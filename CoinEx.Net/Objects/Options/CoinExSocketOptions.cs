@@ -11,11 +11,19 @@ namespace CoinEx.Net.Objects.Options
         /// <summary>
         /// Default options for the CoinExRestClient
         /// </summary>
-        public static CoinExSocketOptions Default { get; set; } = new CoinExSocketOptions
+        internal static CoinExSocketOptions Default { get; set; } = new CoinExSocketOptions
         {
             Environment = CoinExEnvironment.Live,
             SocketSubscriptionsCombineTarget = 10
         };
+
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public CoinExSocketOptions()
+        {
+            Default?.Set(this);
+        }
 
         /// <summary>
         /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
@@ -32,13 +40,13 @@ namespace CoinEx.Net.Objects.Options
         /// </summary>
         public SocketApiOptions FuturesOptions { get; private set; } = new SocketApiOptions();
 
-        internal CoinExSocketOptions Copy()
+        internal CoinExSocketOptions Set(CoinExSocketOptions targetOptions)
         {
-            var options = Copy<CoinExSocketOptions>();
-            options.NonceProvider = NonceProvider;
-            options.SpotOptions = SpotOptions.Copy<SocketApiOptions>();
-            options.FuturesOptions = SpotOptions.Copy<SocketApiOptions>();
-            return options;
+            targetOptions = base.Set<CoinExSocketOptions>(targetOptions);
+            targetOptions.NonceProvider = NonceProvider;
+            targetOptions.SpotOptions = SpotOptions.Set(targetOptions.SpotOptions);
+            targetOptions.FuturesOptions = FuturesOptions.Set(targetOptions.FuturesOptions);
+            return targetOptions;
         }
     }
 }

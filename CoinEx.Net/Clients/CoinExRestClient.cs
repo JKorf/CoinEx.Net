@@ -7,6 +7,7 @@ using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Clients;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CoinEx.Net.Clients.FuturesApi;
+using Microsoft.Extensions.Options;
 
 namespace CoinEx.Net.Clients
 {
@@ -27,27 +28,25 @@ namespace CoinEx.Net.Clients
         /// Create a new instance of the CoinExRestClient using provided options
         /// </summary>
         /// <param name="optionsDelegate">Option configuration delegate</param>
-        public CoinExRestClient(Action<CoinExRestOptions>? optionsDelegate = null) : this(null, null, optionsDelegate)
+        public CoinExRestClient(Action<CoinExRestOptions>? optionsDelegate = null)
+            : this(null, null, Options.Create(ApplyOptionsDelegate(optionsDelegate)))
         {
         }
 
         /// <summary>
         /// Create a new instance of the CoinExRestClient
         /// </summary>
-        /// <param name="optionsDelegate">Option configuration delegate</param>
+        /// <param name="options">Option configuration</param>
         /// <param name="loggerFactory">The logger factory</param>
         /// <param name="httpClient">Http client for this client</param>
-        public CoinExRestClient(HttpClient? httpClient, ILoggerFactory? loggerFactory, Action<CoinExRestOptions>? optionsDelegate = null)
+        public CoinExRestClient(HttpClient? httpClient, ILoggerFactory? loggerFactory, IOptions<CoinExRestOptions> options)
             : base(loggerFactory, "CoinEx")
         {
-            var options = CoinExRestOptions.Default.Copy();
-            if (optionsDelegate != null)
-                optionsDelegate(options);
-            Initialize(options);
+            Initialize(options.Value);
 
-            FuturesApi = AddApiClient(new CoinExRestClientFuturesApi(_logger, httpClient, options));
-            SpotApi = AddApiClient(new SpotApiV1.CoinExRestClientSpotApi(_logger, httpClient, options));
-            SpotApiV2 = AddApiClient(new SpotApiV2.CoinExRestClientSpotApi(_logger, httpClient, options));
+            FuturesApi = AddApiClient(new CoinExRestClientFuturesApi(_logger, httpClient, options.Value));
+            SpotApi = AddApiClient(new SpotApiV1.CoinExRestClientSpotApi(_logger, httpClient, options.Value));
+            SpotApiV2 = AddApiClient(new SpotApiV2.CoinExRestClientSpotApi(_logger, httpClient, options.Value));
         }
         #endregion
 
@@ -58,9 +57,7 @@ namespace CoinEx.Net.Clients
         /// <param name="optionsDelegate">Option configuration delegate</param>
         public static void SetDefaultOptions(Action<CoinExRestOptions> optionsDelegate)
         {
-            var options = CoinExRestOptions.Default.Copy();
-            optionsDelegate(options);
-            CoinExRestOptions.Default = options;
+            CoinExRestOptions.Default = ApplyOptionsDelegate(optionsDelegate);
         }
 
         /// <inheritdoc />

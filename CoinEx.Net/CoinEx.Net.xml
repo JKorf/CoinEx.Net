@@ -22,11 +22,11 @@
             </summary>
             <param name="optionsDelegate">Option configuration delegate</param>
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExRestClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILoggerFactory,System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions})">
+        <member name="M:CoinEx.Net.Clients.CoinExRestClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions{CoinEx.Net.Objects.Options.CoinExRestOptions})">
             <summary>
             Create a new instance of the CoinExRestClient
             </summary>
-            <param name="optionsDelegate">Option configuration delegate</param>
+            <param name="options">Option configuration</param>
             <param name="loggerFactory">The logger factory</param>
             <param name="httpClient">Http client for this client</param>
         </member>
@@ -51,24 +51,18 @@
         <member name="P:CoinEx.Net.Clients.CoinExSocketClient.SpotApi">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)">
-            <summary>
-            Create a new instance of the CoinExSocketClient
-            </summary>
-            <param name="loggerFactory">The logger factory</param>
-        </member>
         <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions})">
             <summary>
             Create a new instance of the CoinExSocketClient
             </summary>
             <param name="optionsDelegate">Option configuration delegate</param>
         </member>
-        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
+        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.#ctor(Microsoft.Extensions.Options.IOptions{CoinEx.Net.Objects.Options.CoinExSocketOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
             <summary>
             Create a new instance of the CoinExSocketClient
             </summary>
             <param name="loggerFactory">The logger factory</param>
-            <param name="optionsDelegate">Option configuration delegate</param>
+            <param name="options">Option configuration</param>
         </member>
         <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetDefaultOptions(System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions})">
             <summary>
@@ -878,6 +872,16 @@
         <member name="P:CoinEx.Net.CoinExEnvironment.SocketBaseAddress">
             <summary>
             Spot Socket client address
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.CoinExEnvironment.#ctor">
+            <summary>
+            ctor for DI, use <see cref="M:CoinEx.Net.CoinExEnvironment.CreateCustom(System.String,System.String,System.String)"/> for creating a custom environment
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.CoinExEnvironment.GetEnvironmentByName(System.String)">
+            <summary>
+            Get the CoinEx environment by name
             </summary>
         </member>
         <member name="P:CoinEx.Net.CoinExEnvironment.Live">
@@ -7499,6 +7503,36 @@
             Remark
             </summary>
         </member>
+        <member name="T:CoinEx.Net.Objects.Options.CoinExOptions">
+            <summary>
+            CoinEx options
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.Rest">
+            <summary>
+            Rest client options
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.Socket">
+            <summary>
+            Socket client options
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.Environment">
+            <summary>
+            Trade environment. Contains info about URL's to use to connect to the API. Use `CoinExEnvironment` to swap environment, for example `Environment = CoinExEnvironment.Live`
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.ApiCredentials">
+            <summary>
+            The api credentials used for signing requests.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.SocketClientLifeTime">
+            <summary>
+            The DI service lifetime for the ICoinExSocketClient
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.Objects.Options.CoinExOrderBookOptions">
             <summary>
             Options for CoinEx SymbolOrderBook
@@ -7529,6 +7563,11 @@
             Default options for the CoinExRestClient
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Objects.Options.CoinExRestOptions.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Objects.Options.CoinExRestOptions.NonceProvider">
             <summary>
             Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
@@ -7557,6 +7596,11 @@
         <member name="P:CoinEx.Net.Objects.Options.CoinExSocketOptions.Default">
             <summary>
             Default options for the CoinExRestClient
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Objects.Options.CoinExSocketOptions.#ctor">
+            <summary>
+            ctor
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.Options.CoinExSocketOptions.NonceProvider">
@@ -7700,15 +7744,26 @@
             Extensions for DI
             </summary>
         </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions},System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions},System.Nullable{Microsoft.Extensions.DependencyInjection.ServiceLifetime})">
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
-            Add the ICoinExClient and ICoinExSocketClient to the sevice collection so they can be injected
+            Add services such as the ICoinExRestClient and ICoinExSocketClient. Configures the services based on the provided configuration.
             </summary>
             <param name="services">The service collection</param>
-            <param name="defaultRestOptionsDelegate">Set default options for the rest client</param>
-            <param name="defaultSocketOptionsDelegate">Set default options for the socket client</param>
-            <param name="socketClientLifeTime">The lifetime of the ICoinExSocketClient for the service collection. Defaults to Singleton.</param>
+            <param name="configuration">The configuration(section) containing the options</param>
             <returns></returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.Options.CoinExOptions})">
+            <summary>
+            Add services such as the ICoinExRestClient and ICoinExSocketClient. Services will be configured based on the provided options.
+            </summary>
+            <param name="services">The service collection</param>
+            <param name="optionsDelegate">Set options for the CoinEx services</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions},System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions},System.Nullable{Microsoft.Extensions.DependencyInjection.ServiceLifetime})">
+            <summary>
+            DEPRECATED; use <see cref="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.Options.CoinExOptions})" /> instead
+            </summary>
         </member>
     </members>
 </doc>
