@@ -14,6 +14,16 @@ namespace CoinEx.Net
         public static string ExchangeName => "CoinEx";
 
         /// <summary>
+        /// Exchange name
+        /// </summary>
+        public static string DisplayName => "CoinEx";
+
+        /// <summary>
+        /// Url to exchange image
+        /// </summary>
+        public static string ImageUrl { get; } = "https://raw.githubusercontent.com/JKorf/CoinEx.Net/master/CoinEx.Net/Icon/icon.png";
+
+        /// <summary>
         /// Url to the main website
         /// </summary>
         public static string Url { get; } = "https://www.coinex.com";
