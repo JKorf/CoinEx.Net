@@ -908,6 +908,16 @@
             Exchange name
             </summary>
         </member>
+        <member name="P:CoinEx.Net.CoinExExchange.DisplayName">
+            <summary>
+            Exchange name
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.CoinExExchange.ImageUrl">
+            <summary>
+            Url to exchange image
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.CoinExExchange.Url">
             <summary>
             Url to the main website
