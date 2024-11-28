@@ -7518,31 +7518,6 @@
             CoinEx options
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.Rest">
-            <summary>
-            Rest client options
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.Socket">
-            <summary>
-            Socket client options
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.Environment">
-            <summary>
-            Trade environment. Contains info about URL's to use to connect to the API. Use `CoinExEnvironment` to swap environment, for example `Environment = CoinExEnvironment.Live`
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.ApiCredentials">
-            <summary>
-            The api credentials used for signing requests.
-            </summary>
-        </member>
-        <member name="P:CoinEx.Net.Objects.Options.CoinExOptions.SocketClientLifeTime">
-            <summary>
-            The DI service lifetime for the ICoinExSocketClient
-            </summary>
-        </member>
         <member name="T:CoinEx.Net.Objects.Options.CoinExOrderBookOptions">
             <summary>
             Options for CoinEx SymbolOrderBook
