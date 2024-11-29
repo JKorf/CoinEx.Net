@@ -29,18 +29,14 @@ namespace CoinEx.Net.SymbolOrderBooks
         {
             _serviceProvider = serviceProvider;
 
-            Spot = new OrderBookFactory<CoinExOrderBookOptions>(
-                CreateSpot,
-                (sharedSymbol, options) => CreateSpot(CoinExExchange.FormatSymbol(sharedSymbol.BaseAsset, sharedSymbol.QuoteAsset, sharedSymbol.TradingMode, sharedSymbol.DeliverTime), options));
-            Futures = new OrderBookFactory<CoinExOrderBookOptions>(
-                CreateFutures,
-                (sharedSymbol, options) => CreateFutures(CoinExExchange.FormatSymbol(sharedSymbol.BaseAsset, sharedSymbol.QuoteAsset, sharedSymbol.TradingMode, sharedSymbol.DeliverTime), options));
+            Spot = new OrderBookFactory<CoinExOrderBookOptions>(CreateSpot, Create);
+            Futures = new OrderBookFactory<CoinExOrderBookOptions>(CreateFutures, Create);
         }
 
         /// <inheritdoc />
         public ISymbolOrderBook Create(SharedSymbol symbol, Action<CoinExOrderBookOptions>? options = null)
         {
-            var symbolName = CoinExExchange.FormatSymbol(symbol.BaseAsset, symbol.QuoteAsset, symbol.TradingMode, symbol.DeliverTime);
+            var symbolName = symbol.GetSymbol(CoinExExchange.FormatSymbol);
             if (symbol.TradingMode == TradingMode.Spot)
                 return CreateSpot(symbolName, options);
 
