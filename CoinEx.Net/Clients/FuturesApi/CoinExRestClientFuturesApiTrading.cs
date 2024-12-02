@@ -33,8 +33,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
-            clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
-
+            clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            
             var parameters = new ParameterCollection()
             {
                 { "market", symbol }
@@ -64,7 +64,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
-            clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
+            clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
             var parameters = new ParameterCollection()
             {
@@ -89,7 +89,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             CancellationToken ct = default)
         {
             foreach (var order in requests)
-                order.ClientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
+                order.ClientOrderId = LibraryHelpers.ApplyBrokerId(order.ClientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
             var parameters = new ParameterCollection()
             {
@@ -104,7 +104,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             CancellationToken ct = default)
         {
             foreach (var order in requests)
-                order.ClientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
+                order.ClientOrderId = LibraryHelpers.ApplyBrokerId(order.ClientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
             var parameters = new ParameterCollection()
             {
@@ -126,6 +126,9 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPaginated<CoinExFuturesOrder>>> GetOpenOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
+            if (clientOrderId != null)
+                clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+
             var parameters = new ParameterCollection();
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddOptionalEnum("side", side);
@@ -152,6 +155,9 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetOpenStopOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
+            if (clientOrderId != null)
+                clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+
             var parameters = new ParameterCollection();
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddOptionalEnum("side", side);
@@ -165,6 +171,9 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
+            if (clientOrderId != null)
+                clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+
             var parameters = new ParameterCollection();
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddOptionalEnum("side", side);
@@ -256,6 +265,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExFuturesOrder>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default)
         {
+            clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+
             var parameters = new ParameterCollection()
             {
                 { "market", symbol },
@@ -269,6 +280,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExStopOrder>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default)
         {
+            clientStopOrderId = LibraryHelpers.ApplyBrokerId(clientStopOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+
             var parameters = new ParameterCollection()
             {
                 { "market", symbol },
@@ -359,6 +372,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExFuturesOrder>> ClosePositionAsync(string symbol, OrderTypeV2 orderType, decimal? price = null, decimal? quantity = null, string? clientOrderId = null, bool? hidden = null, CancellationToken ct = default)
         {
+            clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+
             var parameters = new ParameterCollection()
             {
                 { "market", symbol }

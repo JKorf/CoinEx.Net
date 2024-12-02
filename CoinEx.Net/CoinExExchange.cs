@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.SharedApis;
+﻿using CryptoExchange.Net;
+using CryptoExchange.Net.SharedApis;
 using System;
 
 namespace CoinEx.Net
@@ -35,6 +36,9 @@ namespace CoinEx.Net
             "https://viabtc.github.io/coinex_api_en_doc/",
             "https://docs.coinex.com/api/v2/"
             };
+
+        internal const string ClientOrderId = "x-147866029-";
+        internal const string ClientOrderIdPrefix = ClientOrderId + LibraryHelpers.ClientOrderIdSeperator;
 
         /// <summary>
         /// Format a base and quote asset to a CoinEx recognized symbol 

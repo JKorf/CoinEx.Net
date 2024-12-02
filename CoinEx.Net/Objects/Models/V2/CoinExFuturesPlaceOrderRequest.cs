@@ -46,6 +46,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// The client order id
         /// </summary>
         [JsonPropertyName("client_id"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonConverterCtor<ReplaceConverter>($"{CoinExExchange.ClientOrderIdPrefix}->")]
         public string? ClientOrderId { get; set; }
         /// <summary>
         /// Whether to hide the order

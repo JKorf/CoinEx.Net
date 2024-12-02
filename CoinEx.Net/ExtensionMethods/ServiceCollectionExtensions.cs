@@ -44,9 +44,9 @@ namespace Microsoft.Extensions.DependencyInjection
             var socketEnvName = options.Socket.Environment?.Name ?? options.Environment?.Name ?? CoinExEnvironment.Live.Name;
             options.Rest.Environment = CoinExEnvironment.GetEnvironmentByName(restEnvName) ?? options.Rest.Environment!;
             options.Rest.ApiCredentials = options.Rest.ApiCredentials ?? options.ApiCredentials;
+            options.Rest.AllowAppendingClientOrderId = options.Rest.AllowAppendingClientOrderId || options.AllowAppendingClientOrderId;
             options.Socket.Environment = CoinExEnvironment.GetEnvironmentByName(socketEnvName) ?? options.Socket.Environment!;
             options.Socket.ApiCredentials = options.Socket.ApiCredentials ?? options.ApiCredentials;
-
 
             services.AddSingleton(x => Options.Options.Create(options.Rest));
             services.AddSingleton(x => Options.Options.Create(options.Socket));
@@ -72,6 +72,7 @@ namespace Microsoft.Extensions.DependencyInjection
             if (options.Rest == null || options.Socket == null)
                 throw new ArgumentException("Options null");
 
+            options.Rest.AllowAppendingClientOrderId = options.Rest.AllowAppendingClientOrderId || options.AllowAppendingClientOrderId;
             options.Rest.Environment = options.Rest.Environment ?? options.Environment ?? CoinExEnvironment.Live;
             options.Rest.ApiCredentials = options.Rest.ApiCredentials ?? options.ApiCredentials;
             options.Socket.Environment = options.Socket.Environment ?? options.Environment ?? CoinExEnvironment.Live;

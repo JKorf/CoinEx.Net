@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net.Enums;
+using CryptoExchange.Net.Converters.SystemTextJson;
 using System;
 using System.Text.Json.Serialization;
 
@@ -68,6 +69,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Client order id
         /// </summary>
         [JsonPropertyName("client_id")]
+        [JsonConverterCtor<ReplaceConverter>($"{CoinExExchange.ClientOrderIdPrefix}->")]
         public string? ClientOrderId { get; set; }
         /// <summary>
         /// Fee in base asset

@@ -41,8 +41,6 @@ namespace CoinEx.Net.Clients.FuturesApi
         public ICoinExRestClientFuturesApiTrading Trading { get; }
         #endregion
 
-        internal readonly string _brokerId;
-
         #region ctor
         internal CoinExRestClientFuturesApi(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
             base(logger, httpClient, options.Environment.RestBaseAddress, options, options.FuturesOptions)
@@ -52,8 +50,6 @@ namespace CoinEx.Net.Clients.FuturesApi
             Trading = new CoinExRestClientFuturesApiTrading(this);
 
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
-
-            _brokerId = !string.IsNullOrEmpty(options.BrokerId) ? options.BrokerId! : "147866029";
 
         }
         #endregion

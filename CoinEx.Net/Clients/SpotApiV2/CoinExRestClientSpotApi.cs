@@ -55,8 +55,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
         public ICoinExRestClientSpotApiTrading Trading { get; }
         #endregion
 
-        internal readonly string _brokerId;
-
         #region ctor
         internal CoinExRestClientSpotApi(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
             base(logger, httpClient, options.Environment.RestBaseAddress, options, options.SpotOptions)
@@ -66,9 +64,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             Trading = new CoinExRestClientSpotApiTrading(this);
 
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
-
-            _brokerId = !string.IsNullOrEmpty(options.BrokerId) ? options.BrokerId! : "147866029";
-
         }
         #endregion
 

@@ -72,7 +72,7 @@ namespace CoinEx.Net.Clients.SpotApiV1
                 endpoint = PlaceImmediateOrCancelOrderEndpoint;
             }
 
-            clientOrderId ??= ExchangeHelpers.AppendRandomString("x-" + _baseClient._brokerId + "-", 32);
+            clientOrderId ??= ExchangeHelpers.AppendRandomString(CoinExExchange.ClientOrderId, 32);
 
             var parameters = new Dictionary<string, object>
             {
