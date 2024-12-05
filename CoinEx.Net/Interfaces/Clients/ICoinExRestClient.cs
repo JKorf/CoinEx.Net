@@ -1,6 +1,7 @@
 ﻿using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Objects.Options;
 
 namespace CoinEx.Net.Interfaces.Clients
 {
@@ -21,6 +22,12 @@ namespace CoinEx.Net.Interfaces.Clients
         /// Futures V2 API endpoints
         /// </summary>
         ICoinExRestClientFuturesApi FuturesApi { get; }
+
+        /// <summary>
+        /// Update specific options
+        /// </summary>
+        /// <param name="options"></param>
+        void SetOptions(UpdateOptions options);
 
         /// <summary>
         /// Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.

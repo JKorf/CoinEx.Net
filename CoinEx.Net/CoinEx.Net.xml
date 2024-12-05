@@ -30,6 +30,9 @@
             <param name="loggerFactory">The logger factory</param>
             <param name="httpClient">Http client for this client</param>
         </member>
+        <member name="M:CoinEx.Net.Clients.CoinExRestClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.CoinExRestClient.SetDefaultOptions(System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions})">
             <summary>
             Set the default options to be used when creating new clients
@@ -69,6 +72,9 @@
             Set the default options to be used when creating new clients
             </summary>
             <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.CoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
@@ -2444,6 +2450,12 @@
             Futures V2 API endpoints
             </summary>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <summary>
+            Update specific options
+            </summary>
+            <param name="options"></param>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>
             Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
@@ -2469,6 +2481,12 @@
             <summary>
             DEPRECATED FROM 2024/09/25, USE SpotApiV2 INSTEAD
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <summary>
+            Update specific options
+            </summary>
+            <param name="options"></param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>
