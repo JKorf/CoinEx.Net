@@ -135,10 +135,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, "depth", symbols, new Dictionary<string, object>
+            var subscription = new CoinExOrderBookSubscription(_logger, symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToList() }
-            }, x => onMessage(x.WithSymbol(x.Data.Symbol)), firstUpdateIsSnapshot: true);
+            }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -156,7 +156,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             var subscription = new CoinExTradesSubscription(_logger, symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols }
-            }, onMessage);
+            }, onMessage); 
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 
