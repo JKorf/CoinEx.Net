@@ -113,6 +113,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 try
                 {
                     handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                    handler.UseDefaultCredentials = true;
+                    handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
                 }
                 catch (PlatformNotSupportedException)
                 { }
