@@ -7,6 +7,7 @@ using CryptoExchange.Net.Clients;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CoinEx.Net.Clients.FuturesApi;
 using Microsoft.Extensions.Options;
+using CryptoExchange.Net.Objects.Options;
 
 namespace CoinEx.Net.Clients
 {
@@ -57,6 +58,14 @@ namespace CoinEx.Net.Clients
         public static void SetDefaultOptions(Action<CoinExSocketOptions> optionsDelegate)
         {
             CoinExSocketOptions.Default = ApplyOptionsDelegate(optionsDelegate);
+        }
+
+        /// <inheritdoc />
+        public void SetOptions(UpdateOptions options)
+        {
+            FuturesApi.SetOptions(options);
+            SpotApi.SetOptions(options);
+            SpotApiV2.SetOptions(options);
         }
 
         /// <inheritdoc />

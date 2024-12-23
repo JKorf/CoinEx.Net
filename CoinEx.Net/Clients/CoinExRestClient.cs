@@ -8,6 +8,7 @@ using CryptoExchange.Net.Clients;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CoinEx.Net.Clients.FuturesApi;
 using Microsoft.Extensions.Options;
+using CryptoExchange.Net.Objects.Options;
 
 namespace CoinEx.Net.Clients
 {
@@ -51,6 +52,14 @@ namespace CoinEx.Net.Clients
         #endregion
 
         #region methods
+        /// <inheritdoc />
+        public void SetOptions(UpdateOptions options)
+        {
+            FuturesApi.SetOptions(options);
+            SpotApi.SetOptions(options);
+            SpotApiV2.SetOptions(options);
+        }
+
         /// <summary>
         /// Set the default options to be used when creating new clients
         /// </summary>
