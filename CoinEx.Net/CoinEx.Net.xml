@@ -2454,7 +2454,7 @@
             <summary>
             Update specific options
             </summary>
-            <param name="options"></param>
+            <param name="options">Options to update. Only specific options are changable after the client has been created</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>
@@ -2486,7 +2486,7 @@
             <summary>
             Update specific options
             </summary>
-            <param name="options"></param>
+            <param name="options">Options to update. Only specific options are changable after the client has been created</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>

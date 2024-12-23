@@ -26,7 +26,7 @@ namespace CoinEx.Net.Interfaces.Clients
         /// <summary>
         /// Update specific options
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="options">Options to update. Only specific options are changable after the client has been created</param>
         void SetOptions(UpdateOptions options);
 
         /// <summary>
