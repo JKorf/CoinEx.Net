@@ -64,7 +64,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Client order id
         /// </summary>
         [JsonPropertyName("client_id")]
-        [JsonConverterCtor<ReplaceConverter>($"{CoinExExchange.ClientOrderIdPrefix}->")]
+        [JsonConverterCtor(typeof(ReplaceConverter), $"{CoinExExchange.ClientOrderIdPrefix}->")]
         public string? ClientOrderId { get; set; }
         /// <summary>
         /// Fee
