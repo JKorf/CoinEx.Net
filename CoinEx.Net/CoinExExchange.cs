@@ -1,4 +1,5 @@
 ﻿using CryptoExchange.Net;
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.SharedApis;
 using System;
 
@@ -36,6 +37,11 @@ namespace CoinEx.Net
             "https://viabtc.github.io/coinex_api_en_doc/",
             "https://docs.coinex.com/api/v2/"
             };
+
+        /// <summary>
+        /// Type of exchange
+        /// </summary>
+        public static ExchangeType Type { get; } = ExchangeType.CEX;
 
         internal const string ClientOrderId = "x-147866029-";
         internal const string ClientOrderIdPrefix = ClientOrderId + LibraryHelpers.ClientOrderIdSeperator;

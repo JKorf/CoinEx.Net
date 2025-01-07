@@ -441,7 +441,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         /// <inheritdoc />
-        protected override ServerError? TryParseError(IMessageAccessor accessor)
+        protected override Error? TryParseError(IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
         {
             if (!accessor.IsJson)
                 return new ServerError(accessor.GetOriginalString());
