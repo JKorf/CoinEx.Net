@@ -43,6 +43,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         internal CoinExSocketClientFuturesApi(ILogger logger, CoinExSocketOptions options)
             : base(logger, options.Environment.SocketBaseAddress, options, options.FuturesOptions)
         {
+            KeepAliveInterval = TimeSpan.Zero; // Server doesn't correctly respond to ping frames
+
             RegisterPeriodicQuery(
                 "Ping",
                 TimeSpan.FromSeconds(30),
