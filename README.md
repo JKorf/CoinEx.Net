@@ -165,6 +165,10 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 7.13.2 - 09 Jan 2025
+    * Updated CryptoExchange.Net to version 8.6.1, see https://github.com/JKorf/CryptoExchange.Net/releases/
+    * Disable ping frames for socket connections as it's not stable
+
 * Version 7.13.1 - 07 Jan 2025
     * Updated CryptoExchange.Net version
     * Added Type property to CoinEx class
