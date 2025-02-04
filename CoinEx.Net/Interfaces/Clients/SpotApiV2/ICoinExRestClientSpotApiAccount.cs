@@ -199,6 +199,14 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         Task<WebCallResult<CoinExDepositWithdrawalConfig>> GetDepositWithdrawalConfigAsync(string asset, CancellationToken ct = default);
 
         /// <summary>
+        /// Get withdraw and deposit information for all assets
+        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-all-deposit-withdrawal-config" /></para>
+        /// </summary>
+        /// <param name="ct">Cancelation token</param>
+        /// <returns></returns>
+        Task<WebCallResult<IEnumerable<CoinExDepositWithdrawalConfig>>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default);
+
+        /// <summary>
         /// Transfer between accounts
         /// <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /></para>
         /// </summary>
