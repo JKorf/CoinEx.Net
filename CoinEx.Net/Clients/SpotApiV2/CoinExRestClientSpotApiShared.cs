@@ -491,28 +491,40 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     WithdrawFee = x.WithdrawalFee,
                     MinWithdrawQuantity = x.MinWithdrawQuantity,
                     MinConfirmations = x.SafeConfirmations
-                })
+                }).ToArray()
             });
         }
 
-        EndpointOptions<GetAssetsRequest> IAssetsRestClient.GetAssetsOptions { get; } = new EndpointOptions<GetAssetsRequest>(false)
-        {
-            RequestNotes = "Detailed network info is only available when requesting an individual asset using GetAssetAsync"
-        };
+        EndpointOptions<GetAssetsRequest> IAssetsRestClient.GetAssetsOptions { get; } = new EndpointOptions<GetAssetsRequest>(false);
         async Task<ExchangeWebResult<IEnumerable<SharedAsset>>> IAssetsRestClient.GetAssetsAsync(GetAssetsRequest request, CancellationToken ct)
         {
             var validationError = ((IAssetsRestClient)this).GetAssetsOptions.ValidateRequest(Exchange, request, TradingMode.Spot, SupportedTradingModes);
             if (validationError != null)
                 return new ExchangeWebResult<IEnumerable<SharedAsset>>(Exchange, validationError);
 
-            var assets = await ExchangeData.GetAssetsAsync(ct: ct).ConfigureAwait(false);
-            if (!assets)
-                return assets.AsExchangeResult<IEnumerable<SharedAsset>>(Exchange, null, default);
+            var assets = ExchangeData.GetAssetsAsync(ct: ct);
+            var assetConfigs = Account.GetAllDepositWithdrawalConfigsAsync(ct: ct);
+            await Task.WhenAll(assets, assetConfigs).ConfigureAwait(false);
+            if (!assets.Result)
+                return assets.Result.AsExchangeResult<IEnumerable<SharedAsset>>(Exchange, null, default);
+            if (!assetConfigs.Result)
+                return assetConfigs.Result.AsExchangeResult<IEnumerable<SharedAsset>>(Exchange, null, default);
 
-            return assets.AsExchangeResult<IEnumerable<SharedAsset>>(Exchange, TradingMode.Spot, assets.Data.Select(x => new SharedAsset(x.ShortName)
+            return assets.Result.AsExchangeResult<IEnumerable<SharedAsset>>(Exchange, TradingMode.Spot, assets.Result.Data.Select(x =>
             {
-                FullName = x.FullName,
-                Networks = x.Networks.Select(x => new SharedAssetNetwork(x.Name))
+                var config = assetConfigs.Result.Data.SingleOrDefault(y => y.Asset.Asset.Equals(x.ShortName));
+                return new SharedAsset(x.ShortName)
+                {
+                    FullName = x.FullName,
+                    Networks = config?.Networks.Select(x => new SharedAssetNetwork(x.Network)
+                    {
+                        DepositEnabled = x.DepositEnabled,
+                        WithdrawEnabled = x.WithdrawEnabled,
+                        WithdrawFee = x.WithdrawalFee,
+                        MinWithdrawQuantity = x.MinWithdrawQuantity,
+                        MinConfirmations = x.SafeConfirmations
+                    }).ToArray() ?? []
+                };
             }).ToArray());
         }
 
