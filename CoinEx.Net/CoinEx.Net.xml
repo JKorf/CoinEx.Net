@@ -680,6 +680,9 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetDepositWithdrawalConfigAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.GetAllDepositWithdrawalConfigsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount.TransferAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.AccountType,System.Decimal,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -3178,6 +3181,14 @@
             <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /></para>
             </summary>
             <param name="asset">The asset, for example `ETH`</param>
+            <param name="ct">Cancelation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetAllDepositWithdrawalConfigsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get withdraw and deposit information for all assets
+            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-all-deposit-withdrawal-config" /></para>
+            </summary>
             <param name="ct">Cancelation token</param>
             <returns></returns>
         </member>

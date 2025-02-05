@@ -1,12 +1,12 @@
 ﻿using CoinEx.Net.Enums;
+using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using CoinEx.Net.Objects.Models.V2;
 using CryptoExchange.Net.Objects;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoinEx.Net.Objects.Models.V2;
-using CoinEx.Net.Interfaces.Clients.SpotApiV2;
-using System;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -199,7 +199,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("ccy", asset);
-            return await _baseClient.ExecuteAsync<CoinExDepositWithdrawalConfig>(_baseClient.GetUri("v2/assets/deposit-withdraw-config"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            return await _baseClient.ExecuteAsync<CoinExDepositWithdrawalConfig>(_baseClient.GetUri("v2/assets/deposit-withdraw-config"), HttpMethod.Get, ct, parameters, false).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CoinExDepositWithdrawalConfig>>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default)
+        {
+            return await _baseClient.ExecuteAsync<IEnumerable<CoinExDepositWithdrawalConfig>>(_baseClient.GetUri("v2/assets/all-deposit-withdraw-config"), HttpMethod.Get, ct, null, false).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
