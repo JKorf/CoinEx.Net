@@ -17,7 +17,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// <summary>
         /// Update time
         /// </summary>
-        [JsonPropertyName("update_at")]
+        [JsonPropertyName("updated_at")]
         public DateTime UpdateTime { get; set; }
         /// <summary>
         /// Current best bid price

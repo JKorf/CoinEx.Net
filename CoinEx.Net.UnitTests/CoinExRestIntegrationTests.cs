@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace CoinEx.Net.UnitTests
 {
     [NonParallelizable]
-    internal class CoinExRestIntegrationTests : RestIntergrationTest<CoinExRestClient>
+    internal class CoinExRestIntegrationTests : RestIntegrationTest<CoinExRestClient>
     {
         public override bool Run { get; set; }
 
