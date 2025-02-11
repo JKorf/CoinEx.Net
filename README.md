@@ -167,6 +167,13 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 7.15.0 - 11 Feb 2025
+    * Updated CryptoExchange.Net to version 8.8.0, see https://github.com/JKorf/CryptoExchange.Net/releases/
+    * Added support for more SharedKlineInterval values
+    * Added setting of DataTime value on websocket DataEvent updates
+    * Fixed deserialization of CoinExBookPriceUpdate.UpdateTime property
+    * Fix Mono runtime exception on rest client construction using DI
+
 * Version 7.14.0 - 05 Feb 2025
     * Updated CryptoExchange.Net to version 8.7.3, see https://github.com/JKorf/CryptoExchange.Net/releases/
     * Added restClient.SpotApiV2.Account.GetAllDepositWithdrawalConfigsAsync endpoint
