@@ -1,0 +1,8 @@
+POST
+/v2/assets/margin/repay
+true
+{
+    "code": 0,
+    "data": {},
+    "message": "OK"
+}

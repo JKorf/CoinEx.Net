@@ -13,6 +13,7 @@ namespace CoinEx.Net.Clients.FuturesApi
     /// <inheritdoc />
     internal class CoinExRestClientFuturesApiAccount : ICoinExRestClientFuturesApiAccount
     {
+        private static readonly RequestDefinitionCache _definitions = new RequestDefinitionCache();
         private readonly CoinExRestClientFuturesApi _baseClient;
 
         internal CoinExRestClientFuturesApiAccount(CoinExRestClientFuturesApi baseClient)
@@ -28,13 +29,15 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "market", symbol }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<CoinExTradeFee>(_baseClient.GetUri("v2/account/trade-fee-rate"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/account/trade-fee-rate", CoinExExchange.RateLimiter.CoinExRestSpotAccount, 1, true);
+            return await _baseClient.SendAsync<CoinExTradeFee>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExFuturesBalance>>> GetBalancesAsync(CancellationToken ct = default)
         {
-            var result = await _baseClient.ExecuteAsync<IEnumerable<CoinExFuturesBalance>>(_baseClient.GetUri("v2/assets/futures/balance"), HttpMethod.Get, ct, null, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/futures/balance", CoinExExchange.RateLimiter.CoinExRestFuturesAccount, 1, true);
+            var result = await _baseClient.SendAsync< IEnumerable<CoinExFuturesBalance>>(request, null, ct).ConfigureAwait(false);
             if (result && result.Data == null)
                 return result.As<IEnumerable<CoinExFuturesBalance>>(Array.Empty<CoinExFuturesBalance>());
 
@@ -51,7 +54,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_Type", AccountType.Futures);
             parameters.AddEnum("margin_mode", mode);
-            return await _baseClient.ExecuteAsync<CoinExLeverage>(_baseClient.GetUri("v2/futures/adjust-position-leverage"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/adjust-position-leverage", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExLeverage>(request, parameters, ct).ConfigureAwait(false);
         }
     }
 }

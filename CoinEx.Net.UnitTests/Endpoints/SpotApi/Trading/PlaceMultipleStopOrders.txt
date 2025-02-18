@@ -1,0 +1,16 @@
+POST
+/v2/spot/batch-stop-order
+true
+{
+    "code": 0,
+    "data": [
+        {
+            "code": 0,
+            "data": {   
+                 "stop_id": 287330817
+            },
+            "message": "OK"
+        }
+    ],
+    "message": "OK"
+}

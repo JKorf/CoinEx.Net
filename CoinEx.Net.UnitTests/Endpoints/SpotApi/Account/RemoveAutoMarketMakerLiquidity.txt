@@ -1,0 +1,13 @@
+POST
+/v2/assets/amm/remove-liquidity
+true
+{
+    "code": 0,
+    "data": {
+        "market": "CETUSDT",
+        "base_ccy_amount": "0",
+        "quote_ccy_amount": "0",
+        "liquidity_proportion": "0"
+    },
+    "message": "OK"
+}

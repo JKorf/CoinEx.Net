@@ -74,5 +74,10 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("is_copy_trading_available")]
         public bool CopyTradingAvailable { get; set; }
+        /// <summary>
+        /// Tick size
+        /// </summary>
+        [JsonPropertyName("tick_size")]
+        public decimal TickSize { get; set; }
     }
 }

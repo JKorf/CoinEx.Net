@@ -1,0 +1,20 @@
+GET
+/v2/futures/position-level
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "BTCUSDT",
+            "level": [
+                {"amount": "20", "leverage": "100", "maintenance_margin_rate": "0.005", "min_initial_margin_rate": "0.01"},
+                {"amount": "50", "leverage": "50", "maintenance_margin_rate": "0.01", "min_initial_margin_rate": "0.02"},
+                {"amount": "100", "leverage": "30", "maintenance_margin_rate": "0.015", "min_initial_margin_rate": "0.0333"},
+                {"amount": "200", "leverage": "20", "maintenance_margin_rate": "0.02", "min_initial_margin_rate": "0.05"},
+                {"amount": "500", "leverage": "15", "maintenance_margin_rate": "0.025", "min_initial_margin_rate": "0.06"},
+                {"amount": "1000", "leverage": "10", "maintenance_margin_rate": "0.03", "min_initial_margin_rate": "0.1"}
+            ]
+        }
+    ],
+    "message": "OK"
+}

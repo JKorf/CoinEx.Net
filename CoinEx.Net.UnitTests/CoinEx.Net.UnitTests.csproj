@@ -18,4 +18,10 @@
     <ProjectReference Include="..\CoinEx.Net\CoinEx.Net.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\FuturesApi\Account\" />
+    <Folder Include="Endpoints\FuturesApi\Trading\" />
+    <Folder Include="Subscriptions\" />
+  </ItemGroup>
+
 </Project>

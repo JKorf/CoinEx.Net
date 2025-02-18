@@ -13,6 +13,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
     /// <inheritdoc />
     internal class CoinExRestClientSpotApiExchangeData : ICoinExRestClientSpotApiExchangeData
     {
+        private static readonly RequestDefinitionCache _definitions = new RequestDefinitionCache();
         private readonly CoinExRestClientSpotApi _baseClient;
 
         internal CoinExRestClientSpotApiExchangeData(CoinExRestClientSpotApi baseClient)
@@ -24,7 +25,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
         {
-            var result = await _baseClient.ExecuteAsync<CoinExServerTime>(_baseClient.GetUri("v2/time"), HttpMethod.Get, ct).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/time", CoinExExchange.RateLimiter.CoinExRestPublic);
+            var result = await _baseClient.SendAsync<CoinExServerTime>(request, null, ct).ConfigureAwait(false);
             return result.As(result.Data?.ServerTime ?? default);
         }
 
@@ -38,13 +40,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExSymbol>>> GetSymbolsAsync(CancellationToken ct = default)
         {
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExSymbol>>(_baseClient.GetUri("v2/spot/market"), HttpMethod.Get, ct).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/market", CoinExExchange.RateLimiter.CoinExRestPublic);
+            return await _baseClient.SendAsync<IEnumerable<CoinExSymbol>>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExAsset>>> GetAssetsAsync(CancellationToken ct = default)
         {
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExAsset>>(_baseClient.GetUri("v2/assets/info"), HttpMethod.Get, ct).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/info", CoinExExchange.RateLimiter.CoinExRestPublic);
+            return await _baseClient.SendAsync<IEnumerable<CoinExAsset>>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -52,7 +56,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExTicker>>(_baseClient.GetUri("v2/spot/ticker"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/ticker", CoinExExchange.RateLimiter.CoinExRestPublic);
+            return await _baseClient.SendAsync<IEnumerable<CoinExTicker>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -64,7 +69,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 { "limit", limit },
                 { "interval", mergeLevel ?? "0" }
             };
-            return await _baseClient.ExecuteAsync<CoinExOrderBook>(_baseClient.GetUri("v2/spot/depth"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/depth", CoinExExchange.RateLimiter.CoinExRestPublic);
+            return await _baseClient.SendAsync<CoinExOrderBook>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -76,7 +82,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             };
             parameters.AddOptional("limit", limit);
             parameters.AddOptional("last_id", lastId);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExTrade>>(_baseClient.GetUri("v2/spot/deals"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/deals", CoinExExchange.RateLimiter.CoinExRestPublic);
+            return await _baseClient.SendAsync<IEnumerable<CoinExTrade>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -89,7 +96,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddEnum("period", interval);
             parameters.AddOptionalEnum("price_type", priceType);
             parameters.AddOptional("limit", limit);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExKline>>(_baseClient.GetUri("v2/spot/kline"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/kline", CoinExExchange.RateLimiter.CoinExRestPublic);
+            return await _baseClient.SendAsync<IEnumerable<CoinExKline>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -97,7 +105,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExIndexPrice>>(_baseClient.GetUri("v2/spot/index"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/index", CoinExExchange.RateLimiter.CoinExRestPublic);
+            return await _baseClient.SendAsync<IEnumerable<CoinExIndexPrice>>(request, parameters, ct).ConfigureAwait(false);
         }
     }
 }

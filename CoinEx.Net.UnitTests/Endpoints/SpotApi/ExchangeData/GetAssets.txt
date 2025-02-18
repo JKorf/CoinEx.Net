@@ -1,0 +1,27 @@
+GET
+/v2/assets/info
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "short_name": "CET",
+            "full_name": "CoinEx Token",
+            "website_url": "https://www.coinex.com/token",
+            "white_paper_url": "https://www.coinex.org/whitepaper_en.pdf",
+            "chain_info": [
+                {
+                    "chain_name": "CSC",
+                    "identity": "",
+                    "explorer_url": "https://www.coinex.net/"
+                },
+                {
+                    "chain_name": "Ethereum (ERC20)",
+                    "identity": "0x081f67afa0ccf8c7b17540767bbe95df2ba8d97f",
+                    "explorer_url": "https://etherscan.io/token/0x081f67afa0ccf8c7b17540767bbe95df2ba8d97f"
+                }
+            ]
+        }
+    ],
+    "message": "OK"
+}

@@ -62,7 +62,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExCreditBalance>>> GetCreditAccountAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExCreditBalance>> GetCreditAccountAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get automated market maker account liquidity

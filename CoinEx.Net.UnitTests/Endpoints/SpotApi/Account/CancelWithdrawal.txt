@@ -1,0 +1,8 @@
+POST
+/v2/assets/cancel-withdraw
+true
+{
+    "code": 0,
+    "data": {},
+    "message": "OK"
+}

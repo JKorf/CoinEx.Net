@@ -1,0 +1,8 @@
+POST
+/v2/assets/transfer
+true
+{
+    "code": 0,
+    "message": "OK",
+    "data": {}
+}

@@ -1,0 +1,22 @@
+GET
+/v2/spot/index
+false
+{
+    "code": 0,
+    "data":  [
+        {
+            "market": "BTCUSDT",
+            "created_at": 1689152421692,
+            "price": "30718.42",
+            "sources": [
+                {
+                    "exchange": "kucoin",
+                    "created_at": 1689152421685,
+                    "index_weight": "1.00000000",
+                    "index_price": "30718.42"
+                }
+            ]
+        }
+    ],
+    "message": "OK"
+}

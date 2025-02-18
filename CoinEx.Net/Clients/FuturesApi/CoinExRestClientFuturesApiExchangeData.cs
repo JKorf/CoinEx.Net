@@ -13,6 +13,7 @@ namespace CoinEx.Net.Clients.FuturesApi
     /// <inheritdoc />
     internal class CoinExRestClientFuturesApiExchangeData : ICoinExRestClientFuturesApiExchangeData
     {
+        private static readonly RequestDefinitionCache _definitions = new RequestDefinitionCache();
         private readonly CoinExRestClientFuturesApi _baseClient;
 
         internal CoinExRestClientFuturesApiExchangeData(CoinExRestClientFuturesApi baseClient)
@@ -23,7 +24,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
         {
-            var result = await _baseClient.ExecuteAsync<CoinExServerTime>(_baseClient.GetUri("v2/time"), HttpMethod.Get, ct).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/time", CoinExExchange.RateLimiter.CoinExRestPublic);
+            var result = await _baseClient.SendAsync<CoinExServerTime>(request, null, ct).ConfigureAwait(false);
             return result.As(result.Data?.ServerTime ?? default);
         }
 
@@ -32,7 +34,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null :string.Join(",", symbols));
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExFuturesSymbol>>(_baseClient.GetUri("v2/futures/market"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/market", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExFuturesSymbol>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -40,7 +43,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExFuturesTicker>>(_baseClient.GetUri("v2/futures/ticker"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/ticker", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExFuturesTicker>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -52,7 +56,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "limit", limit },
                 { "interval", mergeLevel ?? "0" }
             };
-            return await _baseClient.ExecuteAsync<CoinExOrderBook>(_baseClient.GetUri("v2/futures/depth"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/depth", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<CoinExOrderBook>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -64,7 +69,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddOptional("limit", limit);
             parameters.AddOptional("last_id", lastId);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExTrade>>(_baseClient.GetUri("v2/futures/deals"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/deals", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExTrade>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -77,7 +83,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("period", interval);
             parameters.AddOptionalEnum("price_type", priceType);
             parameters.AddOptional("limit", limit);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExKline>>(_baseClient.GetUri("v2/futures/kline"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/kline", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExKline>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -85,7 +92,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExIndexPrice>>(_baseClient.GetUri("v2/futures/index"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/index", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExIndexPrice>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -93,7 +101,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExFundingRate>>(_baseClient.GetUri("v2/futures/funding-rate"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/funding-rate", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExFundingRate>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -107,7 +116,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExFundingRateHistory>(_baseClient.GetUri("v2/futures/funding-rate-history"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/funding-rate-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendPaginatedAsync<CoinExFundingRateHistory>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -121,7 +131,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExPremiumIndexHistory>>(_baseClient.GetUri("v2/futures/premium-index-history"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/premium-index-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExPremiumIndexHistory>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -129,7 +140,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExPositionLevels>>(_baseClient.GetUri("v2/futures/position-level"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/position-level", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExPositionLevels>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -143,7 +155,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExLiquidation>(_baseClient.GetUri("v2/futures/liquidation-history"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/liquidation-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendPaginatedAsync<CoinExLiquidation>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -155,7 +168,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddOptionalMilliseconds("start_time", startTime);
             parameters.AddOptionalMilliseconds("end_time", endTime);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBasis>>(_baseClient.GetUri("v2/futures/basis-history"), HttpMethod.Get, ct, parameters).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/basis-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBasis>>(request, parameters, ct).ConfigureAwait(false);
         }
     }
 }

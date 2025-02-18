@@ -1,0 +1,33 @@
+GET
+/v2/assets/deposit-withdraw-config
+false
+{
+    "code": 0,
+    "data": {
+        "asset": {
+            "ccy": "CET",
+            "deposit_enabled": true,
+            "withdraw_enabled": false,
+            "inter_transfer_enabled": true,
+            "is_st": false
+        },
+        "chains": [
+            {
+                "chain": "CSC",
+                "min_deposit_amount": "0.023",
+                "min_withdraw_amount": "0.019",
+                "deposit_enabled": false,
+                "withdraw_enabled": false,
+                "deposit_delay_minutes": 0,
+                "safe_confirmations": 100,
+                "irreversible_confirmations": 200,
+                "deflation_rate": "0",
+                "withdrawal_fee": "0.019",
+                "withdrawal_precision": 6,
+                "memo": "",
+                "is_memo_required_for_deposit": false,
+                "explorer_asset_url": "https://www.coinex.net/token/0x398dca951cd4fc18264d995dcd171aa5debda129"
+            }
+        ]},
+    "message": "OK"
+}

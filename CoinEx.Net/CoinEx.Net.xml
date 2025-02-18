@@ -952,6 +952,21 @@
             <param name="deliverTime">Delivery time for delivery futures</param>
             <returns></returns>
         </member>
+        <member name="P:CoinEx.Net.CoinExExchange.RateLimiter">
+            <summary>
+            Rate limiter configuration for the CoinEx API
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.CoinExRateLimiters">
+            <summary>
+            Rate limiter configuration for the CoinEx API
+            </summary>
+        </member>
+        <member name="E:CoinEx.Net.CoinExRateLimiters.RateLimitTriggered">
+            <summary>
+            Event for when a rate limit is triggered
+            </summary>
+        </member>
         <member name="T:CoinEx.Net.CoinExHelpers">
             <summary>
             CoinEx helpers
@@ -5399,6 +5414,11 @@
             Is deposit enabled
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.DepositDelayInMinutes">
+            <summary>
+            Deposit delay
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExNetwork.WithdrawEnabled">
             <summary>
             Is withdrawal enabled
@@ -5467,6 +5487,16 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.NextFundingRate">
             <summary>
             Next funding rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.MaxFundingRate">
+            <summary>
+            Max funding rate
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.MinFundingRate">
+            <summary>
+            Min funding rate
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFundingRate.LastFundingTime">
@@ -5847,6 +5877,11 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.CopyTradingAvailable">
             <summary>
             Is copy trading available
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExFuturesSymbol.TickSize">
+            <summary>
+            Tick size
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExFuturesTicker">
@@ -7502,9 +7537,19 @@
             Quantity
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.FeeAsset">
+            <summary>
+            Fee asset
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.ActualQuantity">
             <summary>
             Actual withdrawal quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.WithdrawMethod">
+            <summary>
+            Withdraw method
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExWithdrawal.Fee">

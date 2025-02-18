@@ -1,0 +1,25 @@
+GET
+/v2/futures/market
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "BTCUSDT",
+            "contract_type": "linear",
+            "taker_fee_rate": "0.002",
+            "maker_fee_rate": "0.002",
+            "min_amount": "0.0005",
+            "base_ccy": "BTC",
+            "quote_ccy": "USDT",
+            "base_ccy_precision": 8,
+            "quote_ccy_precision": 2,
+            "tick_size": "0.5",
+            "is_market_available": true,
+            "is_copy_trading_available": true,
+            "leverage": ["3", "5", "8", "10", "15", "20", "30", "50", "100"],
+            "open_interest_volume": "100"
+        }
+    ],
+    "message": "OK"
+}

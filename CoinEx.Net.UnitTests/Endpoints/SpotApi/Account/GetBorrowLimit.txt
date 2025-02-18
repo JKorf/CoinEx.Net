@@ -1,0 +1,15 @@
+GET
+/v2/assets/margin/interest-limit
+true
+{
+    "code": 0,
+    "data": {
+        "market": "BTCUSDT",
+        "ccy": "USDT",
+        "daily_interest_rate": "0.0009",
+        "leverage": "10",
+        "min_amount": "1",
+        "max_amount": "200000"
+    },
+    "message": "OK"
+}

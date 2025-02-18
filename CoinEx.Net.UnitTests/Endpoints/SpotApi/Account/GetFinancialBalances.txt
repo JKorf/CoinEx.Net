@@ -1,0 +1,19 @@
+GET
+/v2/assets/financial/balance
+true
+{
+    "code": 0,
+    "data": [
+        {
+            "available": "25837.077847838",
+            "ccy": "USDT",
+            "frozen": "6540.714421152"
+        },
+        {
+            "available": "41232.366264748",
+            "ccy": "CET",
+            "frozen": "3702.28145353364"
+        }
+    ],
+    "message": "OK"
+}

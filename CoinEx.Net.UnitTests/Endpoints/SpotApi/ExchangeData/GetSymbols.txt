@@ -1,0 +1,21 @@
+GET
+/v2/spot/market
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "BTCUSDT",
+            "taker_fee_rate": "0.002",
+            "maker_fee_rate": "0.002",
+            "min_amount": "0.0005",
+            "base_ccy": "BTC",
+            "quote_ccy": "USDT",
+            "base_ccy_precision": 8,
+            "quote_ccy_precision": 2,
+            "is_amm_available": true,
+            "is_margin_available": true
+        }
+    ],
+    "message": "OK"
+}

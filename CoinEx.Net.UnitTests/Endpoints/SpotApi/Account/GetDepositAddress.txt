@@ -1,0 +1,11 @@
+GET
+/v2/assets/deposit-address
+true
+{
+    "code": 0,
+    "data": {
+        "address": "0x40aa234bcdc528ce411a6020da1a3c07124039d4",
+        "memo": ""
+    },
+    "message": "OK"
+}

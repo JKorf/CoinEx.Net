@@ -1,0 +1,36 @@
+GET
+/v2/futures/index
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "BTCUSDT",
+            "created_at": 1703561120000,
+            "price": "30718.42",
+            "sources": [
+                {
+                    "created_at": 1703561102173,
+                    "exchange" : "binance",
+                    "index_weight": "0.25"
+                },
+                {
+                    "created_at": 1703561124859,
+                    "exchange": "coinex",
+                    "index_weight": "0.25"
+                },
+                {
+                    "created_at": 1703561123704,
+                    "exchange": " meexc",
+                    "index_weight": "0.25"
+                },
+                {
+                    "created_at": 1703561125040,
+                    "exchange": "bybit ",
+                    "index_weight": "0.25"
+                }
+            ]
+        }
+    ],
+    "message": "OK "
+}

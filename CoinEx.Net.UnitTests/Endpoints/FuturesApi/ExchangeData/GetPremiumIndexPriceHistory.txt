@@ -1,0 +1,19 @@
+GET
+/v2/futures/premium-index-history
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "LATUSDT",
+            "created_at": 1642145400000,
+            "premium_index": "-0.00027732"
+        },
+        {
+            "market": "LATUSDT",
+            "created_at": 1642146000000,
+            "premium_index": "-0.00013372"
+        }
+    ],
+    "message": "OK"
+}

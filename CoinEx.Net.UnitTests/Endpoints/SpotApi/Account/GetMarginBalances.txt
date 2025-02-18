@@ -1,0 +1,32 @@
+GET
+/v2/assets/margin/balance
+true
+{
+    "code": 0,
+    "data": [
+        {
+            "margin_account": "CETUSDT",
+            "base_ccy": "CET",
+            "quote_ccy": "USDT",
+            "available": {
+                "base_ccy": "45945.5263788804",
+                "quote_ccy": "0"
+            },
+            "frozen": {
+                "base_ccy": "50634.82448865128",
+                "quote_ccy": "0"
+            },
+            "repaid": {
+                "base_ccy": "14265.938812991284",
+                "quote_ccy": "0"
+            },
+            "interest": {
+                "base_ccy": "4321.234123894434",
+                "quote_ccy": "0"
+            },
+            "risk_rate": "",
+            "liq_price": ""
+        }
+    ],
+    "message": "OK"
+}

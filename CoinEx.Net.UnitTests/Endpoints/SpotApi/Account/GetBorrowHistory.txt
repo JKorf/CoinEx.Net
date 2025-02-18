@@ -1,0 +1,25 @@
+GET
+/v2/assets/margin/borrow-history
+true
+{
+    "code": 0,
+    "message": "OK",
+    "data": [
+        {
+        "borrow_id": 72762529,
+        "created_at": 1691462341020,
+        "market": "CETUSDT",
+        "ccy": "CET",
+        "daily_interest_rate": "0.06237",
+        "expired_at": 1691480840000,
+        "borrow_amount": "10000",
+        "to_repaid_amount": "0",
+        "is_auto_renew": true,
+        "status": "finish"
+        }
+    ],
+    "pagination": {
+        "total": 1,
+        "has_next": false
+    }
+}

@@ -1,0 +1,23 @@
+GET
+/v2/assets/transfer-history
+true
+{
+    "code": 0,
+    "message": "OK",
+    "data": [
+        {
+            "id": 18474,
+            "margin_market": "CETUSDT",
+            "created_at": 1636443179213,
+            "from_account_type": "SPOT",
+            "to_account_type": "MARGIN",
+            "ccy": "USDT",
+            "amount": "1",
+            "status": "finished"
+        }
+    ],
+    "pagination": {
+        "total": 1,
+        "has_next": false
+    }
+}

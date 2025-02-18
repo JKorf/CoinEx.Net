@@ -1,0 +1,28 @@
+GET
+/v2/futures/liquidation-history
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": " LATUSDT",
+            "side": "long",
+            "liq_price": "0.009061",
+            "liq_amount": "184378262",
+            "bkr_price": "0.009038",
+            "created_at": 1691482451000
+        },
+        {
+            "market": " LATUSDT",
+            "side": "long",
+            "liq_price": "0.009030",
+            "liq_amount": "375947238",
+            "bkr_price": "0.009016",
+            "created_at": 1691482829000
+        }
+    ],
+    "pagination": {
+        "has_next": false
+    },
+    "message": "OK"
+}
