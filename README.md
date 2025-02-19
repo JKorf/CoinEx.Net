@@ -167,6 +167,17 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 8.0.0 - 19 Feb 2025
+    * Added client side ratelimiter implementation
+    * Updated REST and WebSocket unit tests
+    * Updated REST requests to new CryptoExchange.Net implementation
+    * Updated various response models
+    * Fixed restClient.FuturesApi.Trading.CancelOrderByClientOrderIdAsync response model
+    * Fixed restClient.FuturesApi.Trading.CancelStopOrderByClientOrderIdAsync response model
+    * Fixed restClient.SpotApi.Account.GetCreditAccountAsync response model
+    * Fixed restClient.SpotApi.Account.GetWithdrawalHistoryAsync status parameter
+    * Removed V1 API
+
 * Version 7.15.0 - 11 Feb 2025
     * Updated CryptoExchange.Net to version 8.8.0, see https://github.com/JKorf/CryptoExchange.Net/releases/
     * Added support for more SharedKlineInterval values
