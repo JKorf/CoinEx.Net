@@ -1,0 +1,45 @@
+> { "id": "|2|", "method": "server.sign", "params": { "access_id": "123", "signed_str": "|3|", "timestamp": 1234567890123 } }
+< {"id":|2|,"code":0,"message":"OK"}
+> { "method": "position.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "position.update",
+    "data": {
+        "event": "update",
+        "position": {
+            "position_id": 246830219,
+            "market": "BTCUSDT",
+            "side": "long",
+            "margin_mode": "cross",
+            "open_interest": "0.0010",
+            "close_avbl": "0.0010",
+            "ath_position_amount": "0.0010",
+            "unrealized_pnl": "0.00",
+            "realized_pnl": "-0.01413182100000000000",
+            "avg_entry_price": "30721.35000000000000000000",
+            "cml_position_value": "30.72135000000000000000",
+            "max_position_value": "30.72135000000000000000",
+            "take_profit_price": "0.00000000000000000000",
+            "stop_loss_price": "0.00000000000000000000",
+            "take_profit_type": "latest_price",
+            "stop_loss_type": "latest_price",
+            "leverage": "50",
+            "margin_avbl": "0.61442700000000000000",
+            "ath_margin_size": "0.61442700000000000000",
+            "position_margin_rate": "0.02000000000000000000",
+            "maintenance_margin_value": "0.15364710000000000000",
+            "maintenance_margin_rate": "0.005",
+            "liq_price": "31179.87761194029850746268",
+            "bkr_price": "31335.77700000000000000000",
+            "adl_level": 5,
+            "settle_price": "30721.35000000000000000000",
+            "settle_val": "30.72135000000000000000",
+            "first_filled_price": "30721.35",
+            "latest_filled_price": "30721.35",
+            "created_at": 1642145331234,
+            "updated_at": 1642145331234
+        }
+    },
+    "id": null
+}

@@ -1,0 +1,10 @@
+POST
+/v2/futures/stop-order
+true
+{
+    "code": 0,
+    "data": {
+        "stop_id": 287330817
+    },
+    "message": "OK "
+}

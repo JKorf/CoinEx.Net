@@ -1,0 +1,33 @@
+> { "method": "deals.subscribe", "params": {"market_list": ["ETHUSDT"]}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "deals.update",
+    "data": {
+        "market": "ETHUSDT",
+        "deal_list": [
+            {
+                "deal_id": 3514376759,
+                "created_at": 1689152421692,
+                "side": "buy",
+                "price": "30718.42",
+                "amount": "0.00000325"
+            },
+            {
+                "deal_id": 3514376758,
+                "created_at": 1689152421692,
+                "side": "buy",
+                "price": "30718.42",
+                "amount": "0.00015729"
+            },
+            {
+                "deal_id": 3514376757,
+                "created_at": 1689152421692,
+                "side": "sell",
+                "price": "30718.42",
+                "amount": "0.00154936"
+            }
+        ]
+    },
+    "id": null
+}

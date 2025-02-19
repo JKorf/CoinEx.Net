@@ -20,8 +20,6 @@ namespace CoinEx.Net.Clients
         public ICoinExSocketClientFuturesApi FuturesApi { get; }
         /// <inheritdoc />
         public Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi SpotApiV2 { get; }
-        /// <inheritdoc />
-        public Interfaces.Clients.SpotApiV1.ICoinExSocketClientSpotApi SpotApi { get; }
 
         #endregion
 
@@ -46,7 +44,6 @@ namespace CoinEx.Net.Clients
             Initialize(options.Value);
 
             FuturesApi = AddApiClient(new CoinExSocketClientFuturesApi(_logger, options.Value));
-            SpotApi = AddApiClient(new SpotApiV1.CoinExSocketClientSpotApi(_logger, options.Value));
             SpotApiV2 = AddApiClient(new SpotApiV2.CoinExSocketClientSpotApi(_logger, options.Value));
         }
         #endregion
@@ -64,7 +61,6 @@ namespace CoinEx.Net.Clients
         public void SetOptions(UpdateOptions options)
         {
             FuturesApi.SetOptions(options);
-            SpotApi.SetOptions(options);
             SpotApiV2.SetOptions(options);
         }
 
@@ -73,7 +69,6 @@ namespace CoinEx.Net.Clients
         {
             FuturesApi.SetApiCredentials(credentials);
             SpotApiV2.SetApiCredentials(credentials);
-            SpotApi.SetApiCredentials(credentials);
         }
     }
 }

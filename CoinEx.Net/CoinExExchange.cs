@@ -88,50 +88,50 @@ namespace CoinEx.Net
 
         private void Initialize()
         {
-            var overalGuard = new RateLimitGuard(RateLimitGuard.PerHost, Array.Empty<IGuardFilter>(), 400, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding);// 400 requests per IP
-            CoinExRestPublic = new RateLimitGate("CoinEx Public").AddGuard(overalGuard);
+            var overallGuard = new RateLimitGuard(RateLimitGuard.PerHost, Array.Empty<IGuardFilter>(), 400, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding);// 400 requests per IP
+            CoinExRestPublic = new RateLimitGate("CoinEx Public").AddGuard(overallGuard);
             CoinExRestSpotOrder = new RateLimitGate("CoinEx Spot Order")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 30, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 30 requests per second
             CoinExRestSpotCancel = new RateLimitGate("CoinEx Spot Cancel")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 60, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 60 requests per second
             CoinExRestSpotBatchCancel = new RateLimitGate("CoinEx Spot Batch Cancel")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 40, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 40 requests per second
             CoinExRestSpotQuery = new RateLimitGate("CoinEx Spot Order Query")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 50, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 50 requests per second
             CoinExRestSpotHistory = new RateLimitGate("CoinEx Spot Order History")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 10 requests per second
             CoinExRestSpotAccount = new RateLimitGate("CoinEx Spot Order Account")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 10 requests per second
             CoinExRestSpotAccountQuery = new RateLimitGate("CoinEx Spot Order Account")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 10 requests per second
             CoinExRestSpotAccountHistory = new RateLimitGate("CoinEx Spot Order Account")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 10 requests per second
 
             CoinExRestFuturesOrder = new RateLimitGate("CoinEx Futures Order")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 20, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 20 requests per second
             CoinExRestFuturesCancel = new RateLimitGate("CoinEx Futures Cancel")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 40, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 40 requests per second
             CoinExRestFuturesBatchCancel = new RateLimitGate("CoinEx Futures Batch Cancel")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 20, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 20 requests per second
             CoinExRestFuturesQuery = new RateLimitGate("CoinEx Futures Order Query")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 50, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 50 requests per second
             CoinExRestFuturesHistory = new RateLimitGate("CoinEx Futures Order History")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 10 requests per second
             CoinExRestFuturesAccount = new RateLimitGate("CoinEx Futures Order Account")
-                .AddGuard(overalGuard)
+                .AddGuard(overallGuard)
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 10 requests per second
 
             CoinExRestPublic.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);

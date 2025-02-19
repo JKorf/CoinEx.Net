@@ -21,6 +21,11 @@ namespace CoinEx.Net.Objects.Models.V2
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
+        /// Margin symbol
+        /// </summary>
+        [JsonPropertyName("margin_market")]
+        public string? MarginSymbol { get; set; }
+        /// <summary>
         /// Account type
         /// </summary>
         [JsonPropertyName("market_type")]

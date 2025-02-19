@@ -173,7 +173,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quanity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, string? memo = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quantity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, string? memo = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -181,7 +181,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 { "to_address", toAddress },
             };
             parameters.AddOptionalEnum("withdraw_method", method);
-            parameters.AddString("amount", quanity);
+            parameters.AddString("amount", quantity);
             parameters.AddOptional("chain", network);
             parameters.AddOptional("remark", remark);
             parameters.AddOptional("memo", memo);
@@ -202,7 +202,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPaginated<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? asset = null, long? withdrawId = null, WithdrawStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPaginated<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? asset = null, long? withdrawId = null, WithdrawStatusV2? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("ccy", asset);

@@ -94,6 +94,18 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.GetOrderTradesAsync("ETHUSDT", Enums.AccountType.Spot, 1), "GetOrderTrades");
         }
 
+        [Test]
+        public async Task ValidateFuturesAccountCalls()
+        {
+            var client = new CoinExRestClient(opts =>
+            {
+                opts.AutoTimestamp = false;
+                opts.ApiCredentials = new ApiCredentials("1", "2");
+            });
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            await tester.ValidateAsync(client => client.FuturesApi.Account.GetBalancesAsync(), "GetBalances");
+            await tester.ValidateAsync(client => client.FuturesApi.Account.SetLeverageAsync("ETHUSDT", Enums.MarginMode.Isolated, 1), "SetLeverage");
+        }
 
         [Test]
         public async Task ValidateFuturesExchangeDataCalls()
@@ -115,6 +127,47 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.FuturesApi.ExchangeData.GetPositionLevelsAsync(), "GetPositionLevels");
             await tester.ValidateAsync(client => client.FuturesApi.ExchangeData.GetLiquidationHistoryAsync("ETHUSDT"), "GetLiquidationHistory");
             await tester.ValidateAsync(client => client.FuturesApi.ExchangeData.GetBasisHistoryAsync("ETHUSDT"), "GetBasisHistory");
+        }
+
+        [Test]
+        public async Task ValidateFuturesTradingCalls()
+        {
+            var client = new CoinExRestClient(opts =>
+            {
+                opts.AutoTimestamp = false;
+                opts.ApiCredentials = new ApiCredentials("1", "2");
+            });
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceOrderAsync("ETHUSDT", Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1), "PlaceOrder");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceStopOrderAsync("ETHUSDT", Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1, 1, Enums.TriggerPriceType.LastPrice), "PlaceStopOrder");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceMultipleOrdersAsync([new CoinExFuturesPlaceOrderRequest()]), "PlaceMultipleOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceMultipleStopOrdersAsync([new CoinExFuturesPlaceStopOrderRequest()]), "PlaceMultipleStopOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetOrderAsync("ETHUSDT", 1), "GetOrder");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetOpenOrdersAsync("ETHUSDT"), "GetOpenOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetClosedOrdersAsync("ETHUSDT"), "GetClosedOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetOpenStopOrdersAsync("ETHUSDT"), "GetOpenStopOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetClosedStopOrdersAsync("ETHUSDT"), "GetClosedStopOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.EditOrderAsync("ETHUSDT", 1, 1), "EditOrder");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.EditStopOrderAsync("ETHUSDT", 1, 1, 1), "EditStopOrder");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.CancelAllOrdersAsync("ETHUSDT"), "CancelAllOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.CancelOrderAsync("ETHUSDT", 1), "CancelOrder");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.CancelStopOrderAsync("ETHUSDT", 1), "CancelStopOrder");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.CancelOrderByClientOrderIdAsync("ETHUSDT", "1"), "CancelOrderByClientOrderId");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.CancelStopOrderByClientOrderIdAsync("ETHUSDT", "1"), "CancelStopOrderByClientOrderId");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.CancelOrdersAsync("ETHUSDT", [1]), "CancelOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.CancelStopOrdersAsync("ETHUSDT", [1]), "CancelStopOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetUserTradesAsync("ETHUSDT"), "GetUserTrades");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetOrderTradesAsync("ETHUSDT", 1), "GetOrderTrades");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetPositionsAsync("ETHUSDT"), "GetPositions");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetPositionHistoryAsync("ETHUSDT"), "GetPositionHistory");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.ClosePositionAsync("ETHUSDT", Enums.OrderTypeV2.Market), "ClosePosition");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.AdjustPositionMarginAsync("ETHUSDT", 1), "AdjustPositionMargin");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.SetStopLossAsync("ETHUSDT", Enums.PriceType.LastPrice, 1), "SetStopLoss");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.SetTakeProfitAsync("ETHUSDT", Enums.PriceType.LastPrice, 1), "SetTakeProfit", ignoreProperties: ["base_fee", "quote_fee", "discount_fee", "maker_fee_rate", "taker_fee_rate"]);
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetMarginHistoryAsync("ETHUSDT", 1), "GetMarginHistory");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetFundingRateHistoryAsync("ETHUSDT", 1), "GetFundingRateHistory");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetAutoDeleverageHistoryAsync("ETHUSDT", 1), "GetAutoDeleverageHistory");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.GetAutoSettlementHistoryAsync("ETHUSDT", 1), "GetAutoSettlementHistory");
         }
 
         private bool IsAuthenticated(WebCallResult result)

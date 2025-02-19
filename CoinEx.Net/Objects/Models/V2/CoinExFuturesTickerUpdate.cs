@@ -42,5 +42,10 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("next_funding_time")]
         public DateTime? NextFundingTime { get; set; }
+        /// <summary>
+        /// Insurance fund size
+        /// </summary>
+        [JsonPropertyName("insurance_fund_size")]
+        public decimal InsuranceFundSize { get; set; }
     }
 }

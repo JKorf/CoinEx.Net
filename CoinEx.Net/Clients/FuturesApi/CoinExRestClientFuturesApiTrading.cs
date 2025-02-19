@@ -130,6 +130,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/order-status", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
             return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }
+
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPaginated<CoinExFuturesOrder>>> GetOpenOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
@@ -279,7 +280,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExFuturesOrder>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default)
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default)
         {
             clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
@@ -290,12 +291,12 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
-            return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(request, parameters, ct).ConfigureAwait(false);
             
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExStopOrder>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default)
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default)
         {
             clientStopOrderId = LibraryHelpers.ApplyBrokerId(clientStopOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
@@ -306,7 +307,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-stop-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
-            return await _baseClient.SendAsync<CoinExStopOrder>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

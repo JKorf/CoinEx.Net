@@ -1,0 +1,25 @@
+GET
+/v2/futures/position-funding-history
+true
+{
+    "code": 0,
+    "message": "OK",
+    "data": [
+        {
+        "market": " CETUSDT",
+        "market_type": "FUTURES",
+        "ccy": "USDT",
+        "position_id": 927266133,
+        "side": "long",
+        "margin_mode": "cross",
+        "open_interest": "129384.12",
+        "settle_price": "0.0642",
+        "funding_rate": "0.0003",
+        "funding_value": "2.49193815",
+        "created_at": 1691482451000
+        }
+    ],
+    "pagination": {
+        "has_next": false
+    }
+}

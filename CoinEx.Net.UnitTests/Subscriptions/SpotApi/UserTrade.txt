@@ -1,0 +1,23 @@
+> { "id": "|2|", "method": "server.sign", "params": { "access_id": "123", "signed_str": "|3|", "timestamp": 1234567890123 } }
+< {"id":|2|,"code":0,"message":"OK"}
+> { "method": "user_deals.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "user_deals.update",
+    "data": {
+        "deal_id": 123456789,
+        "created_at": 1689152421692,
+        "order_id": 12345678,
+        "client_id": "client_id_1",
+        "position_id": 927266133,
+        "market": "BTCUSDT",
+        "side": "buy",
+        "price": "30718.42",
+        "amount": "0.123",
+        "role": "taker",
+        "fee": "0.0299",
+        "fee_ccy": "USDT"
+    },
+    "id": null
+}

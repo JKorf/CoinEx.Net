@@ -108,7 +108,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         /// <inheritdoc />
         public override ReadOnlyMemory<byte> PreprocessStreamMessage(SocketConnection connection, WebSocketMessageType type, ReadOnlyMemory<byte> data)
-            => data.DecompressGzip();
+        {
+            if (type == WebSocketMessageType.Binary)
+                return data.DecompressGzip();
+
+            return data;
+        }
 
         #region public
 

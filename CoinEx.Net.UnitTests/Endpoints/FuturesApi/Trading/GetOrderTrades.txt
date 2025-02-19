@@ -1,0 +1,25 @@
+GET
+/v2/futures/order-deals
+true
+{
+    "code": 0,
+    "data": [
+        {
+            "deal_id": 3514376759,
+            "created_at": 1689152421692,
+            "market": "BTCUSDT",
+            "side": "buy",
+            "order_id": 8678890,
+            "position_id": 927266133,
+            "price": "30718.42",
+            "amount": "0.00000325",
+            "role": "taker",
+            "fee": "0.0299",
+            "fee_ccy": "USDT"
+        }
+    ],
+    "pagination": {
+        "has_next": false
+    },
+    "message": "OK"
+}

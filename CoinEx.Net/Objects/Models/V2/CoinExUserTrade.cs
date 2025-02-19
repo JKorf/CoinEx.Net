@@ -35,6 +35,11 @@ namespace CoinEx.Net.Objects.Models.V2
         [JsonPropertyName("order_id")]
         public long OrderId { get; set; }
         /// <summary>
+        /// Client order id
+        /// </summary>
+        [JsonPropertyName("client_id")]
+        public string? ClientOrderId { get; set; }
+        /// <summary>
         /// Margin symbol
         /// </summary>
         [JsonPropertyName("margin_market")]

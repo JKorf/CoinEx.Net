@@ -1,0 +1,17 @@
+GET
+/v2/assets/futures/balance
+true
+{
+    "code": 0,
+    "data": [
+        {
+            "ccy": "CET",
+            "available": "45945.5263788804",
+            "frozen": "50634.82448865128",
+            "margin": "36407.5334622699",
+            "unrealized_pnl": "18957.427858971438",
+            "transferrable": "14265.938812991284"
+        }
+    ],
+    "message": "OK"
+}

@@ -1,0 +1,27 @@
+> { "id": "|2|", "method": "server.sign", "params": { "access_id": "123", "signed_str": "|3|", "timestamp": 1234567890123 } }
+< {"id":|2|,"code":0,"message":"OK"}
+> { "method": "balance.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "balance.update",
+    "data": {
+        "balance_list": [
+            {
+                "margin_market": "BTCUSDT",
+                "ccy": "BTC",
+                "available": "44.62207740",
+                "frozen": "0.00000000",
+                "updated_at": 1689152421692
+            },
+            {
+                "margin_market": "BTCUSDT",
+                "ccy": "USDT",
+                "available": "44.62207740",
+                "frozen": "0.00000000",
+                "updated_at": 1689152421692
+            }
+        ]
+    },
+    "id": null
+}

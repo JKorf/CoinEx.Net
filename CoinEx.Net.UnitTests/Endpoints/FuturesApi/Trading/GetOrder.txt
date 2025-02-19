@@ -1,0 +1,30 @@
+GET
+/v2/futures/order-status
+true
+{
+    "code": 0,
+    "data": {
+        "order_id": 13400,
+        "market": " CETUSDT",
+        "market_type": "FUTURES",
+        "side": "buy",
+        "type": "limit",
+        "amount": "10000",
+        "price": "1",
+        "unfilled_amount": "50241.7185224371",
+        "filled_amount": "27564.87468358",
+        "filled_value": "27564.87468358",
+        "client_id": "client_id_1",
+        "fee": "11.6582326221",
+        "fee_ccy": "USDT",
+        "maker_fee_rate": "0",
+        "taker_fee_rate": "0.0003",
+        "last_filled_amount": "27564.87468358",
+        "last_filled_price": "1",
+        "realized_pnl": "-22.142539215",
+        "created_at": 1691482451000,
+        "updated_at": 1691482451000,
+        "status": "part_filled"
+    },
+    "message": "OK"
+}
