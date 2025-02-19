@@ -1,0 +1,32 @@
+> { "id": "|2|", "method": "server.sign", "params": { "access_id": "123", "signed_str": "|3|", "timestamp": 1234567890123 } }
+< {"id":|2|,"code":0,"message":"OK"}
+> { "method": "order.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "order.update",
+    "data": {
+        "event": "put",
+        "order": {
+            "order_id": 98388656341,
+            "market": "BTCUSDT",
+            "side": "buy",
+            "type": "limit",
+            "amount": "0.0010",
+            "price": "50000.00",
+            "unfilled_amount": "0.0010",
+            "filled_amount": "0",
+            "filled_value": "0",
+            "fee": "0",
+            "fee_ccy": "USDT",
+            "taker_fee_rate": "0.00046",
+            "maker_fee_rate": "0.00000000000000000000",
+            "client_id": "",
+            "last_filled_amount": "0.0010",
+            "last_filled_price": "30721.35",
+            "created_at": 1689145715129,
+            "updated_at": 1689145715129
+        }
+    },
+    "id": null
+}

@@ -69,10 +69,15 @@ namespace CoinEx.Net.Clients.FuturesApi
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
+
         #region methods
-        internal async Task<WebCallResult> ExecuteAsync(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false)
+
+        internal Task<WebCallResult> SendAsync(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
+            => SendToAddressAsync(BaseAddress, definition, parameters, cancellationToken, weight);
+
+        internal async Task<WebCallResult> SendToAddressAsync(string baseAddress, RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
         {
-            var result = await SendRequestAsync<CoinExApiResult>(uri, method, ct, parameters, signed, requestWeight: 0).ConfigureAwait(false);
+            var result = await base.SendAsync<CoinExApiResult>(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
             if (!result)
                 return result.AsDataless();
 
@@ -82,9 +87,12 @@ namespace CoinEx.Net.Clients.FuturesApi
             return result.AsDataless();
         }
 
-        internal async Task<WebCallResult<T>> ExecuteAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+        internal Task<WebCallResult<T>> SendAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
+            => SendToAddressAsync<T>(BaseAddress, definition, parameters, cancellationToken, weight);
+
+        internal async Task<WebCallResult<T>> SendToAddressAsync<T>(string baseAddress, RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
         {
-            var result = await SendRequestAsync<CoinExApiResult<T>>(uri, method, ct, parameters, signed, requestWeight: 0).ConfigureAwait(false);
+            var result = await base.SendAsync<CoinExApiResult<T>>(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
             if (!result)
                 return result.As<T>(default);
 
@@ -94,9 +102,9 @@ namespace CoinEx.Net.Clients.FuturesApi
             return result.As(result.Data.Data);
         }
 
-        internal async Task<WebCallResult<CoinExPaginated<T>>> ExecutePaginatedAsync<T>(Uri uri, HttpMethod method, CancellationToken ct, Dictionary<string, object>? parameters = null, bool signed = false) where T : class
+        internal async Task<WebCallResult<CoinExPaginated<T>>> SendPaginatedAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
         {
-            var result = await SendRequestAsync<CoinExPageApiResult<IEnumerable<T>>>(uri, method, ct, parameters, signed, requestWeight: 0).ConfigureAwait(false);
+            var result = await base.SendAsync<CoinExPageApiResult<IEnumerable<T>>>(BaseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
             if (!result)
                 return result.As<CoinExPaginated<T>>(default);
 
@@ -112,8 +120,6 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return result.As(resultPage);
         }
-
-        internal Uri GetUri(string path) => new Uri(BaseAddress.AppendPath(path));
         #endregion
 
         /// <inheritdoc />

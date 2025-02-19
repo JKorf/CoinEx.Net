@@ -1,0 +1,17 @@
+POST
+/v2/assets/margin/borrow
+true
+{
+    "code": 0,
+    "data": {
+        "borrow_id": 72762529,
+        "market": "CETUSDT",
+        "ccy": "CET",
+        "daily_interest_rate": "0.06237",
+        "expired_at": 1691480840000,
+        "borrow_amount": "10000",
+        "to_repaid_amount": "0",
+        "status": "finish"
+    },
+    "message": "OK"
+}

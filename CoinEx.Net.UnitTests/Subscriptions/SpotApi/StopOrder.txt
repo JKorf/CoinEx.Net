@@ -1,0 +1,29 @@
+> { "id": "|2|", "method": "server.sign", "params": { "access_id": "123", "signed_str": "|3|", "timestamp": 1234567890123 } }
+< {"id":|2|,"code":0,"message":"OK"}
+> { "method": "stop.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "stop.update",
+    "data": {
+        "event": "put",
+        "stop": {
+            "stop_id": 98389557871,
+            "market": "BTCUSDT",
+            "side": "sell",
+            "type": "limit",
+            "price": "20000.00",
+            "amount": "0.0100",
+            "trigger_price": "20000.00",
+            "trigger_direction": "higher",
+            "trigger_price_type": "index_price",
+            "taker_fee_rate": "0.00046",
+            "maker_fee_rate": "0.00026",
+            "client_id": "",
+            "status": "active_success",
+            "created_at": 1689146382674,
+            "updated_at": 1689146382674
+        }
+    },
+    "id": null
+}

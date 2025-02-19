@@ -1,0 +1,31 @@
+> { "id": "|2|", "method": "server.sign", "params": { "access_id": "123", "signed_str": "|3|", "timestamp": 1234567890123 } }
+< {"id":|2|,"code":0,"message":"OK"}
+> { "method": "balance.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "balance.update",
+    "data": {
+        "balance_list": [
+            {
+                "ccy": "USDT",
+                "available": "97.92470982756335000001",
+                "frozen": "0.00000000000000000000",
+                "margin": "0.61442700000000000000",
+                "transferrable": "97.92470982756335000001",
+                "unrealized_pnl": "-0.00807000000000000000",
+                "equity": "97.92470982756335000001"
+            },
+            {
+                "ccy": "BTC",
+                "available": "97.92470982756335000001",
+                "frozen": "0.00000000000000000000",
+                "margin": "0.61442700000000000000",
+                "transferrable": "97.92470982756335000001",
+                "unrealized_pnl": "-0.00807000000000000000",
+                "equity": "97.92470982756335000001"
+            }
+        ]
+    },
+    "id": null
+}

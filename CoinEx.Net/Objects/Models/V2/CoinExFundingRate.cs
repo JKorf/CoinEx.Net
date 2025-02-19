@@ -29,6 +29,16 @@ namespace CoinEx.Net.Objects.Models.V2
         [JsonPropertyName("next_funding_rate")]
         public decimal NextFundingRate { get; set; }
         /// <summary>
+        /// Max funding rate
+        /// </summary>
+        [JsonPropertyName("max_funding_rate")]
+        public decimal? MaxFundingRate { get; set; }
+        /// <summary>
+        /// Min funding rate
+        /// </summary>
+        [JsonPropertyName("min_funding_rate")]
+        public decimal? MinFundingRate { get; set; }
+        /// <summary>
         /// Last funding time
         /// </summary>
         [JsonPropertyName("latest_funding_time")]

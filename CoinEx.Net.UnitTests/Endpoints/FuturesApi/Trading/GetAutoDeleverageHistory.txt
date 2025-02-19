@@ -1,0 +1,24 @@
+GET
+/v2/futures/position-adl-history
+true
+{
+    "code": 0,
+    "message": "OK",
+    "data": [
+        {
+        "market": " CETUSDT",
+        "market_type": "FUTURES",
+        "position_id": 927266133,
+        "order_id": 8678890,
+        "deal_id": 3514376759,
+        "amount": "0.00000325",
+        "price": "30718.42",
+        "side": "buy",
+        "role": "maker",
+        "created_at": 1691482451000
+        }
+    ],
+    "pagination": {
+        "has_next": false
+    }
+}

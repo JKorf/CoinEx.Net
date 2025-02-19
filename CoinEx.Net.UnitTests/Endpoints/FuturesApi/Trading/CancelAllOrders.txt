@@ -1,0 +1,8 @@
+POST
+/v2/futures/cancel-all-order
+true
+{
+    "code": 0,
+    "data": {},
+    "message": "OK"
+}

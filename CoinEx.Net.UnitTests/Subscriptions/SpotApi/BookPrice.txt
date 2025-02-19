@@ -1,0 +1,15 @@
+> { "method": "bbo.subscribe", "params": {"market_list": ["ETHUSDT"]}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "bbo.update",
+    "data": {
+        "market": "ETHUSDT",
+        "updated_at": 1642145331234,
+        "best_bid_price": "20000",
+        "best_bid_size": "0.1",
+        "best_ask_price": "20001",
+        "best_ask_size": "0.15"
+    },
+    "id": null
+}

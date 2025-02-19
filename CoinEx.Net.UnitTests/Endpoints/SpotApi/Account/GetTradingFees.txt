@@ -1,0 +1,12 @@
+GET
+/v2/account/trade-fee-rate
+true
+{
+    "code": 0,
+    "data": {
+            "market": "BTCUSDT",
+            "maker_rate": "0",
+            "taker_rate": "0.03"
+    },
+    "message": "OK"
+}

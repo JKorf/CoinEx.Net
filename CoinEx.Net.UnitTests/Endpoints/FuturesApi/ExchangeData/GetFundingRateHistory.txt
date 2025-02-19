@@ -1,0 +1,24 @@
+GET
+/v2/futures/funding-rate-history
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "LATUSDT",
+            "funding_time": 1642145331234,
+            "theoretical_funding_rate": "-0.00007488",
+            "actual_funding_rate": "-0.00027732"
+        },
+        {
+            "market": "ELONUSDT",
+            "funding_time": 1642145331234,
+            "theoretical_funding_rate": "-0.00003688",
+            "actual_funding_rate": "-0.00013372"
+        }
+    ],
+    "pagination": {
+        "has_next": false
+    },
+    "message": "OK"
+}

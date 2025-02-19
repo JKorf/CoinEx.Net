@@ -1,0 +1,4 @@
+GET
+/v2/assets/spot/transcation-history
+true
+{"code":0,"data":[{"balance":"11.71913105123203357","ccy":"USDT","change":"-0.009999993198","created_at":1733151805535,"type":"trade"}],"message":"OK","pagination":{"has_next":true}}

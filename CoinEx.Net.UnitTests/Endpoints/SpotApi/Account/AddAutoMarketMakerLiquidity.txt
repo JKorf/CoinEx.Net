@@ -1,0 +1,13 @@
+POST
+/v2/assets/amm/add-liquidity
+true
+{
+    "code": 0,
+    "data": {
+        "market": "CETUSDT",
+        "base_ccy_amount": "25837.077847838",
+        "quote_ccy_amount": "6540.714421152",
+        "liquidity_proportion": "0.0006"
+    },
+    "message": "OK"
+}

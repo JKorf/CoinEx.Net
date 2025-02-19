@@ -1,0 +1,19 @@
+GET
+/v2/spot/kline
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "LATUSDT",
+            "created_at": 17017617600000,
+            "open": "0.008286",
+            "close": "0.008157",
+            "high": "0.008390",
+            "low": "0.008106",
+            "volume": "807714.49139758",
+            "value": "6689.21644207"
+        }
+    ],
+    "message" : "OK"
+}

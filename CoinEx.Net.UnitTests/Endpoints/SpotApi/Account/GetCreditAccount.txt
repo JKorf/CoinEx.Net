@@ -1,0 +1,14 @@
+GET
+/v2/assets/credit/info
+true
+{
+    "code": 0,
+    "data": {
+        "equity": "12487.94058101",
+        "repaid": "2457.19846450",
+        "risk_rate": "",
+        "withdrawal_risk": "1.35",
+        "withdrawal_value": "10030.74211651"
+    },
+    "message": "OK"
+}

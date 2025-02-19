@@ -8,12 +8,14 @@ using System;
 using CryptoExchange.Net;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc />
     internal class CoinExRestClientFuturesApiTrading : ICoinExRestClientFuturesApiTrading
     {
+        private static readonly RequestDefinitionCache _definitions = new RequestDefinitionCache();
         private readonly CoinExRestClientFuturesApi _baseClient;
 
         internal CoinExRestClientFuturesApiTrading(CoinExRestClientFuturesApi baseClient)
@@ -47,7 +49,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
             parameters.AddOptionalEnum("stp_mode", stpMode);
-            return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -80,7 +83,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hide);
             parameters.AddOptionalEnum("stp_mode", stpMode);
-            return await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("v2/futures/stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExStopId>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -95,7 +99,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 { "orders", requests }
             };
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(_baseClient.GetUri("v2/futures/batch-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/batch-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -110,7 +115,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 { "orders", requests }
             };
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExStopId>>>(_baseClient.GetUri("v2/futures/batch-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/batch-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopId>>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -121,8 +127,10 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "market", symbol },
                 { "order_id", orderId }
             };
-            return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/order-status"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/order-status", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }
+
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPaginated<CoinExFuturesOrder>>> GetOpenOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
@@ -136,7 +144,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/pending-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/pending-order", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -149,7 +158,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/finished-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/finished-order", CoinExExchange.RateLimiter.CoinExRestFuturesHistory, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -165,7 +175,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExStopOrder>(_baseClient.GetUri("v2/futures/pending-stop-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/pending-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExStopOrder>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -181,7 +192,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExStopOrder>(_baseClient.GetUri("v2/futures/finished-stop-order"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/finished-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesHistory, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExStopOrder>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -200,7 +212,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddString("amount", quantity);
             parameters.AddOptionalString("price", price);
-            return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/modify-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/modify-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -221,7 +234,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddString("amount", quantity);
             parameters.AddString("trigger_price", triggerPrice);
             parameters.AddOptionalString("price", price);
-            return await _baseClient.ExecuteAsync<CoinExStopId>(_baseClient.GetUri("v2/futures/modify-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/modify-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExStopId>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -233,7 +247,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddOptionalEnum("side", side);
-            return await _baseClient.ExecuteAsync(_baseClient.GetUri("v2/futures/cancel-all-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-all-order", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
+            return await _baseClient.SendAsync(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -245,7 +260,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "order_id", orderId }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/cancel-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-order", CoinExExchange.RateLimiter.CoinExRestFuturesCancel, 1, true);
+            return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
             
         }
 
@@ -258,12 +274,13 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "stop_id", stopOrderId }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/futures/cancel-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesCancel, 1, true);
+            return await _baseClient.SendAsync<CoinExStopOrder>(request, parameters, ct).ConfigureAwait(false);
             
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExFuturesOrder>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default)
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default)
         {
             clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
@@ -273,12 +290,13 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "client_id", clientOrderId }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/cancel-order-by-client-id"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(request, parameters, ct).ConfigureAwait(false);
             
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExStopOrder>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default)
+        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default)
         {
             clientStopOrderId = LibraryHelpers.ApplyBrokerId(clientStopOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
@@ -288,7 +306,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "client_id", clientStopOrderId }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<CoinExStopOrder>(_baseClient.GetUri("v2/futures/cancel-stop-order-by-client-id"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-stop-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -300,7 +319,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "order_ids", orderIds }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(_baseClient.GetUri("v2/futures/cancel-batch-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-batch-order", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -312,7 +332,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "stop_ids", orderIds }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
-            return await _baseClient.ExecuteAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(_baseClient.GetUri("v2/futures/cancel-batch-stop-order"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-batch-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
+            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -328,7 +349,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_Time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExUserTrade>(_baseClient.GetUri("v2/futures/user-deals"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/user-deals", CoinExExchange.RateLimiter.CoinExRestFuturesHistory, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExUserTrade>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -342,7 +364,9 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExUserTrade>(_baseClient.GetUri("v2/futures/order-deals"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/order-deals", CoinExExchange.RateLimiter.CoinExRestFuturesHistory, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExUserTrade>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -353,7 +377,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/pending-position"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/pending-position", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -366,7 +391,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/finished-position"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/finished-position", CoinExExchange.RateLimiter.CoinExRestFuturesHistory, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -384,7 +410,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalString("amount", quantity);
             parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("is_hide", hidden);
-            return await _baseClient.ExecuteAsync<CoinExFuturesOrder>(_baseClient.GetUri("v2/futures/close-position"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/close-position", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -396,7 +423,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddString("amount", quantity);
-            return await _baseClient.ExecuteAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/adjust-position-margin"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/adjust-position-margin", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -409,7 +437,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddEnum("stop_loss_type", stopLossType);
             parameters.AddString("stop_loss_price", stopLossPrice);
-            return await _baseClient.ExecuteAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/set-position-stop-loss"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/set-position-stop-loss", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -422,7 +451,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddEnum("take_profit_type", takeProfitType);
             parameters.AddString("take_profit_price", takeProfitPrice);
-            return await _baseClient.ExecuteAsync<CoinExPosition>(_baseClient.GetUri("v2/futures/set-position-take-profit"), HttpMethod.Post, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/set-position-take-profit", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -438,7 +468,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExPositionMargin>(_baseClient.GetUri("v2/futures/position-margin-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/position-margin-history", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExPositionMargin>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -454,7 +485,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExPositionFundingRate>(_baseClient.GetUri("v2/futures/position-funding-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/position-funding-history", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExPositionFundingRate>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -470,7 +502,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExPositionAdl>(_baseClient.GetUri("v2/futures/position-adl-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/position-adl-history", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExPositionAdl>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -486,8 +519,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddOptionalMilliseconds("end_time", endTime);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
-            return await _baseClient.ExecutePaginatedAsync<CoinExPositionSettlement>(_baseClient.GetUri("v2/futures/position-settle-history"), HttpMethod.Get, ct, parameters, true).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/position-settle-history", CoinExExchange.RateLimiter.CoinExRestFuturesQuery, 1, true);
+            return await _baseClient.SendPaginatedAsync<CoinExPositionSettlement>(request, parameters, ct).ConfigureAwait(false);
         }
-        // TODO Batch endpoints
     }
 }

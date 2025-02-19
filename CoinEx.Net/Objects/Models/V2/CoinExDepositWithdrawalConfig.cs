@@ -78,6 +78,11 @@ namespace CoinEx.Net.Objects.Models.V2
         [JsonPropertyName("deposit_enabled")]
         public bool DepositEnabled { get; set; }
         /// <summary>
+        /// Deposit delay
+        /// </summary>
+        [JsonPropertyName("deposit_delay_minutes")]
+        public int? DepositDelayInMinutes { get; set; }
+        /// <summary>
         /// Is withdrawal enabled
         /// </summary>
         [JsonPropertyName("withdraw_enabled")]

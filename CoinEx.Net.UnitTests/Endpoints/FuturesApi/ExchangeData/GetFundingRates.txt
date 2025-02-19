@@ -1,0 +1,29 @@
+GET
+/v2/futures/funding-rate
+false
+{
+    "code": 0,
+    "data": [
+        {
+            "market": "LATUSDT",
+            "mark_price": "0.008157",
+            "latest_funding_rate": "-0.00007488",
+            "next_funding_rate": "-0.00027732",
+            "max_funding_rate": "0.00375",
+            "min_funding_rate": "-0.00375",
+            "latest_funding_time": 1642145331234,
+            "next_funding_time": 1642231731234
+        },
+        {
+            "market": "ELONUSDT",
+            "mark_price": "0.000000152823",
+            "latest_funding_rate": "-0.00003688",
+            "next_funding_rate": "-0.00013372",
+            "max_funding_rate": "0.00375",
+            "min_funding_rate": "-0.00375",
+            "latest_funding_time": 1642145331234,
+            "next_funding_time": 1642231731234
+        }
+    ],
+    "message": "OK"
+}

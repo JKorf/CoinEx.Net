@@ -149,6 +149,8 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("settle_value")]
         public decimal SettleValue { get; set; }
+        [JsonInclude, JsonPropertyName("settle_val")]
+        internal decimal SettleValueIn { get => SettleValue; set => SettleValue = value; }
         /// <summary>
         /// Timestamp created
         /// </summary>

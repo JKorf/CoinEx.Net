@@ -1,0 +1,26 @@
+POST
+/v2/assets/withdraw
+true
+{
+    "code": 0,
+    "data": {
+        "withdraw_id": 206,
+        "created_at": 1524228297321,
+        "ccy": "BCH",
+        "chain": "",
+        "amount": "1.00000000",
+        "fee_ccy": "BCH",        
+        "actual_amount": "1.00000000",
+        "withdraw_method": "inter_user",
+        "memo": "",
+        "tx_fee": "0",
+        "tx_id": "",
+        "to_address": "1KAv3pazbTk2JnQ5xTo6fpKK7p1it2RzD4",
+        "confirmations": 0,
+        "explorer_address_url": "https://www.coinex.net/address/0xefabcc016aee2cd205139899d1cac0b672659fe8",
+        "explorer_tx_url": "https://www.coinex.net/tx/",
+        "status": "audited",
+        "remark": ""
+    },
+    "message": "OK"
+}

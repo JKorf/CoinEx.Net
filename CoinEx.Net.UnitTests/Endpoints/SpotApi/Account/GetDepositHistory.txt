@@ -1,0 +1,21 @@
+GET
+/v2/assets/deposit-history
+true
+{"data": [
+        {
+            "deposit_id": 14270229,
+            "created_at": 16372120221342,
+            "tx_id": "",
+            "ccy": "USDT",
+            "chain": "",
+            "deposit_method": "inter_user",
+            "amount": "200",
+            "actual_amount": "200",
+            "to_address": "XXXXXXXXXX",
+            "confirmations": 0,
+            "status": "finished",   
+            "tx_explorer_url": "",
+            "to_addr_explorer_url": "",
+            "remark": ""
+        }
+    ], "paginatation": {"total": 0, "has_next": false}, "code": 0, "message": "OK"}

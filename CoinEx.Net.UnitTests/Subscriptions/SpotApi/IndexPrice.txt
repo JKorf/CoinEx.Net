@@ -1,0 +1,11 @@
+> { "method": "index.subscribe", "params": {"market_list": ["ETHUSDT"]}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "index.update",
+    "data": {
+        "market": "ETHUSDT",
+        "index_price": "40000.91"
+    }, 
+    "id": null
+}

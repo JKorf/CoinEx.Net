@@ -1,0 +1,28 @@
+POST
+/v2/futures/cancel-batch-stop-order
+true
+{
+    "code": 0,
+    "data": [
+        {
+            "code": 0,
+            "data": {
+                "market": " CETUSDT",
+                "market_type": "FUTURES",
+                "side": "buy",
+                "type": "limit",
+                "amount": "10000",
+                "price": "1",
+                "trigger_price": "1.1",
+                "trigger_direction": "higher",
+                "trigger_price_type": "mark_price",
+                "client_id": "client_id_1",
+                "created_at": 1691482451000,
+                "updated_at": 1691482451000,
+                "stop_id": 287330817
+            },
+            "message": "OK"
+        }
+    ],
+    "message": "OK"
+}

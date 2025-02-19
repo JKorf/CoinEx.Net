@@ -1,0 +1,34 @@
+> { "id": "|2|", "method": "server.sign", "params": { "access_id": "123", "signed_str": "|3|", "timestamp": 1234567890123 } }
+< {"id":|2|,"code":0,"message":"OK"}
+> { "method": "order.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "order.update",
+    "data":{
+        "event":"put",
+        "order":{
+        "order_id":142934016817,
+        "market":"ERGUSDT",
+        "margin_market":"",
+        "type":"limit",
+        "side":"sell",
+        "amount":"10",
+        "price":"1.5",
+        "unfilled_amount":"10",
+        "filled_amount":"0",
+        "filled_value":"0",
+        "taker_fee_rate":"0.003",
+        "maker_fee_rate":"0.003",
+        "base_ccy_fee":"0",
+        "quote_ccy_fee":"0",
+        "discount_ccy_fee":"0",
+        "last_filled_amount":"0",
+        "last_filled_price":"0",
+        "created_at":1739954537191,
+        "updated_at":1739954537191,
+        "client_id":"123"
+        }
+    },
+    "id": null
+}

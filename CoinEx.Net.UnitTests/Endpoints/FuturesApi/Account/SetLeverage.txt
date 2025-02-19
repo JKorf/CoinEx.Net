@@ -1,0 +1,11 @@
+POST
+/v2/futures/adjust-position-leverage
+true
+{
+    "code": 0,
+    "data": {
+        "margin_mode": "cross",
+        "leverage": 10
+    },
+    "message": "OK"
+}

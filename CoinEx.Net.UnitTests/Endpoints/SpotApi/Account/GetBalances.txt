@@ -1,0 +1,19 @@
+GET
+/v2/assets/spot/balance
+true
+{
+    "code": 0,
+    "data": [
+        {
+            "ccy": "USDT",
+            "available": "25837.077847838",
+            "frozen": "6540.714421152"
+        },
+        {
+            "ccy": "CET",
+            "available": "41232.366264748",
+            "frozen": "3702.28145353364"
+        }
+    ],
+    "message": "OK"
+}

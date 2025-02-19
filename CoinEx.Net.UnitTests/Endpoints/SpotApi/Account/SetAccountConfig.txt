@@ -1,0 +1,8 @@
+POST
+/v2/account/settings
+true
+{
+    "code": 0,
+    "message": "OK",
+    "data": {}
+}

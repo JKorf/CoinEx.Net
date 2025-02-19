@@ -1,0 +1,26 @@
+GET
+/v2/futures/position-margin-history
+true
+{
+    "code": 0,
+    "message": "OK",
+    "data": [
+        {
+        "market": " CETUSDT",
+        "market_type": "FUTURES",
+        "position_id": 927266133,
+        "margin_mode": "cross",
+        "leverage": "10",
+        "liq_price": "0.05679",
+        "bkr_price": "0.053635",
+        "settle_price": "0.06817",
+        "open_interest": "129384.12",
+        "margin_avbl": "189132.05",
+        "margin_change": "5000",
+        "created_at": 1691482451000
+        }
+    ],
+    "pagination": {
+        "has_next": false
+    }
+}

@@ -21,7 +21,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Current risk rate
         /// </summary>
         [JsonPropertyName("risk_rate")]
-        public decimal RiskRate { get; set; }
+        public decimal? RiskRate { get; set; }
         /// <summary>
         /// Withdrawal risk rate
         /// </summary>

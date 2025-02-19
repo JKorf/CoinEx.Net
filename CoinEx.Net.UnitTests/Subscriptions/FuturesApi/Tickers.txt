@@ -1,0 +1,51 @@
+> { "method": "state.subscribe", "params": {"market_list": []}, "id": "|1|" }
+< {"id":|1|,"code":0,"message":"OK"}
+= 
+{
+    "method": "state.update",
+    "data": {
+        "state_list": [
+            {
+                "market": "ETHUSD_SIGNPRICE",
+                "last": "1892.29",
+                "open": "1884.62",
+                "close": "1892.29",
+                "high": "1894.09",
+                "low": "1863.72",
+                "volume": "0",
+                "value": "0",
+                "volume_sell": "0",
+                "volume_buy": "0",
+                "open_interest_size": "0",
+                "insurance_fund_size": "0",
+                "latest_funding_rate": "0",
+                "next_funding_rate": "0",
+                "latest_funding_time": 1642145331234,
+                "next_funding_time": 1642231731234,
+                "period": 86400
+            },
+            {
+                "market": "DOTUSDT",
+                "last": "5.2483",
+                "open": "5.15690000000000000000",
+                "close": "5.2483",
+                "high": "5.30640000000000000000",
+                "low": "5.09040000000000000000",
+                "volume": "51996.00000000000000000000",
+                "value": "269813.72216000000000000000",
+                "volume_sell": "11747.70000000",
+                "volume_buy": "14624.70000000",
+                "open_interest_size": "92414.6",
+                "insurance_fund_size": "24497980.15228462554747551920",
+                "mark_price": "5.2513",
+                "index_price": "5.2513",
+                "latest_funding_rate": "-0.00012921",
+                "next_funding_rate": "0.00009768",
+                "latest_funding_time": 1642145331234,
+                "next_funding_time": 1642231731234,
+                "period": 86400
+            }
+        ]
+    },
+    "id": null
+}

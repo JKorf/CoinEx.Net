@@ -40,10 +40,20 @@ namespace CoinEx.Net.Objects.Models.V2
         [JsonPropertyName("amount")]
         public decimal Quantity { get; set; }
         /// <summary>
+        /// Fee asset
+        /// </summary>
+        [JsonPropertyName("fee_ccy")]
+        public string FeeAsset { get; set; } = string.Empty;
+        /// <summary>
         /// Actual withdrawal quantity
         /// </summary>
         [JsonPropertyName("actual_amount")]
         public decimal ActualQuantity { get; set; }
+        /// <summary>
+        /// Withdraw method
+        /// </summary>
+        [JsonPropertyName("withdraw_method")]
+        public string WithdrawMethod { get; set; } = string.Empty;
         /// <summary>
         /// Fee
         /// </summary>
@@ -62,7 +72,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// <summary>
         /// Number of confirmations
         /// </summary>
-        [JsonPropertyName("confirmation")]
+        [JsonPropertyName("confirmations")]
         public int Confirmations { get; set; }
         /// <summary>
         /// Blockchain explorer url for the transaction
