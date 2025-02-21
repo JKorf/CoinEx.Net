@@ -167,6 +167,9 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 8.0.1 - 21 Feb 2025
+    * Fixed exception in restClient.SpotApiV2.Account.GetAllDepositWithdrawalConfigsAsync when no credentials provided
+
 * Version 8.0.0 - 19 Feb 2025
     * Added client side ratelimiter implementation
     * Updated REST and WebSocket unit tests
