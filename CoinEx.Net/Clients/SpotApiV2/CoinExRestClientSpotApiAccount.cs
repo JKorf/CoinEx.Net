@@ -2,6 +2,7 @@
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CoinEx.Net.Objects.Models.V2;
 using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.RateLimiting.Guards;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -219,14 +220,16 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("ccy", asset);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/deposit-withdraw-config", CoinExExchange.RateLimiter.CoinExRestSpotAccount, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/deposit-withdraw-config", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false,
+                new SingleLimitGuard(10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding));
             return await _baseClient.SendAsync<CoinExDepositWithdrawalConfig>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<WebCallResult<IEnumerable<CoinExDepositWithdrawalConfig>>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default)
         {
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/all-deposit-withdraw-config", CoinExExchange.RateLimiter.CoinExRestSpotAccountQuery, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/all-deposit-withdraw-config", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false,
+                new SingleLimitGuard(10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding));
             return await _baseClient.SendAsync<IEnumerable<CoinExDepositWithdrawalConfig>>(request, null, ct).ConfigureAwait(false);
         }
 
