@@ -1,6 +1,7 @@
 using CoinEx.Net.Enums;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CoinEx.Net.Objects.Models.V2;
+using CryptoExchange.Net;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.SharedApis;
@@ -29,7 +30,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
 
-            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedSpotTicker(x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))))), ct).ConfigureAwait(false);
+            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))).ToArray())), ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
         }
@@ -48,7 +49,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var result = await SubscribeToTickerUpdatesAsync(new[] { symbol }, update =>
             {
                 var ticker = update.Data.Single();
-                handler(update.AsExchangeEvent(Exchange, new SharedSpotTicker(symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))));
+                handler(update.AsExchangeEvent(Exchange, new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, symbol), symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))));
             }, ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
@@ -68,7 +69,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var result = await SubscribeToTradeUpdatesAsync(symbol, update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedTrade(x.Quantity, x.Price, x.Timestamp)
             {
                 Side = x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell
-            }))), ct).ConfigureAwait(false);
+            }).ToArray())), ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
         }
@@ -84,7 +85,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
 
             var symbol = request.Symbol.GetSymbol(FormatSymbol);
-            var result = await SubscribeToBookPriceUpdatesAsync(symbol, update => handler(update.AsExchangeEvent(Exchange, new SharedBookTicker(update.Data.BestAskPrice, update.Data.BestAskQuantity, update.Data.BestBidPrice, update.Data.BestBidQuantity))), ct).ConfigureAwait(false);
+            var result = await SubscribeToBookPriceUpdatesAsync(symbol, update => handler(update.AsExchangeEvent(Exchange, new SharedBookTicker(ExchangeSymbolCache.ParseSymbol(_topicId, update.Data.Symbol), update.Data.Symbol, update.Data.BestAskPrice, update.Data.BestAskQuantity, update.Data.BestBidPrice, update.Data.BestBidQuantity))), ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
         }
@@ -113,7 +114,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
             var result = await SubscribeToBalanceUpdatesAsync(
-                update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)))),
+                update => handler(update.AsExchangeEvent(Exchange, update.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray())),
                 ct: ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
@@ -132,6 +133,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var result = await SubscribeToOrderUpdatesAsync(
                 update => handler(update.AsExchangeEvent<SharedFuturesOrder[]>(Exchange, new[] {
                     new SharedFuturesOrder(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, update.Data.Order.Symbol),
                         update.Data.Order.Symbol,
                         update.Data.Order.Id.ToString(),
                         update.Data.Order.OrderType == Enums.OrderTypeV2.Limit ? SharedOrderType.Limit : update.Data.Order.OrderType == Enums.OrderTypeV2.Market ? SharedOrderType.Market : SharedOrderType.Other,
@@ -166,6 +168,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var result = await SubscribeToUserTradeUpdatesAsync(
                 update => handler(update.AsExchangeEvent<SharedUserTrade[]>(Exchange, new[] {
                     new SharedUserTrade(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, update.Data.Symbol),
                         update.Data.Symbol,
                         update.Data.OrderId.ToString(),
                         update.Data.Id.ToString(),
@@ -194,7 +197,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
 
             var result = await SubscribeToPositionUpdatesAsync(
-                update => handler(update.AsExchangeEvent<SharedPosition[]>(Exchange, new[] { new SharedPosition(update.Data.Position.Symbol, update.Data.Position.OpenInterest, update.Data.Position.UpdateTime)
+                update => handler(update.AsExchangeEvent<SharedPosition[]>(Exchange, new[] { new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, update.Data.Position.Symbol), update.Data.Position.Symbol, update.Data.Position.OpenInterest, update.Data.Position.UpdateTime)
                 {
                     AverageOpenPrice = update.Data.Position.AverageEntryPrice,
                     PositionSide = update.Data.Position.Side == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,

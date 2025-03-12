@@ -91,7 +91,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="requests">The stop orders to place</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExStopId[]>>> PlaceMultipleStopOrdersAsync(
+        Task<WebCallResult<CoinExBatchResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
            IEnumerable<CoinExPlaceStopOrderRequest> requests,
            CancellationToken ct = default);
 
@@ -231,7 +231,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="orderIds">Ids of orders to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExOrder[]>>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
+        Task<WebCallResult<CoinExBatchResult<CoinExOrder>[]>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active stop order
@@ -274,7 +274,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="orderIds">Stop order ids to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExStopOrder[]>>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
+        Task<WebCallResult<CoinExBatchResult<CoinExStopOrder>[]>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
 
         /// <summary>
         /// Get trade list

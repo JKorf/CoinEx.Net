@@ -21,7 +21,7 @@ namespace CoinEx.Net.UnitTests
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });
-            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.SpotApiV2.Account.GetTradingFeesAsync("ETHUSDT", Enums.AccountType.Spot), "GetTradingFees");
             await tester.ValidateAsync(client => client.SpotApiV2.Account.SetAccountConfigAsync(true), "SetAccountConfig");
             await tester.ValidateAsync(client => client.SpotApiV2.Account.GetBalancesAsync(), "GetBalances");
@@ -54,7 +54,7 @@ namespace CoinEx.Net.UnitTests
             {
                 opts.AutoTimestamp = false;
             });
-            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/ExchangeData", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/ExchangeData", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.SpotApiV2.ExchangeData.GetSymbolsAsync(), "GetSymbols");
             await tester.ValidateAsync(client => client.SpotApiV2.ExchangeData.GetAssetsAsync(), "GetAssets");
             await tester.ValidateAsync(client => client.SpotApiV2.ExchangeData.GetTickersAsync(), "GetTickers", ignoreProperties: ["period"]);
@@ -72,7 +72,7 @@ namespace CoinEx.Net.UnitTests
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });
-            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceOrderAsync("ETHUSDT", Enums.AccountType.Spot, Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1), "PlaceOrder");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceStopOrderAsync("ETHUSDT", Enums.AccountType.Spot, Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1, 1), "PlaceStopOrder");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceMultipleOrdersAsync([new CoinExPlaceOrderRequest()]), "PlaceMultipleOrders", skipResponseValidation: true);
@@ -102,7 +102,7 @@ namespace CoinEx.Net.UnitTests
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });
-            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.FuturesApi.Account.GetBalancesAsync(), "GetBalances");
             await tester.ValidateAsync(client => client.FuturesApi.Account.SetLeverageAsync("ETHUSDT", Enums.MarginMode.Isolated, 1), "SetLeverage");
         }
@@ -114,7 +114,7 @@ namespace CoinEx.Net.UnitTests
             {
                 opts.AutoTimestamp = false;
             });
-            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/ExchangeData", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/ExchangeData", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.FuturesApi.ExchangeData.GetSymbolsAsync(), "GetSymbols");
             await tester.ValidateAsync(client => client.FuturesApi.ExchangeData.GetTickersAsync(), "GetTickers", ignoreProperties: ["period"]);
             await tester.ValidateAsync(client => client.FuturesApi.ExchangeData.GetOrderBookAsync("ETHUSDT", 5), "GetOrderBook");
@@ -137,7 +137,7 @@ namespace CoinEx.Net.UnitTests
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });
-            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data", stjCompare: true);
+            var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceOrderAsync("ETHUSDT", Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1), "PlaceOrder");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceStopOrderAsync("ETHUSDT", Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1, 1, Enums.TriggerPriceType.LastPrice), "PlaceStopOrder");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceMultipleOrdersAsync([new CoinExFuturesPlaceOrderRequest()]), "PlaceMultipleOrders");

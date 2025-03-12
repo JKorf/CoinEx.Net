@@ -111,7 +111,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExBatchResult<CoinExStopId[]>>> PlaceMultipleStopOrdersAsync(
+        public async Task<WebCallResult<CoinExBatchResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
             IEnumerable<CoinExPlaceStopOrderRequest> requests,
             CancellationToken ct = default)
         {
@@ -123,7 +123,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 { "orders", requests.ToArray() }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/batch-stop-order", CoinExExchange.RateLimiter.CoinExRestSpotOrder, 1, true);
-            var result = await _baseClient.SendAsync<CoinExBatchResult<CoinExStopId[]>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
+            var result = await _baseClient.SendAsync<CoinExBatchResult<CoinExStopId>[]>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
             return result;
         }
 
@@ -276,7 +276,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExBatchResult<CoinExOrder[]>>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBatchResult<CoinExOrder>[]>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -284,7 +284,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 { "order_ids", orderIds.ToArray() }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-batch-order", CoinExExchange.RateLimiter.CoinExRestSpotBatchCancel, 1, true);
-            var result = await _baseClient.SendAsync<CoinExBatchResult<CoinExOrder[]>>(request, parameters, ct).ConfigureAwait(false);
+            var result = await _baseClient.SendAsync<CoinExBatchResult<CoinExOrder>[]>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
 
@@ -335,7 +335,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExBatchResult<CoinExStopOrder[]>>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBatchResult<CoinExStopOrder>[]>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -343,7 +343,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 { "stop_ids", orderIds.ToArray() }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-batch-stop-order", CoinExExchange.RateLimiter.CoinExRestSpotBatchCancel, 1, true);
-            var result = await _baseClient.SendAsync<CoinExBatchResult<CoinExStopOrder[]>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
+            var result = await _baseClient.SendAsync<CoinExBatchResult<CoinExStopOrder>[]>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
             return result;
         }
 

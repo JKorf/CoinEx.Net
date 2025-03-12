@@ -103,7 +103,7 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.TryParseError(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Collections.Generic.IEnumerable{System.String}}},CryptoExchange.Net.Interfaces.IMessageAccessor)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.TryParseError(System.Collections.Generic.KeyValuePair{System.String,System.String[]}[],CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetServerTimestampAsync">
@@ -294,10 +294,10 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
@@ -306,13 +306,13 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
@@ -336,7 +336,7 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToUserTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExUserTrade}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToPositionUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExPositionUpdate}},System.Threading.CancellationToken)">
@@ -347,16 +347,6 @@
         </member>
         <member name="P:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.ClientOptions">
             <inheritdoc />
-        </member>
-        <member name="E:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.OnOrderPlaced">
-            <summary>
-            Event triggered when an order is placed via this client
-            </summary>
-        </member>
-        <member name="E:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.OnOrderCanceled">
-            <summary>
-            Event triggered when an order is canceled via this client. Note that this does not trigger when using CancelAllOrdersAsync
-            </summary>
         </member>
         <member name="P:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.ExchangeName">
             <inheritdoc />
@@ -382,15 +372,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetSymbolName(System.String,System.String)">
-            <summary>
-            Get the name of a symbol for CoinEx based on the base and quote asset
-            </summary>
-            <param name="baseAsset"></param>
-            <param name="quoteAsset"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.TryParseError(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Collections.Generic.IEnumerable{System.String}}},CryptoExchange.Net.Interfaces.IMessageAccessor)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.TryParseError(System.Collections.Generic.KeyValuePair{System.String,System.String[]}[],CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetServerTimestampAsync">
@@ -402,7 +384,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetTimeOffset">
             <inheritdoc />
         </member>
-        <member name="P:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.CommonSpotClient">
+        <member name="P:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.SharedClient">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiAccount">
@@ -602,13 +584,13 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExMaintenance}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExMaintenance[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTicker[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTicker[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
@@ -617,13 +599,13 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
@@ -647,7 +629,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToUserTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExUserTrade}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExBalanceUpdate}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBalanceUpdate[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.CoinExEnvironment">
@@ -784,6 +766,1410 @@
         </member>
         <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
             <inheritdoc />
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Boolean">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableBoolean">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Decimal">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableDecimal">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.AccountType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableAccountType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.BorrowStatus">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.ContractType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.DepositStatus">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.MarginMode">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.MovementMethod">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.OrderSide">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.OrderStatusV2">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableOrderStatusV2">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.OrderTypeV2">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.OrderUpdateType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.PositionSide">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.PositionUpdateType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.PriceType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullablePriceType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.SelfTradePreventionMode">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableSelfTradePreventionMode">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.StopOrderUpdateType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.TransactionRole">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.TransactionType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.TransferStatus">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.TriggerDirection">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.TriggerPriceType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.WithdrawStatusV2">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResult">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExAamLiquidity">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExAmmBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExAssetArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBasisArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBatchOrderResultArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBatchResultCoinExFuturesOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBatchResultCoinExOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBatchResultCoinExStopIdArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBatchResultCoinExStopOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBorrow">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExBorrowLimit">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExCreditBalance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExDepositAddress">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExDepositWithdrawalConfigArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExDepositWithdrawalConfig">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExFundingRateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExFuturesBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExFuturesOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExFuturesSymbolArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExFuturesTickerArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExIndexPriceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExKlineArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExLeverage">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExMarginBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExOrderBook">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExPosition">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExPositionLevelsArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExPremiumIndexHistoryArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExServerTime">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExStopId">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExStopOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExStopOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExSymbolArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExTickerArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExTradeArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExTradeFee">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExApiResultCoinExWithdrawal">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPage">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExBorrowArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExDepositArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExFundingRateHistoryArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExFuturesOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExLiquidationArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExPositionArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExPositionAdlArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExPositionFundingRateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExPositionMarginArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExPositionSettlementArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExStopOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExTransactionArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExTransferArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExUserTradeArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPageApiResultCoinExWithdrawalArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAamLiquidity">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAamLiquidityArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAmmBalance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAmmBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAsset">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAssetArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAssetNetwork">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExAssetNetworkArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBalance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBalanceUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBalanceUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBalanceUpdateWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBalanceUpdateWrapperArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBasis">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBasisArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchOrderResult">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchOrderResultArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExFuturesOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExStopIdArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExStopOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBookPriceUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBookPriceUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBorrow">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBorrowArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBorrowLimit">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBorrowLimitArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExCreditBalance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExCreditBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDeposit">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDepositArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDepositAddress">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDepositAddressArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDepositWithdrawalAsset">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDepositWithdrawalAssetArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDepositWithdrawalConfig">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExDepositWithdrawalConfigArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFundingRate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFundingRateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFundingRateHistory">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFundingRateHistoryArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesBalance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesBalanceUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesBalanceUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesOrderUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesOrderUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesPlaceOrderRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesPlaceOrderRequestArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesPlaceStopOrderRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesPlaceStopOrderRequestArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesSymbol">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesSymbolArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesTicker">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesTickerArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesTickerUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesTickerUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesTickerUpdateWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExFuturesTickerUpdateWrapperArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExIndexPrice">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExIndexPriceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExIndexPriceSource">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExIndexPriceSourceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExIndexPriceUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExIndexPriceUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExKline">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExKlineArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExLeverage">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExLeverageArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExLiquidation">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExLiquidationArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExMaintenance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExMaintenanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExMarginAssetsBalance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExMarginAssetsBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExMarginBalance">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExMarginBalanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExNetwork">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExNetworkArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderBook">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderBookArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderBookData">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderBookDataArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderBookEntry">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderBookEntryArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExOrderUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExBorrow">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExDeposit">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExFundingRateHistory">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExFuturesOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExLiquidation">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExPosition">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExPositionAdl">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExPositionFundingRate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExPositionMargin">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExPositionSettlement">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExStopOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExTransaction">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExTransfer">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExUserTrade">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPaginatedCoinExWithdrawal">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPlaceOrderRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPlaceOrderRequestArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPlaceStopOrderRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPlaceStopOrderRequestArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPosition">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionAdl">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionAdlArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionFundingRate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionFundingRateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionLevel">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionLevelArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionLevels">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionLevelsArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionMargin">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionMarginArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionSettlement">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionSettlementArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPositionUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPremiumIndexHistory">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExPremiumIndexHistoryArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExServerTime">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExServerTimeArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopId">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopIdArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderUpdateArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStreamOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStreamOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStreamPosition">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStreamPositionArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSymbol">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSymbolArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTicker">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTickerArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTickerUpdateWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTickerUpdateWrapperArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTrade">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTradeArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTradeFee">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTradeFeeArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTradeWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTradeWrapperArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTransaction">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTransactionArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTransfer">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExTransferArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExUserTrade">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExUserTradeArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExWithdrawal">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExWithdrawalArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketRequest">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketResponse">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExBalanceUpdateWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExBookPriceUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExFuturesBalanceUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExFuturesOrderUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExFuturesTickerUpdateWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExIndexPriceUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExMaintenanceArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExOrderBook">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExOrderUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExPositionUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExStopOrderUpdate">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExTickerUpdateWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExTradeWrapper">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExSocketUpdateCoinExUserTrade">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.DictionaryStringObject">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.IDictionaryStringObject">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.DateTime">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableDateTime">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Int32">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableInt32">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Int32Array">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Int64">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableInt64">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Object">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.String">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.StringArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Default">
+            <summary>
+            The default <see cref="T:System.Text.Json.Serialization.JsonSerializerContext"/> associated with a default <see cref="T:System.Text.Json.JsonSerializerOptions"/> instance.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.GeneratedSerializerOptions">
+            <summary>
+            The source-generated options associated with this context.
+            </summary>
+        </member>
+        <member name="M:CoinEx.Net.Converters.CoinExSourceGenerationContext.#ctor">
+            <inheritdoc/>
+        </member>
+        <member name="M:CoinEx.Net.Converters.CoinExSourceGenerationContext.#ctor(System.Text.Json.JsonSerializerOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CoinEx.Net.Converters.CoinExSourceGenerationContext.GetTypeInfo(System.Type)">
+            <inheritdoc/>
         </member>
         <member name="T:CoinEx.Net.Enums.AccountType">
             <summary>
@@ -1931,7 +3317,7 @@
             Get the shared socket subscription client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
             <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-state" /></para>
@@ -1941,7 +3327,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
             <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-state" /></para>
@@ -1976,7 +3362,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
             <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-deals" /></para>
@@ -1986,7 +3372,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
             <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-deals" /></para>
@@ -1996,7 +3382,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
             <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-deals" /></para>
@@ -2072,7 +3458,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesBalance[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user balance updates
             <para><a href="https://docs.coinex.com/api/v2/assets/balance/ws/futures_balance" /></para>
@@ -2169,14 +3555,9 @@
             Endpoints related to orders and trades
             </summary>
         </member>
-        <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi.CommonSpotClient">
-            <summary>
-            DEPRECATED; use <see cref="T:CryptoExchange.Net.SharedApis.ISharedClient" /> instead for common/shared functionality. See <see href="https://jkorf.github.io/CryptoExchange.Net/docs/index.html#shared" /> for more info.
-            </summary>
-        </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi.SharedClient">
             <summary>
-            Get the shared rest requests client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+            Get the shared rest requests client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
             </summary>
         </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount">
@@ -2792,7 +4173,7 @@
             Get the shared socket subscription client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExMaintenance}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExMaintenance[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to system notification updates
             </summary>
@@ -2800,7 +4181,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTicker[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for the specified symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
             <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
@@ -2810,7 +4191,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTicker}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTicker[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
             <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
@@ -2845,7 +4226,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
             <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
@@ -2855,7 +4236,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
             <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
@@ -2865,7 +4246,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExTrade}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
             <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
@@ -2941,7 +4322,7 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExBalanceUpdate}}},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBalanceUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user balance updates
             <para><a href="https://docs.coinex.com/api/v2/assets/balance/ws/spot_balance" /></para>
