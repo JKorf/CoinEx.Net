@@ -7,11 +7,14 @@ using CryptoExchange.Net.Objects;
 using System.Linq;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Interfaces;
 
 namespace CoinEx.Net
 {
     internal class CoinExV2AuthenticationProvider : AuthenticationProvider
     {
+        private static IMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange.SerializerContext));
+
         public CoinExV2AuthenticationProvider(ApiCredentials credentials): base(credentials)
         {
             if (credentials.CredentialType != ApiCredentialsType.Hmac)
@@ -45,7 +48,7 @@ namespace CoinEx.Net
                 parameters = bodyParameters;
             }
 
-            var parameterString = parameterPosition == HttpMethodParameterPosition.InUri ? (parameters.Any() ? "?" + parameters.CreateParamString(false, arraySerialization) : "") : new SystemTextJsonMessageSerializer().Serialize(parameters);
+            var parameterString = parameterPosition == HttpMethodParameterPosition.InUri ? (parameters.Any() ? "?" + parameters.CreateParamString(false, arraySerialization) : "") : _serializer.Serialize(parameters);
             var timestamp = GetMillisecondTimestamp(apiClient);
             var signData = method.ToString().ToUpperInvariant() + uri.AbsolutePath + parameterString + timestamp;
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
@@ -57,7 +60,7 @@ namespace CoinEx.Net
 
         public Dictionary<string, object> GetSocketAuthParameters()
         {
-            var timestamp = CryptoExchange.Net.Converters.SystemTextJson.DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow);
+            var timestamp = DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow);
             var signData = timestamp.ToString();
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
             return new Dictionary<string, object>

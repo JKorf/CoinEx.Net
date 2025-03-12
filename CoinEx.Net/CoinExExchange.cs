@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net;
+﻿using CoinEx.Net.Converters;
+using CryptoExchange.Net;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.RateLimiting;
 using CryptoExchange.Net.RateLimiting.Filters;
@@ -6,6 +7,7 @@ using CryptoExchange.Net.RateLimiting.Guards;
 using CryptoExchange.Net.RateLimiting.Interfaces;
 using CryptoExchange.Net.SharedApis;
 using System;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net
 {
@@ -49,6 +51,8 @@ namespace CoinEx.Net
 
         internal const string ClientOrderId = "x-147866029-";
         internal const string ClientOrderIdPrefix = ClientOrderId + LibraryHelpers.ClientOrderIdSeparator;
+
+        internal static JsonSerializerContext SerializerContext = new CoinExSourceGenerationContext();
 
         /// <summary>
         /// Format a base and quote asset to a CoinEx recognized symbol 

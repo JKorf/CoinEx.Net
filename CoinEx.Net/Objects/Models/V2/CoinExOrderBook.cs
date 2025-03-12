@@ -1,4 +1,6 @@
-﻿using CryptoExchange.Net.Converters;
+﻿using CoinEx.Net.Converters;
+using CryptoExchange.Net.Converters;
+using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -66,7 +68,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order book entry
     /// </summary>
-    [JsonConverter(typeof(CryptoExchange.Net.Converters.SystemTextJson.ArrayConverter))]
+    [JsonConverter(typeof(ArrayConverter<CoinExOrderBookEntry, CoinExSourceGenerationContext>))]
     public record CoinExOrderBookEntry : ISymbolOrderBookEntry
     {
         /// <summary>

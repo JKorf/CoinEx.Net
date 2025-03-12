@@ -1,4 +1,5 @@
-﻿using CoinEx.Net.Enums;
+﻿using CoinEx.Net.Converters;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// The client order id
         /// </summary>
         [JsonPropertyName("client_id"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        [JsonConverterCtor(typeof(ReplaceConverter), $"{CoinExExchange.ClientOrderIdPrefix}->")]
+        [JsonConverter(typeof(ClientIdConverter))]
         public string? ClientOrderId { get; set; }
         /// <summary>
         /// Whether to hide the order

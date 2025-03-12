@@ -54,8 +54,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddOptionalEnum("stp_mode", stpMode);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/order", CoinExExchange.RateLimiter.CoinExRestSpotOrder, 1, true);
             var result = await _baseClient.SendAsync<CoinExOrder>(request, parameters, ct).ConfigureAwait(false);
-            if (result)
-                _baseClient.InvokeOrderPlaced(new CryptoExchange.Net.CommonObjects.OrderId { Id = result.Data.Id.ToString(), SourceObject = result.Data });
             return result;
         }
 
@@ -92,8 +90,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddOptionalEnum("stp_mode", stpMode);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/stop-order", CoinExExchange.RateLimiter.CoinExRestSpotOrder, 1, true);
             var result = await _baseClient.SendAsync<CoinExStopId>(request, parameters, ct).ConfigureAwait(false);
-            if (result)
-                _baseClient.InvokeOrderPlaced(new CryptoExchange.Net.CommonObjects.OrderId { Id = result.Data.StopOrderId.ToString(), SourceObject = result.Data });
             return result;
         }
 
@@ -111,11 +107,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/batch-order", CoinExExchange.RateLimiter.CoinExRestSpotOrder, 1, true);
             var result = await _baseClient.SendAsync<IEnumerable<CoinExBatchOrderResult>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
-            if (result)
-            {
-                foreach(var order in result.Data.Where(x => x.Success))
-                    _baseClient.InvokeOrderPlaced(new CryptoExchange.Net.CommonObjects.OrderId { Id = order.Id.ToString(), SourceObject = order });
-            }
             return result;
         }
 
@@ -133,11 +124,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/batch-stop-order", CoinExExchange.RateLimiter.CoinExRestSpotOrder, 1, true);
             var result = await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopId>>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
-            if (result)
-            {
-                foreach (var order in result.Data.Where(x => x.Success))
-                    _baseClient.InvokeOrderPlaced(new CryptoExchange.Net.CommonObjects.OrderId { Id = order.Data!.StopOrderId.ToString(), SourceObject = order });
-            }
             return result;
         }
 
@@ -286,8 +272,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-order", CoinExExchange.RateLimiter.CoinExRestSpotCancel, 1, true);
             var result = await _baseClient.SendAsync<CoinExOrder>(request, parameters, ct).ConfigureAwait(false);
-            if (result)
-                _baseClient.InvokeOrderCanceled(new CryptoExchange.Net.CommonObjects.OrderId { Id = result.Data.Id.ToString(), SourceObject = result.Data });
             return result;
         }
 
@@ -301,11 +285,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-batch-order", CoinExExchange.RateLimiter.CoinExRestSpotBatchCancel, 1, true);
             var result = await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExOrder>>>(request, parameters, ct).ConfigureAwait(false);
-            if (result)
-            {
-                foreach(var order in result.Data)
-                    _baseClient.InvokeOrderCanceled(new CryptoExchange.Net.CommonObjects.OrderId { Id = order.Data!.Id.ToString(), SourceObject = result.Data });
-            }
             return result;
         }
 
@@ -320,8 +299,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddEnum("market_type", accountType);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-stop-order", CoinExExchange.RateLimiter.CoinExRestSpotCancel, 1, true);
             var result = await _baseClient.SendAsync<CoinExStopOrder>(request, parameters, ct).ConfigureAwait(false);
-            if (result)
-                _baseClient.InvokeOrderCanceled(new CryptoExchange.Net.CommonObjects.OrderId { Id = result.Data.StopOrderId.ToString(), SourceObject = result.Data });
             return result;
         }
 
@@ -338,12 +315,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddEnum("market_type", accountType);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestSpotBatchCancel, 1, true);
             var result = await _baseClient.SendAsync<IEnumerable<CoinExOrder>>(request, parameters, ct).ConfigureAwait(false);
-            if (result)
-            {
-                foreach(var order in result.Data)
-                    _baseClient.InvokeOrderCanceled(new CryptoExchange.Net.CommonObjects.OrderId { Id = order.Id.ToString(), SourceObject = result.Data });
-            }
-
             return result;
         }
 
@@ -360,12 +331,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddEnum("market_type", accountType);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-stop-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestSpotBatchCancel, 1, true);
             var result = await _baseClient.SendAsync<IEnumerable<CoinExStopOrder>>(request, parameters, ct).ConfigureAwait(false);
-            if (result)
-            {
-                foreach(var order in result.Data)
-                    _baseClient.InvokeOrderCanceled(new CryptoExchange.Net.CommonObjects.OrderId { Id = order.StopOrderId.ToString(), SourceObject = result.Data });
-            }
-            
             return result;
         }
 
@@ -379,11 +344,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/spot/cancel-batch-stop-order", CoinExExchange.RateLimiter.CoinExRestSpotBatchCancel, 1, true);
             var result = await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
-            if (result)
-            {
-                foreach (var order in result.Data)
-                    _baseClient.InvokeOrderCanceled(new CryptoExchange.Net.CommonObjects.OrderId { Id = order.Data!.StopOrderId.ToString(), SourceObject = result.Data });
-            }
             return result;
         }
 
