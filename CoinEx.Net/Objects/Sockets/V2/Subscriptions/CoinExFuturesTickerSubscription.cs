@@ -15,10 +15,10 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
     {
         private IEnumerable<string>? _symbols;
         private Dictionary<string, object> _parameters;
-        private Action<DataEvent<IEnumerable<CoinExFuturesTickerUpdate>>> _handler;
+        private Action<DataEvent<CoinExFuturesTickerUpdate[]>> _handler;
 
         public override HashSet<string> ListenerIdentifiers { get; set; }
-        public CoinExFuturesTickerSubscription(ILogger logger, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<IEnumerable<CoinExFuturesTickerUpdate>>> handler) : base(logger, false)
+        public CoinExFuturesTickerSubscription(ILogger logger, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExFuturesTickerUpdate[]>> handler) : base(logger, false)
         {
             _symbols = symbols;
             _parameters = parameters;
@@ -29,11 +29,11 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>)message.Data;
-            var relevant = data.Data.Tickers.Where(d => _symbols == null || _symbols.Contains(d.Symbol)).ToList();
+            var relevant = data.Data.Tickers.Where(d => _symbols == null || _symbols.Contains(d.Symbol)).ToArray();
             if (!relevant.Any())
                 return new CallResult(null);
 
-            _handler.Invoke(message.As<IEnumerable<CoinExFuturesTickerUpdate>>(relevant, data.Method, null, SocketUpdateType.Update));
+            _handler.Invoke(message.As<CoinExFuturesTickerUpdate[]>(relevant, data.Method, null, SocketUpdateType.Update));
             return new CallResult(null);
         }
 

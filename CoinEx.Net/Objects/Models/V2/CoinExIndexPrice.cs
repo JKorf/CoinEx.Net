@@ -1,4 +1,5 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -7,6 +8,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Index price
     /// </summary>
+    [SerializationModel]
     public record CoinExIndexPrice
     {
         /// <summary>
@@ -29,12 +31,13 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Index sources
         /// </summary>
         [JsonPropertyName("sources")]
-        public IEnumerable<CoinExIndexPriceSource> Sources { get; set; } = Array.Empty<CoinExIndexPriceSource>();
+        public CoinExIndexPriceSource[] Sources { get; set; } = Array.Empty<CoinExIndexPriceSource>();
     }
 
     /// <summary>
     /// Index price source
     /// </summary>
+    [SerializationModel]
     public record CoinExIndexPriceSource
     {
         /// <summary>

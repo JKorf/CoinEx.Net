@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Enums;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Objects;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -34,12 +34,12 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExFuturesBalance>>> GetBalancesAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/futures/balance", CoinExExchange.RateLimiter.CoinExRestFuturesAccount, 1, true);
-            var result = await _baseClient.SendAsync< IEnumerable<CoinExFuturesBalance>>(request, null, ct).ConfigureAwait(false);
+            var result = await _baseClient.SendAsync<CoinExFuturesBalance[]>(request, null, ct).ConfigureAwait(false);
             if (result && result.Data == null)
-                return result.As<IEnumerable<CoinExFuturesBalance>>(Array.Empty<CoinExFuturesBalance>());
+                return result.As<CoinExFuturesBalance[]>(Array.Empty<CoinExFuturesBalance>());
 
             return result;
         }

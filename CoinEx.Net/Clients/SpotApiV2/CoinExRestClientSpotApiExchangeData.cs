@@ -1,4 +1,4 @@
-﻿using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Objects;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
@@ -32,32 +32,32 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         // Doesn't seem to exist on the url specified in the docs
         ///// <inheritdoc />
-        //public async Task<WebCallResult<IEnumerable<CoinExMaintenance>>> GetMaintenanceInfoAsync(CancellationToken ct = default)
+        //public async Task<WebCallResult<CoinExMaintenance[]>> GetMaintenanceInfoAsync(CancellationToken ct = default)
         //{
         //    return await _baseClient.ExecuteAsync<IEnumerable<CoinExMaintenance>>(_baseClient.GetUri("v2/maintain-info"), HttpMethod.Get, ct).ConfigureAwait(false);
         //}
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExSymbol>>> GetSymbolsAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExSymbol[]>> GetSymbolsAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/market", CoinExExchange.RateLimiter.CoinExRestPublic);
-            return await _baseClient.SendAsync<IEnumerable<CoinExSymbol>>(request, null, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExSymbol[]>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExAsset>>> GetAssetsAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExAsset[]>> GetAssetsAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/info", CoinExExchange.RateLimiter.CoinExRestPublic);
-            return await _baseClient.SendAsync<IEnumerable<CoinExAsset>>(request, null, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExAsset[]>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExTicker>>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExTicker[]>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/ticker", CoinExExchange.RateLimiter.CoinExRestPublic);
-            return await _baseClient.SendAsync<IEnumerable<CoinExTicker>>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExTicker[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExTrade>>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExTrade[]>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -83,11 +83,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddOptional("limit", limit);
             parameters.AddOptional("last_id", lastId);
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/deals", CoinExExchange.RateLimiter.CoinExRestPublic);
-            return await _baseClient.SendAsync<IEnumerable<CoinExTrade>>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExTrade[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, PriceType? priceType = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, PriceType? priceType = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -97,16 +97,16 @@ namespace CoinEx.Net.Clients.SpotApiV2
             parameters.AddOptionalEnum("price_type", priceType);
             parameters.AddOptional("limit", limit);
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/kline", CoinExExchange.RateLimiter.CoinExRestPublic);
-            return await _baseClient.SendAsync<IEnumerable<CoinExKline>>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExKline[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExIndexPrice>>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExIndexPrice[]>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection();
             parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/index", CoinExExchange.RateLimiter.CoinExRestPublic);
-            return await _baseClient.SendAsync<IEnumerable<CoinExIndexPrice>>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExIndexPrice[]>(request, parameters, ct).ConfigureAwait(false);
         }
     }
 }

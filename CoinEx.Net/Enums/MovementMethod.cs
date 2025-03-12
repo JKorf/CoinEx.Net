@@ -1,10 +1,13 @@
-﻿using CryptoExchange.Net.Attributes;
+using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Attributes;
 
 namespace CoinEx.Net.Enums
 {
     /// <summary>
     /// Deposit/Withdrawal method
     /// </summary>
+    [JsonConverter(typeof(EnumConverter<MovementMethod>))]
     public enum MovementMethod
     {
         /// <summary>

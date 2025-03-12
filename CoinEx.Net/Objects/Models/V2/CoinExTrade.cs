@@ -1,21 +1,24 @@
-﻿using CoinEx.Net.Enums;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CoinEx.Net.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
+    [SerializationModel]
     internal record CoinExTradeWrapper
     {
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         [JsonPropertyName("deal_list")]
-        public IEnumerable<CoinExTrade> Trades { get; set; } = Array.Empty<CoinExTrade>();
+        public CoinExTrade[] Trades { get; set; } = Array.Empty<CoinExTrade>();
     }
 
     /// <summary>
     /// Trade info
     /// </summary>
+    [SerializationModel]
     public record CoinExTrade
     {
         /// <summary>

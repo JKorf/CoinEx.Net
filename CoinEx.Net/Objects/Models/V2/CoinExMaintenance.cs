@@ -1,4 +1,5 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -7,6 +8,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Maintenance info
     /// </summary>
+    [SerializationModel]
     public record CoinExMaintenance
     {
         /// <summary>
@@ -23,7 +25,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Scope that's impacted
         /// </summary>
         [JsonPropertyName("scope")]
-        public IEnumerable<string> Scope { get; set; } = Array.Empty<string>();
+        public string[] Scope { get; set; } = Array.Empty<string>();
         /// <summary>
         /// Protection period start time. The protection period refers to a continuous period following the system maintenance (It's an optional configuration, and may or may not be set). During the protection period, you can cancel orders, place orders (limited to Maker Only Limit Orders), and adjust (add or reduce) margins.
         /// </summary>

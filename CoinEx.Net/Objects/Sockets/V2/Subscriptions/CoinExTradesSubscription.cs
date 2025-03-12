@@ -15,10 +15,10 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
     {
         private IEnumerable<string>? _symbols;
         private Dictionary<string, object> _parameters;
-        private Action<DataEvent<IEnumerable<CoinExTrade>>> _handler;
+        private Action<DataEvent<CoinExTrade[]>> _handler;
 
         public override HashSet<string> ListenerIdentifiers { get; set; }
-        public CoinExTradesSubscription(ILogger logger, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<IEnumerable<CoinExTrade>>> handler) : base(logger, false)
+        public CoinExTradesSubscription(ILogger logger, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
         {
             _symbols = symbols;
             _parameters = parameters;
@@ -29,11 +29,11 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<CoinExTradeWrapper>)message.Data;
-            var relevant = data.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(data.Data.Symbol)).ToList();
+            var relevant = data.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(data.Data.Symbol)).ToArray();
             if (!relevant.Any() || !data.Data.Trades.Any())
                 return new CallResult(null);
 
-            _handler.Invoke(message.As<IEnumerable<CoinExTrade>>(relevant, data.Method, data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+            _handler.Invoke(message.As<CoinExTrade[]>(relevant, data.Method, data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
                 .WithDataTimestamp(data.Data.Trades.Max(x => x.Timestamp)));
             return new CallResult(null);
         }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
@@ -6,6 +7,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// Batch operation result
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [SerializationModel]
     public record CoinExBatchResult<T>
     {
         /// <summary>

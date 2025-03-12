@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Enums;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Objects;
 using System.Collections.Generic;
 using System.Threading;
@@ -28,7 +28,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbols">Filter by symbol name; max 10, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExFuturesSymbol>>> GetSymbolsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExFuturesSymbol[]>> GetSymbolsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get symbol tickers
@@ -37,7 +37,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbols">Fitler by symbol names; max 10, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExFuturesTicker>>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExFuturesTicker[]>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get the orderbook for a symbol
@@ -59,7 +59,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="lastId">The starting point of the query, 0 means to acquire from the latest record</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExTrade>>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExTrade[]>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get klines/candlesticks
@@ -71,7 +71,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="priceType">Price type, either LastPrice(default) or IndexPrice</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExKline>>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, PriceType? priceType = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, PriceType? priceType = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get index prices
@@ -80,7 +80,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbols">Filter by symbols, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExIndexPrice>>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExIndexPrice[]>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get funding rates
@@ -89,7 +89,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbols">Filter by symbols, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExFundingRate>>> GetFundingRatesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExFundingRate[]>> GetFundingRatesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get historical funding rates
@@ -115,7 +115,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExPremiumIndexHistory>>> GetPremiumIndexPriceHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPremiumIndexHistory[]>> GetPremiumIndexPriceHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get position levels
@@ -124,7 +124,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbols">Filter by symbols; max 10, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExPositionLevels>>> GetPositionLevelsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPositionLevels[]>> GetPositionLevelsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get liquidation history
@@ -148,6 +148,6 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="endTime">Filter by end time</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExBasis>>> GetBasisHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExBasis[]>> GetBasisHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default);
     }
 }

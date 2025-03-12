@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Enums;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Objects;
 using System.Net.Http;
 using System.Threading;
@@ -88,7 +88,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> PlaceMultipleOrdersAsync(
+        public async Task<WebCallResult<CoinExBatchResult<CoinExFuturesOrder[]>>> PlaceMultipleOrdersAsync(
             IEnumerable<CoinExFuturesPlaceOrderRequest> requests,
             CancellationToken ct = default)
         {
@@ -97,14 +97,14 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             var parameters = new ParameterCollection()
             {
-                { "orders", requests }
+                { "orders", requests.ToArray() }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/batch-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBatchResult<CoinExFuturesOrder[]>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopId>>>> PlaceMultipleStopOrdersAsync(
+        public async Task<WebCallResult<CoinExBatchResult<CoinExStopId[]>>> PlaceMultipleStopOrdersAsync(
             IEnumerable<CoinExFuturesPlaceStopOrderRequest> requests,
             CancellationToken ct = default)
         {
@@ -113,10 +113,10 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             var parameters = new ParameterCollection()
             {
-                { "orders", requests }
+                { "orders", requests.ToArray() }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/batch-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopId>>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBatchResult<CoinExStopId[]>>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -280,7 +280,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBatchResult<CoinExFuturesOrder[]>>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default)
         {
             clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
@@ -291,12 +291,12 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBatchResult<CoinExFuturesOrder[]>>(request, parameters, ct).ConfigureAwait(false);
             
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBatchResult<CoinExStopOrder[]>>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default)
         {
             clientStopOrderId = LibraryHelpers.ApplyBrokerId(clientStopOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
@@ -307,33 +307,33 @@ namespace CoinEx.Net.Clients.FuturesApi
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-stop-order-by-client-id", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(request, parameters, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBatchResult<CoinExStopOrder[]>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBatchResult<CoinExFuturesOrder[]>>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
                 { "market", symbol },
-                { "order_ids", orderIds }
+                { "order_ids", orderIds.ToArray() }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-batch-order", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExFuturesOrder>>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBatchResult<CoinExFuturesOrder[]>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBatchResult<CoinExStopOrder[]>>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
                 { "market", symbol },
-                { "stop_ids", orderIds }
+                { "stop_ids", orderIds.ToArray() }
             };
             parameters.AddEnum("market_type", AccountType.Futures);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-batch-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesBatchCancel, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBatchResult<CoinExStopOrder>>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBatchResult<CoinExStopOrder[]>>(request, parameters, ct, weight: orderIds.Count()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

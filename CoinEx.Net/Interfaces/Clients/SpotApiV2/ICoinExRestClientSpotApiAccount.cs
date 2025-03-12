@@ -1,4 +1,4 @@
-﻿using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Objects;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
@@ -38,7 +38,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExBalance>>> GetBalancesAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExBalance[]>> GetBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get margin balances
@@ -46,7 +46,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExMarginBalance>>> GetMarginBalancesAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExMarginBalance[]>> GetMarginBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get balances in the financial account
@@ -54,7 +54,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExBalance>>> GetFinancialBalancesAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExBalance[]>> GetFinancialBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get credit account info
@@ -70,7 +70,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExAmmBalance>>> GetAutoMarketMakerAccountLiquidityAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExAmmBalance[]>> GetAutoMarketMakerAccountLiquidityAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Apply for margin borrowing
@@ -204,7 +204,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExDepositWithdrawalConfig>>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExDepositWithdrawalConfig[]>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Transfer between accounts

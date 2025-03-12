@@ -1,4 +1,5 @@
-﻿
+using CryptoExchange.Net.Converters.SystemTextJson;
+
 using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
@@ -6,6 +7,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Index price update
     /// </summary>
+    [SerializationModel]
     public record CoinExIndexPriceUpdate
     {
         /// <summary>

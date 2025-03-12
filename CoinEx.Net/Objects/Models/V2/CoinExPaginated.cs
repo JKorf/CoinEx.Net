@@ -1,4 +1,5 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Collections.Generic;
 
 namespace CoinEx.Net.Objects.Models.V2
@@ -6,6 +7,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Paginated result
     /// </summary>
+    [SerializationModel]
     public record CoinExPaginated<T>
     {
         /// <summary>
@@ -19,6 +21,6 @@ namespace CoinEx.Net.Objects.Models.V2
         /// <summary>
         /// Page items
         /// </summary>
-        public IEnumerable<T> Items { get; set; } = Array.Empty<T>();
+        public T[] Items { get; set; } = Array.Empty<T>();
     }
 }

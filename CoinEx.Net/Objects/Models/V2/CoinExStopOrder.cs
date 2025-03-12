@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Converters;
+using CoinEx.Net.Converters;
 using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using System;
@@ -9,6 +9,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Stop order info
     /// </summary>
+    [SerializationModel]
     public record CoinExStopOrder
     {
         /// <summary>

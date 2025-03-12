@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Converters;
+using CoinEx.Net.Converters;
 using CryptoExchange.Net.Converters;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
@@ -11,6 +11,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order book info
     /// </summary>
+    [SerializationModel]
     public record CoinExOrderBook
     {
         /// <summary>
@@ -35,18 +36,19 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order book data
     /// </summary>
+    [SerializationModel]
     public record CoinExOrderBookData
     { 
         /// <summary>
         /// Asks list
         /// </summary>
         [JsonPropertyName("asks")]
-        public IEnumerable<CoinExOrderBookEntry> Asks { get; set; } = Array.Empty<CoinExOrderBookEntry>();
+        public CoinExOrderBookEntry[] Asks { get; set; } = Array.Empty<CoinExOrderBookEntry>();
         /// <summary>
         /// Bids list
         /// </summary>
         [JsonPropertyName("bids")]
-        public IEnumerable<CoinExOrderBookEntry> Bids { get; set; } = Array.Empty<CoinExOrderBookEntry>();
+        public CoinExOrderBookEntry[] Bids { get; set; } = Array.Empty<CoinExOrderBookEntry>();
 
         /// <summary>
         /// Last price
@@ -69,6 +71,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// Order book entry
     /// </summary>
     [JsonConverter(typeof(ArrayConverter<CoinExOrderBookEntry, CoinExSourceGenerationContext>))]
+    [SerializationModel]
     public record CoinExOrderBookEntry : ISymbolOrderBookEntry
     {
         /// <summary>

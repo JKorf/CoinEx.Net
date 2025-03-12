@@ -1,4 +1,5 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -7,6 +8,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Position levels info
     /// </summary>
+    [SerializationModel]
     public record CoinExPositionLevels
     {
         /// <summary>
@@ -18,12 +20,13 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Levels
         /// </summary>
         [JsonPropertyName("level")]
-        public IEnumerable<CoinExPositionLevel> Levels { get; set; } = Array.Empty<CoinExPositionLevel>();
+        public CoinExPositionLevel[] Levels { get; set; } = Array.Empty<CoinExPositionLevel>();
     }
 
     /// <summary>
     /// Position level info
     /// </summary>
+    [SerializationModel]
     public record CoinExPositionLevel
     {
         /// <summary>

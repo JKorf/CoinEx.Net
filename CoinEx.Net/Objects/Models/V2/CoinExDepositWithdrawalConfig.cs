@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
@@ -6,6 +7,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Deposit and withdrawal configuration and info
     /// </summary>
+    [SerializationModel]
     public record CoinExDepositWithdrawalConfig
     {
         /// <summary>
@@ -17,12 +19,13 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Available networks
         /// </summary>
         [JsonPropertyName("chains")]
-        public IEnumerable<CoinExNetwork> Networks { get; set; } = null!;
+        public CoinExNetwork[] Networks { get; set; } = null!;
     }
 
     /// <summary>
     /// Asset infos
     /// </summary>
+    [SerializationModel]
     public record CoinExDepositWithdrawalAsset
     {
         /// <summary>
@@ -55,6 +58,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Network info
     /// </summary>
+    [SerializationModel]
     public record CoinExNetwork
     {
         /// <summary>
