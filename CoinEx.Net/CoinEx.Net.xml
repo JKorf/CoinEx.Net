@@ -1292,7 +1292,17 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExFuturesOrder">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExFuturesOrderArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExOrder">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -1302,7 +1312,17 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExStopId">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExStopIdArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExBatchResultCoinExStopOrder">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -2133,6 +2153,11 @@
             </summary>
         </member>
         <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.NullableInt64">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Int64Array">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
