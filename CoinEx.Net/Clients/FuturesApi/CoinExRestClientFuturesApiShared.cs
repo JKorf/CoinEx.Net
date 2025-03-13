@@ -486,6 +486,68 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         #endregion
 
+        #region Futures Client Id Order Client
+
+        EndpointOptions<GetOrderRequest> IFuturesOrderClientIdClient.GetFuturesOrderByClientOrderIdOptions { get; } = new EndpointOptions<GetOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedFuturesOrder>> IFuturesOrderClientIdClient.GetFuturesOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((IFuturesOrderRestClient)this).GetFuturesOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedFuturesOrder>(Exchange, validationError);
+
+            var order = await Trading.GetOpenOrdersAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            if (!order)
+                return order.AsExchangeResult<SharedFuturesOrder>(Exchange, null, default);
+
+            var orderData = order.Data.Items.FirstOrDefault();
+            if (orderData == null)
+            {
+                order = await Trading.GetClosedOrdersAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+                if (!order)
+                    return order.AsExchangeResult<SharedFuturesOrder>(Exchange, null, default);
+
+                orderData = order.Data.Items.FirstOrDefault();
+            }
+
+            if (orderData == null)
+                return new ExchangeWebResult<SharedFuturesOrder>(Exchange, new ServerError("Order not found"));
+
+            return order.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedFuturesOrder(
+                ExchangeSymbolCache.ParseSymbol(_topicId, orderData.Symbol),
+                orderData.Symbol,
+                orderData.Id.ToString(),
+                ParseOrderType(orderData.OrderType),
+                orderData.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
+                ParseOrderStatus(orderData.Status ?? OrderStatusV2.Open),
+                orderData.CreateTime)
+            {
+                ClientOrderId = orderData.ClientOrderId,
+                OrderPrice = orderData.Price,
+                Quantity = orderData.Quantity,
+                QuantityFilled = orderData.QuantityFilled,
+                QuoteQuantityFilled = orderData.ValueFilled,
+                TimeInForce = ParseTimeInForce(orderData.OrderType),
+                UpdateTime = orderData.UpdateTime,
+                Fee = orderData.Fee,
+                FeeAsset = orderData.FeeAsset
+            });
+        }
+
+        EndpointOptions<CancelOrderRequest> IFuturesOrderClientIdClient.CancelFuturesOrderByClientOrderIdOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedId>> IFuturesOrderClientIdClient.CancelFuturesOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((IFuturesOrderRestClient)this).CancelFuturesOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedId>(Exchange, validationError);
+
+            var order = await Trading.CancelOrderByClientOrderIdAsync(request.Symbol.GetSymbol(FormatSymbol), clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            if (!order)
+                return order.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            return order.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedId(order.Data.FirstOrDefault()?.Data?.Id.ToString() ?? request.OrderId));
+        }
+        #endregion
+
         #region Klines client
 
         GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false,

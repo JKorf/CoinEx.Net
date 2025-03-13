@@ -494,6 +494,69 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #endregion
 
+        #region Spot Client Id Order Client
+
+        EndpointOptions<GetOrderRequest> ISpotOrderClientIdClient.GetSpotOrderByClientOrderIdOptions { get; } = new EndpointOptions<GetOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedSpotOrder>> ISpotOrderClientIdClient.GetSpotOrderByClientOrderIdAsync(GetOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((ISpotOrderRestClient)this).GetSpotOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedSpotOrder>(Exchange, validationError);
+
+            var order = await Trading.GetOpenOrdersAsync(AccountType.Spot, clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            if (!order)
+                return order.AsExchangeResult<SharedSpotOrder>(Exchange, null, default);
+
+            var orderData = order.Data.Items.FirstOrDefault();
+            if (orderData == null)
+            {
+                order = await Trading.GetClosedOrdersAsync(AccountType.Spot, clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+                if (!order)
+                    return order.AsExchangeResult<SharedSpotOrder>(Exchange, null, default);
+
+                orderData = order.Data.Items.FirstOrDefault();                
+            }
+
+            if (orderData == null)
+                return new ExchangeWebResult<SharedSpotOrder>(Exchange, new ServerError("Order not found"));
+
+            return order.AsExchangeResult(Exchange, TradingMode.Spot, new SharedSpotOrder(
+                ExchangeSymbolCache.ParseSymbol(_topicId, orderData.Symbol),
+                orderData.Symbol,
+                orderData.Id.ToString(),
+                ParseOrderType(orderData.OrderType),
+                orderData.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
+                ParseOrderStatus(orderData.Status),
+                orderData.CreateTime)
+            {
+                ClientOrderId = orderData.ClientOrderId,
+                OrderPrice = orderData.Price,
+                Quantity = orderData.QuantityAsset == null || !orderData.Symbol.EndsWith(orderData.QuantityAsset) ? orderData.Quantity : null,
+                QuantityFilled = orderData.QuantityFilled,
+                UpdateTime = orderData.UpdateTime,
+                QuoteQuantity = orderData.Symbol.EndsWith(orderData.QuantityAsset) ? orderData.Quantity : null,
+                QuoteQuantityFilled = orderData.ValueFilled,
+                Fee = orderData.FeeBaseAsset > 0 ? orderData.FeeBaseAsset : orderData.FeeQuoteAsset,
+                FeeAsset = orderData.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : orderData.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
+                TimeInForce = ParseTimeInForce(orderData.OrderType)
+            });
+        }
+
+        EndpointOptions<CancelOrderRequest> ISpotOrderClientIdClient.CancelSpotOrderByClientOrderIdOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedId>> ISpotOrderClientIdClient.CancelSpotOrderByClientOrderIdAsync(CancelOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((ISpotOrderRestClient)this).CancelSpotOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedId>(Exchange, validationError);
+
+            var order = await Trading.CancelOrdersByClientOrderIdAsync(request.Symbol.GetSymbol(FormatSymbol), AccountType.Spot, clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            if (!order)
+                return order.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            return order.AsExchangeResult(Exchange, TradingMode.Spot, new SharedId(order.Data.FirstOrDefault()?.Id.ToString() ?? request.OrderId));
+        }
+        #endregion
+
         #region Asset client
 
         EndpointOptions<GetAssetRequest> IAssetsRestClient.GetAssetOptions { get; } = new EndpointOptions<GetAssetRequest>(false);

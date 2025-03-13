@@ -18,7 +18,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         //ITradeHistoryRestClient,
         IWithdrawalRestClient,
         IWithdrawRestClient,
-        IFeeRestClient
+        IFeeRestClient,
+        ISpotOrderClientIdClient
+
     {
     }
 }
