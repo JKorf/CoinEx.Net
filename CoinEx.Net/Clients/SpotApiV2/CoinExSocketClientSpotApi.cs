@@ -122,7 +122,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var subscription = new CoinExSubscription<CoinExMaintenance[]>(_logger, "notice", null, new Dictionary<string, object>
             {
-                { "channels", new object[] { 101 } }
+                { "channels", new int[] { 101 } }
             }, onMessage, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
@@ -132,7 +132,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var subscription = new CoinExTickerSubscription(_logger, null, new Dictionary<string, object>
             {
-                { "market_list", new object[] { } }
+                { "market_list", new string[] { } }
             }, onMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }

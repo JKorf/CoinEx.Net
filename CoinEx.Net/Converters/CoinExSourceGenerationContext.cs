@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 namespace CoinEx.Net.Converters
 {
     [JsonSerializable(typeof(long[]))]
+    [JsonSerializable(typeof(List<object[]>))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExFundingRateHistory[]>))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExLiquidation[]>))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExFuturesOrder[]>))]
