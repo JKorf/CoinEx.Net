@@ -62,7 +62,7 @@ namespace CoinEx.Net
         {
             var timestamp = DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow);
             var signData = timestamp.ToString();
-            var sign = SignHMACSHA256(signData, SignOutputType.Hex);
+            var sign = SignHMACSHA256(signData!, SignOutputType.Hex);
             return new Dictionary<string, object>
             {
                 { "access_id", _credentials.Key },

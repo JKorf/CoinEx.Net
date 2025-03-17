@@ -29,7 +29,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             if (symbols?.Any() != true)
                 ListenerIdentifiers = new HashSet<string> { _topic + ".update" };
             else
-                ListenerIdentifiers = new HashSet<string>(_symbols.Select(x => _topic + ".update" + x));
+                ListenerIdentifiers = new HashSet<string>(_symbols!.Select(x => _topic + ".update" + x));
         }
 
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
