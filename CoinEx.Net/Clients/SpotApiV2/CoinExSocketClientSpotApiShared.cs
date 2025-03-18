@@ -148,9 +148,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
                         update.Data.Order.CreateTime)
                     {
                         ClientOrderId = update.Data.Order.ClientOrderId?.ToString(),
-                        Quantity = update.Data.Order.Quantity,
-                        QuantityFilled = update.Data.Order.QuantityFilled,
-                        QuoteQuantityFilled = update.Data.Order.ValueFilled,
+                        OrderQuantity = new SharedOrderQuantity(update.Data.Order.Quantity),
+                        QuantityFilled = new SharedOrderQuantity(update.Data.Order.QuantityFilled, update.Data.Order.ValueFilled),
                         UpdateTime = update.Data.Order.UpdateTime,
                         OrderPrice = update.Data.Order.Price == 0 ? null : update.Data.Order.Price,
                         Fee = update.Data.Order.FeeBaseAsset + update.Data.Order.FeeQuoteAsset

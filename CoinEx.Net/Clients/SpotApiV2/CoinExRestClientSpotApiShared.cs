@@ -207,7 +207,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 SharedQuantityType.BaseAndQuoteAsset,
                 SharedQuantityType.BaseAndQuoteAsset);
 
-        string ISpotOrderRestClient.GenerateClientOrderId() => LibraryHelpers.ApplyBrokerId(string.Empty, CoinExExchange.ClientOrderId, 32, true);
+        string ISpotOrderRestClient.GenerateClientOrderId() => ExchangeHelpers.RandomString(20);
 
         async Task<ExchangeWebResult<SharedId>> ISpotOrderRestClient.PlaceSpotOrderAsync(PlaceSpotOrderRequest request, CancellationToken ct)
         {
@@ -227,7 +227,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 AccountType.Spot,
                 request.Side == SharedOrderSide.Buy ? OrderSide.Buy : OrderSide.Sell,
                 GetOrderType(request.OrderType, request.TimeInForce),
-                quantity: request.Quantity ?? request.QuoteQuantity ?? 0,
+                quantity: request.Quantity?.QuantityInBaseAsset ?? request.Quantity?.QuantityInQuoteAsset ?? 0,
                 price: request.Price,
                 clientOrderId: request.ClientOrderId,
                 quantityAsset: request.OrderType == SharedOrderType.Market ? (request.Quantity != null ? request.Symbol.BaseAsset : request.Symbol.QuoteAsset) : null,
@@ -265,11 +265,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = orders.Data.ClientOrderId,
                 OrderPrice = orders.Data.Price,
-                Quantity = orders.Data.QuantityAsset == null || !orders.Data.Symbol.EndsWith(orders.Data.QuantityAsset) ? orders.Data.Quantity : null,
-                QuantityFilled = orders.Data.QuantityFilled,
                 UpdateTime = orders.Data.UpdateTime,
-                QuoteQuantity = orders.Data.Symbol.EndsWith(orders.Data.QuantityAsset!) ? orders.Data.Quantity : null,
-                QuoteQuantityFilled = orders.Data.ValueFilled,
+                OrderQuantity = new SharedOrderQuantity(orders.Data.QuantityAsset == null || !orders.Data.Symbol.EndsWith(orders.Data.QuantityAsset) ? orders.Data.Quantity : null, orders.Data.Symbol.EndsWith(orders.Data.QuantityAsset!) ? orders.Data.Quantity : null),
+                QuantityFilled = new SharedOrderQuantity(orders.Data.QuantityFilled, orders.Data.ValueFilled),
                 Fee = orders.Data.FeeBaseAsset > 0 ? orders.Data.FeeBaseAsset : orders.Data.FeeQuoteAsset,
                 FeeAsset = orders.Data.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : orders.Data.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(orders.Data.OrderType)
@@ -300,11 +298,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
-                Quantity = x.QuantityAsset == null || !x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null,
-                QuantityFilled = x.QuantityFilled,
                 UpdateTime = x.UpdateTime,
-                QuoteQuantity = x.Symbol.EndsWith(x.QuantityAsset!) ? x.Quantity : null,
-                QuoteQuantityFilled = x.ValueFilled,
+                OrderQuantity = new SharedOrderQuantity(x.QuantityAsset == null || !x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null, x.Symbol.EndsWith(x.QuantityAsset!) ? x.Quantity : null),
+                QuantityFilled = new SharedOrderQuantity(x.QuantityFilled, x.ValueFilled),
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
                 FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
@@ -353,11 +349,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
-                Quantity = x.QuantityAsset == null || !x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null,
-                QuantityFilled = x.QuantityFilled,
+                OrderQuantity = new SharedOrderQuantity(x.QuantityAsset == null || !x.Symbol.EndsWith(x.QuantityAsset) ? x.Quantity : null, x.Symbol.EndsWith(x.QuantityAsset!) ? x.Quantity : null),
+                QuantityFilled = new SharedOrderQuantity(x.QuantityFilled, x.ValueFilled),
                 UpdateTime = x.UpdateTime,
-                QuoteQuantity = x.Symbol.EndsWith(x.QuantityAsset!) ? x.Quantity : null,
-                QuoteQuantityFilled = x.ValueFilled,
                 Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
                 FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(x.OrderType)
@@ -531,11 +525,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 ClientOrderId = orderData.ClientOrderId,
                 OrderPrice = orderData.Price,
-                Quantity = orderData.QuantityAsset == null || !orderData.Symbol.EndsWith(orderData.QuantityAsset) ? orderData.Quantity : null,
-                QuantityFilled = orderData.QuantityFilled,
+                OrderQuantity = new SharedOrderQuantity(orderData.QuantityAsset == null || !orderData.Symbol.EndsWith(orderData.QuantityAsset) ? orderData.Quantity : null, orderData.Symbol.EndsWith(orderData.QuantityAsset!) ? orderData.Quantity : null),
+                QuantityFilled = new SharedOrderQuantity(orderData.QuantityFilled, orderData.ValueFilled),
                 UpdateTime = orderData.UpdateTime,
-                QuoteQuantity = orderData.Symbol.EndsWith(orderData.QuantityAsset!) ? orderData.Quantity : null,
-                QuoteQuantityFilled = orderData.ValueFilled,
                 Fee = orderData.FeeBaseAsset > 0 ? orderData.FeeBaseAsset : orderData.FeeQuoteAsset,
                 FeeAsset = orderData.FeeBaseAsset > 0 ? request.Symbol.BaseAsset : orderData.FeeQuoteAsset > 0 ? request.Symbol.QuoteAsset : null,
                 TimeInForce = ParseTimeInForce(orderData.OrderType)

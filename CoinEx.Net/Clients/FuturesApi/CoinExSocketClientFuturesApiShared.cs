@@ -142,9 +142,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                         update.Data.Order.CreateTime)
                     {
                         ClientOrderId = update.Data.Order.ClientOrderId?.ToString(),
-                        Quantity = update.Data.Order.Quantity,
-                        QuantityFilled = update.Data.Order.QuantityFilled,
-                        QuoteQuantityFilled = update.Data.Order.ValueFilled,
+                        OrderQuantity = new SharedOrderQuantity(update.Data.Order.Quantity, contractQuantity: update.Data.Order.Quantity),
+                        QuantityFilled = new SharedOrderQuantity(update.Data.Order.QuantityFilled, update.Data.Order.ValueFilled, contractQuantity: update.Data.Order.QuantityFilled),
                         UpdateTime = update.Data.Order.UpdateTime,
                         OrderPrice = update.Data.Order.Price,
                         Fee = update.Data.Order.Fee,

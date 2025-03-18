@@ -150,7 +150,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 SharedQuantityType.BaseAsset,
                 SharedQuantityType.BaseAsset);
 
-        string IFuturesOrderRestClient.GenerateClientOrderId() => LibraryHelpers.ApplyBrokerId(string.Empty, CoinExExchange.ClientOrderId, 32, true);
+        string IFuturesOrderRestClient.GenerateClientOrderId() => ExchangeHelpers.RandomString(20);
 
         PlaceFuturesOrderOptions IFuturesOrderRestClient.PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions();
         async Task<ExchangeWebResult<SharedId>> IFuturesOrderRestClient.PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
@@ -170,7 +170,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 request.Symbol.GetSymbol(FormatSymbol),
                 GetOrderSide(request.Side, request.PositionSide),
                 GetOrderType(request.OrderType, request.TimeInForce),
-                quantity: request.Quantity ?? 0,
+                quantity: request.Quantity?.QuantityInBaseAsset ?? request.Quantity?.QuantityInContracts ?? 0,
                 price: request.Price,
                 clientOrderId: request.ClientOrderId,
                 ct: ct).ConfigureAwait(false);
@@ -206,9 +206,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 ClientOrderId = order.Data.ClientOrderId,
                 OrderPrice = order.Data.Price,
-                Quantity = order.Data.Quantity,
-                QuantityFilled = order.Data.QuantityFilled,
-                QuoteQuantityFilled = order.Data.ValueFilled,
+                OrderQuantity = new SharedOrderQuantity(order.Data.Quantity, contractQuantity: order.Data.Quantity),
+                QuantityFilled = new SharedOrderQuantity(order.Data.QuantityFilled, order.Data.ValueFilled, contractQuantity: order.Data.QuantityFilled),
                 TimeInForce = ParseTimeInForce(order.Data.OrderType),
                 UpdateTime = order.Data.UpdateTime,
                 Fee = order.Data.Fee,
@@ -239,9 +238,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
-                Quantity = x.Quantity,
-                QuantityFilled = x.QuantityFilled,
-                QuoteQuantityFilled = x.ValueFilled,
+                OrderQuantity = new SharedOrderQuantity(x.Quantity, contractQuantity: x.Quantity),
+                QuantityFilled = new SharedOrderQuantity(x.QuantityFilled, x.ValueFilled, contractQuantity: x.QuantityFilled),
                 TimeInForce = ParseTimeInForce(x.OrderType),
                 UpdateTime = x.UpdateTime,
                 Fee = x.Fee,
@@ -290,9 +288,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
-                Quantity = x.Quantity,
-                QuantityFilled = x.QuantityFilled,
-                QuoteQuantityFilled = x.ValueFilled,
+                OrderQuantity = new SharedOrderQuantity(x.Quantity, contractQuantity: x.Quantity),
+                QuantityFilled = new SharedOrderQuantity(x.QuantityFilled, x.ValueFilled, contractQuantity: x.QuantityFilled),
                 TimeInForce = ParseTimeInForce(x.OrderType),
                 UpdateTime = x.UpdateTime,
                 Fee = x.Fee,
@@ -523,9 +520,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 ClientOrderId = orderData.ClientOrderId,
                 OrderPrice = orderData.Price,
-                Quantity = orderData.Quantity,
-                QuantityFilled = orderData.QuantityFilled,
-                QuoteQuantityFilled = orderData.ValueFilled,
+                OrderQuantity = new SharedOrderQuantity(orderData.Quantity, contractQuantity: orderData.Quantity),
+                QuantityFilled = new SharedOrderQuantity(orderData.QuantityFilled, orderData.ValueFilled, contractQuantity: orderData.QuantityFilled),
                 TimeInForce = ParseTimeInForce(orderData.OrderType),
                 UpdateTime = orderData.UpdateTime,
                 Fee = orderData.Fee,
