@@ -1,5 +1,6 @@
 ﻿using CoinEx.Net.Clients;
 using CoinEx.Net.Objects;
+using CoinEx.Net.SymbolOrderBooks;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Testing;
 using Microsoft.Extensions.Logging;
@@ -122,6 +123,13 @@ namespace CoinEx.Net.UnitTests
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetUserTradesAsync("ETHUSDT", default, default, default, default, default, default), true);
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetPositionsAsync("ETHUSDT", default, default, default), true);
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetPositionHistoryAsync("ETHUSDT", default, default, default, default, default), true);
+        }
+
+        [Test]
+        public async Task TestOrderBooks()
+        {
+            await TestOrderBook(new CoinExSpotSymbolOrderBook("ETHUSDT"));
+            await TestOrderBook(new CoinExFuturesSymbolOrderBook("ETHUSDT"));
         }
     }
 }
