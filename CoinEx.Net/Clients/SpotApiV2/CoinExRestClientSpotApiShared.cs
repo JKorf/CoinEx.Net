@@ -793,5 +793,97 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return result.AsExchangeResult(Exchange, TradingMode.Spot, new SharedFee(result.Data.MakerFeeRate * 100, result.Data.TakerFeeRate * 100));
         }
         #endregion
+
+        #region Spot Trigger Order Client
+        //EndpointOptions<GetFeeRequest> IFeeRestClient.GetFeeOptions { get; } = new EndpointOptions<GetFeeRequest>(true);
+        //{
+        //};
+        async Task<ExchangeWebResult<SharedId>> ISpotTriggerOrderRestClient.PlaceSpotTriggerOrderAsync(PlaceSpotTriggerOrderRequest request, CancellationToken ct)
+        {
+            //var validationError = ((ISpotTriggerOrderRestClient)this).GetFeeOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            //if (validationError != null)
+            //    return new ExchangeWebResult<SharedFee>(Exchange, validationError);
+
+            var clientOrderId = ExchangeHelpers.RandomString(32);
+            var result = await Trading.PlaceStopOrderAsync(
+                request.Symbol.GetSymbol(FormatSymbol),
+                AccountType.Spot,
+                request.OrderDirection == SharedTriggerOrderDirection.Enter ? OrderSide.Buy : OrderSide.Sell,
+                request.OrderPrice == null ? OrderTypeV2.Market : OrderTypeV2.Limit,
+                quantity: request.Quantity?.QuantityInBaseAsset ?? request.Quantity?.QuantityInQuoteAsset ?? 0,
+                price: request.OrderPrice,
+                triggerPrice: request.TriggerPrice,
+                quantityAsset: request.OrderPrice == null ? (request.Quantity != null ? request.Symbol.BaseAsset : request.Symbol.QuoteAsset) : null,
+                clientOrderId: clientOrderId,
+                ct: ct).ConfigureAwait(false);
+            if (!result)
+                return result.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            // Return
+            return result.AsExchangeResult(Exchange, TradingMode.Spot, new SharedId(clientOrderId));
+        }
+
+        EndpointOptions<GetOrderRequest> ISpotTriggerOrderRestClient.GetSpotTriggerOrderOptions { get; } = new EndpointOptions<GetOrderRequest>(true)
+        {
+            RequestNotes = "Only pending trigger orders can be requested, executed trigger orders are not available in the API"
+        };
+        async Task<ExchangeWebResult<SharedSpotTriggerOrder>> ISpotTriggerOrderRestClient.GetSpotTriggerOrderAsync(GetOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((ISpotTriggerOrderRestClient)this).GetSpotTriggerOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedSpotTriggerOrder>(Exchange, validationError);
+
+            var open = true;
+            var orders = await Trading.GetOpenStopOrdersAsync(AccountType.Spot, clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            if (!orders)
+                return orders.AsExchangeResult<SharedSpotTriggerOrder>(Exchange, null, default);
+
+            if (!orders.Data.Items.Any())
+            {
+                open = false;
+#warning client order id not mentioned as paramter for call in docs
+                orders = await Trading.GetClosedStopOrdersAsync(AccountType.Spot, clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+                if (!orders)
+                    return orders.AsExchangeResult<SharedSpotTriggerOrder>(Exchange, null, default);
+            }
+
+            var order = orders.Data.Items.Single();
+            return orders.AsExchangeResult(Exchange, TradingMode.Spot, new SharedSpotTriggerOrder(
+                ExchangeSymbolCache.ParseSymbol(_topicId, order.Symbol),
+                order.Symbol,
+                order.ClientOrderId?.ToString() ?? order.StopOrderId.ToString(),
+                ParseOrderType(order.Type),
+                order.Side == OrderSide.Buy ? SharedTriggerOrderDirection.Enter: SharedTriggerOrderDirection.Exit,
+                open ? SharedOrderStatus.Open : SharedOrderStatus.Filled,
+                order.TriggerPrice,
+                order.CreateTime)
+            {
+                OrderPrice = order.Price,
+                UpdateTime = order.UpdateTime,
+                OrderQuantity = new SharedOrderQuantity(order.QuantityAsset == null || !order.Symbol.EndsWith(order.QuantityAsset) ? order.Quantity : null, order.Symbol.EndsWith(order.QuantityAsset!) ? order.Quantity : null),
+                
+            });
+        }
+
+        EndpointOptions<CancelOrderRequest> ISpotTriggerOrderRestClient.CancelSpotTriggerOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedId>> ISpotTriggerOrderRestClient.CancelSpotTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((ISpotTriggerOrderRestClient)this).CancelSpotTriggerOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedId>(Exchange, validationError);
+
+            var order = await Trading.CancelStopOrdersByClientOrderIdAsync(
+                request.Symbol.GetSymbol(FormatSymbol),
+                AccountType.Spot,
+                request.OrderId,
+                ct: ct).ConfigureAwait(false);
+            if (!order)
+                return order.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            return order.AsExchangeResult(Exchange, TradingMode.Spot, new SharedId(request.OrderId));
+        }
+
+        #endregion
+
     }
 }

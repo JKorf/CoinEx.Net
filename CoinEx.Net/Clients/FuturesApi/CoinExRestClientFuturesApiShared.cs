@@ -861,5 +861,113 @@ namespace CoinEx.Net.Clients.FuturesApi
             return result.AsExchangeResult(Exchange, TradingMode.Spot, new SharedFee(result.Data.MakerFeeRate * 100, result.Data.TakerFeeRate * 100));
         }
         #endregion
+
+        #region Futures Trigger Order Client
+        //EndpointOptions<GetFeeRequest> IFeeRestClient.GetFeeOptions { get; } = new EndpointOptions<GetFeeRequest>(true);
+        //{
+        //};
+        async Task<ExchangeWebResult<SharedId>> IFuturesTriggerOrderRestClient.PlaceFuturesTriggerOrderAsync(PlaceFuturesTriggerOrderRequest request, CancellationToken ct)
+        {
+            //var validationError = ((IFuturesTriggerOrderRestClient)this).GetFeeOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            //if (validationError != null)
+            //    return new ExchangeWebResult<SharedFee>(Exchange, validationError);
+
+            var clientOrderId = ExchangeHelpers.RandomString(32);
+            var result = await Trading.PlaceStopOrderAsync(
+                request.Symbol.GetSymbol(FormatSymbol),
+                GetOrderSide(request),
+                request.OrderPrice == null ? OrderTypeV2.Market : OrderTypeV2.Limit,
+                quantity: request.Quantity?.QuantityInBaseAsset ?? request.Quantity?.QuantityInContracts ?? 0,
+                price: request.OrderPrice,
+                triggerPrice: request.TriggerPrice,
+                triggerPriceType: GetTriggerPriceType(request),
+                clientOrderId: clientOrderId,
+                ct: ct).ConfigureAwait(false);
+            if (!result)
+                return result.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            // Return
+            return result.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedId(clientOrderId));
+        }
+
+        EndpointOptions<GetOrderRequest> IFuturesTriggerOrderRestClient.GetFuturesTriggerOrderOptions { get; } = new EndpointOptions<GetOrderRequest>(true)
+        {
+            RequestNotes = "Only pending trigger orders can be requested, executed trigger orders are not available in the API"
+        };
+        async Task<ExchangeWebResult<SharedFuturesTriggerOrder>> IFuturesTriggerOrderRestClient.GetFuturesTriggerOrderAsync(GetOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((IFuturesTriggerOrderRestClient)this).GetFuturesTriggerOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedFuturesTriggerOrder>(Exchange, validationError);
+
+            var open = true;
+            var orders = await Trading.GetOpenStopOrdersAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+            if (!orders)
+                return orders.AsExchangeResult<SharedFuturesTriggerOrder>(Exchange, null, default);
+
+            if (!orders.Data.Items.Any())
+            {
+                open = false;
+#warning client order id not mentioned as paramter for call in docs
+                orders = await Trading.GetClosedStopOrdersAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+                if (!orders)
+                    return orders.AsExchangeResult<SharedFuturesTriggerOrder>(Exchange, null, default);
+            }
+
+            var order = orders.Data.Items.Single();
+            return orders.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedFuturesTriggerOrder(
+                ExchangeSymbolCache.ParseSymbol(_topicId, order.Symbol),
+                order.Symbol,
+                order.ClientOrderId?.ToString() ?? order.StopOrderId.ToString(),
+                ParseOrderType(order.Type),
+                order.Side == OrderSide.Buy ? SharedTriggerOrderDirection.Enter : SharedTriggerOrderDirection.Exit,
+                open ? SharedOrderStatus.Open : SharedOrderStatus.Filled,
+                order.TriggerPrice,
+                null,
+                order.CreateTime)
+            {
+                OrderPrice = order.Price,
+                UpdateTime = order.UpdateTime,
+                OrderQuantity = new SharedOrderQuantity(order.Quantity, contractQuantity: order.Quantity),
+
+            });
+        }
+
+        EndpointOptions<CancelOrderRequest> IFuturesTriggerOrderRestClient.CancelFuturesTriggerOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
+        async Task<ExchangeWebResult<SharedId>> IFuturesTriggerOrderRestClient.CancelFuturesTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
+        {
+            var validationError = ((IFuturesTriggerOrderRestClient)this).CancelFuturesTriggerOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedId>(Exchange, validationError);
+
+            var order = await Trading.CancelStopOrderByClientOrderIdAsync(
+                request.Symbol.GetSymbol(FormatSymbol),
+                request.OrderId,
+                ct: ct).ConfigureAwait(false);
+            if (!order)
+                return order.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            return order.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedId(request.OrderId));
+        }
+
+        private TriggerPriceType GetTriggerPriceType(PlaceFuturesTriggerOrderRequest request)
+        {
+            if (request.TriggerPriceType == null || request.TriggerPriceType == SharedTriggerPriceType.LastPrice)
+                return TriggerPriceType.LastPrice;
+
+            if (request.TriggerPriceType == SharedTriggerPriceType.IndexPrice)
+                return TriggerPriceType.IndexPrice;
+
+            return TriggerPriceType.MarkPrice;
+        }
+
+        private OrderSide GetOrderSide(PlaceFuturesTriggerOrderRequest request)
+        {
+            if (request.PositionSide == SharedPositionSide.Long)
+                return request.OrderDirection == SharedTriggerOrderDirection.Enter ? OrderSide.Buy : OrderSide.Sell;
+
+            return request.OrderDirection == SharedTriggerOrderDirection.Enter ? OrderSide.Sell : OrderSide.Buy;
+        }
+        #endregion
     }
 }
