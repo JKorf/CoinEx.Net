@@ -196,7 +196,7 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetOpenStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetClosedStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetClosedStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.EditOrderAsync(System.String,System.Int64,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
@@ -516,7 +516,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetOpenStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetClosedStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.GetClosedStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApiTrading.EditOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
@@ -3082,14 +3082,13 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetClosedStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetClosedStopOrdersAsync(System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get a list of closed stop orders. Note that orders canceled without having any trades will not be returned
             <para><a href="https://docs.coinex.com/api/v2/futures/order/http/list-finished-stop-order" /></para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="side">Filter by side</param>
-            <param name="clientOrderId">Filter by client order id</param>
             <param name="page">Page number</param>
             <param name="pageSize">Page size</param>
             <param name="ct">Cancelation Token</param>
@@ -4054,7 +4053,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetClosedStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetClosedStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get a list of closed stop orders. Note that orders canceled without having any trades will not be returned
             <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-finished-stop-order" /></para>
@@ -4062,7 +4061,6 @@
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
             <param name="side">Filter by side</param>
-            <param name="clientOrderId">Filter by client order id</param>
             <param name="page">Page number</param>
             <param name="pageSize">Page size</param>
             <param name="ct">Cancelation Token</param>

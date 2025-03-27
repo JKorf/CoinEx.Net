@@ -154,12 +154,11 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
         /// <param name="side">Filter by side</param>
-        /// <param name="clientOrderId">Filter by client order id</param>
         /// <param name="page">Page number</param>
         /// <param name="pageSize">Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Edit an active order

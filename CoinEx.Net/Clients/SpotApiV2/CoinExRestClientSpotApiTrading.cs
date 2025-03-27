@@ -187,16 +187,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
-            if (clientOrderId != null)
-                clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
-
             var parameters = new ParameterCollection();
             parameters.AddEnum("market_type", accountType);
             parameters.AddOptionalEnum("side", side);
             parameters.AddOptional("market", symbol);
-            parameters.AddOptional("client_id", clientOrderId);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/spot/finished-stop-order", CoinExExchange.RateLimiter.CoinExRestSpotHistory, 1, true);

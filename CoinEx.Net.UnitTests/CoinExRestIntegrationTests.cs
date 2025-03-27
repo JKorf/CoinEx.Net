@@ -84,7 +84,7 @@ namespace CoinEx.Net.UnitTests
             await RunAndCheckResult(client => client.SpotApiV2.Trading.GetOpenOrdersAsync(Enums.AccountType.Spot, default, default, default, default, default, default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Trading.GetClosedOrdersAsync(Enums.AccountType.Spot, default, default, default, default, default, default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Trading.GetOpenStopOrdersAsync(Enums.AccountType.Spot, default, default, default, default, default, default), true);
-            await RunAndCheckResult(client => client.SpotApiV2.Trading.GetClosedStopOrdersAsync(Enums.AccountType.Spot, default, default, default, default, default, default), true);
+            await RunAndCheckResult(client => client.SpotApiV2.Trading.GetClosedStopOrdersAsync(Enums.AccountType.Spot, default, default, default, default, default), true);
             await RunAndCheckResult(client => client.SpotApiV2.Trading.GetUserTradesAsync("ETHUSDT", Enums.AccountType.Spot, default, default, default, default, default, default), true);
         }
 
@@ -119,7 +119,7 @@ namespace CoinEx.Net.UnitTests
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetOpenOrdersAsync(default, default, default, default, default, default), true);
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetClosedOrdersAsync(default, default, default, default, default, default), true);  
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetOpenStopOrdersAsync(default, default, default, default, default, default), true);
-            await RunAndCheckResult(client => client.FuturesApi.Trading.GetClosedStopOrdersAsync(default, default, default, default, default, default), true);
+            await RunAndCheckResult(client => client.FuturesApi.Trading.GetClosedStopOrdersAsync(default, default, default, default, default), true);
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetUserTradesAsync("ETHUSDT", default, default, default, default, default, default), true);
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetPositionsAsync("ETHUSDT", default, default, default), true);
             await RunAndCheckResult(client => client.FuturesApi.Trading.GetPositionHistoryAsync("ETHUSDT", default, default, default, default, default), true);

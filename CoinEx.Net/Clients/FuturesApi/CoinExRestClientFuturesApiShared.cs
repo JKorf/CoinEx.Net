@@ -9,6 +9,7 @@ using CoinEx.Net.Enums;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CryptoExchange.Net;
 using CoinEx.Net.Objects.Models.V2;
+using System.Drawing;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
@@ -116,8 +117,10 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             IEnumerable<CoinExFuturesSymbol> data = result.Data;
             if (request.TradingMode.HasValue)
+            {
                 data = data.Where(x =>
                     request.TradingMode == TradingMode.PerpetualLinear ? x.ContractType == ContractType.Linear : x.ContractType == ContractType.Inverse);
+            }
 
             var response = result.AsExchangeResult<SharedFuturesSymbol[]>(Exchange, 
                 request.TradingMode == null ? SupportedTradingModes: new[] { request.TradingMode.Value },
@@ -863,19 +866,20 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         #region Futures Trigger Order Client
-        //EndpointOptions<GetFeeRequest> IFeeRestClient.GetFeeOptions { get; } = new EndpointOptions<GetFeeRequest>(true);
-        //{
-        //};
+        PlaceFuturesTriggerOrderOptions IFuturesTriggerOrderRestClient.PlaceFuturesTriggerOrderOptions { get; } = new PlaceFuturesTriggerOrderOptions(false)
+        {
+        };
         async Task<ExchangeWebResult<SharedId>> IFuturesTriggerOrderRestClient.PlaceFuturesTriggerOrderAsync(PlaceFuturesTriggerOrderRequest request, CancellationToken ct)
         {
-            //var validationError = ((IFuturesTriggerOrderRestClient)this).GetFeeOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
-            //if (validationError != null)
-            //    return new ExchangeWebResult<SharedFee>(Exchange, validationError);
+            var side = GetOrderSide(request);
+            var validationError = ((IFuturesTriggerOrderRestClient)this).PlaceFuturesTriggerOrderOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes, side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell, ((IFuturesOrderRestClient)this).FuturesSupportedOrderQuantity);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedId>(Exchange, validationError);
 
-            var clientOrderId = ExchangeHelpers.RandomString(32);
+            var clientOrderId = request.ClientOrderId ?? ExchangeHelpers.RandomString(32);
             var result = await Trading.PlaceStopOrderAsync(
                 request.Symbol.GetSymbol(FormatSymbol),
-                GetOrderSide(request),
+                side,
                 request.OrderPrice == null ? OrderTypeV2.Market : OrderTypeV2.Limit,
                 quantity: request.Quantity?.QuantityInBaseAsset ?? request.Quantity?.QuantityInContracts ?? 0,
                 price: request.OrderPrice,
@@ -900,28 +904,36 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeWebResult<SharedFuturesTriggerOrder>(Exchange, validationError);
 
-            var open = true;
+            var status = SharedTriggerOrderStatus.Active;
             var orders = await Trading.GetOpenStopOrdersAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
             if (!orders)
                 return orders.AsExchangeResult<SharedFuturesTriggerOrder>(Exchange, null, default);
 
-            if (!orders.Data.Items.Any())
+            CoinExStopOrder order;
+            if (orders.Data.Items.Any())
             {
-                open = false;
-#warning client order id not mentioned as paramter for call in docs
-                orders = await Trading.GetClosedStopOrdersAsync(clientOrderId: request.OrderId, ct: ct).ConfigureAwait(false);
+                order = orders.Data.Items.Single();
+            }
+            else
+            {
+                orders = await Trading.GetClosedStopOrdersAsync(request.Symbol.GetSymbol(FormatSymbol), pageSize: 1000, ct: ct).ConfigureAwait(false);
                 if (!orders)
                     return orders.AsExchangeResult<SharedFuturesTriggerOrder>(Exchange, null, default);
+
+                order = orders.Data.Items.SingleOrDefault(x => x.ClientOrderId == request.OrderId)!;
+                if (order == null)
+                    return orders.AsExchangeError<SharedFuturesTriggerOrder>(Exchange, new ServerError("Order not found"));
+
+                status = SharedTriggerOrderStatus.Filled;
             }
 
-            var order = orders.Data.Items.Single();
             return orders.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedFuturesTriggerOrder(
                 ExchangeSymbolCache.ParseSymbol(_topicId, order.Symbol),
                 order.Symbol,
                 order.ClientOrderId?.ToString() ?? order.StopOrderId.ToString(),
                 ParseOrderType(order.Type),
                 order.Side == OrderSide.Buy ? SharedTriggerOrderDirection.Enter : SharedTriggerOrderDirection.Exit,
-                open ? SharedOrderStatus.Open : SharedOrderStatus.Filled,
+                status,
                 order.TriggerPrice,
                 null,
                 order.CreateTime)
@@ -929,7 +941,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 OrderPrice = order.Price,
                 UpdateTime = order.UpdateTime,
                 OrderQuantity = new SharedOrderQuantity(order.Quantity, contractQuantity: order.Quantity),
-
+                ClientOrderId = order.ClientOrderId
             });
         }
 
