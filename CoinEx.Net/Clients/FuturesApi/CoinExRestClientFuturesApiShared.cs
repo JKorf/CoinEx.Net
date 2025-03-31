@@ -155,7 +155,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         string IFuturesOrderRestClient.GenerateClientOrderId() => ExchangeHelpers.RandomString(20);
 
-        PlaceFuturesOrderOptions IFuturesOrderRestClient.PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions();
+        PlaceFuturesOrderOptions IFuturesOrderRestClient.PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions(false);
         async Task<ExchangeWebResult<SharedId>> IFuturesOrderRestClient.PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
         {
             var validationError = ((IFuturesOrderRestClient)this).PlaceFuturesOrderOptions.ValidateRequest(
@@ -980,6 +980,87 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return request.OrderDirection == SharedTriggerOrderDirection.Enter ? OrderSide.Sell : OrderSide.Buy;
         }
+        #endregion
+
+        #region Tp/SL Client
+        EndpointOptions<SetTpSlRequest> IFuturesTpSlRestClient.SetTpSlOptions { get; } = new EndpointOptions<SetTpSlRequest>(true)
+        {
+            RequiredOptionalParameters = new List<ParameterDescription>
+            {
+                new ParameterDescription(nameof(PlaceFuturesTriggerOrderRequest.PositionMode), typeof(SharedPositionMode), "PositionMode the account is in", SharedPositionMode.OneWay)
+            }
+        };
+
+        async Task<ExchangeWebResult<SharedId>> IFuturesTpSlRestClient.SetTpSlAsync(SetTpSlRequest request, CancellationToken ct)
+        {
+            var validationError = ((IFuturesTpSlRestClient)this).SetTpSlOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedId>(Exchange, validationError);
+
+            WebCallResult<CoinExPosition> result;
+            if (request.TpSlSide == SharedTpSlSide.TakeProfit)
+            {
+                result = await Trading.SetTakeProfitAsync(
+                    request.Symbol.GetSymbol(FormatSymbol),
+                    PriceType.LastPrice,
+                    request.TriggerPrice,
+                    ct: ct).ConfigureAwait(false);
+            }
+            else
+            {
+                result = await Trading.SetTakeProfitAsync(
+                                request.Symbol.GetSymbol(FormatSymbol),
+                                PriceType.LastPrice,
+                                request.TriggerPrice,
+                                ct: ct).ConfigureAwait(false);
+            }
+
+            if (!result)
+                return result.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            // Return
+            return result.AsExchangeResult(Exchange, TradingMode.Spot, new SharedId(""));
+        }
+
+        EndpointOptions<CancelTpSlRequest> IFuturesTpSlRestClient.CancelTpSlOptions { get; } = new EndpointOptions<CancelTpSlRequest>(true)
+        {
+            RequiredOptionalParameters = new List<ParameterDescription>
+            {
+                new ParameterDescription(nameof(CancelTpSlRequest.TpSlSide), typeof(SharedTpSlSide), "Take profit / stop loss side to cancel", SharedTpSlSide.TakeProfit)
+            }
+        };
+
+        async Task<ExchangeWebResult<bool>> IFuturesTpSlRestClient.CancelTpSlAsync(CancelTpSlRequest request, CancellationToken ct)
+        {
+            var validationError = ((IFuturesTpSlRestClient)this).CancelTpSlOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<bool>(Exchange, validationError);
+
+#warning does this work? How else..?
+            WebCallResult<CoinExPosition> result;
+            if (request.TpSlSide == SharedTpSlSide.TakeProfit)
+            {
+                result = await Trading.SetTakeProfitAsync(
+                    request.Symbol.GetSymbol(FormatSymbol),
+                    PriceType.LastPrice,
+                    0,
+                    ct: ct).ConfigureAwait(false);
+            }
+            else
+            {
+                result = await Trading.SetTakeProfitAsync(
+                                request.Symbol.GetSymbol(FormatSymbol),
+                                PriceType.LastPrice,
+                                0,
+                                ct: ct).ConfigureAwait(false);
+            }
+            if (!result)
+                return result.AsExchangeResult<bool>(Exchange, null, default);
+
+            // Return
+            return result.AsExchangeResult(Exchange, request.Symbol.TradingMode, true);
+        }
+
         #endregion
     }
 }
