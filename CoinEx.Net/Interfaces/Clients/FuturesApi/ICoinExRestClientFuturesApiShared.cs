@@ -22,7 +22,8 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         IFeeRestClient,
         IFuturesOrderClientIdClient,
         IFuturesTriggerOrderRestClient,
-        IFuturesTpSlRestClient
+        IFuturesTpSlRestClient,
+        IBookTickerRestClient
     {
     }
 }

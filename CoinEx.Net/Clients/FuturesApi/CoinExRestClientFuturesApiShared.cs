@@ -102,6 +102,30 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         #endregion
 
+        #region Book Ticker client
+
+        EndpointOptions<GetBookTickerRequest> IBookTickerRestClient.GetBookTickerOptions { get; } = new EndpointOptions<GetBookTickerRequest>(false);
+        async Task<ExchangeWebResult<SharedBookTicker>> IBookTickerRestClient.GetBookTickerAsync(GetBookTickerRequest request, CancellationToken ct)
+        {
+            var validationError = ((IBookTickerRestClient)this).GetBookTickerOptions.ValidateRequest(Exchange, request, request.Symbol.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedBookTicker>(Exchange, validationError);
+
+            var resultTicker = await ExchangeData.GetOrderBookAsync(request.Symbol.GetSymbol(FormatSymbol), 5, ct: ct).ConfigureAwait(false);
+            if (!resultTicker)
+                return resultTicker.AsExchangeResult<SharedBookTicker>(Exchange, null, default);
+
+            return resultTicker.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedBookTicker(
+                ExchangeSymbolCache.ParseSymbol(_topicId, resultTicker.Data.Symbol),
+                resultTicker.Data.Symbol,
+                resultTicker.Data.Data.Asks[0].Price,
+                resultTicker.Data.Data.Asks[0].Quantity,
+                resultTicker.Data.Data.Bids[0].Price,
+                resultTicker.Data.Data.Bids[0].Quantity));
+        }
+
+        #endregion
+
         #region Futures Symbol client
 
         EndpointOptions<GetSymbolsRequest> IFuturesSymbolRestClient.GetFuturesSymbolsOptions { get; } = new EndpointOptions<GetSymbolsRequest>(false);
@@ -141,7 +165,6 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         #region Futures Order Client
-
 
         SharedFeeDeductionType IFuturesOrderRestClient.FuturesFeeDeductionType => SharedFeeDeductionType.AddToCost;
         SharedFeeAssetType IFuturesOrderRestClient.FuturesFeeAssetType => SharedFeeAssetType.InputAsset;
@@ -416,6 +439,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 LiquidationPrice = x.LiquidationPrice,
                 AverageOpenPrice = x.AverageEntryPrice,
                 Leverage = x.Leverage,
+                StopLossPrice = x.StopLossPrice,
+                TakeProfitPrice = x.TakeProfitPrice,
                 PositionSide = x.Side == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long
             }).ToArray());
         }
@@ -938,7 +963,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 null,
                 order.CreateTime)
             {
-                OrderPrice = order.Price,
+                OrderPrice = order.Price == 0 ? null : order.Price,
                 UpdateTime = order.UpdateTime,
                 OrderQuantity = new SharedOrderQuantity(order.Quantity, contractQuantity: order.Quantity),
                 ClientOrderId = order.ClientOrderId
