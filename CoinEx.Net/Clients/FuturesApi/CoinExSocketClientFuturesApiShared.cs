@@ -202,7 +202,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                     PositionSide = update.Data.Position.Side == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,
                     LiquidationPrice = update.Data.Position.LiquidationPrice,
                     Leverage = update.Data.Position.Leverage,
-                    UnrealizedPnl = update.Data.Position.UnrealizedPnl
+                    UnrealizedPnl = update.Data.Position.UnrealizedPnl,
+                    TakeProfitPrice = update.Data.Position.TakeProfitPrice == 0 ? null : update.Data.Position.TakeProfitPrice,
+                    StopLossPrice = update.Data.Position.StopLossPrice == 0 ? null : update.Data.Position.StopLossPrice,
                 } })),
                 ct: ct).ConfigureAwait(false);
 

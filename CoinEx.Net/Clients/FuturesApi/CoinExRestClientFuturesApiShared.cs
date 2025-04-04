@@ -439,8 +439,8 @@ namespace CoinEx.Net.Clients.FuturesApi
                 LiquidationPrice = x.LiquidationPrice,
                 AverageOpenPrice = x.AverageEntryPrice,
                 Leverage = x.Leverage,
-                StopLossPrice = x.StopLossPrice,
-                TakeProfitPrice = x.TakeProfitPrice,
+                StopLossPrice = x.StopLossPrice == 0 ? null : x.StopLossPrice,
+                TakeProfitPrice = x.TakeProfitPrice == 0 ? null : x.TakeProfitPrice,
                 PositionSide = x.Side == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long
             }).ToArray());
         }
@@ -1061,7 +1061,6 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeWebResult<bool>(Exchange, validationError);
 
-#warning does this work? How else..?
             WebCallResult<CoinExPosition> result;
             if (request.TpSlSide == SharedTpSlSide.TakeProfit)
             {
@@ -1073,7 +1072,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             }
             else
             {
-                result = await Trading.SetTakeProfitAsync(
+                result = await Trading.SetStopLossAsync(
                                 request.Symbol.GetSymbol(FormatSymbol),
                                 PriceType.LastPrice,
                                 0,

@@ -7428,10 +7428,5 @@
             <param name="optionsDelegate">Set options for the CoinEx services</param>
             <returns></returns>
         </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.Options.CoinExRestOptions},System.Action{CoinEx.Net.Objects.Options.CoinExSocketOptions},System.Nullable{Microsoft.Extensions.DependencyInjection.ServiceLifetime})">
-            <summary>
-            DEPRECATED; use <see cref="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddCoinEx(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{CoinEx.Net.Objects.Options.CoinExOptions})" /> instead
-            </summary>
-        </member>
     </members>
 </doc>
