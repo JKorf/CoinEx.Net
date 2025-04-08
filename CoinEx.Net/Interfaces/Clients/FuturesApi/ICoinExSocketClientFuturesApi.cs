@@ -15,7 +15,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     public interface ICoinExSocketClientFuturesApi : ISocketApiClient, IDisposable
     {
         /// <summary>
-        /// Get the shared socket subscription client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+        /// Get the shared socket subscription client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
         /// </summary>
         ICoinExSocketClientFuturesApiShared SharedClient { get; }
 

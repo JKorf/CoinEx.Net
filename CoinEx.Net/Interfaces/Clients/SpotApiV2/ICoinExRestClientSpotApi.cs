@@ -11,16 +11,19 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <summary>
         /// Endpoints related to account settings, info or actions
         /// </summary>
+        /// <see cref="ICoinExRestClientSpotApiAccount"/>
         ICoinExRestClientSpotApiAccount Account { get; }
 
         /// <summary>
         /// Endpoints related to retrieving market and system data
         /// </summary>
+        /// <see cref="ICoinExRestClientSpotApiExchangeData"/>
         ICoinExRestClientSpotApiExchangeData ExchangeData { get; }
 
         /// <summary>
         /// Endpoints related to orders and trades
         /// </summary>
+        /// <see cref="ICoinExRestClientSpotApiTrading"/>
         ICoinExRestClientSpotApiTrading Trading { get; }
 
         /// <summary>

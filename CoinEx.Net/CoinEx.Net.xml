@@ -2780,20 +2780,23 @@
             <summary>
             Endpoints related to account settings, info or actions
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiAccount"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi.ExchangeData">
             <summary>
             Endpoints related to retrieving market and system data
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi.Trading">
             <summary>
             Endpoints related to orders, trades and managing positions
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi.SharedClient">
             <summary>
-            Get the shared rest requests client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+            Get the shared rest requests client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
             </summary>
         </member>
         <member name="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiAccount">
@@ -3348,7 +3351,7 @@
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SharedClient">
             <summary>
-            Get the shared socket subscription client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+            Get the shared socket subscription client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
             </summary>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate[]}},System.Threading.CancellationToken)">
@@ -3524,17 +3527,19 @@
             <summary>
             Spot V2 API endpoints
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.FuturesApi">
             <summary>
             Futures V2 API endpoints
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApi"/>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
             <summary>
             Update specific options
             </summary>
-            <param name="options">Options to update. Only specific options are changable after the client has been created</param>
+            <param name="options">Options to update. Only specific options are changeable after the client has been created</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>
@@ -3551,17 +3556,19 @@
             <summary>
             V2 API Futures streams
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExSocketClientFuturesApi"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SpotApiV2">
             <summary>
             V2 API Spot streams
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi"/>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
             <summary>
             Update specific options
             </summary>
-            <param name="options">Options to update. Only specific options are changable after the client has been created</param>
+            <param name="options">Options to update. Only specific options are changeable after the client has been created</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.ICoinExSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <summary>
@@ -3578,16 +3585,19 @@
             <summary>
             Endpoints related to account settings, info or actions
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi.ExchangeData">
             <summary>
             Endpoints related to retrieving market and system data
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi.Trading">
             <summary>
             Endpoints related to orders and trades
             </summary>
+            <see cref="T:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading"/>
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApi.SharedClient">
             <summary>
@@ -4203,7 +4213,7 @@
         </member>
         <member name="P:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SharedClient">
             <summary>
-            Get the shared socket subscription client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+            Get the shared socket subscription client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
             </summary>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExMaintenance[]}},System.Threading.CancellationToken)">
