@@ -76,7 +76,7 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceOrderAsync("ETHUSDT", Enums.AccountType.Spot, Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1), "PlaceOrder");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceStopOrderAsync("ETHUSDT", Enums.AccountType.Spot, Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1, 1), "PlaceStopOrder");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceMultipleOrdersAsync([new CoinExPlaceOrderRequest()]), "PlaceMultipleOrders", skipResponseValidation: true);
-            await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceMultipleStopOrdersAsync([new CoinExPlaceStopOrderRequest()]), "PlaceMultipleStopOrders");
+            await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceMultipleStopOrdersAsync([new CoinExPlaceStopOrderRequest()]), "PlaceMultipleStopOrders", skipResponseValidation: true);
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.GetOrderAsync("ETHUSDT", 1), "GetOrder");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.GetOpenOrdersAsync(Enums.AccountType.Spot), "GetOpenOrders");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.GetClosedOrdersAsync(Enums.AccountType.Spot), "GetClosedOrders");
@@ -140,8 +140,8 @@ namespace CoinEx.Net.UnitTests
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceOrderAsync("ETHUSDT", Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1), "PlaceOrder");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceStopOrderAsync("ETHUSDT", Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1, 1, Enums.TriggerPriceType.LastPrice), "PlaceStopOrder");
-            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceMultipleOrdersAsync([new CoinExFuturesPlaceOrderRequest()]), "PlaceMultipleOrders");
-            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceMultipleStopOrdersAsync([new CoinExFuturesPlaceStopOrderRequest()]), "PlaceMultipleStopOrders");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceMultipleOrdersAsync([new CoinExFuturesPlaceOrderRequest()]), "PlaceMultipleOrders", skipResponseValidation: true);
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceMultipleStopOrdersAsync([new CoinExFuturesPlaceStopOrderRequest()]), "PlaceMultipleStopOrders", skipResponseValidation: true);
             await tester.ValidateAsync(client => client.FuturesApi.Trading.GetOrderAsync("ETHUSDT", 1), "GetOrder");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.GetOpenOrdersAsync("ETHUSDT"), "GetOpenOrders");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.GetClosedOrdersAsync("ETHUSDT"), "GetClosedOrders");

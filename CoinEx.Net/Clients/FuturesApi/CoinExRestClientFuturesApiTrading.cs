@@ -88,7 +88,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExBatchResult<CoinExFuturesOrder>[]>> PlaceMultipleOrdersAsync(
+        public async Task<WebCallResult<CallResult<CoinExFuturesOrder>[]>> PlaceMultipleOrdersAsync(
             IEnumerable<CoinExFuturesPlaceOrderRequest> requests,
             CancellationToken ct = default)
         {
@@ -100,11 +100,27 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "orders", requests.ToArray() }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/batch-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
-            return await _baseClient.SendAsync<CoinExBatchResult<CoinExFuturesOrder>[]>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
+            var resultData = await _baseClient.SendAsync<CoinExBatchResult<CoinExFuturesOrder>[]>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
+            if (!resultData)
+                return resultData.As<CallResult<CoinExFuturesOrder>[]>(default);
+
+            var result = new List<CallResult<CoinExFuturesOrder>>();
+            foreach (var item in resultData.Data!)
+            {
+                if (item.Code != 0)
+                    result.Add(new CallResult<CoinExFuturesOrder>(new ServerError(item.Code, item.Message!)));
+                else
+                    result.Add(new CallResult<CoinExFuturesOrder>(item.Data!));
+            }
+
+            if (result.All(x => !x.Success))
+                return resultData.AsErrorWithData(new ServerError("All orders failed"), result.ToArray());
+
+            return resultData.As(result.ToArray());
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExBatchResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
+        public async Task<WebCallResult<CallResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
             IEnumerable<CoinExFuturesPlaceStopOrderRequest> requests,
             CancellationToken ct = default)
         {
@@ -116,7 +132,23 @@ namespace CoinEx.Net.Clients.FuturesApi
                 { "orders", requests.ToArray() }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/batch-stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
-            return await _baseClient.SendAsync<CoinExBatchResult<CoinExStopId>[]>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
+            var resultData = await _baseClient.SendAsync<CoinExBatchResult<CoinExStopId>[]>(request, parameters, ct, weight: requests.Count()).ConfigureAwait(false);
+            if (!resultData)
+                return resultData.As<CallResult<CoinExStopId>[]>(default);
+
+            var result = new List<CallResult<CoinExStopId>>();
+            foreach (var item in resultData.Data!)
+            {
+                if (item.Code != 0)
+                    result.Add(new CallResult<CoinExStopId>(new ServerError(item.Code, item.Message!)));
+                else
+                    result.Add(new CallResult<CoinExStopId>(item.Data!));
+            }
+
+            if (result.All(x => !x.Success))
+                return resultData.AsErrorWithData(new ServerError("All orders failed"), result.ToArray());
+
+            return resultData.As(result.ToArray());
         }
 
         /// <inheritdoc />

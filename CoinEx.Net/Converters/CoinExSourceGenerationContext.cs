@@ -25,6 +25,7 @@ namespace CoinEx.Net.Converters
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExTransfer[]>))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExTransaction[]>))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExOrder[]>))]
+    [JsonSerializable(typeof(CoinExApiResult<CoinExBatchResult<CoinExBatchOrderResult>[]>))]
 
     // End manual defined attributes
 

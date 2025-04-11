@@ -80,7 +80,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="requests">The orders to place</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchOrderResult[]>> PlaceMultipleOrdersAsync(
+        Task<WebCallResult<CallResult<CoinExBatchOrderResult>[]>> PlaceMultipleOrdersAsync(
             IEnumerable<CoinExPlaceOrderRequest> requests,
             CancellationToken ct = default);
 
@@ -91,7 +91,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="requests">The stop orders to place</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
+        Task<WebCallResult<CallResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
            IEnumerable<CoinExPlaceStopOrderRequest> requests,
            CancellationToken ct = default);
 
