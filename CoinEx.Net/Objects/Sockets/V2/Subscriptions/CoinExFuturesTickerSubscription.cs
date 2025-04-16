@@ -31,10 +31,10 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             var data = (CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>)message.Data;
             var relevant = data.Data.Tickers.Where(d => _symbols == null || _symbols.Contains(d.Symbol)).ToArray();
             if (!relevant.Any())
-                return new CallResult(null);
+                return CallResult.SuccessResult;
 
             _handler.Invoke(message.As<CoinExFuturesTickerUpdate[]>(relevant, data.Method, null, SocketUpdateType.Update));
-            return new CallResult(null);
+            return CallResult.SuccessResult;
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>);

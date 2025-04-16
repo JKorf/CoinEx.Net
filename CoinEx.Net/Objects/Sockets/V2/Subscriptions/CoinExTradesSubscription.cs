@@ -31,11 +31,11 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             var data = (CoinExSocketUpdate<CoinExTradeWrapper>)message.Data;
             var relevant = data.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(data.Data.Symbol)).ToArray();
             if (!relevant.Any() || !data.Data.Trades.Any())
-                return new CallResult(null);
+                return CallResult.SuccessResult;
 
             _handler.Invoke(message.As<CoinExTrade[]>(relevant, data.Method, data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
                 .WithDataTimestamp(data.Data.Trades.Max(x => x.Timestamp)));
-            return new CallResult(null);
+            return CallResult.SuccessResult;
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExTradeWrapper>);

@@ -36,7 +36,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         {
             var data = (CoinExSocketUpdate<T>)message.Data;
             _handler.Invoke(message.As(data.Data, data.Method, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
-            return new CallResult(null);
+            return CallResult.SuccessResult;
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<T>);
