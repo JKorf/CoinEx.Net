@@ -52,7 +52,7 @@ namespace CoinEx.Net
         internal const string ClientOrderId = "x-147866029-";
         internal const string ClientOrderIdPrefix = ClientOrderId + LibraryHelpers.ClientOrderIdSeparator;
 
-        internal static JsonSerializerContext SerializerContext = new CoinExSourceGenerationContext();
+        internal static JsonSerializerContext _serializerContext = new CoinExSourceGenerationContext();
 
         /// <summary>
         /// Format a base and quote asset to a CoinEx recognized symbol 
@@ -82,6 +82,11 @@ namespace CoinEx.Net
         /// Event for when a rate limit is triggered
         /// </summary>
         public event Action<RateLimitEvent> RateLimitTriggered;
+
+        /// <summary>
+        /// Event when the rate limit is updated. Note that it's only updated when a request is send, so there are no specific updates when the current usage is decaying.
+        /// </summary>
+        public event Action<RateLimitUpdateEvent> RateLimitUpdated;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         internal CoinExRateLimiters()
@@ -139,21 +144,36 @@ namespace CoinEx.Net
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerApiKey, [], 10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding)); // 10 requests per second
 
             CoinExRestPublic.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestPublic.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotOrder.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotOrder.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotCancel.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotCancel.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotBatchCancel.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotBatchCancel.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotQuery.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotQuery.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotHistory.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotHistory.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotAccount.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotAccount.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotAccountQuery.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotAccountQuery.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestSpotAccountHistory.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestSpotAccountHistory.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
 
             CoinExRestFuturesOrder.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestFuturesOrder.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestFuturesCancel.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestFuturesCancel.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestFuturesBatchCancel.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestFuturesBatchCancel.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestFuturesQuery.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestFuturesQuery.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestFuturesHistory.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestFuturesHistory.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
             CoinExRestFuturesAccount.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            CoinExRestFuturesAccount.RateLimitUpdated += (x) => RateLimitUpdated?.Invoke(x);
         }
 
 

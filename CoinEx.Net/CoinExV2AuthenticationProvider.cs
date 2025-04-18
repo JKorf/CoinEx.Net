@@ -13,7 +13,7 @@ namespace CoinEx.Net
 {
     internal class CoinExV2AuthenticationProvider : AuthenticationProvider
     {
-        private static IMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange.SerializerContext));
+        private static IMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
         public CoinExV2AuthenticationProvider(ApiCredentials credentials): base(credentials)
         {
