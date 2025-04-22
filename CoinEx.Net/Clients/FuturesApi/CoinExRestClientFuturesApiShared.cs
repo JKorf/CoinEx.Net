@@ -886,7 +886,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return result.AsExchangeResult<SharedFee>(Exchange, null, default);
 
             // Return
-            return result.AsExchangeResult(Exchange, TradingMode.Spot, new SharedFee(result.Data.MakerFeeRate * 100, result.Data.TakerFeeRate * 100));
+            return result.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedFee(result.Data.MakerFeeRate * 100, result.Data.TakerFeeRate * 100));
         }
         #endregion
 
@@ -1044,7 +1044,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return result.AsExchangeResult<SharedId>(Exchange, null, default);
 
             // Return
-            return result.AsExchangeResult(Exchange, TradingMode.Spot, new SharedId(""));
+            return result.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedId(""));
         }
 
         EndpointOptions<CancelTpSlRequest> IFuturesTpSlRestClient.CancelFuturesTpSlOptions { get; } = new EndpointOptions<CancelTpSlRequest>(true)
