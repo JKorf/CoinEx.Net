@@ -31,7 +31,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (validationError != null)
                 return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
 
-            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.AsExchangeEvent<SharedSpotTicker[]>(Exchange, update.Data.Select(x => new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))).ToArray())), ct).ConfigureAwait(false);
+            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.AsExchangeEvent<SharedSpotTicker[]>(Exchange, update.Data.Select(x => new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
+            {
+                QuoteVolume = x.Value
+            }).ToArray())), ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
         }
@@ -50,7 +53,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             var result = await SubscribeToTickerUpdatesAsync(new[] { symbol }, update =>
             {
                 var ticker = update.Data.Single();
-                handler(update.AsExchangeEvent(Exchange, new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, symbol), symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))));
+                handler(update.AsExchangeEvent(Exchange, new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, symbol), symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
+                {
+                    QuoteVolume = ticker.Value
+                }));
             }, ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
