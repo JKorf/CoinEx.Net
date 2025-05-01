@@ -657,6 +657,12 @@
             Get the CoinEx environment by name
             </summary>
         </member>
+        <member name="P:CoinEx.Net.CoinExEnvironment.All">
+            <summary>
+            Available environment names
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:CoinEx.Net.CoinExEnvironment.Live">
             <summary>
             Live environment
