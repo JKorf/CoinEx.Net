@@ -260,7 +260,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 quantity: request.Quantity?.QuantityInBaseAsset ?? request.Quantity?.QuantityInQuoteAsset ?? 0,
                 price: request.Price,
                 clientOrderId: request.ClientOrderId,
-                quantityAsset: request.OrderType == SharedOrderType.Market ? (request.Quantity != null ? request.Symbol.BaseAsset : request.Symbol.QuoteAsset) : null,
+                quantityAsset: request.OrderType == SharedOrderType.Market ? (request.Quantity?.QuantityInBaseAsset != null ? request.Symbol.BaseAsset : request.Symbol.QuoteAsset) : null,
                 ct: ct
                 ).ConfigureAwait(false);
 

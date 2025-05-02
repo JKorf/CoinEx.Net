@@ -154,7 +154,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                         update.Data.Order.CreateTime)
                     {
                         ClientOrderId = update.Data.Order.ClientOrderId?.ToString(),
-                        OrderQuantity = new SharedOrderQuantity(update.Data.Order.Quantity),
+                        OrderQuantity = update.Data.Order.OrderType == OrderTypeV2.Market ? null : new SharedOrderQuantity(update.Data.Order.Quantity), // For market orders there is no way to know if quantity is in base or quote asset..
                         QuantityFilled = new SharedOrderQuantity(update.Data.Order.QuantityFilled, update.Data.Order.ValueFilled),
                         UpdateTime = update.Data.Order.UpdateTime,
                         OrderPrice = update.Data.Order.Price == 0 ? null : update.Data.Order.Price,
