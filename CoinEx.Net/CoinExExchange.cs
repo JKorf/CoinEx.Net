@@ -1,5 +1,6 @@
 ﻿using CoinEx.Net.Converters;
 using CryptoExchange.Net;
+using CryptoExchange.Net.Converters;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.RateLimiting;
 using CryptoExchange.Net.RateLimiting.Filters;
@@ -52,7 +53,7 @@ namespace CoinEx.Net
         internal const string ClientOrderId = "x-147866029-";
         internal const string ClientOrderIdPrefix = ClientOrderId + LibraryHelpers.ClientOrderIdSeparator;
 
-        internal static JsonSerializerContext _serializerContext = new CoinExSourceGenerationContext();
+        internal static JsonSerializerContext _serializerContext = JsonSerializerContextCache.GetOrCreate<CoinExSourceGenerationContext>();
 
         /// <summary>
         /// Format a base and quote asset to a CoinEx recognized symbol 
