@@ -1,18 +1,21 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
+    [SerializationModel]
     internal record CoinExFuturesTickerUpdateWrapper
     {
         [JsonPropertyName("state_list")]
-        public IEnumerable<CoinExFuturesTickerUpdate> Tickers { get; set; } = Array.Empty<CoinExFuturesTickerUpdate>();
+        public CoinExFuturesTickerUpdate[] Tickers { get; set; } = Array.Empty<CoinExFuturesTickerUpdate>();
     }
 
     /// <summary>
     /// Futures ticker update
     /// </summary>
+    [SerializationModel]
     public record CoinExFuturesTickerUpdate : CoinExFuturesTicker
     {
         /// <summary>

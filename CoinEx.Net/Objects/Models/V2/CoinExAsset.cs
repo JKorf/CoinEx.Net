@@ -1,4 +1,5 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -8,6 +9,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Asset info
     /// </summary>
+    [SerializationModel]
     public record CoinExAsset
     {
         /// <summary>
@@ -34,12 +36,13 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Network info
         /// </summary>
         [JsonPropertyName("chain_info")]
-        public IEnumerable<CoinExAssetNetwork> Networks { get; set; } = Array.Empty<CoinExAssetNetwork>();
+        public CoinExAssetNetwork[] Networks { get; set; } = Array.Empty<CoinExAssetNetwork>();
     }
 
     /// <summary>
     /// Asset network info
     /// </summary>
+    [SerializationModel]
     public record CoinExAssetNetwork
     {
         /// <summary>

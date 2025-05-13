@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects.Options;
@@ -13,16 +14,18 @@ namespace CoinEx.Net.Interfaces.Clients
         /// <summary>
         /// Spot V2 API endpoints
         /// </summary>
-        SpotApiV2.ICoinExRestClientSpotApi SpotApiV2 { get; }
+        /// <see cref="ICoinExRestClientSpotApi"/>
+        ICoinExRestClientSpotApi SpotApiV2 { get; }
         /// <summary>
         /// Futures V2 API endpoints
         /// </summary>
+        /// <see cref="ICoinExRestClientFuturesApi"/>
         ICoinExRestClientFuturesApi FuturesApi { get; }
 
         /// <summary>
         /// Update specific options
         /// </summary>
-        /// <param name="options">Options to update. Only specific options are changable after the client has been created</param>
+        /// <param name="options">Options to update. Only specific options are changeable after the client has been created</param>
         void SetOptions(UpdateOptions options);
 
         /// <summary>

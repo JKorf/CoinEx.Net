@@ -1,4 +1,5 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Text.Json.Serialization;
 using CoinEx.Net.Enums;
 
@@ -7,6 +8,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Futures symbol info
     /// </summary>
+    [SerializationModel]
     public record CoinExFuturesSymbol
     {
         /// <summary>

@@ -1,18 +1,21 @@
-﻿using System;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
+    [SerializationModel]
     internal record CoinExBalanceUpdateWrapper
     {
         [JsonPropertyName("balance_list")]
-        public IEnumerable<CoinExBalanceUpdate> Balances { get; set; } = Array.Empty<CoinExBalanceUpdate>();
+        public CoinExBalanceUpdate[] Balances { get; set; } = Array.Empty<CoinExBalanceUpdate>();
     }
 
     /// <summary>
     /// Balance update
     /// </summary>
+    [SerializationModel]
     public record CoinExBalanceUpdate
     {
         /// <summary>

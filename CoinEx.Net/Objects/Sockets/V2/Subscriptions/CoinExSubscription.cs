@@ -29,14 +29,14 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             if (symbols?.Any() != true)
                 ListenerIdentifiers = new HashSet<string> { _topic + ".update" };
             else
-                ListenerIdentifiers = new HashSet<string>(_symbols.Select(x => _topic + ".update" + x));
+                ListenerIdentifiers = new HashSet<string>(_symbols!.Select(x => _topic + ".update" + x));
         }
 
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
             var data = (CoinExSocketUpdate<T>)message.Data;
             _handler.Invoke(message.As(data.Data, data.Method, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
-            return new CallResult(null);
+            return CallResult.SuccessResult;
         }
 
         public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<T>);

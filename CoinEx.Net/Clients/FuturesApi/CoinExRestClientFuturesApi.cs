@@ -59,9 +59,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 => CoinExExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverTime);
 
         /// <inheritdoc />
-        protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor();
+        protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
         /// <inheritdoc />
-        protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer();
+        protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
         public ICoinExRestClientFuturesApiShared SharedClient => this;
 
@@ -104,7 +104,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         internal async Task<WebCallResult<CoinExPaginated<T>>> SendPaginatedAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
         {
-            var result = await base.SendAsync<CoinExPageApiResult<IEnumerable<T>>>(BaseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
+            var result = await base.SendAsync<CoinExPageApiResult<T[]>>(BaseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
             if (!result)
                 return result.As<CoinExPaginated<T>>(default);
 
@@ -123,7 +123,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         /// <inheritdoc />
-        protected override Error? TryParseError(IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
+        protected override Error? TryParseError(KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
         {
             if (!accessor.IsJson)
                 return new ServerError(accessor.GetOriginalString());

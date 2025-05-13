@@ -1,10 +1,13 @@
-﻿using CryptoExchange.Net.Attributes;
+using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Attributes;
 
 namespace CoinEx.Net.Enums
 {
     /// <summary>
     /// Order update type
     /// </summary>
+    [JsonConverter(typeof(EnumConverter<OrderUpdateType>))]
     public enum OrderUpdateType
     {
         /// <summary>

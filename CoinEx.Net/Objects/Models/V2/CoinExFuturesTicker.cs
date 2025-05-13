@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
     /// <inheritdoc />
+    [SerializationModel]
     public record CoinExFuturesTicker : CoinExTicker
     {
         /// <summary>

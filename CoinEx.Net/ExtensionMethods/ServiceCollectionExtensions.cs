@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
             IConfiguration configuration)
         {
             var options = new CoinExOptions();
-            // Reset environment so we know if theyre overriden
+            // Reset environment so we know if they're overridden
             options.Rest.Environment = null!;
             options.Socket.Environment = null!;
             configuration.Bind(options);
@@ -65,7 +65,7 @@ namespace Microsoft.Extensions.DependencyInjection
             Action<CoinExOptions>? optionsDelegate = null)
         {
             var options = new CoinExOptions();
-            // Reset environment so we know if theyre overriden
+            // Reset environment so we know if they're overridden
             options.Rest.Environment = null!;
             options.Socket.Environment = null!;
             optionsDelegate?.Invoke(options);
@@ -82,21 +82,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(x => Options.Options.Create(options.Socket));
 
             return AddCoinExCore(services, options.SocketClientLifeTime);
-        }
-
-        /// <summary>
-        /// DEPRECATED; use <see cref="AddCoinEx(IServiceCollection, Action{CoinExOptions}?)" /> instead
-        /// </summary>
-        public static IServiceCollection AddCoinEx(
-            this IServiceCollection services,
-            Action<CoinExRestOptions> restDelegate,
-            Action<CoinExSocketOptions>? socketDelegate = null,
-            ServiceLifetime? socketClientLifeTime = null)
-        {
-            services.Configure<CoinExRestOptions>((x) => { restDelegate?.Invoke(x); });
-            services.Configure<CoinExSocketOptions>((x) => { socketDelegate?.Invoke(x); });
-
-            return AddCoinExCore(services, socketClientLifeTime);
         }
 
         private static IServiceCollection AddCoinExCore(
@@ -135,7 +120,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ICryptoSocketClient, CryptoSocketClient>();
             services.AddTransient<ICoinExOrderBookFactory, CoinExOrderBookFactory>();
             services.AddTransient<ICoinExTrackerFactory, CoinExTrackerFactory>();
-            services.AddTransient(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.CommonSpotClient);
 
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient);

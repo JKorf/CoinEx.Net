@@ -1,4 +1,5 @@
-﻿using CoinEx.Net.Enums;
+using CoinEx.Net.Converters;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using System;
 using System.Text.Json.Serialization;
@@ -8,6 +9,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order info
     /// </summary>
+    [SerializationModel]
     public record CoinExStreamOrder
     {
         /// <summary>
@@ -64,7 +66,7 @@ namespace CoinEx.Net.Objects.Models.V2
         /// Client order id
         /// </summary>
         [JsonPropertyName("client_id")]
-        [JsonConverterCtor(typeof(ReplaceConverter), $"{CoinExExchange.ClientOrderIdPrefix}->")]
+        [JsonConverter(typeof(ClientIdConverter))]
         public string? ClientOrderId { get; set; }
         /// <summary>
         /// Fee in base asset

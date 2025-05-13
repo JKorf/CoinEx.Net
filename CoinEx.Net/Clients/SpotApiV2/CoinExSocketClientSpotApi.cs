@@ -1,4 +1,4 @@
-﻿using CryptoExchange.Net;
+using CryptoExchange.Net;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -74,9 +74,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #region methods
 
         /// <inheritdoc />
-        protected override IByteMessageAccessor CreateAccessor() => new SystemTextJsonByteMessageAccessor();
+        protected override IByteMessageAccessor CreateAccessor() => new SystemTextJsonByteMessageAccessor(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
         /// <inheritdoc />
-        protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer();
+        protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
 
         /// <inheritdoc />
@@ -118,27 +118,27 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #region public
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExMaintenance>>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<CoinExMaintenance[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<IEnumerable<CoinExMaintenance>>(_logger, "notice", null, new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExMaintenance[]>(_logger, "notice", null, new Dictionary<string, object>
             {
-                { "channels", new object[] { 101 } }
+                { "channels", new int[] { 101 } }
             }, onMessage, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExTickerSubscription(_logger, null, new Dictionary<string, object>
             {
-                { "market_list", new object[] { } }
+                { "market_list", new string[] { } }
             }, onMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExTickerSubscription(_logger, symbols, new Dictionary<string, object>
             {
@@ -162,15 +162,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
             => SubscribeToTradeUpdatesAsync(new[] { symbol }, onMessage, ct);
 
         /// <inheritdoc />
-        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
             => SubscribeToTradeUpdatesAsync(new string[] { }, onMessage, ct);
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExTradesSubscription(_logger, symbols, new Dictionary<string, object>
             {
@@ -247,7 +247,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<IEnumerable<CoinExBalanceUpdate>>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<CoinExBalanceUpdate[]>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExSubscription<CoinExBalanceUpdateWrapper>(_logger, "balance", Array.Empty<string>(), new Dictionary<string, object>
             {

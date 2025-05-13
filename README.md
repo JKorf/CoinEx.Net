@@ -12,9 +12,10 @@ CoinEx.Net is a strongly typed client library for accessing the [CoinEx REST and
 * Extensive logging
 * Support for different environments
 * Easy integration with other exchange client based on the CryptoExchange.Net base library
+* Native AOT support
 
 ## Supported Frameworks
-The library is targeting both `.NET Standard 2.0` and `.NET Standard 2.1` for optimal compatibility
+The library is targeting both `.NET Standard 2.0` and `.NET Standard 2.1` for optimal compatibility, as well as dotnet 8.0 and 9.0 to use the latest framework features.
 
 |.NET implementation|Version Support|
 |--|--|
@@ -168,6 +169,38 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 9.0.0-beta3 - 01 May 2025
+    * Updated CryptoExchange.Net version to 9.0.0-beta5
+    * Added property to retrieve all available API environments
+
+* Version 9.0.0-beta2 - 23 Apr 2025
+    * Updated CryptoExchange.Net to version 9.0.0-beta2
+    * Added Shared spot ticker QuoteVolume mapping
+    * Fixed incorrect DataTradeMode on responses
+
+* Version 9.0.0-beta1 - 22 Apr 2025
+    * Updated CryptoExchange.Net to version 9.0.0-beta1, see https://github.com/JKorf/CryptoExchange.Net/releases/
+    * Added support for Native AOT compilation
+    * Added RateLimitUpdated event
+    * Added SharedSymbol response property to all Shared interfaces response models returning a symbol name
+    * Added GenerateClientOrderId method to FuturesApi and SpotApiV2 Shared client
+    * Added IBookTickerRestClient implementation to FuturesApi and SpotApiV2 Shared client
+    * Added IFuturesOrderClientIdClient implementation to FuturesApi Shared client
+    * Added IFuturesTriggerOrderRestClient implementation to FuturesApi Shared client
+    * Added IFuturesTpSlRestClient implementation to FuturesApi Shared client
+    * Added ISpotOrderClientIdClient implementation to FuturesApi Shared client
+    * Added ISpotTriggerOrderRestClient implementation to FuturesApi Shared client
+    * Added StopLossPrice, TakeProfitPrice properties to SharedPosition model
+    * Added OptionalExchangeParameters and Supported properties to EndpointOptions
+    * Refactored Shared clients quantity parameters and responses to use SharedQuantity
+    * Updated all IEnumerable response and model types to array response types
+    * Updated PlaceMultipleOrdersAsync endpoints to return a list of CallResult models and an error if all orders fail to place
+    * Removed Newtonsoft.Json dependency
+    * Removed legacy ISpotClient implementation
+    * Removed legacy AddCoinEx(restOptions, socketOptions) DI overload
+    * Removed clientOrderId from restClient.SpotApiV2.Trading.GetClosedStopOrdersAsync endpoint since it's not working or documented
+    * Fixed some typos
+
 * Version 8.0.1 - 21 Feb 2025
     * Fixed exception in restClient.SpotApiV2.Account.GetAllDepositWithdrawalConfigsAsync when no credentials provided
 

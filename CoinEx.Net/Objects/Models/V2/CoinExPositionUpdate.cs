@@ -1,4 +1,5 @@
-﻿using CoinEx.Net.Enums;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CoinEx.Net.Enums;
 using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
@@ -6,6 +7,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Position update
     /// </summary>
+    [SerializationModel]
     public record CoinExPositionUpdate
     {
         /// <summary>
@@ -23,6 +25,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Position info
     /// </summary>
+    [SerializationModel]
     public record CoinExStreamPosition : CoinExPosition
     {
         /// <summary>

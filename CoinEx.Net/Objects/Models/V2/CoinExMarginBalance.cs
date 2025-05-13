@@ -1,10 +1,12 @@
-﻿using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
     /// <summary>
     /// Margin balance info
     /// </summary>
+    [SerializationModel]
     public record CoinExMarginBalance
     {
         /// <summary>
@@ -59,6 +61,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Assets balance info
     /// </summary>
+    [SerializationModel]
     public record CoinExMarginAssetsBalance
     {
         /// <summary>

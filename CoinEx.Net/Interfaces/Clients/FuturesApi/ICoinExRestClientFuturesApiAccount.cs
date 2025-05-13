@@ -1,4 +1,4 @@
-﻿using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Objects;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
@@ -27,7 +27,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<IEnumerable<CoinExFuturesBalance>>> GetBalancesAsync(CancellationToken ct = default);
+        Task<WebCallResult<CoinExFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Set leverage for a symbol

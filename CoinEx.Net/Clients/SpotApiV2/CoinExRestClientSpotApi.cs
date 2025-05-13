@@ -1,5 +1,4 @@
-﻿using CryptoExchange.Net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
@@ -7,8 +6,6 @@ using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CoinEx.Net.Objects.Internal;
-using CryptoExchange.Net.CommonObjects;
-using CryptoExchange.Net.Interfaces.CommonClients;
 using Microsoft.Extensions.Logging;
 using CoinEx.Net.Objects.Options;
 using CryptoExchange.Net.Interfaces;
@@ -25,7 +22,7 @@ using CryptoExchange.Net.SharedApis;
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExRestClientSpotApi" />
-    internal partial class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi, ISpotClient
+    internal partial class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi
     {
         #region fields
         internal TimeSyncState _timeSyncState = new TimeSyncState("CoinEx V2 API");
@@ -33,14 +30,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
-        /// <summary>
-        /// Event triggered when an order is placed via this client
-        /// </summary>
-        public event Action<OrderId>? OnOrderPlaced;
-        /// <summary>
-        /// Event triggered when an order is canceled via this client. Note that this does not trigger when using CancelAllOrdersAsync
-        /// </summary>
-        public event Action<OrderId>? OnOrderCanceled;
         #endregion
 
         /// <inheritdoc />
@@ -68,9 +57,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         /// <inheritdoc />
-        protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor();
+        protected override IStreamMessageAccessor CreateAccessor() => new SystemTextJsonStreamMessageAccessor(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
         /// <inheritdoc />
-        protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer();
+        protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
         /// <inheritdoc />
         protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
@@ -114,7 +103,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         internal async Task<WebCallResult<CoinExPaginated<T>>> SendPaginatedAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
         {
-            var result = await base.SendAsync<CoinExPageApiResult<IEnumerable<T>>>(BaseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
+            var result = await base.SendAsync<CoinExPageApiResult<T[]>>(BaseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
             if (!result)
                 return result.As<CoinExPaginated<T>>(default);
 
@@ -132,321 +121,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
         #endregion
 
-        #region common interface
-
-        internal void InvokeOrderPlaced(OrderId id)
-        {
-            OnOrderPlaced?.Invoke(id);
-        }
-
-        internal void InvokeOrderCanceled(OrderId id)
-        {
-            OnOrderCanceled?.Invoke(id);
-        }
-
-        /// <summary>
-        /// Get the name of a symbol for CoinEx based on the base and quote asset
-        /// </summary>
-        /// <param name="baseAsset"></param>
-        /// <param name="quoteAsset"></param>
-        /// <returns></returns>
-        public string GetSymbolName(string baseAsset, string quoteAsset) => (baseAsset + quoteAsset).ToUpperInvariant();
-
-        async Task<WebCallResult<IEnumerable<Symbol>>> IBaseRestClient.GetSymbolsAsync(CancellationToken ct)
-        {
-            var symbols = await ExchangeData.GetSymbolsAsync(ct: ct).ConfigureAwait(false);
-            if (!symbols)
-                return symbols.As<IEnumerable<Symbol>>(null);
-
-            return symbols.As(symbols.Data.Select(d => new Symbol
-            {
-                SourceObject = d,
-                Name = d.Name,
-                MinTradeQuantity = d.MinOrderQuantity,
-                PriceDecimals = d.PricePrecision,
-                QuantityDecimals = d.QuantityPrecision
-            }));
-        }
-
-        async Task<WebCallResult<Ticker>> IBaseRestClient.GetTickerAsync(string symbol, CancellationToken ct)
-        {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.GetTickerAsync), nameof(symbol));
-
-            var tickers = await ExchangeData.GetTickersAsync(new[] { symbol }, ct: ct).ConfigureAwait(false);
-            if (!tickers)
-                return tickers.As<Ticker>(null);
-
-            var ticker = tickers.Data.Single();
-            return tickers.As(new Ticker
-            {
-                SourceObject = tickers.Data,
-                Symbol = symbol,
-                HighPrice = ticker.HighPrice,
-                LowPrice = ticker.LowPrice,
-                LastPrice = ticker.LastPrice,
-                Price24H = ticker.OpenPrice,
-                Volume = ticker.Volume
-            });
-        }
-
-        async Task<WebCallResult<IEnumerable<Ticker>>> IBaseRestClient.GetTickersAsync(CancellationToken ct)
-        {
-            var tickers = await ExchangeData.GetTickersAsync(ct: ct).ConfigureAwait(false);
-            if (!tickers)
-                return tickers.As<IEnumerable<Ticker>>(null);
-
-            return tickers.As(tickers.Data.Select(t =>
-                new Ticker
-                {
-                    SourceObject = t,
-                    Symbol = t.Symbol,
-                    HighPrice = t.HighPrice,
-                    LowPrice = t.LowPrice,
-                    LastPrice = t.LastPrice,
-                    Price24H = t.OpenPrice,
-                    Volume = t.Volume
-                }));
-        }
-
-        async Task<WebCallResult<IEnumerable<Kline>>> IBaseRestClient.GetKlinesAsync(string symbol, TimeSpan timespan, DateTime? startTime, DateTime? endTime, int? limit, CancellationToken ct)
-        {
-            if (startTime != null || endTime != null)
-                throw new ArgumentException("CoinEx does not support time based klines requesting", startTime != null ? nameof(startTime) : nameof(endTime));
-
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.GetKlinesAsync), nameof(symbol));
-
-            var klines = await ExchangeData.GetKlinesAsync(symbol, GetKlineIntervalFromTimespan(timespan), limit, ct: ct).ConfigureAwait(false);
-            if (!klines)
-                return klines.As<IEnumerable<Kline>>(null);
-
-            return klines.As(klines.Data.Select(t =>
-                new Kline
-                {
-                    SourceObject = t,
-                    OpenPrice = t.OpenPrice,
-                    LowPrice = t.LowPrice,
-                    OpenTime = t.OpenTime,
-                    Volume = t.Volume,
-                    ClosePrice = t.ClosePrice,
-                    HighPrice = t.HighPrice
-                }));
-        }
-
-        async Task<WebCallResult<OrderBook>> IBaseRestClient.GetOrderBookAsync(string symbol, CancellationToken ct)
-        {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.GetOrderBookAsync), nameof(symbol));
-
-            var book = await ExchangeData.GetOrderBookAsync(symbol, 20, ct: ct).ConfigureAwait(false);
-            if (!book)
-                return book.As<OrderBook>(null);
-
-            return book.As(new OrderBook
-            {
-                SourceObject = book.Data,
-                Asks = book.Data.Data.Asks.Select(a => new OrderBookEntry { Price = a.Price, Quantity = a.Quantity }),
-                Bids = book.Data.Data.Bids.Select(b => new OrderBookEntry { Price = b.Price, Quantity = b.Quantity })
-            });
-        }
-
-        async Task<WebCallResult<IEnumerable<Trade>>> IBaseRestClient.GetRecentTradesAsync(string symbol, CancellationToken ct)
-        {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.GetRecentTradesAsync), nameof(symbol));
-
-            var trades = await ExchangeData.GetTradeHistoryAsync(symbol, ct: ct).ConfigureAwait(false);
-            if (!trades)
-                return trades.As<IEnumerable<Trade>>(null);
-
-            return trades.As(trades.Data.Select(t =>
-                new Trade
-                {
-                    SourceObject = t,
-                    Price = t.Price,
-                    Quantity = t.Quantity,
-                    Symbol = symbol,
-                    Timestamp = t.Timestamp
-                }));
-        }
-
-        async Task<WebCallResult<OrderId>> ISpotClient.PlaceOrderAsync(string symbol, CommonOrderSide side, CommonOrderType type, decimal quantity, decimal? price, string? accountId, string? clientOrderId, CancellationToken ct)
-        {
-            if (price == null && type == CommonOrderType.Limit)
-                throw new ArgumentException("Price parameter null while placing a limit order", nameof(price));
-
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.PlaceOrderAsync), nameof(symbol));
-
-            var result = await Trading.PlaceOrderAsync(
-                symbol,
-                AccountType.Spot,
-                side == CommonOrderSide.Sell ? OrderSide.Sell : OrderSide.Buy,
-                type == CommonOrderType.Limit ? OrderTypeV2.Limit : OrderTypeV2.Market,
-                quantity,
-                price,
-                clientOrderId: clientOrderId,
-                ct: ct).ConfigureAwait(false);
-            if (!result)
-                return result.As<OrderId>(null);
-
-            return result.As(new OrderId { SourceObject = result.Data, Id = result.Data.Id.ToString(CultureInfo.InvariantCulture) });
-        }
-
-        async Task<WebCallResult<Order>> IBaseRestClient.GetOrderAsync(string orderId, string? symbol, CancellationToken ct)
-        {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.GetOrderAsync), nameof(symbol));
-
-            if (!long.TryParse(orderId, out var id))
-                throw new ArgumentException($"Invalid order id for CoinEx {nameof(ISpotClient.GetOrderAsync)}", nameof(orderId));
-
-            var order = await Trading.GetOrderAsync(symbol!, id, ct: ct).ConfigureAwait(false);
-            if (!order)
-                return order.As<Order>(null);
-
-            return order.As(new Order
-            {
-                SourceObject = order.Data,
-                Id = order.Data.Id.ToString(CultureInfo.InvariantCulture),
-                Price = order.Data.Price,
-                Quantity = order.Data.Quantity,
-                QuantityFilled = order.Data.QuantityFilled,
-                Timestamp = order.Data.CreateTime,
-                Symbol = order.Data.Symbol,
-                Side = order.Data.Side == OrderSide.Buy ? CommonOrderSide.Buy : CommonOrderSide.Sell,
-                Status = (order.Data.Status == OrderStatusV2.Canceled || order.Data.Status == OrderStatusV2.PartiallyCanceled) ? CommonOrderStatus.Canceled : order.Data.Status == OrderStatusV2.Filled ? CommonOrderStatus.Filled : CommonOrderStatus.Active,
-                Type = order.Data.OrderType == OrderTypeV2.Market ? CommonOrderType.Market : order.Data.OrderType == OrderTypeV2.Limit ? CommonOrderType.Limit : CommonOrderType.Other
-            });
-        }
-
-        async Task<WebCallResult<IEnumerable<UserTrade>>> IBaseRestClient.GetOrderTradesAsync(string orderId, string? symbol, CancellationToken ct)
-        {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.GetOrderTradesAsync), nameof(symbol));
-
-            if (!long.TryParse(orderId, out var id))
-                throw new ArgumentException($"Invalid order id for CoinEx {nameof(ISpotClient.GetOrderAsync)}", nameof(orderId));
-
-            var result = await Trading.GetOrderTradesAsync(symbol!, AccountType.Spot, id, ct: ct).ConfigureAwait(false);
-            if (!result)
-                return result.As<IEnumerable<UserTrade>>(null);
-
-            return result.As(result.Data.Items.Select(d =>
-                new UserTrade
-                {
-                    SourceObject = d,
-                    Id = d.Id.ToString(CultureInfo.InvariantCulture),
-                    Price = d.Price,
-                    Quantity = d.Quantity,
-                    OrderId = d.OrderId.ToString(CultureInfo.InvariantCulture),
-                    Symbol = symbol ?? string.Empty,
-                    Timestamp = d.CreateTime
-                }));
-        }
-
-        async Task<WebCallResult<IEnumerable<Order>>> IBaseRestClient.GetOpenOrdersAsync(string? symbol, CancellationToken ct)
-        {
-            var openOrders = await Trading.GetOpenOrdersAsync(AccountType.Spot, symbol!, ct: ct).ConfigureAwait(false);
-            if (!openOrders)
-                return openOrders.As<IEnumerable<Order>>(null);
-
-            return openOrders.As(openOrders.Data.Items.Select(o => new Order
-            {
-                SourceObject = o,
-                Id = o.Id.ToString(CultureInfo.InvariantCulture),
-                Price = o.Price,
-                Quantity = o.Quantity,
-                QuantityFilled = o.QuantityFilled,
-                Timestamp = o.CreateTime,
-                Symbol = o.Symbol,
-                Side = o.Side == OrderSide.Buy ? CommonOrderSide.Buy : CommonOrderSide.Sell,
-                Status = (o.Status == OrderStatusV2.Canceled || o.Status == OrderStatusV2.PartiallyCanceled) ? CommonOrderStatus.Canceled : o.Status == OrderStatusV2.Filled ? CommonOrderStatus.Filled : CommonOrderStatus.Active,
-                Type = o.OrderType == OrderTypeV2.Market ? CommonOrderType.Market : o.OrderType == OrderTypeV2.Limit ? CommonOrderType.Limit : CommonOrderType.Other
-            }));
-        }
-
-        async Task<WebCallResult<IEnumerable<Order>>> IBaseRestClient.GetClosedOrdersAsync(string? symbol, CancellationToken ct)
-        {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException($"CoinEx needs the {nameof(symbol)} parameter for the method {nameof(ISpotClient.GetClosedOrdersAsync)}");
-
-            var result = await Trading.GetClosedOrdersAsync(AccountType.Spot, symbol!, ct: ct).ConfigureAwait(false);
-            if (!result)
-                return result.As<IEnumerable<Order>>(null);
-
-            return result.As(result.Data.Items.Select(o => new Order
-            {
-                SourceObject = o,
-                Id = o.Id.ToString(CultureInfo.InvariantCulture),
-                Price = o.Price,
-                Quantity = o.Quantity,
-                QuantityFilled = o.QuantityFilled,
-                Timestamp = o.CreateTime,
-                Symbol = o.Symbol,
-                Side = o.Side == OrderSide.Buy ? CommonOrderSide.Buy : CommonOrderSide.Sell,
-                Status = (o.Status == OrderStatusV2.Canceled || o.Status == OrderStatusV2.PartiallyCanceled) ? CommonOrderStatus.Canceled : o.Status == OrderStatusV2.Filled ? CommonOrderStatus.Filled : CommonOrderStatus.Active,
-                Type = o.OrderType == OrderTypeV2.Market ? CommonOrderType.Market : o.OrderType == OrderTypeV2.Limit ? CommonOrderType.Limit : CommonOrderType.Other
-            }));
-        }
-
-        async Task<WebCallResult<OrderId>> IBaseRestClient.CancelOrderAsync(string orderId, string? symbol, CancellationToken ct)
-        {
-            if (string.IsNullOrEmpty(symbol))
-                throw new ArgumentException(nameof(symbol) + " required for CoinEx " + nameof(ISpotClient.CancelOrderAsync), nameof(symbol));
-
-            if (!long.TryParse(orderId, out var id))
-                throw new ArgumentException($"Invalid order id for CoinEx {nameof(ISpotClient.GetOrderAsync)}", nameof(orderId));
-
-            var result = await Trading.CancelOrderAsync(symbol!, AccountType.Spot, id, ct: ct).ConfigureAwait(false);
-            if (!result)
-                return result.As<OrderId>(null);
-
-            return result.As(new OrderId
-            {
-                SourceObject = result.Data,
-                Id = result.Data.Id.ToString(CultureInfo.InvariantCulture)
-            });
-        }
-
-        async Task<WebCallResult<IEnumerable<Balance>>> IBaseRestClient.GetBalancesAsync(string? accountId, CancellationToken ct)
-        {
-            var balances = await Account.GetBalancesAsync(ct: ct).ConfigureAwait(false);
-            if (!balances)
-                return balances.As<IEnumerable<Balance>>(null);
-
-            return balances.As(balances.Data.Select(d => new Balance
-            {
-                SourceObject = d,
-                Asset = d.Asset,
-                Available = d.Available,
-                Total = d.Total
-            }));
-        }
-
-        private static KlineInterval GetKlineIntervalFromTimespan(TimeSpan timeSpan)
-        {
-            if (timeSpan == TimeSpan.FromMinutes(1)) return KlineInterval.OneMinute;
-            if (timeSpan == TimeSpan.FromMinutes(3)) return KlineInterval.ThreeMinutes;
-            if (timeSpan == TimeSpan.FromMinutes(5)) return KlineInterval.FiveMinutes;
-            if (timeSpan == TimeSpan.FromMinutes(15)) return KlineInterval.FiveMinutes;
-            if (timeSpan == TimeSpan.FromMinutes(30)) return KlineInterval.ThirtyMinutes;
-            if (timeSpan == TimeSpan.FromHours(1)) return KlineInterval.OneHour;
-            if (timeSpan == TimeSpan.FromHours(2)) return KlineInterval.TwoHours;
-            if (timeSpan == TimeSpan.FromHours(4)) return KlineInterval.FourHours;
-            if (timeSpan == TimeSpan.FromHours(6)) return KlineInterval.SixHours;
-            if (timeSpan == TimeSpan.FromHours(12)) return KlineInterval.TwelveHours;
-            if (timeSpan == TimeSpan.FromDays(1)) return KlineInterval.OneDay;
-            if (timeSpan == TimeSpan.FromDays(3)) return KlineInterval.ThreeDays;
-            if (timeSpan == TimeSpan.FromDays(7)) return KlineInterval.OneWeek;
-
-            throw new ArgumentException("Unsupported timespan for CoinEx Klines, check supported intervals using CoinEx.Net.Objects.KlineInterval");
-        }
-        #endregion
-
         /// <inheritdoc />
-        protected override Error? TryParseError(IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
+        protected override Error? TryParseError(KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
         {
             if (!accessor.IsJson)
                 return new ServerError(accessor.GetOriginalString());
@@ -477,7 +153,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             => _timeSyncState.TimeOffset;
 
         /// <inheritdoc />
-        public ISpotClient CommonSpotClient => this;
         public ICoinExRestClientSpotApiShared SharedClient => this;
 
     }

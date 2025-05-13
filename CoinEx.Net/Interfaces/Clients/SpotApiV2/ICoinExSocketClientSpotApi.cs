@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +15,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     public interface ICoinExSocketClientSpotApi : ISocketApiClient, IDisposable
     {
         /// <summary>
-        /// Get the shared socket subscription client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+        /// Get the shared socket subscription client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
         /// </summary>
         ICoinExSocketClientSpotApiShared SharedClient { get; }
 
@@ -25,7 +25,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExMaintenance>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<CoinExMaintenance[]>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to symbol ticker updates for the specified symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
@@ -35,7 +35,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default);
         
         /// <summary>
         /// Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
@@ -44,7 +44,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTicker>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to order book updates
@@ -80,7 +80,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live trade updates
@@ -90,7 +90,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to live trade updates
@@ -99,7 +99,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<IEnumerable<CoinExTrade>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default);
 
         /// <summary>
         /// Subscribe to index price updates
@@ -175,6 +175,6 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<IEnumerable<CoinExBalanceUpdate>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<CoinExBalanceUpdate[]>> onMessage, CancellationToken ct = default);
     }
 }

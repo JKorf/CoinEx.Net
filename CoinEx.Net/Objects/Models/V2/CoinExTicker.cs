@@ -1,10 +1,12 @@
-﻿using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
     /// <summary>
     /// Ticker (24h price stats) info
     /// </summary>
+    [SerializationModel]
     public record CoinExTicker
     {
         /// <summary>

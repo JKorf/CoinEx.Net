@@ -1,10 +1,12 @@
-﻿using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
     /// <summary>
     /// Automated market maker liquidity info
     /// </summary>
+    [SerializationModel]
     public record CoinExAamLiquidity
     {
         /// <summary>

@@ -1,13 +1,13 @@
-﻿using CryptoExchange.Net.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Attributes;
 
 namespace CoinEx.Net.Enums
 {
     /// <summary>
     /// Self trade prevention mode
     /// </summary>
+    [JsonConverter(typeof(EnumConverter<SelfTradePreventionMode>))]
     public enum SelfTradePreventionMode
     {
         /// <summary>

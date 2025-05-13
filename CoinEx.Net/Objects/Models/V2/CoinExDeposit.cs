@@ -1,4 +1,5 @@
-﻿using CoinEx.Net.Enums;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CoinEx.Net.Enums;
 using System;
 using System.Text.Json.Serialization;
 
@@ -7,6 +8,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Deposit info
     /// </summary>
+    [SerializationModel]
     public record CoinExDeposit
     {
         /// <summary>

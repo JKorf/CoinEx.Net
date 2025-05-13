@@ -5,10 +5,10 @@ using CryptoExchange.Net.Objects;
 using CoinEx.Net.Clients;
 using CryptoExchange.Net.Clients;
 using System.Net.Http;
-using CryptoExchange.Net.Converters.JsonNet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CoinEx.Net.Interfaces.Clients;
+using CryptoExchange.Net.Converters.SystemTextJson;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -41,7 +41,7 @@ namespace CoinEx.Net.UnitTests
                     { "page", "1" },
                     { "limit", "10" },
                 },
-                time: DateTimeConverter.ConvertFromMilliseconds(1700490703564),
+                time: DateTimeConverter.ParseFromDouble(1700490703564),
                 disableOrdering: true);
         }
 
@@ -71,7 +71,7 @@ namespace CoinEx.Net.UnitTests
                     { "page", "1" },
                     { "limit", "10" },
                 },
-                time: DateTimeConverter.ConvertFromMilliseconds(1700490703564),
+                time: DateTimeConverter.ParseFromDouble(1700490703564),
                 disableOrdering: true);
         }
 

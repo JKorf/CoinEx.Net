@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Enums;
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Place stop order request
     /// </summary>
+    [SerializationModel]
     public record CoinExPlaceStopOrderRequest
     {
         /// <summary>

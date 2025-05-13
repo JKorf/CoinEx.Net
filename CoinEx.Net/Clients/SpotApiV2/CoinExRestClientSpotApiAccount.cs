@@ -1,4 +1,4 @@
-﻿using CoinEx.Net.Enums;
+using CoinEx.Net.Enums;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CoinEx.Net.Objects.Models.V2;
 using CryptoExchange.Net.Objects;
@@ -48,24 +48,24 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBalance>>> GetBalancesAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBalance[]>> GetBalancesAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/spot/balance", CoinExExchange.RateLimiter.CoinExRestSpotAccountQuery, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBalance>>(request, null, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBalance[]>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExMarginBalance>>> GetMarginBalancesAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExMarginBalance[]>> GetMarginBalancesAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/margin/balance", CoinExExchange.RateLimiter.CoinExRestSpotAccountQuery, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExMarginBalance>>(request, null, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExMarginBalance[]>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExBalance>>> GetFinancialBalancesAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExBalance[]>> GetFinancialBalancesAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/financial/balance", CoinExExchange.RateLimiter.CoinExRestSpotAccountQuery, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExBalance>>(request, null, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExBalance[]>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -76,10 +76,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExAmmBalance>>> GetAutoMarketMakerAccountLiquidityAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExAmmBalance[]>> GetAutoMarketMakerAccountLiquidityAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/amm/liquidity", CoinExExchange.RateLimiter.CoinExRestSpotAccountQuery, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<CoinExAmmBalance>>(request, null, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExAmmBalance[]>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -226,11 +226,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CoinExDepositWithdrawalConfig>>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExDepositWithdrawalConfig[]>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default)
         {
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/all-deposit-withdraw-config", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false,
                 new SingleLimitGuard(10, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding));
-            return await _baseClient.SendAsync<IEnumerable<CoinExDepositWithdrawalConfig>>(request, null, ct).ConfigureAwait(false);
+            return await _baseClient.SendAsync<CoinExDepositWithdrawalConfig[]>(request, null, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

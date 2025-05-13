@@ -1,10 +1,12 @@
-﻿using System.Text.Json.Serialization;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
 {
     /// <summary>
     /// Symbol info
     /// </summary>
+    [SerializationModel]
     public record CoinExSymbol
     {
         /// <summary>
