@@ -70,7 +70,7 @@ namespace CoinEx.Net.Objects.Models.V2
     /// <summary>
     /// Order book entry
     /// </summary>
-    [JsonConverter(typeof(ArrayConverter<CoinExOrderBookEntry, CoinExSourceGenerationContext>))]
+    [JsonConverter(typeof(ArrayConverter<CoinExOrderBookEntry>))]
     [SerializationModel]
     public record CoinExOrderBookEntry : ISymbolOrderBookEntry
     {
