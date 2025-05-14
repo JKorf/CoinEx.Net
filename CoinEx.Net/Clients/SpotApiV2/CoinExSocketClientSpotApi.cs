@@ -142,7 +142,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var subscription = new CoinExTickerSubscription(_logger, symbols, new Dictionary<string, object>
             {
-                { "market_list", symbols }
+                { "market_list", symbols.ToArray() }
             }, onMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
@@ -156,7 +156,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var subscription = new CoinExOrderBookSubscription(_logger, symbols, new Dictionary<string, object>
             {
-                { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToList() }
+                { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToArray() }
             }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
@@ -174,7 +174,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var subscription = new CoinExTradesSubscription(_logger, symbols, new Dictionary<string, object>
             {
-                { "market_list", symbols }
+                { "market_list", symbols.ToArray() }
             }, onMessage); 
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
@@ -188,7 +188,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, "index", symbols, new Dictionary<string, object>
             {
-                { "market_list", symbols }
+                { "market_list", symbols.ToArray() }
             }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }
@@ -202,7 +202,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, "bbo", symbols, new Dictionary<string, object>
             {
-                { "market_list", symbols }
+                { "market_list", symbols.ToArray() }
             }, x => onMessage(x.WithSymbol(x.Data.Symbol).WithDataTimestamp(x.Data.UpdateTime)));
             return await SubscribeAsync(BaseAddress.AppendPath("v2/spot"), subscription, ct).ConfigureAwait(false);
         }

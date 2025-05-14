@@ -9,6 +9,7 @@ namespace CoinEx.Net.Converters
 {
     [JsonSerializable(typeof(long[]))]
     [JsonSerializable(typeof(List<object[]>))]
+    [JsonSerializable(typeof(object[][]))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExFundingRateHistory[]>))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExLiquidation[]>))]
     [JsonSerializable(typeof(CoinExPageApiResult<CoinExFuturesOrder[]>))]
@@ -140,6 +141,7 @@ namespace CoinEx.Net.Converters
     [JsonSerializable(typeof(CoinExApiResult))]
     [JsonSerializable(typeof(CoinExSocketResponse))]
     [JsonSerializable(typeof(CoinExSocketRequest))]
+    [JsonSerializable(typeof(string[]))]
     [JsonSerializable(typeof(string))]
     [JsonSerializable(typeof(int?))]
     [JsonSerializable(typeof(int))]
