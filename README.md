@@ -63,12 +63,12 @@ var tickerSubscriptionResult = socketClient.SpotApiV2.SubscribeToTickerUpdatesAs
 });
 ```
 
-For information on the clients, dependency injection, response processing and more see the [CoinEx.Net documentation](https://jkorf.github.io/CoinEx.Net), [CryptoExchange.Net documentation](https://jkorf.github.io/CryptoExchange.Net), or have a look at the examples [here](https://github.com/JKorf/CoinEx.Net/tree/master/Examples) or [here](https://github.com/JKorf/CryptoExchange.Net/tree/master/Examples).
+For information on the clients, dependency injection, response processing and more see the [CoinEx.Net documentation](https://cryptoexchange.jkorf.dev?library=CoinEx.Net) or have a look at the examples [here](https://github.com/JKorf/CoinEx.Net/tree/master/Examples) or [here](https://github.com/JKorf/CryptoExchange.Net/tree/master/Examples).
 
 ## CryptoExchange.Net
 CoinEx.Net is based on the [CryptoExchange.Net](https://github.com/JKorf/CryptoExchange.Net) base library. Other exchange API implementations based on the CryptoExchange.Net base library are available and follow the same logic.
 
-CryptoExchange.Net also allows for [easy access to different exchange API's](https://jkorf.github.io/CryptoExchange.Net#idocs_shared).
+CryptoExchange.Net also allows for [easy access to different exchange API's](https://cryptoexchange.jkorf.dev/client-libs/shared).
 
 |Exchange|Repository|Nuget|
 |--|--|--|
