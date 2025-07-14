@@ -124,7 +124,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         protected override Error? TryParseError(KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
         {
-            if (!accessor.IsJson)
+            if (!accessor.IsValid)
                 return new ServerError(accessor.GetOriginalString());
 
             var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
