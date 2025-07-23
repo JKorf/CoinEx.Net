@@ -18,7 +18,6 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Action<DataEvent<T>> _handler;
         private bool _firstUpdateIsSnapshot;
 
-        public override HashSet<string> ListenerIdentifiers { get; set; }
         public CoinExSubscription(ILogger logger, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<T>> handler, bool authenticated = false, bool firstUpdateIsSnapshot = false) : base(logger, authenticated)
         {
             _topic = topic;
@@ -27,19 +26,17 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _handler = handler;
             _firstUpdateIsSnapshot = firstUpdateIsSnapshot;
             if (symbols?.Any() != true)
-                ListenerIdentifiers = new HashSet<string> { _topic + ".update" };
+                MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<T>>(_topic + ".update", DoHandleMessage);
             else
-                ListenerIdentifiers = new HashSet<string>(_symbols!.Select(x => _topic + ".update" + x));
+                MessageMatcher = MessageMatcher.Create(_symbols!.Select(x => new MessageHandlerLink<CoinExSocketUpdate<T>>(_topic + ".update" + x, DoHandleMessage)).ToArray());
         }
 
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<T>> message)
         {
-            var data = (CoinExSocketUpdate<T>)message.Data;
-            _handler.Invoke(message.As(data.Data, data.Method, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            _handler.Invoke(message.As(message.Data.Data, message.Data.Method, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 
-        public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<T>);
 
         public override Query? GetSubQuery(SocketConnection connection)
             => new CoinExQuery(_topic + ".subscribe", _parameters, false, 1);

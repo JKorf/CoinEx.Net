@@ -17,24 +17,20 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExOrderBook>> _handler;
 
-        public override HashSet<string> ListenerIdentifiers { get; set; }
         public CoinExOrderBookSubscription(ILogger logger, IEnumerable<string> symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExOrderBook>> handler) : base(logger, false)
         {
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
-            ListenerIdentifiers = new HashSet<string>(_symbols.Select(x => "depth.update" + x));
+            MessageMatcher = MessageMatcher.Create(_symbols.Select(x => new MessageHandlerLink<CoinExSocketUpdate<CoinExOrderBook>>("depth.update" + x, DoHandleMessage)).ToArray());
         }
 
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExOrderBook>> message)
         {
-            var data = (CoinExSocketUpdate<CoinExOrderBook>)message.Data;
-            _handler.Invoke(message.As(data.Data, data.Method, data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                .WithDataTimestamp(data.Data.Data.UpdateTime));
+            _handler.Invoke(message.As(message.Data.Data, message.Data.Method, message.Data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                .WithDataTimestamp(message.Data.Data.Data.UpdateTime));
             return CallResult.SuccessResult;
         }
-
-        public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExOrderBook>);
 
         public override Query? GetSubQuery(SocketConnection connection)
             => new CoinExQuery("depth.subscribe", _parameters, false, 1);

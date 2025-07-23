@@ -8,8 +8,6 @@ namespace CoinEx.Net.Objects.Sockets.V2.Queries
 {
     internal class CoinExQuery : Query<CoinExSocketResponse>
     {
-        public override HashSet<string> ListenerIdentifiers { get; set; }
-
         public CoinExQuery(string method, Dictionary<string, object> parameters, bool authenticated = false, int weight = 1) : base(new CoinExSocketRequest
         {
             Id = ExchangeHelpers.NextId(),
@@ -17,10 +15,10 @@ namespace CoinEx.Net.Objects.Sockets.V2.Queries
             Parameters = parameters
         }, authenticated, weight)
         {
-            ListenerIdentifiers = new HashSet<string>() { ((CoinExSocketRequest)Request).Id.ToString() };
+            MessageMatcher = MessageMatcher.Create<CoinExSocketResponse>(((CoinExSocketRequest)Request).Id.ToString(), HandleMessage);
         }
 
-        public override CallResult<CoinExSocketResponse> HandleMessage(SocketConnection connection, DataEvent<CoinExSocketResponse> message)
+        public CallResult<CoinExSocketResponse> HandleMessage(SocketConnection connection, DataEvent<CoinExSocketResponse> message)
         {
             if (message.Data.Code != 0)
                 return new CallResult<CoinExSocketResponse>(new ServerError(message.Data.Code, message.Data.Message));

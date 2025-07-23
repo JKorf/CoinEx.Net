@@ -17,27 +17,23 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExFuturesTickerUpdate[]>> _handler;
 
-        public override HashSet<string> ListenerIdentifiers { get; set; }
         public CoinExFuturesTickerSubscription(ILogger logger, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExFuturesTickerUpdate[]>> handler) : base(logger, false)
         {
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
-            ListenerIdentifiers = new HashSet<string> { "state.update" };
+            MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>>("state.update", DoHandleMessage);
         }
 
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>> message)
         {
-            var data = (CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>)message.Data;
-            var relevant = data.Data.Tickers.Where(d => _symbols == null || _symbols.Contains(d.Symbol)).ToArray();
+            var relevant = message.Data.Data.Tickers.Where(d => _symbols == null || _symbols.Contains(d.Symbol)).ToArray();
             if (!relevant.Any())
                 return CallResult.SuccessResult;
 
-            _handler.Invoke(message.As<CoinExFuturesTickerUpdate[]>(relevant, data.Method, null, SocketUpdateType.Update));
+            _handler.Invoke(message.As(relevant, message.Data.Method, null, SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
-
-        public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>);
 
         public override Query? GetSubQuery(SocketConnection connection)
             => new CoinExQuery("state.subscribe", _parameters, false, 1);

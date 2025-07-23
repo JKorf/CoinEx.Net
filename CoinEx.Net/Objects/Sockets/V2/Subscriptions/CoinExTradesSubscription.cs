@@ -17,28 +17,24 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExTrade[]>> _handler;
 
-        public override HashSet<string> ListenerIdentifiers { get; set; }
         public CoinExTradesSubscription(ILogger logger, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
         {
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
-            ListenerIdentifiers = new HashSet<string> { "deals.update" };
+            MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", DoHandleMessage);
         }
 
-        public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExTradeWrapper>> message)
         {
-            var data = (CoinExSocketUpdate<CoinExTradeWrapper>)message.Data;
-            var relevant = data.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(data.Data.Symbol)).ToArray();
-            if (!relevant.Any() || !data.Data.Trades.Any())
+            var relevant = message.Data.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(message.Data.Data.Symbol)).ToArray();
+            if (!relevant.Any() || !message.Data.Data.Trades.Any())
                 return CallResult.SuccessResult;
 
-            _handler.Invoke(message.As<CoinExTrade[]>(relevant, data.Method, data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                .WithDataTimestamp(data.Data.Trades.Max(x => x.Timestamp)));
+            _handler.Invoke(message.As<CoinExTrade[]>(relevant, message.Data.Method, message.Data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                .WithDataTimestamp(message.Data.Data.Trades.Max(x => x.Timestamp)));
             return CallResult.SuccessResult;
         }
-
-        public override Type? GetMessageType(IMessageAccessor message) => typeof(CoinExSocketUpdate<CoinExTradeWrapper>);
 
         public override Query? GetSubQuery(SocketConnection connection)
             => new CoinExQuery("deals.subscribe", _parameters, false, 1);
