@@ -22,10 +22,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
-            if (symbols?.Any() != true)
-                MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update", DoHandleMessage);
-            else
-                MessageMatcher = MessageMatcher.Create(symbols.Select(x => new MessageHandlerLink<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update" + x, DoHandleMessage)).ToArray());
+            MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update", DoHandleMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExTickerUpdateWrapper>> message)
