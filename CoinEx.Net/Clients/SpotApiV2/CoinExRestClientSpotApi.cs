@@ -18,6 +18,7 @@ using CoinEx.Net.Enums;
 using System.Linq;
 using System.Globalization;
 using CryptoExchange.Net.SharedApis;
+using CryptoExchange.Net.Objects.Errors;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -29,6 +30,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
+
+        protected override ErrorCollection ErrorMapping { get; } = CoinExErrorMapping.RestErrorMapping;
 
         #endregion
 
@@ -81,7 +84,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return result.AsDataless();
 
             if (result.Data.Code != 0)
-                return result.AsDatalessError(new ServerError(result.Data.Code, result.Data.Message!));
+                return result.AsDatalessError(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
             return result.AsDataless();
         }
@@ -96,7 +99,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return result.As<T>(default);
 
             if (result.Data.Code != 0)
-                return result.AsError<T>(new ServerError(result.Data.Code, result.Data.Message!));
+                return result.AsError<T>(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
             return result.As(result.Data.Data);
         }
@@ -108,7 +111,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return result.As<CoinExPaginated<T>>(default);
 
             if (result.Data.Code != 0)
-                return result.AsError<CoinExPaginated<T>>(new ServerError(result.Data.Code, result.Data.Message!));
+                return result.AsError<CoinExPaginated<T>>(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
             var resultPage = new CoinExPaginated<T>
             {
@@ -125,7 +128,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         protected override Error? TryParseError(KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
         {
             if (!accessor.IsValid)
-                return new ServerError(accessor.GetOriginalString());
+                return new ServerError(ErrorInfo.Unknown);
 
             var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
             if (code == 0)
@@ -133,12 +136,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
             
             var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
             if (msg == null)
-                return new ServerError(accessor.GetOriginalString());
+                return new ServerError(ErrorInfo.Unknown);
 
             if (code == null)
-                return new ServerError(msg);
+                return new ServerError(ErrorInfo.Unknown with { Message = msg });
 
-            return new ServerError(code.Value, msg);
+            return new ServerError(code.Value, GetErrorInfo(code.Value, msg));
         }
 
         /// <inheritdoc />

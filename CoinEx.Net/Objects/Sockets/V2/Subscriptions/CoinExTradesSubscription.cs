@@ -1,5 +1,6 @@
 ﻿using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Sockets.V2.Queries;
+using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
@@ -13,12 +14,14 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 {
     internal class CoinExTradesSubscription : Subscription<CoinExSocketResponse, CoinExSocketResponse>
     {
+        private readonly SocketApiClient _client;
         private IEnumerable<string>? _symbols;
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExTrade[]>> _handler;
 
-        public CoinExTradesSubscription(ILogger logger, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
+        public CoinExTradesSubscription(ILogger logger, SocketApiClient client, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
         {
+            _client = client;
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
@@ -37,9 +40,9 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         }
 
         public override Query? GetSubQuery(SocketConnection connection)
-            => new CoinExQuery("deals.subscribe", _parameters, false, 1);
+            => new CoinExQuery(_client, "deals.subscribe", _parameters, false, 1);
 
         public override Query? GetUnsubQuery()
-            => new CoinExQuery("deals.unsubscribe", _parameters, false, 1);
+            => new CoinExQuery(_client, "deals.unsubscribe", _parameters, false, 1);
     }
 }

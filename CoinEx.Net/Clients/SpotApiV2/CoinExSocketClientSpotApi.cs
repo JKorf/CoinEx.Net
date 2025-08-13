@@ -20,6 +20,7 @@ using CoinEx.Net.Objects.Sockets.V2.Queries;
 using System.Linq;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CryptoExchange.Net.SharedApis;
+using CryptoExchange.Net.Objects.Errors;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -33,7 +34,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         private static readonly MessagePath _idPath = MessagePath.Get().Property("id");
         private static readonly MessagePath _methodPath = MessagePath.Get().Property("method");
         private static readonly MessagePath _symbolPath = MessagePath.Get().Property("data").Property("market");
-        private static readonly MessagePath _symbolPathDepth = MessagePath.Get().Property("params").Index(2);
+        protected override ErrorCollection ErrorMapping { get; } = CoinExErrorMapping.SocketErrorMapping;
+
         #endregion
 
         #region ctor
@@ -48,10 +50,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             RegisterPeriodicQuery(
                 "Ping",
                 TimeSpan.FromSeconds(30), 
-                q => new CoinExQuery("server.ping", new Dictionary<string, object>()) { RequestTimeout = TimeSpan.FromSeconds(5) },
+                q => new CoinExQuery(this, "server.ping", new Dictionary<string, object>()) { RequestTimeout = TimeSpan.FromSeconds(5) },
                 (connection, result) =>
                 {
-                    if (result.Error?.Message.Equals("Query timeout") == true)
+                    if (result.Error?.ErrorType == ErrorType.Timeout)
                     {
                         // Ping timeout, reconnect
                         _logger.LogWarning("[Sckt {SocketId}] Ping response timeout, reconnecting", connection.SocketId);
@@ -103,7 +105,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var authProvider = (CoinExV2AuthenticationProvider)AuthenticationProvider!;
             var authParams = authProvider.GetSocketAuthParameters();
-            return Task.FromResult<Query?>(new CoinExQuery("server.sign", authParams, false, 0));
+            return Task.FromResult<Query?>(new CoinExQuery(this, "server.sign", authParams, false, 0));
         }
 
         /// <inheritdoc />
@@ -120,7 +122,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<CoinExMaintenance[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExMaintenance[]>(_logger, "notice", null, new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExMaintenance[]>(_logger, this, "notice", null, new Dictionary<string, object>
             {
                 { "channels", new int[] { 101 } }
             }, onMessage, true);
@@ -130,7 +132,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExTickerSubscription(_logger, null, new Dictionary<string, object>
+            var subscription = new CoinExTickerSubscription(_logger, this, null, new Dictionary<string, object>
             {
                 { "market_list", new string[] { } }
             }, onMessage);
@@ -140,7 +142,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExTickerSubscription(_logger, symbols, new Dictionary<string, object>
+            var subscription = new CoinExTickerSubscription(_logger, this, symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, onMessage);
@@ -154,7 +156,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExOrderBookSubscription(_logger, symbols, new Dictionary<string, object>
+            var subscription = new CoinExOrderBookSubscription(_logger, this, symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToArray() }
             }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
@@ -172,7 +174,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExTradesSubscription(_logger, symbols, new Dictionary<string, object>
+            var subscription = new CoinExTradesSubscription(_logger, this, symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, onMessage); 
@@ -186,7 +188,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, "index", symbols, new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, this, "index", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, x => onMessage(x.WithSymbol(x.Data.Symbol)));
@@ -200,7 +202,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, "bbo", symbols, new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, this, "bbo", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, x => onMessage(x.WithSymbol(x.Data.Symbol).WithDataTimestamp(x.Data.UpdateTime)));
@@ -210,7 +212,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEvent<CoinExOrderUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExOrderUpdate>(_logger, "order", Array.Empty<string>(), new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExOrderUpdate>(_logger, this, "order", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
             }, x => onMessage(
@@ -223,7 +225,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToStopOrderUpdatesAsync(Action<DataEvent<CoinExStopOrderUpdate>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExStopOrderUpdate>(_logger, "stop", Array.Empty<string>(), new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExStopOrderUpdate>(_logger, this, "stop", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
             }, x => onMessage(
@@ -236,7 +238,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(Action<DataEvent<CoinExUserTrade>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExUserTrade>(_logger, "user_deals", Array.Empty<string>(), new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExUserTrade>(_logger, this, "user_deals", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
             }, x => onMessage(
@@ -249,7 +251,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<CoinExBalanceUpdate[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExSubscription<CoinExBalanceUpdateWrapper>(_logger, "balance", Array.Empty<string>(), new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExBalanceUpdateWrapper>(_logger, this, "balance", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "ccy_list", Array.Empty<string>() }
             }, x => onMessage(

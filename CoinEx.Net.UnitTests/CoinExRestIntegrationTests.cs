@@ -2,6 +2,7 @@
 using CoinEx.Net.Objects;
 using CoinEx.Net.SymbolOrderBooks;
 using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Objects.Errors;
 using CryptoExchange.Net.Testing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -45,7 +46,8 @@ namespace CoinEx.Net.UnitTests
             var result = await CreateClient().SpotApiV2.ExchangeData.GetTickersAsync(new[] { "TSTTST" }, default);
 
             Assert.That(result.Success, Is.False);
-            Assert.That(result.Error.Code, Is.EqualTo(3639));
+            Assert.That(result.Error.ErrorCode, Is.EqualTo("3639"));
+            Assert.That(result.Error.ErrorType, Is.EqualTo(ErrorType.UnknownSymbol));
         }
 
         [Test]
