@@ -35,7 +35,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         private static readonly MessagePath _methodPath = MessagePath.Get().Property("method");
         private static readonly MessagePath _symbolPath = MessagePath.Get().Property("data").Property("market");
 
-        protected override ErrorCollection ErrorMapping { get; } = CoinExErrorMapping.SocketErrorMapping;
+        protected override ErrorCollection ErrorMapping => CoinExErrors.SocketErrorMapping;
         #endregion
 
         #region ctor

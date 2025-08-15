@@ -29,7 +29,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
-        protected override ErrorCollection ErrorMapping { get; } = CoinExErrorMapping.RestErrorMapping;
+        protected override ErrorCollection ErrorMapping => CoinExErrors.RestErrorMapping;
         #endregion
 
         /// <inheritdoc />

@@ -31,7 +31,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
-        protected override ErrorCollection ErrorMapping { get; } = CoinExErrorMapping.RestErrorMapping;
+        protected override ErrorCollection ErrorMapping => CoinExErrors.RestErrorMapping;
 
         #endregion
 

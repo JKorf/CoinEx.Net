@@ -34,7 +34,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         private static readonly MessagePath _idPath = MessagePath.Get().Property("id");
         private static readonly MessagePath _methodPath = MessagePath.Get().Property("method");
         private static readonly MessagePath _symbolPath = MessagePath.Get().Property("data").Property("market");
-        protected override ErrorCollection ErrorMapping { get; } = CoinExErrorMapping.SocketErrorMapping;
+        protected override ErrorCollection ErrorMapping => CoinExErrors.SocketErrorMapping;
 
         #endregion
 
