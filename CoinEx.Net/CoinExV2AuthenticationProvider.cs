@@ -1,13 +1,13 @@
 ﻿using CryptoExchange.Net;
 using CryptoExchange.Net.Authentication;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using CryptoExchange.Net.Objects;
-using System.Linq;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 
 namespace CoinEx.Net
 {
@@ -21,41 +21,33 @@ namespace CoinEx.Net
                 throw new Exception("Only Hmac authentication is supported");
         }
 
-        public override void AuthenticateRequest(
-            RestApiClient apiClient,
-            Uri uri,
-            HttpMethod method,
-            ref IDictionary<string, object>? uriParameters,
-            ref IDictionary<string, object>? bodyParameters,
-            ref Dictionary<string, string>? headers,
-            bool auth,
-            ArrayParametersSerialization arraySerialization,
-            HttpMethodParameterPosition parameterPosition,
-            RequestBodyFormat requestBodyFormat)
+        public override void ProcessRequest(RestApiClient apiClient, RestRequestConfiguration request)
         {
-            if (!auth)
+            if (!request.Authenticated)
                 return;
 
-            IDictionary<string, object> parameters;
-            if (parameterPosition == HttpMethodParameterPosition.InUri)
+            string parameterString;
+            if (request.ParameterPosition == HttpMethodParameterPosition.InUri)
             {
-                uriParameters ??= new Dictionary<string, object>();
-                parameters = uriParameters;
+                parameterString = request.GetQueryString(false);
+                if (!string.IsNullOrEmpty(parameterString))
+                    parameterString= $"?{parameterString}";
+
+                request.SetQueryString(parameterString);
             }
             else
             {
-                bodyParameters ??= new Dictionary<string, object>();
-                parameters = bodyParameters;
+                parameterString = GetSerializedBody(_serializer, request.BodyParameters);
+                request.SetBodyContent(parameterString);
             }
 
-            var parameterString = parameterPosition == HttpMethodParameterPosition.InUri ? (parameters.Any() ? "?" + parameters.CreateParamString(false, arraySerialization) : "") : _serializer.Serialize(parameters);
             var timestamp = GetMillisecondTimestamp(apiClient);
-            var signData = method.ToString().ToUpperInvariant() + uri.AbsolutePath + parameterString + timestamp;
+            var signData = request.Method.ToString().ToUpperInvariant() + request.Path + parameterString + timestamp;
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
-            headers ??= new Dictionary<string, string>();
-            headers.Add("X-COINEX-KEY", _credentials.Key);
-            headers.Add("X-COINEX-SIGN", sign);
-            headers.Add("X-COINEX-TIMESTAMP", timestamp);
+
+            request.Headers.Add("X-COINEX-KEY", _credentials.Key);
+            request.Headers.Add("X-COINEX-SIGN", sign);
+            request.Headers.Add("X-COINEX-TIMESTAMP", timestamp);
         }
 
         public Dictionary<string, object> GetSocketAuthParameters()

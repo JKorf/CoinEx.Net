@@ -9,6 +9,7 @@ using CryptoExchange.Net;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using System.Collections.Generic;
 using System.Linq;
+using CryptoExchange.Net.Objects.Errors;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
@@ -108,13 +109,13 @@ namespace CoinEx.Net.Clients.FuturesApi
             foreach (var item in resultData.Data!)
             {
                 if (item.Code != 0)
-                    result.Add(new CallResult<CoinExFuturesOrder>(new ServerError(item.Code, item.Message!)));
+                    result.Add(new CallResult<CoinExFuturesOrder>(new ServerError(item.Code, _baseClient.GetErrorInfo(item.Code, item.Message!))));
                 else
                     result.Add(new CallResult<CoinExFuturesOrder>(item.Data!));
             }
 
             if (result.All(x => !x.Success))
-                return resultData.AsErrorWithData(new ServerError("All orders failed"), result.ToArray());
+                return resultData.AsErrorWithData(new ServerError(new ErrorInfo(ErrorType.AllOrdersFailed, "All orders failed")), result.ToArray());
 
             return resultData.As(result.ToArray());
         }
@@ -140,13 +141,13 @@ namespace CoinEx.Net.Clients.FuturesApi
             foreach (var item in resultData.Data!)
             {
                 if (item.Code != 0)
-                    result.Add(new CallResult<CoinExStopId>(new ServerError(item.Code, item.Message!)));
+                    result.Add(new CallResult<CoinExStopId>(new ServerError(item.Code, _baseClient.GetErrorInfo(item.Code, item.Message!))));
                 else
                     result.Add(new CallResult<CoinExStopId>(item.Data!));
             }
 
             if (result.All(x => !x.Success))
-                return resultData.AsErrorWithData(new ServerError("All orders failed"), result.ToArray());
+                return resultData.AsErrorWithData(new ServerError(new ErrorInfo(ErrorType.AllOrdersFailed, "All orders failed")), result.ToArray());
 
             return resultData.As(result.ToArray());
         }

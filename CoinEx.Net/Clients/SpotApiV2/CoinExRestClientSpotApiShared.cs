@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.Enums;
 using CryptoExchange.Net;
 using CoinEx.Net.Objects.Models.V2;
+using CryptoExchange.Net.Objects.Errors;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -45,7 +46,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         {
             var interval = (Enums.KlineInterval)request.Interval;
             if (!Enum.IsDefined(typeof(Enums.KlineInterval), interval))
-                return new ExchangeWebResult<SharedKline[]>(Exchange, new ArgumentError("Interval not supported"));
+                return new ExchangeWebResult<SharedKline[]>(Exchange, ArgumentError.Invalid(nameof(GetKlinesRequest.Interval), "Interval not supported"));
 
             var validationError = ((IKlineRestClient)this).GetKlinesOptions.ValidateRequest(Exchange, request, request.Symbol!.TradingMode, SupportedTradingModes);
             if (validationError != null)
@@ -61,7 +62,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             {
                 // Not available via the API
                 var cutoff = DateTime.UtcNow.AddSeconds(-(int)request.Interval * apiLimit);
-                return new ExchangeWebResult<SharedKline[]>(Exchange, new ArgumentError($"Time filter outside of supported range. Can only request the most recent {apiLimit} klines i.e. data later than {cutoff} at this interval"));
+                return new ExchangeWebResult<SharedKline[]>(Exchange, ArgumentError.Invalid(nameof(GetKlinesRequest.Limit), $"Time filter outside of supported range. Can only request the most recent {apiLimit} klines i.e. data later than {cutoff} at this interval"));
             }
 
             // Pagination not supported, no time filter available
@@ -278,7 +279,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedSpotOrder>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
-                return new ExchangeWebResult<SharedSpotOrder>(Exchange, new ArgumentError("Invalid order id"));
+                return new ExchangeWebResult<SharedSpotOrder>(Exchange, ArgumentError.Invalid(nameof(GetOrderTradesRequest.OrderId), "Invalid order id"));
 
             var orders = await Trading.GetOrderAsync(request.Symbol!.GetSymbol(FormatSymbol), orderId, ct: ct).ConfigureAwait(false);
             if (!orders)
@@ -396,7 +397,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedUserTrade[]>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
-                return new ExchangeWebResult<SharedUserTrade[]>(Exchange, new ArgumentError("Invalid order id"));
+                return new ExchangeWebResult<SharedUserTrade[]>(Exchange, ArgumentError.Invalid(nameof(GetOrderTradesRequest.OrderId), "Invalid order id"));
 
             var orders = await Trading.GetOrderTradesAsync(request.Symbol!.GetSymbol(FormatSymbol), AccountType.Spot, orderId: orderId, ct: ct).ConfigureAwait(false);
             if (!orders)
@@ -475,7 +476,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedId>(Exchange, validationError);
 
             if (!long.TryParse(request.OrderId, out var orderId))
-                return new ExchangeWebResult<SharedId>(Exchange, new ArgumentError("Invalid order id"));
+                return new ExchangeWebResult<SharedId>(Exchange, ArgumentError.Invalid(nameof(CancelOrderRequest.OrderId), "Invalid order id"));
 
             var order = await Trading.CancelOrderAsync(request.Symbol!.GetSymbol(FormatSymbol), AccountType.Spot, orderId, ct: ct).ConfigureAwait(false);
             if (!order)
@@ -542,7 +543,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }
 
             if (orderData == null)
-                return new ExchangeWebResult<SharedSpotOrder>(Exchange, new ServerError("Order not found"));
+                return new ExchangeWebResult<SharedSpotOrder>(Exchange, new ServerError(new ErrorInfo(ErrorType.UnknownOrder, "Order not found")));
 
             return order.AsExchangeResult(Exchange, TradingMode.Spot, new SharedSpotOrder(
                 ExchangeSymbolCache.ParseSymbol(_topicId, orderData.Symbol),
@@ -880,7 +881,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
                 order = orders.Data.Items.SingleOrDefault(x => x.ClientOrderId == request.OrderId)!;
                 if (order == null)
-                    return orders.AsExchangeError<SharedSpotTriggerOrder>(Exchange, new ServerError("Order not found"));
+                    return orders.AsExchangeError<SharedSpotTriggerOrder>(Exchange, new ServerError(new ErrorInfo(ErrorType.UnknownOrder, "Order not found")));
 
                 status = SharedTriggerOrderStatus.Filled;
             }

@@ -16,6 +16,7 @@ using CryptoExchange.Net.Converters.SystemTextJson;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CryptoExchange.Net.SharedApis;
+using CryptoExchange.Net.Objects.Errors;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
@@ -27,6 +28,8 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
+
+        protected override ErrorMapping ErrorMapping => CoinExErrors.RestErrorMapping;
         #endregion
 
         /// <inheritdoc />
@@ -82,7 +85,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return result.AsDataless();
 
             if (result.Data.Code != 0)
-                return result.AsDatalessError(new ServerError(result.Data.Code, result.Data.Message!));
+                return result.AsDatalessError(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
             return result.AsDataless();
         }
@@ -97,7 +100,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return result.As<T>(default);
 
             if (result.Data.Code != 0)
-                return result.AsError<T>(new ServerError(result.Data.Code, result.Data.Message!));
+                return result.AsError<T>(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
             return result.As(result.Data.Data);
         }
@@ -109,7 +112,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return result.As<CoinExPaginated<T>>(default);
 
             if (result.Data.Code != 0)
-                return result.AsError<CoinExPaginated<T>>(new ServerError(result.Data.Code, result.Data.Message!));
+                return result.AsError<CoinExPaginated<T>>(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
             var resultPage = new CoinExPaginated<T>
             {
@@ -126,20 +129,20 @@ namespace CoinEx.Net.Clients.FuturesApi
         protected override Error? TryParseError(KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
         {
             if (!accessor.IsValid)
-                return new ServerError(accessor.GetOriginalString());
+                return new ServerError(ErrorInfo.Unknown);
 
             var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
             if (code == 0)
                 return null;
-            
+
             var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
             if (msg == null)
-                return new ServerError(accessor.GetOriginalString());
+                return new ServerError(ErrorInfo.Unknown);
 
             if (code == null)
-                return new ServerError(msg);
+                return new ServerError(ErrorInfo.Unknown with { Message = msg });
 
-            return new ServerError(code.Value, msg);
+            return new ServerError(code.Value, GetErrorInfo(code.Value, msg));
         }
 
         /// <inheritdoc />
