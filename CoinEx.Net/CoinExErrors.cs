@@ -9,7 +9,7 @@ namespace CoinEx.Net
 {
     internal static class CoinExErrors
     {
-        internal static ErrorCollection RestErrorMapping { get; } = new ErrorCollection(
+        internal static ErrorMapping RestErrorMapping { get; } = new ErrorMapping(
             [
                 new ErrorInfo(ErrorType.Unauthorized, false, "Invalid API key", "4005"),
                 new ErrorInfo(ErrorType.Unauthorized, false, "IP address not allowed", "4007"),
@@ -68,7 +68,7 @@ namespace CoinEx.Net
             ]
         );
 
-        internal static ErrorCollection SocketErrorMapping { get; } = new ErrorCollection(
+        internal static ErrorMapping SocketErrorMapping { get; } = new ErrorMapping(
             [
                 new ErrorInfo(ErrorType.Unauthorized, false, "Authentication failed", "21002"),
 
