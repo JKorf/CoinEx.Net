@@ -41,10 +41,10 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         }
 
 
-        public override Query? GetSubQuery(SocketConnection connection)
+        protected override Query? GetSubQuery(SocketConnection connection)
             => new CoinExQuery(_client, _topic + ".subscribe", _parameters, false, 1);
 
-        public override Query? GetUnsubQuery()
+        protected override Query? GetUnsubQuery(SocketConnection connection)
             => new CoinExQuery(_client, _topic + ".unsubscribe", _parameters, false, 1);
     }
 }
