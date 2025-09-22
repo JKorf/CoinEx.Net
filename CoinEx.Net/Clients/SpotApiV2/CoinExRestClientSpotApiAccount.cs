@@ -159,12 +159,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPaginated<CoinExDeposit>>> GetDepositHistoryAsync(string asset, string? transactionId = null, DepositStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPaginated<CoinExDeposit>>> GetDepositHistoryAsync(string? asset = null, string? transactionId = null, DepositStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
-            {
-                { "ccy", asset },
-            };
+            var parameters = new ParameterCollection();
+            parameters.AddOptional("ccy", asset);
             parameters.AddOptional("tx_id", transactionId);
             parameters.AddOptional("page", page);
             parameters.AddOptional("limit", pageSize);
