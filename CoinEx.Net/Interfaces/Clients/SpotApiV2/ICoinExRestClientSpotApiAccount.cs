@@ -149,7 +149,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="pageSize">Page size</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExDeposit>>> GetDepositHistoryAsync(string asset, string? transactionId = null, DepositStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPaginated<CoinExDeposit>>> GetDepositHistoryAsync(string? asset = null, string? transactionId = null, DepositStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Withdraw funds to an external address or another CoinEx user
