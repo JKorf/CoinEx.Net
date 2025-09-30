@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.SharedApis;
+﻿using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Trackers.Klines;
 using CryptoExchange.Net.Trackers.Trades;
 using System;
@@ -10,15 +11,7 @@ namespace CoinEx.Net.Interfaces
     /// <summary>
     /// Tracker factory
     /// </summary>
-    public interface ICoinExTrackerFactory
+    public interface ICoinExTrackerFactory : ITrackerFactory
     {
-        /// <summary>
-        /// Create a new trade tracker for a symbol
-        /// </summary>
-        /// <param name="symbol">The symbol</param>
-        /// <param name="limit">The max amount of klines to retain</param>
-        /// <param name="period">The max period the data should be retained</param>
-        /// <returns></returns>
-        ITradeTracker CreateTradeTracker(SharedSymbol symbol, int? limit = null, TimeSpan? period = null);
     }
 }
