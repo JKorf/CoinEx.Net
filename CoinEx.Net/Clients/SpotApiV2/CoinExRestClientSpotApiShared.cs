@@ -206,19 +206,37 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         #region Balance client
-        EndpointOptions<GetBalancesRequest> IBalanceRestClient.GetBalancesOptions { get; } = new EndpointOptions<GetBalancesRequest>(true);
+        GetBalancesOptions IBalanceRestClient.GetBalancesOptions { get; } = new GetBalancesOptions(AccountTypeFilter.Spot, AccountTypeFilter.Margin);
 
         async Task<ExchangeWebResult<SharedBalance[]>> IBalanceRestClient.GetBalancesAsync(GetBalancesRequest request, CancellationToken ct)
         {
-            var validationError = ((IBalanceRestClient)this).GetBalancesOptions.ValidateRequest(Exchange, request, request.TradingMode, SupportedTradingModes);
+            var validationError = ((IBalanceRestClient)this).GetBalancesOptions.ValidateRequest(Exchange, request, SupportedTradingModes);
             if (validationError != null)
                 return new ExchangeWebResult<SharedBalance[]>(Exchange, validationError);
 
-            var result = await Account.GetBalancesAsync(ct: ct).ConfigureAwait(false);
-            if (!result)
-                return result.AsExchangeResult<SharedBalance[]>(Exchange, null, default);
+            if (request.AccountType == SharedAccountType.Spot || request.AccountType == null)
+            {
+                var result = await Account.GetBalancesAsync(ct: ct).ConfigureAwait(false);
+                if (!result)
+                    return result.AsExchangeResult<SharedBalance[]>(Exchange, null, default);
 
-            return result.AsExchangeResult<SharedBalance[]>(Exchange, TradingMode.Spot, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray());
+                return result.AsExchangeResult<SharedBalance[]>(Exchange, TradingMode.Spot, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray());
+            }
+            else
+            {
+                var result = await Account.GetMarginBalancesAsync(ct: ct).ConfigureAwait(false);
+                if (!result)
+                    return result.AsExchangeResult<SharedBalance[]>(Exchange, null, default);
+
+                var resultList = new List<SharedBalance>();
+                foreach(var item in result.Data)
+                {
+                    resultList.Add(new SharedBalance(item.BaseAsset, item.Available.BaseAsset, item.Available.BaseAsset + item.Frozen.BaseAsset) { IsolatedMarginSymbol = item.MarginAccount });
+                    resultList.Add(new SharedBalance(item.QuoteAsset, item.Available.QuoteAsset, item.Available.QuoteAsset + item.Frozen.QuoteAsset) { IsolatedMarginSymbol = item.MarginAccount });
+                }
+
+                return result.AsExchangeResult<SharedBalance[]>(Exchange, TradingMode.Spot, resultList.ToArray());
+            }
         }
 
         #endregion
@@ -413,6 +431,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 x.Price,
                 x.CreateTime)
             {
+                ClientOrderId = x.ClientOrderId,
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
@@ -462,6 +481,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 x.Price,
                 x.CreateTime)
             {
+                ClientOrderId = x.ClientOrderId,
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
@@ -923,5 +943,49 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #endregion
 
+        #region Transfer client
+
+        TransferOptions ITransferRestClient.TransferOptions { get; } = new TransferOptions([
+            SharedAccountType.Spot,
+            SharedAccountType.PerpetualLinearFutures,
+            SharedAccountType.PerpetualInverseFutures,
+            SharedAccountType.DeliveryLinearFutures,
+            SharedAccountType.DeliveryInverseFutures,
+            SharedAccountType.CrossMargin,
+            SharedAccountType.IsolatedMargin]);
+        async Task<ExchangeWebResult<SharedId>> ITransferRestClient.TransferAsync(TransferRequest request, CancellationToken ct)
+        {
+            var validationError = ((ITransferRestClient)this).TransferOptions.ValidateRequest(Exchange, request, TradingMode.Spot, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeWebResult<SharedId>(Exchange, validationError);
+
+            var fromType = GetTransferType(request.FromAccountType);
+            var toType = GetTransferType(request.ToAccountType);
+            if (fromType == null || toType == null)
+                return new ExchangeWebResult<SharedId>(Exchange, ArgumentError.Invalid("To/From AccountType", "invalid to/from account combination"));
+
+            // Get data
+            var transfer = await Account.TransferAsync(
+                request.Asset,
+                fromType.Value,
+                toType.Value,
+                request.Quantity,
+                fromType == AccountType.Margin ? request.FromSymbol : request.ToSymbol,
+                ct: ct).ConfigureAwait(false);
+            if (!transfer)
+                return transfer.AsExchangeResult<SharedId>(Exchange, null, default);
+
+            return transfer.AsExchangeResult(Exchange, TradingMode.Spot, new SharedId(""));
+        }
+
+        private AccountType? GetTransferType(SharedAccountType type)
+        {
+            if (type == SharedAccountType.Spot) return AccountType.Spot;
+            if (type.IsMarginAccount()) return AccountType.Margin;
+            if (type.IsFuturesAccount()) return AccountType.Futures;
+            return null;
+        }
+
+        #endregion
     }
 }

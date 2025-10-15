@@ -205,6 +205,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                         update.Data.Price,                        
                         update.Data.CreateTime)
                     {
+                        ClientOrderId = update.Data.ClientOrderId,
                         Fee = update.Data.Fee,
                         FeeAsset = update.Data.FeeAsset,
                         Role = update.Data.Role == Enums.TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker
