@@ -35,6 +35,11 @@ namespace CoinEx.Net.Objects.Options
         public bool AllowAppendingClientOrderId { get; set; } = false;
 
         /// <summary>
+        /// Broker id
+        /// </summary>
+        public string? BrokerId { get; set; }
+
+        /// <summary>
         /// Optional nonce provider for signing requests. Careful providing a custom provider; once a nonce is sent to the server, every request after that needs a higher nonce than that
         /// </summary>
         public INonceProvider? NonceProvider { get; set; }
@@ -53,6 +58,7 @@ namespace CoinEx.Net.Objects.Options
         {
             targetOptions = base.Set<CoinExRestOptions>(targetOptions);
             targetOptions.AllowAppendingClientOrderId = AllowAppendingClientOrderId;
+            targetOptions.BrokerId = BrokerId;
             targetOptions.NonceProvider = NonceProvider;
             targetOptions.SpotOptions = SpotOptions.Set(targetOptions.SpotOptions);
             targetOptions.FuturesOptions = FuturesOptions.Set(targetOptions.FuturesOptions);

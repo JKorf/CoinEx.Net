@@ -38,7 +38,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
             SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
-            clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            clientOrderId = LibraryHelpers.ApplyBrokerId(
+                clientOrderId,
+                LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                32,
+                _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
             var parameters = new ParameterCollection()
             {
@@ -73,7 +77,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
             SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
-            clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId); 
+            clientOrderId = LibraryHelpers.ApplyBrokerId(
+                clientOrderId,
+                LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                32,
+                _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
             var parameters = new ParameterCollection()
             {
@@ -99,8 +107,14 @@ namespace CoinEx.Net.Clients.SpotApiV2
             IEnumerable<CoinExPlaceOrderRequest> requests,
             CancellationToken ct = default)
         {
-            foreach(var order in requests)
-                order.ClientOrderId = LibraryHelpers.ApplyBrokerId(order.ClientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            foreach (var order in requests)
+            {
+                order.ClientOrderId = LibraryHelpers.ApplyBrokerId(
+                    order.ClientOrderId,
+                    LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                    32,
+                    _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            }
 
             var parameters = new ParameterCollection()
             {
@@ -132,7 +146,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
             CancellationToken ct = default)
         {
             foreach (var order in requests)
-                order.ClientOrderId = LibraryHelpers.ApplyBrokerId(order.ClientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            {
+                order.ClientOrderId = LibraryHelpers.ApplyBrokerId(
+                    order.ClientOrderId,
+                    LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                    32,
+                    _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            }
 
             var parameters = new ParameterCollection()
             {
@@ -204,7 +224,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
         public async Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetOpenStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
             if (clientOrderId != null)
-                clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            {
+                clientOrderId = LibraryHelpers.ApplyBrokerId(
+                    clientOrderId,
+                    LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                    32,
+                    _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            }
 
             var parameters = new ParameterCollection();
             parameters.AddEnum("market_type", accountType);
@@ -332,7 +358,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExOrder[]>> CancelOrdersByClientOrderIdAsync(string symbol, AccountType accountType, string clientOrderId, CancellationToken ct = default)
         {
-            clientOrderId = LibraryHelpers.ApplyBrokerId(clientOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            clientOrderId = LibraryHelpers.ApplyBrokerId(
+                clientOrderId,
+                LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                32,
+                _baseClient.ClientOptions.AllowAppendingClientOrderId);
 
             var parameters = new ParameterCollection()
             {
@@ -348,8 +378,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExStopOrder[]>> CancelStopOrdersByClientOrderIdAsync(string symbol, AccountType accountType, string clientStopOrderId, CancellationToken ct = default)
         {
-            clientStopOrderId = LibraryHelpers.ApplyBrokerId(clientStopOrderId, CoinExExchange.ClientOrderId, 32, _baseClient.ClientOptions.AllowAppendingClientOrderId);
-            
+            clientStopOrderId = LibraryHelpers.ApplyBrokerId(
+                clientStopOrderId,
+                LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                32,
+                _baseClient.ClientOptions.AllowAppendingClientOrderId);
+
             var parameters = new ParameterCollection()
             {
                 { "market", symbol },
