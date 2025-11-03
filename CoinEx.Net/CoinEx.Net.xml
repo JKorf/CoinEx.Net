@@ -738,6 +738,11 @@
             Type of exchange
             </summary>
         </member>
+        <member name="P:CoinEx.Net.CoinExExchange.AssetAliases">
+            <summary>
+            Aliases for CoinEx assets
+            </summary>
+        </member>
         <member name="M:CoinEx.Net.CoinExExchange.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
             <summary>
             Format a base and quote asset to a CoinEx recognized symbol 

@@ -53,6 +53,16 @@ namespace CoinEx.Net
         internal static JsonSerializerContext _serializerContext = JsonSerializerContextCache.GetOrCreate<CoinExSourceGenerationContext>();
 
         /// <summary>
+        /// Aliases for CoinEx assets
+        /// </summary>
+        public static AssetAliasConfiguration AssetAliases { get; } = new AssetAliasConfiguration
+        {
+            Aliases = [
+                new AssetAlias("USDT", SharedSymbol.UsdOrStable.ToUpperInvariant(), AliasType.OnlyToExchange)
+            ]
+        };
+
+        /// <summary>
         /// Format a base and quote asset to a CoinEx recognized symbol 
         /// </summary>
         /// <param name="baseAsset">Base asset</param>
@@ -62,7 +72,10 @@ namespace CoinEx.Net
         /// <returns></returns>
         public static string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
         {
-            return $"{baseAsset.ToUpperInvariant()}{quoteAsset.ToUpperInvariant()}";
+            baseAsset = AssetAliases.CommonToExchangeName(baseAsset.ToUpperInvariant());
+            quoteAsset = AssetAliases.CommonToExchangeName(quoteAsset.ToUpperInvariant());
+
+            return $"{baseAsset}{quoteAsset}";
         }
 
         /// <summary>
