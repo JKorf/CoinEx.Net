@@ -76,6 +76,9 @@
         <member name="T:CoinEx.Net.Clients.CoinExUserClientProvider">
             <inheritdoc />
         </member>
+        <member name="P:CoinEx.Net.Clients.CoinExUserClientProvider.ExchangeName">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.CoinExUserClientProvider.#ctor(System.Action{CoinEx.Net.Objects.Options.CoinExOptions})">
             <summary>
             ctor
@@ -7437,6 +7440,9 @@
             </summary>
         </member>
         <member name="T:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory">
+            <inheritdoc />
+        </member>
+        <member name="P:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.ExchangeName">
             <inheritdoc />
         </member>
         <member name="P:CoinEx.Net.SymbolOrderBooks.CoinExOrderBookFactory.Spot">

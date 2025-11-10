@@ -16,6 +16,9 @@ namespace CoinEx.Net.SymbolOrderBooks
         private readonly IServiceProvider _serviceProvider;
 
         /// <inheritdoc />
+        public string ExchangeName => CoinExExchange.ExchangeName;
+
+        /// <inheritdoc />
         public IOrderBookFactory<CoinExOrderBookOptions> Spot { get; }
 
         /// <inheritdoc />

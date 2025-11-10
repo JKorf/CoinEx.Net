@@ -8,7 +8,7 @@ namespace CoinEx.Net.Interfaces
     /// <summary>
     /// CoinEx order book factory
     /// </summary>
-    public interface ICoinExOrderBookFactory
+    public interface ICoinExOrderBookFactory : IExchangeService
     {
         /// <summary>
         /// Spot order book factory methods
