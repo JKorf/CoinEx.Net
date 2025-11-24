@@ -28,14 +28,17 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", DoHandleMessage);
         }
 
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExTradeWrapper>> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
         {
-            var relevant = message.Data.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(message.Data.Data.Symbol)).ToArray();
-            if (!relevant.Any() || !message.Data.Data.Trades.Any())
+            var relevant = message.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(message.Data.Symbol)).ToArray();
+            if (!relevant.Any() || !message.Data.Trades.Any())
                 return CallResult.SuccessResult;
 
-            _handler.Invoke(message.As<CoinExTrade[]>(relevant, message.Data.Method, message.Data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                .WithDataTimestamp(message.Data.Data.Trades.Max(x => x.Timestamp)));
+            _handler.Invoke(new DataEvent<CoinExTrade[]>(relevant, receiveTime, originalData)
+                .WithStreamId(message.Method)
+                .WithSymbol(message.Data.Symbol)
+                .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))
+                .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 

@@ -19,6 +19,9 @@ using System.Linq;
 using System.Globalization;
 using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Objects.Errors;
+using System.Net.Http.Headers;
+using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
+using Coinbase.Net.Clients.MessageHandlers;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -33,6 +36,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         protected override ErrorMapping ErrorMapping => CoinExErrors.RestErrorMapping;
 
+        protected override IRestMessageHandler MessageHandler { get; } = new CoinExRestMessageHandler(CoinExErrors.RestErrorMapping);
         #endregion
 
         /// <inheritdoc />
@@ -125,7 +129,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         /// <inheritdoc />
-        protected override Error? TryParseError(RequestDefinition request, KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
+        protected override Error? TryParseError(RequestDefinition request, HttpResponseHeaders responseHeaders, IMessageAccessor accessor)
         {
             if (!accessor.IsValid)
                 return new ServerError(ErrorInfo.Unknown);

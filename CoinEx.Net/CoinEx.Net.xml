@@ -132,7 +132,7 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.TryParseError(CryptoExchange.Net.Objects.RequestDefinition,System.Collections.Generic.KeyValuePair{System.String,System.String[]}[],CryptoExchange.Net.Interfaces.IMessageAccessor)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.TryParseError(CryptoExchange.Net.Objects.RequestDefinition,System.Net.Http.Headers.HttpResponseHeaders,CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetServerTimestampAsync">
@@ -323,6 +323,9 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExFuturesTickerUpdate[]}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -401,7 +404,7 @@
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.TryParseError(CryptoExchange.Net.Objects.RequestDefinition,System.Collections.Generic.KeyValuePair{System.String,System.String[]}[],CryptoExchange.Net.Interfaces.IMessageAccessor)">
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.TryParseError(CryptoExchange.Net.Objects.RequestDefinition,System.Net.Http.Headers.HttpResponseHeaders,CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetServerTimestampAsync">
@@ -611,6 +614,9 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlySpan{System.Byte})">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.SubscribeToSystemNoticeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExMaintenance[]}},System.Threading.CancellationToken)">
@@ -7547,6 +7553,9 @@
         </member>
         <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.Bind_CoinExOptions(Microsoft.Extensions.Configuration.IConfiguration,System.Object)">
             <summary>Attempts to bind the given object instance to configuration values by matching property names against configuration keys recursively.</summary>
+        </member>
+        <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.TryGetConfigurationValue(Microsoft.Extensions.Configuration.IConfiguration,System.String,System.String@)">
+            <summary>Tries to get the configuration value for the specified key.</summary>
         </member>
         <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.ValidateConfigurationKeys(System.Type,System.Lazy{System.Collections.Generic.HashSet{System.String}},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Configuration.BinderOptions)">
             <summary>If required by the binder options, validates that there are no unknown keys in the input configuration object.</summary>

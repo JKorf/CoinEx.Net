@@ -1,22 +1,25 @@
-﻿using CryptoExchange.Net;
+﻿using Coinbase.Net.Clients.MessageHandlers;
+using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CoinEx.Net.Objects.Internal;
+using CoinEx.Net.Objects.Models.V2;
+using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net;
+using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Clients;
+using CryptoExchange.Net.Converters.MessageParsing;
+using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Objects.Errors;
+using CryptoExchange.Net.SharedApis;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.Authentication;
-using CoinEx.Net.Objects.Internal;
-using Microsoft.Extensions.Logging;
-using CoinEx.Net.Objects.Options;
-using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.Converters.MessageParsing;
-using CryptoExchange.Net.Clients;
-using CryptoExchange.Net.Converters.SystemTextJson;
-using CoinEx.Net.Objects.Models.V2;
-using CoinEx.Net.Interfaces.Clients.FuturesApi;
-using CryptoExchange.Net.SharedApis;
-using CryptoExchange.Net.Objects.Errors;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
@@ -29,6 +32,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
+        protected override IRestMessageHandler MessageHandler { get; } = new CoinExRestMessageHandler(CoinExErrors.RestErrorMapping);
         protected override ErrorMapping ErrorMapping => CoinExErrors.RestErrorMapping;
         #endregion
 
@@ -126,7 +130,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         /// <inheritdoc />
-        protected override Error? TryParseError(RequestDefinition request, KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
+        protected override Error? TryParseError(RequestDefinition request, HttpResponseHeaders responseHeaders, IMessageAccessor accessor)
         {
             if (!accessor.IsValid)
                 return new ServerError(ErrorInfo.Unknown);

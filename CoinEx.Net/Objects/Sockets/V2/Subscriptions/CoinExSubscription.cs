@@ -17,10 +17,10 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private string _topic;
         private IEnumerable<string>? _symbols;
         private Dictionary<string, object> _parameters;
-        private Action<DataEvent<T>> _handler;
+        private Action<DateTime, string?, int, CoinExSocketUpdate<T>> _handler;
         private bool _firstUpdateIsSnapshot;
 
-        public CoinExSubscription(ILogger logger, SocketApiClient client, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<T>> handler, bool authenticated = false, bool firstUpdateIsSnapshot = false) : base(logger, authenticated)
+        public CoinExSubscription(ILogger logger, SocketApiClient client, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DateTime, string?, int, CoinExSocketUpdate<T>> handler, bool authenticated = false, bool firstUpdateIsSnapshot = false) : base(logger, authenticated)
         {
             _client = client;
             _topic = topic;
@@ -34,9 +34,10 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
                 MessageMatcher = MessageMatcher.Create(_symbols!.Select(x => new MessageHandlerLink<CoinExSocketUpdate<T>>(_topic + ".update" + x, DoHandleMessage)).ToArray());
         }
 
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<T>> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<T> message)
         {
-            _handler.Invoke(message.As(message.Data.Data, message.Data.Method, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            _handler.Invoke(receiveTime, originalData, ConnectionInvocations, message);
+            //_handler.Invoke(message.As(message.Data.Data, message.Data.Method, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 

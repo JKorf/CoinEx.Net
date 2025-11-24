@@ -1,26 +1,29 @@
+using Coinbase.Net.Clients.MessageHandlers;
+using CoinEx.Net.Interfaces.Clients.FuturesApi;
+using CoinEx.Net.Objects.Models.V2;
+using CoinEx.Net.Objects.Options;
+using CoinEx.Net.Objects.Sockets.V2;
+using CoinEx.Net.Objects.Sockets.V2.Queries;
+using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
 using CryptoExchange.Net;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Clients;
+using CryptoExchange.Net.Converters.MessageParsing;
+using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Objects.Errors;
+using CryptoExchange.Net.Objects.Sockets;
+using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
-using CryptoExchange.Net.Authentication;
-using System.Threading;
-using CoinEx.Net.Objects.Options;
-using CryptoExchange.Net.Objects.Sockets;
-using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.Converters.MessageParsing;
-using CryptoExchange.Net.Clients;
-using CoinEx.Net.Objects.Models.V2;
-using CryptoExchange.Net.Converters.SystemTextJson;
-using System.Net.WebSockets;
-using CoinEx.Net.Objects.Sockets.V2.Subscriptions;
-using CoinEx.Net.Objects.Sockets.V2.Queries;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using CoinEx.Net.Interfaces.Clients.FuturesApi;
-using CryptoExchange.Net.SharedApis;
-using CryptoExchange.Net.Objects.Errors;
+using System.Net.WebSockets;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoinEx.Net.Clients.FuturesApi
 {
@@ -71,6 +74,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
                 => CoinExExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverTime);
 
+        public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new CoinExSocketMessageConverter();
+
         #region methods
 
         /// <inheritdoc />
@@ -116,6 +121,15 @@ namespace CoinEx.Net.Clients.FuturesApi
             return data;
         }
 
+        /// <inheritdoc />
+        public override ReadOnlySpan<byte> PreprocessStreamMessage(SocketConnection connection, WebSocketMessageType type, ReadOnlySpan<byte> data)
+        {
+            if (type == WebSocketMessageType.Binary)
+                return data.DecompressGzip();
+
+            return data;
+        }
+
         #region public
 
         /// <inheritdoc />
@@ -145,12 +159,21 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExOrderBook>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExOrderBook>(data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Symbol)
+                        .WithDataTimestamp(data.Data.Data.UpdateTime)
+                    );
+            });
+
             var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, this, "depth", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToArray() }
-            }, x => onMessage(
-                x.WithSymbol(x.Data.Symbol)
-                .WithDataTimestamp(x.Data.Data.UpdateTime)));
+            }, internalHandler);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -179,11 +202,20 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExIndexPriceUpdate>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExIndexPriceUpdate>(data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Symbol)
+                    );
+            });
+
             var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, this, "index", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
-            }, x => onMessage(
-                x.WithSymbol(x.Data.Symbol)));
+            }, internalHandler);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -194,74 +226,119 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExBookPriceUpdate>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExBookPriceUpdate>(data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Symbol)
+                        .WithDataTimestamp(data.Data.UpdateTime)
+                    );
+            });
+
             var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, this, "bbo", symbols, new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
-            }, x => onMessage(
-                x.WithSymbol(x.Data.Symbol)
-                .WithDataTimestamp(x.Data.UpdateTime)));
+            }, internalHandler);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEvent<CoinExFuturesOrderUpdate>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExFuturesOrderUpdate>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExFuturesOrderUpdate>(data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Order.Symbol)
+                        .WithDataTimestamp(data.Data.Order.UpdateTime)
+                    );
+            });
             var subscription = new CoinExSubscription<CoinExFuturesOrderUpdate>(_logger, this, "order", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, x => onMessage(
-                x.WithSymbol(x.Data.Order.Symbol)
-                .WithUpdateType(SocketUpdateType.Update)
-                .WithDataTimestamp(x.Data.Order.UpdateTime)), true);
+            }, internalHandler, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToStopOrderUpdatesAsync(Action<DataEvent<CoinExStopOrderUpdate>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExStopOrderUpdate>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExStopOrderUpdate>(data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Order.Symbol)
+                        .WithDataTimestamp(data.Data.Order.UpdateTime)
+                    );
+            });
             var subscription = new CoinExSubscription<CoinExStopOrderUpdate>(_logger, this, "stop", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, x => onMessage(
-                x.WithSymbol(x.Data.Order.Symbol)
-                .WithUpdateType(SocketUpdateType.Update)
-                .WithDataTimestamp(x.Data.Order.UpdateTime)), true);
+            }, internalHandler, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(Action<DataEvent<CoinExUserTrade>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExUserTrade>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExUserTrade>(data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Symbol)
+                        .WithDataTimestamp(data.Data.CreateTime)
+                    );
+            });
             var subscription = new CoinExSubscription<CoinExUserTrade>(_logger, this, "user_deals", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, x => onMessage(
-                x.WithSymbol(x.Data.Symbol)
-                .WithUpdateType(SocketUpdateType.Update)
-                .WithDataTimestamp(x.Data.CreateTime)), true);
+            }, internalHandler, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<CoinExFuturesBalance[]>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExFuturesBalanceUpdate>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExFuturesBalance[]>(data.Data.Balances, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                    );
+            });
             var subscription = new CoinExSubscription<CoinExFuturesBalanceUpdate>(_logger, this, "balance", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "ccy_list", Array.Empty<string>() }
-            }, x => onMessage(
-                x.As(x.Data.Balances, "balance", null, SocketUpdateType.Update)), true);
+            }, internalHandler, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToPositionUpdatesAsync(Action<DataEvent<CoinExPositionUpdate>> onMessage, CancellationToken ct = default)
         {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExPositionUpdate>>((receiveTime, originalData, invocations, data) =>
+            {
+                onMessage(
+                    new DataEvent<CoinExPositionUpdate>(data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Position.Symbol)
+                        .WithDataTimestamp(data.Data.Position.UpdateTime)
+                    );
+            });
             var subscription = new CoinExSubscription<CoinExPositionUpdate>(_logger, this, "position", Array.Empty<string>(), new Dictionary<string, object>
             {
                 { "market_list", Array.Empty<string>() }
-            }, x => onMessage(
-                x.WithSymbol(x.Symbol!)
-                .WithDataTimestamp(x.Data.Position.UpdateTime)), true);
+            }, internalHandler, true);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
         #endregion

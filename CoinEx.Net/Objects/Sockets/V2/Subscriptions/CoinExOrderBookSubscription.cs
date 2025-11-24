@@ -28,10 +28,13 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             MessageMatcher = MessageMatcher.Create(_symbols.Select(x => new MessageHandlerLink<CoinExSocketUpdate<CoinExOrderBook>>("depth.update" + x, DoHandleMessage)).ToArray());
         }
 
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExOrderBook>> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExOrderBook> message)
         {
-            _handler.Invoke(message.As(message.Data.Data, message.Data.Method, message.Data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                .WithDataTimestamp(message.Data.Data.Data.UpdateTime));
+            _handler.Invoke(new DataEvent<CoinExOrderBook>(message.Data, receiveTime, originalData)
+                .WithStreamId(message.Method)
+                .WithSymbol(message.Data.Symbol)
+                .WithDataTimestamp(message.Data.Data.UpdateTime)
+                .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 

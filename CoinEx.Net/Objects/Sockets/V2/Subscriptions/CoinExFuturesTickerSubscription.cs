@@ -28,13 +28,15 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>>("state.update", DoHandleMessage);
         }
 
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper> message)
         {
-            var relevant = message.Data.Data.Tickers.Where(d => _symbols == null || _symbols.Contains(d.Symbol)).ToArray();
+            var relevant = message.Data.Tickers.Where(d => _symbols == null || _symbols.Contains(d.Symbol)).ToArray();
             if (!relevant.Any())
                 return CallResult.SuccessResult;
 
-            _handler.Invoke(message.As(relevant, message.Data.Method, null, SocketUpdateType.Update));
+            _handler.Invoke(new DataEvent<CoinExFuturesTickerUpdate[]>(relevant, receiveTime, originalData)
+                .WithStreamId(message.Method)
+                .WithUpdateType(SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 
