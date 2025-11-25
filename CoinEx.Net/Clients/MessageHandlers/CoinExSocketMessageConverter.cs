@@ -35,7 +35,7 @@ namespace Coinbase.Net.Clients.MessageHandlers
             new MessageEvaluator {
                 Priority = 2,
                 Fields = [
-                    new PropertyFieldReference("method") { Constraint = x => _withoutSymbolTopics.Contains(x!) },
+                    new PropertyFieldReference("method"),
                 ],
                 IdentifyMessageCallback = x => $"{x.FieldValue("method")}",
             },
@@ -46,7 +46,7 @@ namespace Coinbase.Net.Clients.MessageHandlers
                 Fields = [
                     new PropertyFieldReference("id") { Constraint = x => x != null },
                 ],
-                IdentifyMessageCallback = x => x.FieldValue("id"),
+                IdentifyMessageCallback = x => x.FieldValue("id")!,
             },
         ];
     }

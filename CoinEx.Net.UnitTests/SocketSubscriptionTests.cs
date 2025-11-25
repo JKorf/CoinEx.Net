@@ -10,11 +10,14 @@ namespace CoinEx.Net.UnitTests
     [TestFixture]
     public class SocketSubscriptionTests
     {
-        [Test]
-        public async Task ValidateSpotSubscriptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateSpotSubscriptions(bool useUpdatedDeserialization)
         {
             var client = new CoinExSocketClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
+                opts.OutputOriginalData = true;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/SpotApi", "wss://socket.coinex.com", "data");
@@ -29,11 +32,14 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync<CoinExBalanceUpdate[]>((client, handler) => client.SpotApiV2.SubscribeToBalanceUpdatesAsync(handler), "Balance", nestedJsonProperty: "data.balance_list");
         }
 
-        [Test]
-        public async Task ValidateFuturesSubscriptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateFuturesSubscriptions(bool useUpdatedDeserialization)
         {
             var client = new CoinExSocketClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
+                opts.OutputOriginalData = true;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/FuturesApi", "wss://socket.coinex.com", "data");

@@ -1,4 +1,5 @@
 ﻿using CoinEx.Net;
+using CoinEx.Net.Objects.Internal;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Converters.SystemTextJson;
@@ -25,18 +26,15 @@ namespace Coinbase.Net.Clients.MessageHandlers
             _errorMapping = errorMapping;
         }
 
-        public override async ValueTask<Error?> CheckForErrorResponse(RequestDefinition request, object? state, HttpResponseHeaders responseHeaders, Stream responseStream)
+        public override Error? CheckDeserializedResponse<T>(HttpResponseHeaders responseHeaders, T result)
         {
-            var (parseError, document) = await GetJsonDocument(responseStream, state).ConfigureAwait(false);
-            if (parseError != null)
-                return parseError;
-
-            int? code = document!.RootElement.TryGetProperty("code", out var codeProp) ? codeProp.GetInt32() : null;
-            if (code == 0)
+            if (result is not CoinExApiResult coinExResult)
                 return null;
 
-            var msg = document!.RootElement.TryGetProperty("message", out var msgProp) ? msgProp.GetString() : null;
-            return new ServerError(code!.Value, _errorMapping.GetErrorInfo(code.Value.ToString(), msg));
+            if (coinExResult.Code == 0)
+                return null;
+
+            return new ServerError(coinExResult.Code, _errorMapping.GetErrorInfo(coinExResult.Code.ToString(), coinExResult.Message!));
         }
 
         public override async ValueTask<Error> ParseErrorResponse(
