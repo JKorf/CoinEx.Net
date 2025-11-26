@@ -18,7 +18,6 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private IEnumerable<string>? _symbols;
         private Dictionary<string, object> _parameters;
         private Action<DateTime, string?, int, CoinExSocketUpdate<T>> _handler;
-        private bool _firstUpdateIsSnapshot;
 
         public CoinExSubscription(ILogger logger, SocketApiClient client, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DateTime, string?, int, CoinExSocketUpdate<T>> handler, bool authenticated = false, bool firstUpdateIsSnapshot = false) : base(logger, authenticated)
         {
@@ -27,7 +26,6 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
-            _firstUpdateIsSnapshot = firstUpdateIsSnapshot;
             if (symbols?.Any() != true)
                 MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<T>>(_topic + ".update", DoHandleMessage);
             else
@@ -37,7 +35,6 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<T> message)
         {
             _handler.Invoke(receiveTime, originalData, ConnectionInvocations, message);
-            //_handler.Invoke(message.As(message.Data.Data, message.Data.Method, null, _firstUpdateIsSnapshot && ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 
