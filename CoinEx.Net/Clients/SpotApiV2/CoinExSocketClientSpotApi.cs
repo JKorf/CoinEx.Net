@@ -83,7 +83,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
-        public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new CoinExSocketMessageConverter();
+        public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new CoinExSocketSpotMessageHandler();
 
         /// <inheritdoc />
         public override string? GetListenerIdentifier(IMessageAccessor messageAccessor)
@@ -154,7 +154,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExTickerSubscription(_logger, this, null, new Dictionary<string, object>
+            var subscription = new CoinExTickerSubscription(_logger, this, [], new Dictionary<string, object>
             {
                 { "market_list", new string[] { } }
             }, onMessage);

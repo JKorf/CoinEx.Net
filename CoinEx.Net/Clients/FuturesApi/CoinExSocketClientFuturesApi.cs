@@ -74,7 +74,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
                 => CoinExExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverTime);
 
-        public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new CoinExSocketMessageConverter();
+        public override ISocketMessageHandler CreateMessageConverter(WebSocketMessageType messageType) => new CoinExSocketFuturesMessageHandler();
 
         #region methods
 
@@ -145,7 +145,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExFuturesTickerUpdate[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExFuturesTickerSubscription(_logger, this, null, new Dictionary<string, object>
+            var subscription = new CoinExFuturesTickerSubscription(_logger, this, [], new Dictionary<string, object>
             {
                 { "market_list", new object[] { } }
             }, onMessage);

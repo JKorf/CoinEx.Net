@@ -25,6 +25,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
+            MessageRouter = MessageRouter.Create<CoinExSocketUpdate<CoinExOrderBook>>("depth.update", symbols, DoHandleMessage);
             MessageMatcher = MessageMatcher.Create(_symbols.Select(x => new MessageHandlerLink<CoinExSocketUpdate<CoinExOrderBook>>("depth.update" + x, DoHandleMessage)).ToArray());
         }
 

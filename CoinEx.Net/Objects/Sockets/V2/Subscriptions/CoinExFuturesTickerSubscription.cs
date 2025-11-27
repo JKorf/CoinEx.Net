@@ -19,13 +19,14 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExFuturesTickerUpdate[]>> _handler;
 
-        public CoinExFuturesTickerSubscription(ILogger logger, SocketApiClient client, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExFuturesTickerUpdate[]>> handler) : base(logger, false)
+        public CoinExFuturesTickerSubscription(ILogger logger, SocketApiClient client, IEnumerable<string> symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExFuturesTickerUpdate[]>> handler) : base(logger, false)
         {
             _client = client;
-            _symbols = symbols;
+            _symbols = symbols.Any() ? symbols : null;
             _parameters = parameters;
             _handler = handler;
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>>("state.update", DoHandleMessage);
+            MessageRouter = MessageRouter.Create<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>>("state.update", symbols.Any() ? symbols : null, DoHandleMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper> message)

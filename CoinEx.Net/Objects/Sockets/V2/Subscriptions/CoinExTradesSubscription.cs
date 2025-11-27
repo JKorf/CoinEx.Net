@@ -19,22 +19,23 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExTrade[]>> _handler;
 
-        public CoinExTradesSubscription(ILogger logger, SocketApiClient client, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
+        public CoinExTradesSubscription(ILogger logger, SocketApiClient client, IEnumerable<string> symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
         {
             _client = client;
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", DoHandleMessage);
+            MessageRouter = MessageRouter.Create<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", symbols.Any() ? symbols : null, DoHandleMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
         {
-            var relevant = message.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(message.Data.Symbol)).ToArray();
-            if (!relevant.Any() || !message.Data.Trades.Any())
-                return CallResult.SuccessResult;
+            //var relevant = message.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(message.Data.Symbol)).ToArray();
+            //if (!relevant.Any() || !message.Data.Trades.Any())
+            //    return CallResult.SuccessResult;
 
-            _handler.Invoke(new DataEvent<CoinExTrade[]>(relevant, receiveTime, originalData)
+            _handler.Invoke(new DataEvent<CoinExTrade[]>(message.Data.Trades, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))

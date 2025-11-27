@@ -20,7 +20,9 @@ namespace CoinEx.Net.Objects.Sockets.V2.Queries
         }, authenticated, weight)
         {
             _client = client;
-            MessageMatcher = MessageMatcher.Create<CoinExSocketResponse>(((CoinExSocketRequest)Request).Id.ToString(), HandleMessage);
+            var id = ((CoinExSocketRequest)Request).Id.ToString();
+            MessageMatcher = MessageMatcher.Create<CoinExSocketResponse>(id, HandleMessage);
+            MessageRouter = MessageRouter.Create<CoinExSocketResponse>(id, HandleMessage);
         }
 
         public CallResult<CoinExSocketResponse> HandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketResponse message)
