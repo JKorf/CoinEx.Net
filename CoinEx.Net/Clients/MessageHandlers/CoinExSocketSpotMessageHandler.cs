@@ -24,23 +24,6 @@ namespace Coinbase.Net.Clients.MessageHandlers
             AddTopicMapping<CoinExSocketUpdate<CoinExIndexPriceUpdate>>(x => x.Data.Symbol);
         }
 
-        //public override string? GetTopicFilter(object deserializedObject)
-        //{
-        //    if (deserializedObject is CoinExSocketUpdate<CoinExTradeWrapper> tradeUpdate)
-        //        return tradeUpdate.Data.Symbol;
-
-        //    if (deserializedObject is CoinExSocketUpdate<CoinExBookPriceUpdate> bookPriceUpdate)
-        //        return bookPriceUpdate.Data.Symbol;
-
-        //    if (deserializedObject is CoinExSocketUpdate<CoinExOrderBook> bookUpdate)
-        //        return bookUpdate.Data.Symbol;
-
-        //    if (deserializedObject is CoinExSocketUpdate<CoinExIndexPriceUpdate> indexPriceUpdate)
-        //        return indexPriceUpdate.Data.Symbol;
-
-        //    return null;
-        //}
-
         protected override MessageEvaluator[] TypeEvaluators { get; } = [
 
             new MessageEvaluator {

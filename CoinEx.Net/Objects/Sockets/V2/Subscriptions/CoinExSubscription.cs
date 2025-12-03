@@ -27,7 +27,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _parameters = parameters;
             _handler = handler;
 
-            MessageRouter = MessageRouter.Create<CoinExSocketUpdate<T>>(_topic + ".update", symbols?.Any() == true ? symbols : null, DoHandleMessage);
+            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<T>>(_topic + ".update", symbols, DoHandleMessage);
 
             if (symbols?.Any() != true)            
                 MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<T>>(_topic + ".update", DoHandleMessage);            

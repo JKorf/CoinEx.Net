@@ -26,7 +26,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _parameters = parameters;
             _handler = handler;
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update", DoHandleMessage);
-            MessageRouter = MessageRouter.Create<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update", symbols.Any() ? symbols : null, DoHandleMessage);
+            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update", symbols, DoHandleMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTickerUpdateWrapper> message)
