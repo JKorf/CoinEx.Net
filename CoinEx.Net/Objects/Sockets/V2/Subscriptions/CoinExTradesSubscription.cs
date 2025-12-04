@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 {
-    internal class CoinExTradesSubscription : Subscription<CoinExSocketResponse, CoinExSocketResponse>
+    internal class CoinExTradesSubscription : Subscription
     {
         private readonly SocketApiClient _client;
         private IEnumerable<string>? _symbols;

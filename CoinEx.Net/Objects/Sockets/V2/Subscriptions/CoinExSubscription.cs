@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 {
-    internal class CoinExSubscription<T> : Subscription<CoinExSocketResponse, CoinExSocketResponse>
+    internal class CoinExSubscription<T> : Subscription
     {
         private readonly SocketApiClient _client;
         private string _topic;
