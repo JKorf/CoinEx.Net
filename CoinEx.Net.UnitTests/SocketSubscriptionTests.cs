@@ -16,6 +16,26 @@ namespace CoinEx.Net.UnitTests
     {
         [TestCase(false)]
         [TestCase(true)]
+        public async Task ValidateConcurrentSpotSubscriptions(bool newDeserialization)
+        {
+            var logger = new LoggerFactory();
+            logger.AddProvider(new TraceLoggerProvider());
+
+            var client = new CoinExSocketClient(Options.Create(new CoinExSocketOptions
+            {
+                OutputOriginalData = true,
+                UseUpdatedDeserialization = newDeserialization
+            }), logger);
+
+            var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/SpotApi", "wss://socket.coinex.com", "data");
+            await tester.ValidateConcurrentAsync<CoinExTrade[]>(
+                (client, handler) => client.SpotApiV2.SubscribeToTradeUpdatesAsync("ETHUSDT", handler),
+                (client, handler) => client.SpotApiV2.SubscribeToTradeUpdatesAsync("BTCUSDT", handler),
+                "Concurrent");
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
         public async Task ValidateSpotSubscriptions(bool useUpdatedDeserialization)
         {
             var logger = new LoggerFactory();

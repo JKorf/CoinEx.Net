@@ -26,15 +26,27 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _parameters = parameters;
             _handler = handler;
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", DoHandleMessage);
-            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", symbols, DoHandleMessage);
+            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", symbols, DoHandleRouteMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
         {
-            //var relevant = message.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(message.Data.Symbol)).ToArray();
-            //if (!relevant.Any() || !message.Data.Trades.Any())
-            //    return CallResult.SuccessResult;
+            if (_symbols?.Any() == true)
+            {
+                if (!_symbols.Contains(message.Data.Symbol))
+                    return CallResult.SuccessResult;
+            }
 
+            _handler.Invoke(new DataEvent<CoinExTrade[]>(message.Data.Trades, receiveTime, originalData)
+                .WithStreamId(message.Method)
+                .WithSymbol(message.Data.Symbol)
+                .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))
+                .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            return CallResult.SuccessResult;
+        }
+
+        public CallResult DoHandleRouteMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
+        {
             _handler.Invoke(new DataEvent<CoinExTrade[]>(message.Data.Trades, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)

@@ -13,7 +13,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Coinbase.Net.Clients.MessageHandlers
+namespace CoinEx.Net.Clients.MessageHandlers
 {
     internal class CoinExRestMessageHandler : JsonRestMessageHandler
     {

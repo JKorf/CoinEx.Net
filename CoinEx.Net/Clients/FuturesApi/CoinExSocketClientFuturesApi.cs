@@ -1,4 +1,4 @@
-using Coinbase.Net.Clients.MessageHandlers;
+using CoinEx.Net.Clients.MessageHandlers;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Options;

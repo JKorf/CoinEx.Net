@@ -21,7 +21,7 @@ using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Objects.Errors;
 using System.Net.Http.Headers;
 using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
-using Coinbase.Net.Clients.MessageHandlers;
+using CoinEx.Net.Clients.MessageHandlers;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
