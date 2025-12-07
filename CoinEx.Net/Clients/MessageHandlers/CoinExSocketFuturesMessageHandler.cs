@@ -33,23 +33,21 @@ namespace CoinEx.Net.Clients.MessageHandlers
             return null;
         }
 
-        protected override MessageEvaluator[] TypeEvaluators { get; } = [
+        protected override MessageTypeDefinition[] TypeEvaluators { get; } = [
 
-            new MessageEvaluator {
-                Priority = 2,
+            new MessageTypeDefinition {
                 Fields = [
                     new PropertyFieldReference("method"),
                 ],
-                IdentifyMessageCallback = x => $"{x.FieldValue("method")}",
+                TypeIdentifierCallback = x => $"{x.FieldValue("method")}",
             },
 
-            new MessageEvaluator {
-                Priority = 3,
+            new MessageTypeDefinition {
                 ForceIfFound = true,
                 Fields = [
-                    new PropertyFieldReference("id") { Constraint = x => x != null },
+                    new PropertyFieldReference("id").WithNotNullContstraint(),
                 ],
-                IdentifyMessageCallback = x => x.FieldValue("id")!,
+                TypeIdentifierCallback = x => x.FieldValue("id")!,
             },
         ];
     }
