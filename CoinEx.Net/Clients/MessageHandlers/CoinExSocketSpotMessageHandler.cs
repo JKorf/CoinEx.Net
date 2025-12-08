@@ -3,6 +3,7 @@ using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Sockets.V2;
 using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
 using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Converters.SystemTextJson.MessageHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,6 +2,7 @@
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
+using CryptoExchange.Net.Interfaces.Clients;
 using CryptoExchange.Net.Objects.Options;
 
 namespace CoinEx.Net.Interfaces.Clients

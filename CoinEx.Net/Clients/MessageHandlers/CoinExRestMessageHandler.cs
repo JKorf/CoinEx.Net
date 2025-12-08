@@ -3,7 +3,7 @@ using CoinEx.Net.Objects.Internal;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Converters.SystemTextJson;
-using CryptoExchange.Net.Converters.SystemTextJson.MessageConverters;
+using CryptoExchange.Net.Converters.SystemTextJson.MessageHandlers;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Errors;
 using System;
