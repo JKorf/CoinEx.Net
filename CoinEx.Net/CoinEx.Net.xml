@@ -132,9 +132,6 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.TryParseError(CryptoExchange.Net.Objects.RequestDefinition,System.Net.Http.Headers.HttpResponseHeaders,CryptoExchange.Net.Interfaces.IMessageAccessor)">
-            <inheritdoc />
-        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetServerTimestampAsync">
             <inheritdoc />
         </member>
@@ -402,9 +399,6 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.TryParseError(CryptoExchange.Net.Objects.RequestDefinition,System.Net.Http.Headers.HttpResponseHeaders,CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetServerTimestampAsync">

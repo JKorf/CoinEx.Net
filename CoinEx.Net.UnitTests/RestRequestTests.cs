@@ -13,14 +13,12 @@ namespace CoinEx.Net.UnitTests
     [TestFixture]
     public class RestRequestTests
     {
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateSpotAccountCalls(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateSpotAccountCalls()
         {
             var client = new CoinExRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
@@ -49,13 +47,11 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApiV2.Account.GetTransactionHistoryAsync(Enums.TransactionType.Withdrawal), "GetTransactionHistory");
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateSpotExchangeDataCalls(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateSpotExchangeDataCalls()
         {
             var client = new CoinExRestClient(opts =>
             {
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
             });
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/ExchangeData", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
@@ -68,13 +64,11 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApiV2.ExchangeData.GetIndexPricesAsync(), "GetIndexPrices");
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateSpotTradingCalls(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateSpotTradingCalls()
         {
             var client = new CoinExRestClient(opts =>
             {
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });
@@ -100,13 +94,11 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.GetOrderTradesAsync("ETHUSDT", Enums.AccountType.Spot, 1), "GetOrderTrades");
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateFuturesAccountCalls(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateFuturesAccountCalls()
         {
             var client = new CoinExRestClient(opts =>
             {
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });
@@ -115,13 +107,11 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.FuturesApi.Account.SetLeverageAsync("ETHUSDT", Enums.MarginMode.Isolated, 1), "SetLeverage");
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateFuturesExchangeDataCalls(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateFuturesExchangeDataCalls()
         {
             var client = new CoinExRestClient(opts =>
             {
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
             });
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/ExchangeData", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
@@ -139,13 +129,11 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.FuturesApi.ExchangeData.GetBasisHistoryAsync("ETHUSDT"), "GetBasisHistory");
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public async Task ValidateFuturesTradingCalls(bool useUpdatedDeserialization)
+        [Test]
+        public async Task ValidateFuturesTradingCalls()
         {
             var client = new CoinExRestClient(opts =>
             {
-                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
                 opts.AutoTimestamp = false;
                 opts.ApiCredentials = new ApiCredentials("1", "2");
             });

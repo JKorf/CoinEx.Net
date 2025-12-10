@@ -129,26 +129,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         /// <inheritdoc />
-        protected override Error? TryParseError(RequestDefinition request, HttpResponseHeaders responseHeaders, IMessageAccessor accessor)
-        {
-            if (!accessor.IsValid)
-                return new ServerError(ErrorInfo.Unknown);
-
-            var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
-            if (code == 0)
-                return null;
-            
-            var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
-            if (msg == null)
-                return new ServerError(ErrorInfo.Unknown);
-
-            if (code == null)
-                return new ServerError(ErrorInfo.Unknown with { Message = msg });
-
-            return new ServerError(code.Value, GetErrorInfo(code.Value, msg));
-        }
-
-        /// <inheritdoc />
         protected override async Task<WebCallResult<DateTime>> GetServerTimestampAsync() => await ExchangeData.GetServerTimeAsync().ConfigureAwait(false);
 
         /// <inheritdoc />
