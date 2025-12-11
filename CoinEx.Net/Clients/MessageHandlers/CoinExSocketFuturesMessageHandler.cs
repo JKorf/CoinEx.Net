@@ -46,7 +46,7 @@ namespace CoinEx.Net.Clients.MessageHandlers
             new MessageTypeDefinition {
                 ForceIfFound = true,
                 Fields = [
-                    new PropertyFieldReference("id").WithNotNullContstraint(),
+                    new PropertyFieldReference("id").WithNotNullConstraint(),
                 ],
                 TypeIdentifierCallback = x => x.FieldValue("id")!,
             },
