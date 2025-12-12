@@ -20,13 +20,15 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Dictionary<string, object> _parameters;
         private Action<DateTime, string?, int, CoinExSocketUpdate<T>> _handler;
 
-        public CoinExSubscription(ILogger logger, SocketApiClient client, string topic, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DateTime, string?, int, CoinExSocketUpdate<T>> handler, bool authenticated = false, bool firstUpdateIsSnapshot = false) : base(logger, authenticated)
+        public CoinExSubscription(ILogger logger, SocketApiClient client, string topic, string[]? symbols, Dictionary<string, object> parameters, Action<DateTime, string?, int, CoinExSocketUpdate<T>> handler, bool authenticated = false, bool firstUpdateIsSnapshot = false) : base(logger, authenticated)
         {
             _client = client;
             _topic = topic;
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
+
+            IndividualSubscriptionCount = Math.Min(1, symbols?.Length ?? 1);
 
             MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<T>>(_topic + ".update", symbols, DoHandleMessage);
 

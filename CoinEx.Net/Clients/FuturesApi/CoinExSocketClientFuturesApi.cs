@@ -136,7 +136,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExFuturesTickerUpdate[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExFuturesTickerSubscription(_logger, this, symbols, new Dictionary<string, object>
+            var subscription = new CoinExFuturesTickerSubscription(_logger, this, symbols.ToArray(), new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, onMessage);
@@ -171,7 +171,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                     );
             });
 
-            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, this, "depth", symbols, new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, this, "depth", symbols.ToArray(), new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToArray() }
             }, internalHandler);
@@ -189,7 +189,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
         {
-            var subscription = new CoinExTradesSubscription(_logger, this, symbols, new Dictionary<string, object>
+            var subscription = new CoinExTradesSubscription(_logger, this, symbols.ToArray(), new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, onMessage);
@@ -213,7 +213,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                     );
             });
 
-            var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, this, "index", symbols, new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExIndexPriceUpdate>(_logger, this, "index", symbols.ToArray(), new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, internalHandler);
@@ -238,7 +238,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                     );
             });
 
-            var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, this, "bbo", symbols, new Dictionary<string, object>
+            var subscription = new CoinExSubscription<CoinExBookPriceUpdate>(_logger, this, "bbo", symbols.ToArray(), new Dictionary<string, object>
             {
                 { "market_list", symbols.ToArray() }
             }, internalHandler);

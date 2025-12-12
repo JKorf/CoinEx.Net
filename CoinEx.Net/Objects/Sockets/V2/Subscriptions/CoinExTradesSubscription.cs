@@ -20,12 +20,15 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExTrade[]>> _handler;
 
-        public CoinExTradesSubscription(ILogger logger, SocketApiClient client, IEnumerable<string> symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
+        public CoinExTradesSubscription(ILogger logger, SocketApiClient client, string[] symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
         {
             _client = client;
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
+
+            IndividualSubscriptionCount = Math.Min(1, symbols.Length);
+
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", DoHandleMessage);
             MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", symbols, DoHandleRouteMessage);
         }
