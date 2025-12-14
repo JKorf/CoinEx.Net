@@ -39,7 +39,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             if (!relevant.Any())
                 return CallResult.SuccessResult;
 
-            _handler.Invoke(new DataEvent<CoinExFuturesTickerUpdate[]>(relevant, receiveTime, originalData)
+            _handler.Invoke(new DataEvent<CoinExFuturesTickerUpdate[]>(CoinExExchange.ExchangeName, relevant, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithUpdateType(SocketUpdateType.Update));
             return CallResult.SuccessResult;

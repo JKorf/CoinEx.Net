@@ -35,7 +35,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExOrderBook> message)
         {
-            _handler.Invoke(new DataEvent<CoinExOrderBook>(message.Data, receiveTime, originalData)
+            _handler.Invoke(new DataEvent<CoinExOrderBook>(CoinExExchange.ExchangeName, message.Data, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(message.Data.Data.UpdateTime)

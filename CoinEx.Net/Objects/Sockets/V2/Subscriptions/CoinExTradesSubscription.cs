@@ -41,7 +41,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
                     return CallResult.SuccessResult;
             }
 
-            _handler.Invoke(new DataEvent<CoinExTrade[]>(message.Data.Trades, receiveTime, originalData)
+            _handler.Invoke(new DataEvent<CoinExTrade[]>(CoinExExchange.ExchangeName, message.Data.Trades, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))
@@ -51,7 +51,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 
         public CallResult DoHandleRouteMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
         {
-            _handler.Invoke(new DataEvent<CoinExTrade[]>(message.Data.Trades, receiveTime, originalData)
+            _handler.Invoke(new DataEvent<CoinExTrade[]>(CoinExExchange.ExchangeName, message.Data.Trades, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))

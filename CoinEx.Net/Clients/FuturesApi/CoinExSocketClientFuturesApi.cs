@@ -163,7 +163,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExOrderBook>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExOrderBook>(data.Data, receiveTime, originalData)
+                    new DataEvent<CoinExOrderBook>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Symbol)
@@ -206,7 +206,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExIndexPriceUpdate>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExIndexPriceUpdate>(data.Data, receiveTime, originalData)
+                    new DataEvent<CoinExIndexPriceUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Symbol)
@@ -230,7 +230,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExBookPriceUpdate>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExBookPriceUpdate>(data.Data, receiveTime, originalData)
+                    new DataEvent<CoinExBookPriceUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Symbol)
@@ -251,7 +251,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExFuturesOrderUpdate>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExFuturesOrderUpdate>(data.Data, receiveTime, originalData)
+                    new DataEvent<CoinExFuturesOrderUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Order.Symbol)
@@ -271,7 +271,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExStopOrderUpdate>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExStopOrderUpdate>(data.Data, receiveTime, originalData)
+                    new DataEvent<CoinExStopOrderUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Order.Symbol)
@@ -291,7 +291,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExUserTrade>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExUserTrade>(data.Data, receiveTime, originalData)
+                    new DataEvent<CoinExUserTrade>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Symbol)
@@ -311,7 +311,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExFuturesBalanceUpdate>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExFuturesBalance[]>(data.Data.Balances, receiveTime, originalData)
+                    new DataEvent<CoinExFuturesBalance[]>(CoinExExchange.ExchangeName, data.Data.Balances, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                     );
@@ -329,7 +329,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExPositionUpdate>>((receiveTime, originalData, invocations, data) =>
             {
                 onMessage(
-                    new DataEvent<CoinExPositionUpdate>(data.Data, receiveTime, originalData)
+                    new DataEvent<CoinExPositionUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Position.Symbol)
