@@ -5,6 +5,7 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
+using CryptoExchange.Net.Sockets.Default;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,26 +13,33 @@ using System.Linq;
 
 namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 {
-    internal class CoinExOrderBookSubscription : Subscription<CoinExSocketResponse, CoinExSocketResponse>
+    internal class CoinExOrderBookSubscription : Subscription
     {
         private readonly SocketApiClient _client;
         private IEnumerable<string> _symbols;
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExOrderBook>> _handler;
 
-        public CoinExOrderBookSubscription(ILogger logger, SocketApiClient client, IEnumerable<string> symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExOrderBook>> handler) : base(logger, false)
+        public CoinExOrderBookSubscription(ILogger logger, SocketApiClient client, string[] symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExOrderBook>> handler) : base(logger, false)
         {
             _client = client;
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
+
+            IndividualSubscriptionCount = Math.Min(1, symbols.Length);
+
+            MessageRouter = MessageRouter.CreateWithTopicFilters<CoinExSocketUpdate<CoinExOrderBook>>("depth.update", symbols, DoHandleMessage);
             MessageMatcher = MessageMatcher.Create(_symbols.Select(x => new MessageHandlerLink<CoinExSocketUpdate<CoinExOrderBook>>("depth.update" + x, DoHandleMessage)).ToArray());
         }
 
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExOrderBook>> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExOrderBook> message)
         {
-            _handler.Invoke(message.As(message.Data.Data, message.Data.Method, message.Data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                .WithDataTimestamp(message.Data.Data.Data.UpdateTime));
+            _handler.Invoke(new DataEvent<CoinExOrderBook>(CoinExExchange.ExchangeName, message.Data, receiveTime, originalData)
+                .WithStreamId(message.Method)
+                .WithSymbol(message.Data.Symbol)
+                .WithDataTimestamp(message.Data.Data.UpdateTime)
+                .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 

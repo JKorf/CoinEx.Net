@@ -20,7 +20,7 @@ namespace CoinEx.Net.UnitTests
         {
         }
 
-        public override CoinExSocketClient GetClient(ILoggerFactory loggerFactory)
+        public override CoinExSocketClient GetClient(ILoggerFactory loggerFactory, bool useUpdatedDeserialization)
         {
             var key = Environment.GetEnvironmentVariable("APIKEY");
             var sec = Environment.GetEnvironmentVariable("APISECRET");
@@ -29,18 +29,20 @@ namespace CoinEx.Net.UnitTests
             return new CoinExSocketClient(Options.Create(new CoinExSocketOptions
             {
                 OutputOriginalData = true,
+                UseUpdatedDeserialization = useUpdatedDeserialization,
                 ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null
             }), loggerFactory);
         }
 
-        [Test]
-        public async Task TestSubscriptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task TestSubscriptions(bool useUpdatedDeserialization)
         {
-            await RunAndCheckUpdate<CoinExTicker>((client, updateHandler) => client.SpotApiV2.SubscribeToBalanceUpdatesAsync(default , default), false, true);
-            await RunAndCheckUpdate<CoinExTicker[]>((client, updateHandler) => client.SpotApiV2.SubscribeToTickerUpdatesAsync(new[] { "ETHUSDT" }, updateHandler, default), true, false);
+            await RunAndCheckUpdate<CoinExTicker>(useUpdatedDeserialization , (client, updateHandler) => client.SpotApiV2.SubscribeToBalanceUpdatesAsync(default , default), false, true);
+            await RunAndCheckUpdate<CoinExTicker[]>(useUpdatedDeserialization, (client, updateHandler) => client.SpotApiV2.SubscribeToTickerUpdatesAsync(new[] { "ETHUSDT" }, updateHandler, default), true, false);
 
-            await RunAndCheckUpdate<CoinExTicker>((client, updateHandler) => client.FuturesApi.SubscribeToBalanceUpdatesAsync(default, default), false, true);
-            await RunAndCheckUpdate<CoinExFuturesTickerUpdate[]>((client, updateHandler) => client.FuturesApi.SubscribeToTickerUpdatesAsync(new[] { "ETHUSDT" }, updateHandler, default), true, false);
+            await RunAndCheckUpdate<CoinExTicker>(useUpdatedDeserialization, (client, updateHandler) => client.FuturesApi.SubscribeToBalanceUpdatesAsync(default, default), false, true);
+            await RunAndCheckUpdate<CoinExFuturesTickerUpdate[]>(useUpdatedDeserialization, (client, updateHandler) => client.FuturesApi.SubscribeToTickerUpdatesAsync(new[] { "ETHUSDT" }, updateHandler, default), true, false);
         } 
     }
 }

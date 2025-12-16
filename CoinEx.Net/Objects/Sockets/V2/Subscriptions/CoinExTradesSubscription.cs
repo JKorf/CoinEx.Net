@@ -5,6 +5,7 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
+using CryptoExchange.Net.Sockets.Default;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,30 +13,49 @@ using System.Linq;
 
 namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 {
-    internal class CoinExTradesSubscription : Subscription<CoinExSocketResponse, CoinExSocketResponse>
+    internal class CoinExTradesSubscription : Subscription
     {
         private readonly SocketApiClient _client;
         private IEnumerable<string>? _symbols;
         private Dictionary<string, object> _parameters;
         private Action<DataEvent<CoinExTrade[]>> _handler;
 
-        public CoinExTradesSubscription(ILogger logger, SocketApiClient client, IEnumerable<string>? symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
+        public CoinExTradesSubscription(ILogger logger, SocketApiClient client, string[] symbols, Dictionary<string, object> parameters, Action<DataEvent<CoinExTrade[]>> handler) : base(logger, false)
         {
             _client = client;
             _symbols = symbols;
             _parameters = parameters;
             _handler = handler;
+
+            IndividualSubscriptionCount = Math.Min(1, symbols.Length);
+
             MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", DoHandleMessage);
+            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", symbols, DoHandleRouteMessage);
         }
 
-        public CallResult DoHandleMessage(SocketConnection connection, DataEvent<CoinExSocketUpdate<CoinExTradeWrapper>> message)
+        public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
         {
-            var relevant = message.Data.Data.Trades.Where(d => (_symbols?.Any() != true) || _symbols.Contains(message.Data.Data.Symbol)).ToArray();
-            if (!relevant.Any() || !message.Data.Data.Trades.Any())
-                return CallResult.SuccessResult;
+            if (_symbols?.Any() == true)
+            {
+                if (!_symbols.Contains(message.Data.Symbol))
+                    return CallResult.SuccessResult;
+            }
 
-            _handler.Invoke(message.As<CoinExTrade[]>(relevant, message.Data.Method, message.Data.Data.Symbol, ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
-                .WithDataTimestamp(message.Data.Data.Trades.Max(x => x.Timestamp)));
+            _handler.Invoke(new DataEvent<CoinExTrade[]>(CoinExExchange.ExchangeName, message.Data.Trades, receiveTime, originalData)
+                .WithStreamId(message.Method)
+                .WithSymbol(message.Data.Symbol)
+                .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))
+                .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            return CallResult.SuccessResult;
+        }
+
+        public CallResult DoHandleRouteMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
+        {
+            _handler.Invoke(new DataEvent<CoinExTrade[]>(CoinExExchange.ExchangeName, message.Data.Trades, receiveTime, originalData)
+                .WithStreamId(message.Method)
+                .WithSymbol(message.Data.Symbol)
+                .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))
+                .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 

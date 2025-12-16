@@ -1,6 +1,10 @@
 ﻿using CoinEx.Net.Clients;
 using CoinEx.Net.Objects.Models.V2;
+using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Testing;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,13 +14,38 @@ namespace CoinEx.Net.UnitTests
     [TestFixture]
     public class SocketSubscriptionTests
     {
-        [Test]
-        public async Task ValidateSpotSubscriptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateConcurrentSpotSubscriptions(bool newDeserialization)
         {
-            var client = new CoinExSocketClient(opts =>
+            var logger = new LoggerFactory();
+            logger.AddProvider(new TraceLoggerProvider());
+
+            var client = new CoinExSocketClient(Options.Create(new CoinExSocketOptions
             {
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
-            });
+                OutputOriginalData = true,
+                UseUpdatedDeserialization = newDeserialization
+            }), logger);
+
+            var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/SpotApi", "wss://socket.coinex.com", "data");
+            await tester.ValidateConcurrentAsync<CoinExTrade[]>(
+                (client, handler) => client.SpotApiV2.SubscribeToTradeUpdatesAsync("ETHUSDT", handler),
+                (client, handler) => client.SpotApiV2.SubscribeToTradeUpdatesAsync("BTCUSDT", handler),
+                "Concurrent");
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateSpotSubscriptions(bool useUpdatedDeserialization)
+        {
+            var logger = new LoggerFactory();
+            logger.AddProvider(new TraceLoggerProvider());
+            var client = new CoinExSocketClient(Options.Create(new CoinExSocketOptions
+            {
+                UseUpdatedDeserialization = useUpdatedDeserialization,
+                OutputOriginalData = true,
+                ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456")
+            }), logger);
             var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/SpotApi", "wss://socket.coinex.com", "data");
             await tester.ValidateAsync<CoinExTicker[]>((client, handler) => client.SpotApiV2.SubscribeToTickerUpdatesAsync(handler), "Tickers", nestedJsonProperty: "data.state_list", ignoreProperties: ["period"]);
             await tester.ValidateAsync<CoinExOrderBook>((client, handler) => client.SpotApiV2.SubscribeToOrderBookUpdatesAsync("ETHUSDT", 5, null, true, handler), "OrderBook", nestedJsonProperty: "data");
@@ -29,11 +58,14 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync<CoinExBalanceUpdate[]>((client, handler) => client.SpotApiV2.SubscribeToBalanceUpdatesAsync(handler), "Balance", nestedJsonProperty: "data.balance_list");
         }
 
-        [Test]
-        public async Task ValidateFuturesSubscriptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task ValidateFuturesSubscriptions(bool useUpdatedDeserialization)
         {
             var client = new CoinExSocketClient(opts =>
             {
+                opts.UseUpdatedDeserialization = useUpdatedDeserialization;
+                opts.OutputOriginalData = true;
                 opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/FuturesApi", "wss://socket.coinex.com", "data");

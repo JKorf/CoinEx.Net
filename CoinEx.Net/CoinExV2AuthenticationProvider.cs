@@ -15,6 +15,7 @@ namespace CoinEx.Net
     {
         private static IStringMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
+        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.Hmac];
         public CoinExV2AuthenticationProvider(ApiCredentials credentials): base(credentials)
         {
             if (credentials.CredentialType != ApiCredentialsType.Hmac)
@@ -37,7 +38,7 @@ namespace CoinEx.Net
             }
             else
             {
-                parameterString = GetSerializedBody(_serializer, request.BodyParameters);
+                parameterString = GetSerializedBody(_serializer, request.BodyParameters ?? new Dictionary<string, object>());
                 request.SetBodyContent(parameterString);
             }
 
@@ -45,6 +46,7 @@ namespace CoinEx.Net
             var signData = request.Method.ToString().ToUpperInvariant() + request.Path + parameterString + timestamp;
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
 
+            request.Headers ??= new Dictionary<string, string>();
             request.Headers.Add("X-COINEX-KEY", _credentials.Key);
             request.Headers.Add("X-COINEX-SIGN", sign);
             request.Headers.Add("X-COINEX-TIMESTAMP", timestamp);

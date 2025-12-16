@@ -19,6 +19,9 @@ using System.Linq;
 using System.Globalization;
 using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Objects.Errors;
+using System.Net.Http.Headers;
+using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
+using CoinEx.Net.Clients.MessageHandlers;
 
 namespace CoinEx.Net.Clients.SpotApiV2
 {
@@ -33,6 +36,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         protected override ErrorMapping ErrorMapping => CoinExErrors.RestErrorMapping;
 
+        protected override IRestMessageHandler MessageHandler { get; } = new CoinExRestMessageHandler(CoinExErrors.RestErrorMapping);
         #endregion
 
         /// <inheritdoc />
@@ -123,26 +127,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             return result.As(resultPage);
         }
         #endregion
-
-        /// <inheritdoc />
-        protected override Error? TryParseError(RequestDefinition request, KeyValuePair<string, string[]>[] responseHeaders, IMessageAccessor accessor)
-        {
-            if (!accessor.IsValid)
-                return new ServerError(ErrorInfo.Unknown);
-
-            var code = accessor.GetValue<int?>(MessagePath.Get().Property("code"));
-            if (code == 0)
-                return null;
-            
-            var msg = accessor.GetValue<string>(MessagePath.Get().Property("message"));
-            if (msg == null)
-                return new ServerError(ErrorInfo.Unknown);
-
-            if (code == null)
-                return new ServerError(ErrorInfo.Unknown with { Message = msg });
-
-            return new ServerError(code.Value, GetErrorInfo(code.Value, msg));
-        }
 
         /// <inheritdoc />
         protected override async Task<WebCallResult<DateTime>> GetServerTimestampAsync() => await ExchangeData.GetServerTimeAsync().ConfigureAwait(false);

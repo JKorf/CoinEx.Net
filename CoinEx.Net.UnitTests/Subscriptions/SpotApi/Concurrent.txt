@@ -1,0 +1,6 @@
+>1 { "method": "deals.subscribe", "params": {"market_list": ["ETHUSDT"]}, "id": "|*|" }
+>2 { "method": "deals.subscribe", "params": {"market_list": ["BTCUSDT"]}, "id": "|*|" }
+<1 {"id":|id|,"code":0,"message":"OK"}
+<2 {"id":|id|,"code":0,"message":"OK"}
+=1 { "method": "deals.update", "data": { "market": "ETHUSDT", "deal_list": [{ "deal_id": 3514376759, "created_at": 1689152421692, "side": "buy", "price": "30718.42", "amount": "0.00000325" }]}, "id": null}
+=2 { "method": "deals.update", "data": { "market": "BTCUSDT", "deal_list": [{ "deal_id": 3514376759, "created_at": 1689152421692, "side": "buy", "price": "30718.42", "amount": "0.00000325" }]}, "id": null}
