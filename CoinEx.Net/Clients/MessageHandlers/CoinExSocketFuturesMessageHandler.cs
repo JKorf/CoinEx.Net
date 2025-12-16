@@ -17,21 +17,12 @@ namespace CoinEx.Net.Clients.MessageHandlers
     {
         public override JsonSerializerOptions Options { get; } = SerializerOptions.WithConverters(CoinExExchange._serializerContext);
 
-        public override string? GetTopicFilter(object deserializedObject)
+        public CoinExSocketFuturesMessageHandler()
         {
-            if (deserializedObject is CoinExSocketUpdate<CoinExTradeWrapper> tradeUpdate)
-                return tradeUpdate.Data.Symbol;
-
-            if (deserializedObject is CoinExSocketUpdate<CoinExBookPriceUpdate> bookPriceUpdate)
-                return bookPriceUpdate.Data.Symbol;
-
-            if (deserializedObject is CoinExSocketUpdate<CoinExOrderBook> bookUpdate)
-                return bookUpdate.Data.Symbol;
-
-            if (deserializedObject is CoinExSocketUpdate<CoinExIndexPriceUpdate> indexPriceUpdate)
-                return indexPriceUpdate.Data.Symbol;
-
-            return null;
+            AddTopicMapping<CoinExSocketUpdate<CoinExTradeWrapper>>(x => x.Data.Symbol);
+            AddTopicMapping<CoinExSocketUpdate<CoinExBookPriceUpdate>>(x => x.Data.Symbol);
+            AddTopicMapping<CoinExSocketUpdate<CoinExOrderBook>>(x => x.Data.Symbol);
+            AddTopicMapping<CoinExSocketUpdate<CoinExIndexPriceUpdate>>(x => x.Data.Symbol);
         }
 
         protected override MessageTypeDefinition[] TypeEvaluators { get; } = [
