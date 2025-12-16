@@ -14,7 +14,7 @@ namespace CoinEx.Net.UnitTests
     [NonParallelizable]
     internal class CoinExSocketIntegrationTests : SocketIntegrationTest<CoinExSocketClient>
     {
-        public override bool Run { get; set; } = true;
+        public override bool Run { get; set; } = false;
 
         public CoinExSocketIntegrationTests()
         {

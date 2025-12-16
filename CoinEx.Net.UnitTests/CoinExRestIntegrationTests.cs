@@ -18,7 +18,7 @@ namespace CoinEx.Net.UnitTests
     [NonParallelizable]
     internal class CoinExRestIntegrationTests : RestIntegrationTest<CoinExRestClient>
     {
-        public override bool Run { get; set; } = true;
+        public override bool Run { get; set; } = false;
 
         public CoinExRestIntegrationTests()
         {
