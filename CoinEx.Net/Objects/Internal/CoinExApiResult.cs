@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using CoinEx.Net.Converters;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Internal
 {
@@ -13,6 +15,7 @@ namespace CoinEx.Net.Objects.Internal
     internal class CoinExApiResult<T> : CoinExApiResult
     {
         [JsonPropertyName("data")]
+        [JsonConverter(typeof(ObjectOrArrayConverter))] // Error returns empty object `{}` for array responses 
         public T Data { get; set; } = default!;
     }
 
