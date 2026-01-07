@@ -5989,17 +5989,17 @@
         </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrderBook.LastPrice">
             <summary>
-            Last price
+            Last price, only for websocket updates
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrderBook.UpdateTime">
             <summary>
-            Update time
+            Update time, only for websocket updates
             </summary>
         </member>
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrderBook.Checksum">
             <summary>
-            Checksum
+            Checksum, only for websocket updates
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExOrderBookData">

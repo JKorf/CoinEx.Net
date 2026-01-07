@@ -154,7 +154,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExOrderBook>>((receiveTime, originalData, invocations, data) =>
             {
-                UpdateTimeOffset(data.Data.UpdateTime);
+                if (data.Data.UpdateTime != null)
+                    UpdateTimeOffset(data.Data.UpdateTime.Value);
 
                 onMessage(
                     new DataEvent<CoinExOrderBook>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
