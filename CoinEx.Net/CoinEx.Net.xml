@@ -135,12 +135,6 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetServerTimestampAsync">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetTimeSyncInfo">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApi.GetTimeOffset">
-            <inheritdoc />
-        </member>
         <member name="T:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiAccount">
             <inheritdoc />
         </member>
@@ -314,9 +308,6 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.Default.SocketConnection)">
-            <inheritdoc />
-        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExSocketClientFuturesApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.Default.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
             <inheritdoc />
         </member>
@@ -402,12 +393,6 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetServerTimestampAsync">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetTimeSyncInfo">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.GetTimeOffset">
             <inheritdoc />
         </member>
         <member name="P:CoinEx.Net.Clients.SpotApiV2.CoinExRestClientSpotApi.SharedClient">
@@ -602,9 +587,6 @@
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
-            <inheritdoc />
-        </member>
-        <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.Default.SocketConnection)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.SpotApiV2.CoinExSocketClientSpotApi.PreprocessStreamMessage(CryptoExchange.Net.Sockets.Default.SocketConnection,System.Net.WebSockets.WebSocketMessageType,System.ReadOnlyMemory{System.Byte})">
@@ -6003,6 +5985,21 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrderBook.Data">
             <summary>
             The book data
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrderBook.LastPrice">
+            <summary>
+            Last price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrderBook.UpdateTime">
+            <summary>
+            Update time
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExOrderBook.Checksum">
+            <summary>
+            Checksum
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExOrderBookData">

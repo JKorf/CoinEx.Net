@@ -41,7 +41,7 @@ namespace CoinEx.Net.UnitTests
                     { "page", "1" },
                     { "limit", "10" },
                 },
-                time: DateTimeConverter.ParseFromDouble(1700490703564),
+                time: DateTimeConverter.ParseFromDouble(1700490704564),
                 disableOrdering: true);
         }
 
@@ -71,7 +71,7 @@ namespace CoinEx.Net.UnitTests
                     { "page", "1" },
                     { "limit", "10" },
                 },
-                time: DateTimeConverter.ParseFromDouble(1700490703564),
+                time: DateTimeConverter.ParseFromDouble(1700490704564),
                 disableOrdering: true);
         }
 

@@ -106,14 +106,6 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        protected override Task<Query?> GetAuthenticationRequestAsync(SocketConnection connection)
-        {
-            var authProvider = (CoinExV2AuthenticationProvider)AuthenticationProvider!;
-            var authParams = authProvider.GetSocketAuthParameters();
-            return Task.FromResult<Query?>(new CoinExQuery(this, "server.sign", authParams, false, 0));
-        }
-
-        /// <inheritdoc />
         public override ReadOnlyMemory<byte> PreprocessStreamMessage(SocketConnection connection, WebSocketMessageType type, ReadOnlyMemory<byte> data)
         {
             if (type == WebSocketMessageType.Binary)
@@ -162,12 +154,14 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExOrderBook>>((receiveTime, originalData, invocations, data) =>
             {
+                UpdateTimeOffset(data.Data.UpdateTime);
+
                 onMessage(
                     new DataEvent<CoinExOrderBook>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Symbol)
-                        .WithDataTimestamp(data.Data.Data.UpdateTime)
+                        .WithDataTimestamp(data.Data.Data.UpdateTime, GetTimeOffset())
                     );
             });
 
@@ -229,12 +223,14 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExBookPriceUpdate>>((receiveTime, originalData, invocations, data) =>
             {
+                UpdateTimeOffset(data.Data.UpdateTime);
+
                 onMessage(
                     new DataEvent<CoinExBookPriceUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Symbol)
-                        .WithDataTimestamp(data.Data.UpdateTime)
+                        .WithDataTimestamp(data.Data.UpdateTime, GetTimeOffset())
                     );
             });
 
@@ -250,12 +246,15 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExFuturesOrderUpdate>>((receiveTime, originalData, invocations, data) =>
             {
+                if (data.Data.Order.UpdateTime != null)
+                    UpdateTimeOffset(data.Data.Order.UpdateTime.Value);
+
                 onMessage(
                     new DataEvent<CoinExFuturesOrderUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Order.Symbol)
-                        .WithDataTimestamp(data.Data.Order.UpdateTime)
+                        .WithDataTimestamp(data.Data.Order.UpdateTime, GetTimeOffset())
                     );
             });
             var subscription = new CoinExSubscription<CoinExFuturesOrderUpdate>(_logger, this, "order", Array.Empty<string>(), new Dictionary<string, object>
@@ -270,12 +269,15 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExStopOrderUpdate>>((receiveTime, originalData, invocations, data) =>
             {
+                if (data.Data.Order.UpdateTime != null)
+                    UpdateTimeOffset(data.Data.Order.UpdateTime.Value);
+
                 onMessage(
                     new DataEvent<CoinExStopOrderUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Order.Symbol)
-                        .WithDataTimestamp(data.Data.Order.UpdateTime)
+                        .WithDataTimestamp(data.Data.Order.UpdateTime, GetTimeOffset())
                     );
             });
             var subscription = new CoinExSubscription<CoinExStopOrderUpdate>(_logger, this, "stop", Array.Empty<string>(), new Dictionary<string, object>
@@ -290,12 +292,14 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExUserTrade>>((receiveTime, originalData, invocations, data) =>
             {
+                UpdateTimeOffset(data.Data.CreateTime);
+
                 onMessage(
                     new DataEvent<CoinExUserTrade>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Symbol)
-                        .WithDataTimestamp(data.Data.CreateTime)
+                        .WithDataTimestamp(data.Data.CreateTime, GetTimeOffset())
                     );
             });
             var subscription = new CoinExSubscription<CoinExUserTrade>(_logger, this, "user_deals", Array.Empty<string>(), new Dictionary<string, object>
@@ -328,12 +332,15 @@ namespace CoinEx.Net.Clients.FuturesApi
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExPositionUpdate>>((receiveTime, originalData, invocations, data) =>
             {
+                if (data.Data.Position.UpdateTime != null)
+                    UpdateTimeOffset(data.Data.Position.UpdateTime.Value);
+
                 onMessage(
                     new DataEvent<CoinExPositionUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
                         .WithUpdateType(SocketUpdateType.Update)
                         .WithStreamId(data.Method)
                         .WithSymbol(data.Data.Position.Symbol)
-                        .WithDataTimestamp(data.Data.Position.UpdateTime)
+                        .WithDataTimestamp(data.Data.Position.UpdateTime, GetTimeOffset())
                     );
             });
             var subscription = new CoinExSubscription<CoinExPositionUpdate>(_logger, this, "position", Array.Empty<string>(), new Dictionary<string, object>

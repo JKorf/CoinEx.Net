@@ -35,10 +35,13 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExOrderBook> message)
         {
+            if (ConnectionInvocations != 1)
+                _client.UpdateTimeOffset(message.Data.Data.UpdateTime);
+
             _handler.Invoke(new DataEvent<CoinExOrderBook>(CoinExExchange.ExchangeName, message.Data, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
-                .WithDataTimestamp(message.Data.Data.UpdateTime)
+                .WithDataTimestamp(message.Data.Data.UpdateTime, _client.GetTimeOffset())
                 .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }

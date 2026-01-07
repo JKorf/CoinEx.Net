@@ -31,6 +31,21 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("depth")]
         public CoinExOrderBookData Data { get; set; } = null!;
+        /// <summary>
+        /// Last price, only for websocket updates
+        /// </summary>
+        [JsonPropertyName("last")]
+        public decimal? LastPrice { get; set; }
+        /// <summary>
+        /// Update time, only for websocket updates
+        /// </summary>
+        [JsonPropertyName("updated_at")]
+        public DateTime? UpdateTime { get; set; }
+        /// <summary>
+        /// Checksum, only for websocket updates
+        /// </summary>
+        [JsonPropertyName("checksum")]
+        public long? Checksum { get; set; }
     }
 
     /// <summary>

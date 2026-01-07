@@ -41,20 +41,27 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
                     return CallResult.SuccessResult;
             }
 
+            var timestamp = message.Data.Trades.Max(x => x.Timestamp);
+            _client.UpdateTimeOffset(timestamp);
+
             _handler.Invoke(new DataEvent<CoinExTrade[]>(CoinExExchange.ExchangeName, message.Data.Trades, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
-                .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))
+                .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 
         public CallResult DoHandleRouteMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
         {
+            var timestamp = message.Data.Trades.Max(x => x.Timestamp);
+            if (ConnectionInvocations != 1)
+                _client.UpdateTimeOffset(timestamp);
+
             _handler.Invoke(new DataEvent<CoinExTrade[]>(CoinExExchange.ExchangeName, message.Data.Trades, receiveTime, originalData)
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
-                .WithDataTimestamp(message.Data.Trades.Max(x => x.Timestamp))
+                .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
