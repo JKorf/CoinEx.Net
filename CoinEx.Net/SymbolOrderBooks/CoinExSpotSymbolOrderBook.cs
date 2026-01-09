@@ -61,7 +61,7 @@ namespace CoinEx.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync(CancellationToken ct)
         {
-            var result = await _socketClient.SpotApiV2.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, null, true, HandleUpdate).ConfigureAwait(false);
+            var result = await _socketClient.SpotApiV2.SubscribeToOrderBookUpdatesAsync(Symbol, Levels!.Value, null, false, HandleUpdate).ConfigureAwait(false);
             if (!result)
                 return result;
 
@@ -90,7 +90,11 @@ namespace CoinEx.Net.SymbolOrderBooks
 
         private void HandleUpdate(DataEvent<CoinExOrderBook> data)
         {
-            SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Data.Data.Bids, data.Data.Data.Asks, data.DataTime, data.DataTimeLocal);
+            if (data.UpdateType == SocketUpdateType.Snapshot)
+                SetSnapshot(DateTime.UtcNow.Ticks, data.Data.Data.Bids, data.Data.Data.Asks, data.DataTime, data.DataTimeLocal);
+            else
+                UpdateOrderBook(DateTime.UtcNow.Ticks, data.Data.Data.Bids, data.Data.Data.Asks, data.DataTime, data.DataTimeLocal);
+
             AddChecksum((int)data.Data.Data.Checksum);
         }
 
