@@ -270,10 +270,16 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.EditStopLossAsync(System.String,System.Int64,System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelStopLossAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.SetTakeProfitAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.EditTakeProfitAsync(System.String,System.Int64,System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelTakeProfitAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetMarginHistoryAsync(System.String,System.Int64,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
@@ -3362,6 +3368,15 @@
             <param name="stopLossQuantity">Stop loss quantity</param>
             <param name="ct">Cancelation Token</param>
         </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelStopLossAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active position stop loss
+            <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-stop-loss" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="stopLossOrderId">Stop loss order id. If not not provided all stop losses are canceled</param>
+            <param name="ct">Cancelation Token</param>
+        </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.SetTakeProfitAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Set take profit for a position
@@ -3383,6 +3398,15 @@
             <param name="takeProfitType">Take profit price type</param>
             <param name="takeProfitPrice">Take profit price</param>
             <param name="takeProfitQuantity">Take profit quantity</param>
+            <param name="ct">Cancelation Token</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelTakeProfitAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active position take profit
+            <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-take-profit" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="takeProfitOrderId">Take profit order id. If not not provided all take profits are canceled</param>
             <param name="ct">Cancelation Token</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetMarginHistoryAsync(System.String,System.Int64,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">

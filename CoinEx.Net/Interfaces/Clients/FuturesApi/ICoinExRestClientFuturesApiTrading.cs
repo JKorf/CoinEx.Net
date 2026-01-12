@@ -356,6 +356,15 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         Task<WebCallResult<CoinExPosition>> EditStopLossAsync(string symbol, long stopLossOrderId, PriceType? stopLossType = null, decimal? stopLossPrice = null, decimal? stopLossQuantity = null, CancellationToken ct = default);
 
         /// <summary>
+        /// Cancel an active position stop loss
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-stop-loss" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="stopLossOrderId">Stop loss order id. If not not provided all stop losses are canceled</param>
+        /// <param name="ct">Cancelation Token</param>
+        Task<WebCallResult<CoinExPosition>> CancelStopLossAsync(string symbol, long? stopLossOrderId = null, CancellationToken ct = default);
+
+        /// <summary>
         /// Set take profit for a position
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-take-profit" /></para>
         /// </summary>
@@ -377,6 +386,15 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="takeProfitQuantity">Take profit quantity</param>
         /// <param name="ct">Cancelation Token</param>
         Task<WebCallResult<CoinExPosition>> EditTakeProfitAsync(string symbol, long takeProfitOrderId, PriceType? takeProfitType = null, decimal? takeProfitPrice = null, decimal? takeProfitQuantity = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancel an active position take profit
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-take-profit" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="takeProfitOrderId">Take profit order id. If not not provided all take profits are canceled</param>
+        /// <param name="ct">Cancelation Token</param>
+        Task<WebCallResult<CoinExPosition>> CancelTakeProfitAsync(string symbol, long? takeProfitOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get margin adjustment history
