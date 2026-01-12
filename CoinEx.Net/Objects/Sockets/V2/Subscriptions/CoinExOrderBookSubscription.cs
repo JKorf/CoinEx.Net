@@ -42,7 +42,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
                 .WithStreamId(message.Method)
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(message.Data.Data.UpdateTime, _client.GetTimeOffset())
-                .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+                .WithUpdateType(message.Data.IsFull ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             return CallResult.SuccessResult;
         }
 

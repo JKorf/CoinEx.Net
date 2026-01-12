@@ -338,9 +338,31 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="stopLossType">Stop loss price type</param>
         /// <param name="stopLossPrice">Stop loss price</param>
+        /// <param name="stopLossQuantity">Stop loss quantity, null for full position</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, decimal? stopLossQuantity = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Edit stop loss order
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/modify-position-stop-loss" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="stopLossOrderId">Stop loss order id</param>
+        /// <param name="stopLossType">Stop loss price type</param>
+        /// <param name="stopLossPrice">Stop loss price</param>
+        /// <param name="stopLossQuantity">Stop loss quantity</param>
+        /// <param name="ct">Cancelation Token</param>
+        Task<WebCallResult<CoinExPosition>> EditStopLossAsync(string symbol, long stopLossOrderId, PriceType? stopLossType = null, decimal? stopLossPrice = null, decimal? stopLossQuantity = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancel an active position stop loss
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-stop-loss" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="stopLossOrderId">Stop loss order id. If not not provided all stop losses are canceled</param>
+        /// <param name="ct">Cancelation Token</param>
+        Task<WebCallResult<CoinExPosition>> CancelStopLossAsync(string symbol, long? stopLossOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Set take profit for a position
@@ -349,9 +371,30 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="takeProfitType">Take profit price type</param>
         /// <param name="takeProfitPrice">Take profit price</param>
+        /// <param name="takeProfitQuantity">Take profit quantity, null for full position</param>
         /// <param name="ct">Cancelation Token</param>
-        /// <returns></returns>
-        Task<WebCallResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, CancellationToken ct = default);
+        Task<WebCallResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, decimal? takeProfitQuantity = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Edit take profit order
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/modify-position-take-profit" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="takeProfitOrderId">Take profit order id</param>
+        /// <param name="takeProfitType">Take profit price type</param>
+        /// <param name="takeProfitPrice">Take profit price</param>
+        /// <param name="takeProfitQuantity">Take profit quantity</param>
+        /// <param name="ct">Cancelation Token</param>
+        Task<WebCallResult<CoinExPosition>> EditTakeProfitAsync(string symbol, long takeProfitOrderId, PriceType? takeProfitType = null, decimal? takeProfitPrice = null, decimal? takeProfitQuantity = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancel an active position take profit
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-take-profit" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="takeProfitOrderId">Take profit order id. If not not provided all take profits are canceled</param>
+        /// <param name="ct">Cancelation Token</param>
+        Task<WebCallResult<CoinExPosition>> CancelTakeProfitAsync(string symbol, long? takeProfitOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get margin adjustment history

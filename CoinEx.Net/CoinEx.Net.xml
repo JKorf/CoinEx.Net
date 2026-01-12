@@ -264,10 +264,22 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.AdjustPositionMarginAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.SetStopLossAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.SetStopLossAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.SetTakeProfitAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.EditStopLossAsync(System.String,System.Int64,System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelStopLossAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.SetTakeProfitAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.EditTakeProfitAsync(System.String,System.Int64,System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.CancelTakeProfitAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiTrading.GetMarginHistoryAsync(System.String,System.Int64,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
@@ -1953,6 +1965,16 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderItem">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderItemArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderUpdate">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -3322,7 +3344,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.SetStopLossAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.SetStopLossAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Set stop loss for a position
             <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-stop-loss" /></para>
@@ -3330,10 +3352,32 @@
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="stopLossType">Stop loss price type</param>
             <param name="stopLossPrice">Stop loss price</param>
+            <param name="stopLossQuantity">Stop loss quantity, null for full position</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.SetTakeProfitAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.EditStopLossAsync(System.String,System.Int64,System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <summary>
+            Edit stop loss order
+            <para><a href="https://docs.coinex.com/api/v2/futures/position/http/modify-position-stop-loss" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="stopLossOrderId">Stop loss order id</param>
+            <param name="stopLossType">Stop loss price type</param>
+            <param name="stopLossPrice">Stop loss price</param>
+            <param name="stopLossQuantity">Stop loss quantity</param>
+            <param name="ct">Cancelation Token</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelStopLossAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active position stop loss
+            <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-stop-loss" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="stopLossOrderId">Stop loss order id. If not not provided all stop losses are canceled</param>
+            <param name="ct">Cancelation Token</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.SetTakeProfitAsync(System.String,CoinEx.Net.Enums.PriceType,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Set take profit for a position
             <para><a href="https://docs.coinex.com/api/v2/futures/position/http/set-position-take-profit" /></para>
@@ -3341,8 +3385,29 @@
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="takeProfitType">Take profit price type</param>
             <param name="takeProfitPrice">Take profit price</param>
+            <param name="takeProfitQuantity">Take profit quantity, null for full position</param>
             <param name="ct">Cancelation Token</param>
-            <returns></returns>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.EditTakeProfitAsync(System.String,System.Int64,System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.Threading.CancellationToken)">
+            <summary>
+            Edit take profit order
+            <para><a href="https://docs.coinex.com/api/v2/futures/position/http/modify-position-take-profit" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="takeProfitOrderId">Take profit order id</param>
+            <param name="takeProfitType">Take profit price type</param>
+            <param name="takeProfitPrice">Take profit price</param>
+            <param name="takeProfitQuantity">Take profit quantity</param>
+            <param name="ct">Cancelation Token</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.CancelTakeProfitAsync(System.String,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+            <summary>
+            Cancel an active position take profit
+            <para><a href="https://docs.coinex.com/api/v2/futures/position/http/cancel-position-take-profit" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example `ETHUSDT`</param>
+            <param name="takeProfitOrderId">Take profit order id. If not not provided all take profits are canceled</param>
+            <param name="ct">Cancelation Token</param>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiTrading.GetMarginHistoryAsync(System.String,System.Int64,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
@@ -6350,6 +6415,51 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPosition.UpdateTime">
             <summary>
             Timestamp last updated
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPosition.StopLosses">
+            <summary>
+            Stop loss orders
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPosition.TakeProfits">
+            <summary>
+            Take profit orders
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem">
+            <summary>
+            Take profit / Stop loss order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.Price">
+            <summary>
+            Price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.PriceType">
+            <summary>
+            Price type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.IsAll">
+            <summary>
+            Full position or partial
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.CreateTime">
+            <summary>
+            Create time
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPositionAdl">

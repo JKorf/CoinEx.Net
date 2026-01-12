@@ -90,7 +90,7 @@ namespace CoinEx.Net.SymbolOrderBooks
 
         private void HandleUpdate(DataEvent<CoinExOrderBook> data)
         {
-            SetInitialOrderBook(DateTime.UtcNow.Ticks, data.Data.Data.Bids, data.Data.Data.Asks, data.DataTime, data.DataTimeLocal);
+            SetSnapshot(DateTime.UtcNow.Ticks, data.Data.Data.Bids, data.Data.Data.Asks, data.DataTime, data.DataTimeLocal);
             AddChecksum((int)data.Data.Data.Checksum);
         }
 

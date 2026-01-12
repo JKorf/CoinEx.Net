@@ -501,7 +501,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, decimal? stopLossQuantity = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -510,12 +510,42 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddEnum("stop_loss_type", stopLossType);
             parameters.AddString("stop_loss_price", stopLossPrice);
+            parameters.AddOptionalString("stop_loss_amount", stopLossQuantity);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/set-position-stop-loss", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
             return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExPosition>> EditStopLossAsync(string symbol, long stopLossOrderId, PriceType? stopLossType = null, decimal? stopLossPrice = null, decimal? stopLossQuantity = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "stop_loss_id", stopLossOrderId }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptionalEnum("stop_loss_type", stopLossType);
+            parameters.AddOptionalString("stop_loss_price", stopLossPrice);
+            parameters.AddOptionalString("stop_loss_amount", stopLossQuantity);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/modify-position-stop-loss", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPosition>> CancelStopLossAsync(string symbol, long? stopLossOrderId = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+            };
+            parameters.AddOptional("stop_loss_id", stopLossOrderId);
+            parameters.AddEnum("market_type", AccountType.Futures);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-position-stop-loss", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, decimal? takeProfitQuantity = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -524,7 +554,37 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddEnum("take_profit_type", takeProfitType);
             parameters.AddString("take_profit_price", takeProfitPrice);
+            parameters.AddOptionalString("take_profit_amount", takeProfitQuantity);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/set-position-take-profit", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPosition>> EditTakeProfitAsync(string symbol, long takeProfitOrderId, PriceType? takeProfitType = null, decimal? takeProfitPrice = null, decimal? takeProfitQuantity = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+                { "take_profit_id", takeProfitOrderId }
+            };
+            parameters.AddEnum("market_type", AccountType.Futures);
+            parameters.AddOptionalEnum("take_profit_type", takeProfitType);
+            parameters.AddOptionalString("take_profit_price", takeProfitPrice);
+            parameters.AddOptionalString("take_profit_amount", takeProfitQuantity);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/modify-position-take-profit", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<CoinExPosition>> CancelTakeProfitAsync(string symbol, long? takeProfitOrderId = null, CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "market", symbol },
+            };
+            parameters.AddOptional("take_profit_id", takeProfitOrderId);
+            parameters.AddEnum("market_type", AccountType.Futures);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/cancel-position-take-profit", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
             return await _baseClient.SendAsync<CoinExPosition>(request, parameters, ct).ConfigureAwait(false);
         }
 
