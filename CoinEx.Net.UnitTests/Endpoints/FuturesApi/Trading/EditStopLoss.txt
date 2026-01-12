@@ -1,0 +1,50 @@
+POST
+/v2/futures/modify-position-stop-loss
+true
+{
+    "code": 0,
+    "data": {
+        "position_id": 927266133,
+        "market": "CETUSDT",
+        "market_type": "FUTURES",
+        "side": "long",
+        "margin_mode": "cross",
+        "open_interest": "1000000",
+        "close_avbl": "1000000",
+        "ath_position_amount": "1000000",
+        "unrealized_pnl": "8391.123989502",
+        "realized_pnl": "110396.83471965",
+        "avg_entry_price": "0.0631",
+        "cml_position_value": "1118787.958709152",
+        "max_position_value": "1302421.11392201",
+        "take_profit_price": "",
+        "stop_loss_price": "0.055",
+        "take_profit_type": "",
+        "stop_loss_type": "mark_price",
+        "leverage": "10",
+        "margin_avbl": "210396.83471965",
+        "ath_margin_size": "210396.83471965",
+        "position_margin_rate": "0.050",
+        "maintenance_margin_rate": "0.005",
+        "maintenance_margin_value": "5000",
+        "liq_price": "0.05679",
+        "bkr_price": "0.053635",
+        "adl_level": 5,
+        "settle_price": "0.06817",
+        "settle_value": "1291322.83913829",
+        "created_at": 1691482451000,
+        "updated_at": 1691482451000,
+        "stop_loss_list": [
+            {
+                "id": 123457,
+                "price": "0.055",
+                "type": "mark_price",
+                "amount": "500000",
+                "is_all": false,
+                "created_at": 1691482451000
+            }
+        ],
+        "take_profit_list": []
+    },
+    "message": "OK"
+}

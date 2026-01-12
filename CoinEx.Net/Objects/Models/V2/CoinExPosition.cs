@@ -163,5 +163,52 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("updated_at")]
         public DateTime? UpdateTime { get; set; }
+        /// <summary>
+        /// Stop loss orders
+        /// </summary>
+        [JsonPropertyName("stop_loss_list")]
+        public CoinExStopOrderItem[] StopLosses { get; set; } = [];
+        /// <summary>
+        /// Take profit orders
+        /// </summary>
+        [JsonPropertyName("take_profit_list")]
+        public CoinExStopOrderItem[] TakeProfits { get; set; } = [];
+    }
+
+    /// <summary>
+    /// Take profit / Stop loss order
+    /// </summary>
+    public record CoinExStopOrderItem
+    {
+        /// <summary>
+        /// Id
+        /// </summary>
+        [JsonPropertyName("id")]
+        public long Id { get; set; }
+        /// <summary>
+        /// Price
+        /// </summary>
+        [JsonPropertyName("price")]
+        public decimal Price { get; set; }
+        /// <summary>
+        /// Price type
+        /// </summary>
+        [JsonPropertyName("type")]
+        public PriceType PriceType { get; set; }
+        /// <summary>
+        /// Quantity
+        /// </summary>
+        [JsonPropertyName("amount")]
+        public decimal? Quantity { get; set; }
+        /// <summary>
+        /// Full position or partial
+        /// </summary>
+        [JsonPropertyName("is_all")]
+        public bool IsAll { get; set; }
+        /// <summary>
+        /// Create time
+        /// </summary>
+        [JsonPropertyName("created_at")]
+        public DateTime CreateTime { get; set; }
     }
 }

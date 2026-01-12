@@ -1959,6 +1959,16 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderItem">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderItemArray">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.CoinExStopOrderUpdate">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -6381,6 +6391,51 @@
         <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPosition.UpdateTime">
             <summary>
             Timestamp last updated
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPosition.StopLosses">
+            <summary>
+            Stop loss orders
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExPosition.TakeProfits">
+            <summary>
+            Take profit orders
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem">
+            <summary>
+            Take profit / Stop loss order
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.Price">
+            <summary>
+            Price
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.PriceType">
+            <summary>
+            Price type
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.IsAll">
+            <summary>
+            Full position or partial
+            </summary>
+        </member>
+        <member name="P:CoinEx.Net.Objects.Models.V2.CoinExStopOrderItem.CreateTime">
+            <summary>
+            Create time
             </summary>
         </member>
         <member name="T:CoinEx.Net.Objects.Models.V2.CoinExPositionAdl">
