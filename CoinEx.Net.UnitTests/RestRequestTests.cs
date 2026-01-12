@@ -163,7 +163,9 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.FuturesApi.Trading.ClosePositionAsync("ETHUSDT", Enums.OrderTypeV2.Market), "ClosePosition");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.AdjustPositionMarginAsync("ETHUSDT", 1), "AdjustPositionMargin");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.SetStopLossAsync("ETHUSDT", Enums.PriceType.LastPrice, 1), "SetStopLoss");
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.EditStopLossAsync("ETHUSDT", 123, Enums.PriceType.LastPrice, 1), "SetStopLoss");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.SetTakeProfitAsync("ETHUSDT", Enums.PriceType.LastPrice, 1), "SetTakeProfit", ignoreProperties: ["base_fee", "quote_fee", "discount_fee", "maker_fee_rate", "taker_fee_rate"]);
+            await tester.ValidateAsync(client => client.FuturesApi.Trading.EditTakeProfitAsync("ETHUSDT", 123, Enums.PriceType.LastPrice, 1), "SetTakeProfit", ignoreProperties: ["base_fee", "quote_fee", "discount_fee", "maker_fee_rate", "taker_fee_rate"]);
             await tester.ValidateAsync(client => client.FuturesApi.Trading.GetMarginHistoryAsync("ETHUSDT", 1), "GetMarginHistory");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.GetFundingRateHistoryAsync("ETHUSDT", 1), "GetFundingRateHistory");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.GetAutoDeleverageHistoryAsync("ETHUSDT", 1), "GetAutoDeleverageHistory");
