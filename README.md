@@ -176,6 +176,16 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 10.2.0 - 13 Jan 2026
+    * Updated CryptoExchange.Net to version 10.2.0, see https://github.com/JKorf/CryptoExchange.Net/releases/ for full release notes
+    * Added restClient.FuturesApi.Trading.EditTakeProfitAsync endpoint
+    * Added restClient.FuturesApi.Trading.CancelTakeProfitAsync endpoint
+    * Added restClient.FuturesApi.Trading.EditStopLossAsync endpoint
+    * Added restClient.FuturesApi.Trading.CancelStopLossAsync endpoint
+    * Added takeProfitQuantity, stopLossQuantity parameters to SetTakeProfitAsync, SetStopLossAsync endpoints
+    * Added StopLosses, TakeProfits properties to CoinExPosition model
+    * Updated Futures SymbolOrderBook implementation to use incremental updates instead of snapshots
+
 * Version 10.1.0 - 07 Jan 2026
     * Updated CryptoExchange.Net version to 10.1.0, see https://github.com/JKorf/CryptoExchange.Net/releases/ for full release notes
     * Added DataTimeLocal and DataAge properties to DataEvent object
