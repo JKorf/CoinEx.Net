@@ -30,7 +30,6 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             IndividualSubscriptionCount = Math.Min(1, symbols.Length);
 
             MessageRouter = MessageRouter.CreateWithTopicFilters<CoinExSocketUpdate<CoinExOrderBook>>("depth.update", symbols, DoHandleMessage);
-            MessageMatcher = MessageMatcher.Create(_symbols.Select(x => new MessageHandlerLink<CoinExSocketUpdate<CoinExOrderBook>>("depth.update" + x, DoHandleMessage)).ToArray());
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExOrderBook> message)

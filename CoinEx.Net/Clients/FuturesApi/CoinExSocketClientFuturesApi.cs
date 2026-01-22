@@ -35,10 +35,6 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public new CoinExSocketOptions ClientOptions => (CoinExSocketOptions)base.ClientOptions;
 
-        private static readonly MessagePath _idPath = MessagePath.Get().Property("id");
-        private static readonly MessagePath _methodPath = MessagePath.Get().Property("method");
-        private static readonly MessagePath _symbolPath = MessagePath.Get().Property("data").Property("market");
-
         protected override ErrorMapping ErrorMapping => CoinExErrors.SocketErrorMapping;
         #endregion
 
@@ -80,39 +76,9 @@ namespace CoinEx.Net.Clients.FuturesApi
         #region methods
 
         /// <inheritdoc />
-        protected override IByteMessageAccessor CreateAccessor(WebSocketMessageType type) => new SystemTextJsonByteMessageAccessor(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
-        /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
         public ICoinExSocketClientFuturesApiShared SharedClient => this;
-
-        /// <inheritdoc />
-        public override string? GetListenerIdentifier(IMessageAccessor messageAccessor)
-        {
-            var id = messageAccessor.GetValue<int?>(_idPath);
-            if (id != null)
-                return id.ToString();
-
-            var method = messageAccessor.GetValue<string>(_methodPath);
-            if (!string.Equals(method, "state.update", StringComparison.Ordinal)
-                && !string.Equals(method, "deals.update", StringComparison.Ordinal)
-                && !string.Equals(method, "user_deals.update", StringComparison.Ordinal))
-            {
-                var symbol = messageAccessor.GetValue<string>(_symbolPath);
-                return method + symbol;
-            }
-
-            return method;
-        }
-
-        /// <inheritdoc />
-        public override ReadOnlyMemory<byte> PreprocessStreamMessage(SocketConnection connection, WebSocketMessageType type, ReadOnlyMemory<byte> data)
-        {
-            if (type == WebSocketMessageType.Binary)
-                return data.DecompressGzip();
-
-            return data;
-        }
 
         /// <inheritdoc />
         public override ReadOnlySpan<byte> PreprocessStreamMessage(SocketConnection connection, WebSocketMessageType type, ReadOnlySpan<byte> data)

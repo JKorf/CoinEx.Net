@@ -22,7 +22,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Queries
         {
             _client = client;
             var id = ((CoinExSocketRequest)Request).Id.ToString();
-            MessageMatcher = MessageMatcher.Create<CoinExSocketResponse>(id, HandleMessage);
+
             MessageRouter = MessageRouter.CreateWithoutTopicFilter<CoinExSocketResponse>(id, HandleMessage);
         }
 

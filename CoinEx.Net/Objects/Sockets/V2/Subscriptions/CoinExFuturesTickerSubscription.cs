@@ -27,9 +27,8 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _parameters = parameters;
             _handler = handler;
 
-            IndividualSubscriptionCount = Math.Min(1, symbols.Length);
+            IndividualSubscriptionCount = Math.Max(1, symbols.Length);
 
-            MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>>("state.update", DoHandleMessage);
             MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExFuturesTickerUpdateWrapper>>("state.update", symbols, DoHandleMessage);
         }
 

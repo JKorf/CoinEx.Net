@@ -18,6 +18,20 @@ namespace CoinEx.Net
     public static class CoinExExchange
     {
         /// <summary>
+        /// Platform metadata
+        /// </summary>
+        public static PlatformInfo Metadata { get; } = new PlatformInfo(
+                "CoinEx",
+                "CoinEx",
+                "https://raw.githubusercontent.com/JKorf/CoinEx.Net/master/CoinEx.Net/Icon/icon.png",
+                "https://www.coinex.com",
+                ["https://viabtc.github.io/coinex_api_en_doc/",
+                 "https://docs.coinex.com/api/v2/"],
+                PlatformType.CryptoCurrencyExchange,
+                CentralizationType.Centralized
+                );
+
+        /// <summary>
         /// Exchange name
         /// </summary>
         public static string ExchangeName => "CoinEx";

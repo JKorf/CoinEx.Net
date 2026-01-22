@@ -28,14 +28,9 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             _parameters = parameters;
             _handler = handler;
 
-            IndividualSubscriptionCount = Math.Min(1, symbols?.Length ?? 1);
+            IndividualSubscriptionCount = Math.Max(1, symbols?.Length ?? 1);
 
             MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<T>>(_topic + ".update", symbols, DoHandleMessage);
-
-            if (symbols?.Any() != true)            
-                MessageMatcher = MessageMatcher.Create<CoinExSocketUpdate<T>>(_topic + ".update", DoHandleMessage);            
-            else            
-                MessageMatcher = MessageMatcher.Create(_symbols!.Select(x => new MessageHandlerLink<CoinExSocketUpdate<T>>(_topic + ".update" + x, DoHandleMessage)).ToArray());
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<T> message)
