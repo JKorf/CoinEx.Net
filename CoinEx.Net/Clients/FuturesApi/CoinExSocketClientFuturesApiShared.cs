@@ -221,6 +221,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 update => handler(update.ToType<SharedPosition[]>(new[] { new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, update.Data.Position.Symbol), update.Data.Position.Symbol, update.Data.Position.OpenInterest, update.Data.Position.UpdateTime)
                 {
                     AverageOpenPrice = update.Data.Position.AverageEntryPrice,
+                    PositionMode = SharedPositionMode.OneWay,
                     PositionSide = update.Data.Position.Side == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,
                     LiquidationPrice = update.Data.Position.LiquidationPrice,
                     Leverage = update.Data.Position.Leverage,

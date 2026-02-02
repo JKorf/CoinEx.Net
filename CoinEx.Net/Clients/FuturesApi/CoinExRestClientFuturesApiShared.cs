@@ -477,6 +477,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 Leverage = x.Leverage,
                 StopLossPrice = x.StopLossPrice == 0 ? null : x.StopLossPrice,
                 TakeProfitPrice = x.TakeProfitPrice == 0 ? null : x.TakeProfitPrice,
+                PositionMode = SharedPositionMode.OneWay,
                 PositionSide = x.Side == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long
             }).ToArray());
         }
