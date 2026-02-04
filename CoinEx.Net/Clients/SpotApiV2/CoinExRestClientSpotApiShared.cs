@@ -765,7 +765,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (deposits.Data.HasNext == true)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return deposits.AsExchangeResult<SharedDeposit[]>(Exchange, TradingMode.Spot, deposits.Data.Items.Select(x => new SharedDeposit(x.Asset, x.Quantity, x.Status == DepositStatus.Finished, x.CreateTime)
+            return deposits.AsExchangeResult<SharedDeposit[]>(Exchange, TradingMode.Spot, deposits.Data.Items.Select(x => 
+            new SharedDeposit(
+                x.Asset,
+                x.Quantity, 
+                x.Status == DepositStatus.Finished,
+                x.CreateTime,
+                x.Status == DepositStatus.Finished ? SharedTransferStatus.Completed
+                : x.Status == DepositStatus.Processing || x.Status == DepositStatus.Confirming ? SharedTransferStatus.InProgress
+                : SharedTransferStatus.Failed)
             {
                 Id = x.Id.ToString(),
                 Confirmations = x.Confirmations,
