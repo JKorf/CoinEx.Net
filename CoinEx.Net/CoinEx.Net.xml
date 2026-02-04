@@ -796,6 +796,37 @@
         <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
             <inheritdoc />
         </member>
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserSpotDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserFuturesDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig)">
+            <inheritdoc />
+        </member>
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+            <inheritdoc />
+        </member>
+        <member name="T:CoinEx.Net.CoinExUserSpotDataTracker">
+            <inheritdoc/>
+        </member>
+        <member name="M:CoinEx.Net.CoinExUserSpotDataTracker.#ctor(Microsoft.Extensions.Logging.ILogger{CoinEx.Net.CoinExUserSpotDataTracker},CoinEx.Net.Interfaces.Clients.ICoinExRestClient,CoinEx.Net.Interfaces.Clients.ICoinExSocketClient,System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig)">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="T:CoinEx.Net.CoinExUserFuturesDataTracker">
+            <inheritdoc/>
+        </member>
+        <member name="P:CoinEx.Net.CoinExUserFuturesDataTracker.WebsocketPositionUpdatesAreFullSnapshots">
+            <inheritdoc/>
+        </member>
+        <member name="M:CoinEx.Net.CoinExUserFuturesDataTracker.#ctor(Microsoft.Extensions.Logging.ILogger{CoinEx.Net.CoinExUserFuturesDataTracker},CoinEx.Net.Interfaces.Clients.ICoinExRestClient,CoinEx.Net.Interfaces.Clients.ICoinExSocketClient,System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig)">
+            <summary>
+            ctor
+            </summary>
+        </member>
         <member name="P:CoinEx.Net.Converters.CoinExSourceGenerationContext.Boolean">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -4558,6 +4589,36 @@
             <summary>
             Tracker factory
             </summary>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+            <summary>
+            Create a new Spot user data tracker
+            </summary>
+            <param name="userIdentifier">User identifier</param>
+            <param name="config">Configuration</param>
+            <param name="credentials">Credentials</param>
+            <param name="environment">Environment</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserSpotDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig)">
+            <summary>
+            Create a new spot user data tracker
+            </summary>
+            <param name="config">Configuration</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+            <summary>
+            Create a new futures user data tracker
+            </summary>
+            <param name="userIdentifier">User identifier</param>
+            <param name="config">Configuration</param>
+            <param name="credentials">Credentials</param>
+            <param name="environment">Environment</param>
+        </member>
+        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserFuturesDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig)">
+            <summary>
+            Create a new futures user data tracker
+            </summary>
+            <param name="config">Configuration</param>
         </member>
         <member name="T:CoinEx.Net.Objects.CoinExApiAddresses">
             <summary>
