@@ -76,7 +76,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        public IUserSpotDataTracker CreateUserSpotDataTracker(SpotUserDataTrackerConfig config)
+        public IUserSpotDataTracker CreateUserSpotDataTracker(SpotUserDataTrackerConfig? config = null)
         {
             var restClient = _serviceProvider?.GetRequiredService<ICoinExRestClient>() ?? new CoinExRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<ICoinExSocketClient>() ?? new CoinExSocketClient();
@@ -90,7 +90,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, SpotUserDataTrackerConfig config, ApiCredentials credentials, CoinExEnvironment? environment = null)
+        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ApiCredentials credentials, SpotUserDataTrackerConfig? config = null, CoinExEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<ICoinExUserClientProvider>() ?? new CoinExUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);
@@ -105,7 +105,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        public IUserFuturesDataTracker CreateUserFuturesDataTracker(FuturesUserDataTrackerConfig config)
+        public IUserFuturesDataTracker CreateUserFuturesDataTracker(FuturesUserDataTrackerConfig? config = null)
         {
             var restClient = _serviceProvider?.GetRequiredService<ICoinExRestClient>() ?? new CoinExRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<ICoinExSocketClient>() ?? new CoinExSocketClient();
@@ -119,7 +119,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        public IUserFuturesDataTracker CreateUserFuturesDataTracker(string userIdentifier, FuturesUserDataTrackerConfig config, ApiCredentials credentials, CoinExEnvironment? environment = null)
+        public IUserFuturesDataTracker CreateUserFuturesDataTracker(string userIdentifier, ApiCredentials credentials, FuturesUserDataTrackerConfig? config = null, CoinExEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<ICoinExUserClientProvider>() ?? new CoinExUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);

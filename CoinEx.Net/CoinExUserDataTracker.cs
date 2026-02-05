@@ -17,7 +17,7 @@ namespace CoinEx.Net
             ICoinExRestClient restClient,
             ICoinExSocketClient socketClient,
             string? userIdentifier,
-            SpotUserDataTrackerConfig config) : base(
+            SpotUserDataTrackerConfig? config) : base(
                 logger,
                 restClient.SpotApiV2.SharedClient,
                 null,
@@ -27,7 +27,7 @@ namespace CoinEx.Net
                 socketClient.SpotApiV2.SharedClient,
                 socketClient.SpotApiV2.SharedClient,
                 userIdentifier,
-                config)
+                config ?? new SpotUserDataTrackerConfig())
         {
         }
     }
@@ -46,7 +46,7 @@ namespace CoinEx.Net
             ICoinExRestClient restClient,
             ICoinExSocketClient socketClient,
             string? userIdentifier,
-            FuturesUserDataTrackerConfig config) : base(logger,
+            FuturesUserDataTrackerConfig? config) : base(logger,
                 restClient.FuturesApi.SharedClient,
                 null,
                 restClient.FuturesApi.SharedClient,
@@ -56,7 +56,7 @@ namespace CoinEx.Net
                 socketClient.FuturesApi.SharedClient,
                 socketClient.FuturesApi.SharedClient,
                 userIdentifier,
-                config)
+                config ?? new FuturesUserDataTrackerConfig())
         {
         }
     }

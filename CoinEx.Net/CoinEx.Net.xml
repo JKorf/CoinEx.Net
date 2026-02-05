@@ -799,13 +799,13 @@
         <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserSpotDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Authentication.ApiCredentials,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CoinEx.Net.CoinExEnvironment)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserFuturesDataTracker(CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+        <member name="M:CoinEx.Net.CoinExTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Authentication.ApiCredentials,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CoinEx.Net.CoinExEnvironment)">
             <inheritdoc />
         </member>
         <member name="T:CoinEx.Net.CoinExUserSpotDataTracker">
@@ -4590,7 +4590,7 @@
             Tracker factory
             </summary>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserSpotDataTracker(System.String,CryptoExchange.Net.Authentication.ApiCredentials,CryptoExchange.Net.Trackers.UserData.Objects.SpotUserDataTrackerConfig,CoinEx.Net.CoinExEnvironment)">
             <summary>
             Create a new Spot user data tracker
             </summary>
@@ -4605,7 +4605,7 @@
             </summary>
             <param name="config">Configuration</param>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CryptoExchange.Net.Authentication.ApiCredentials,CoinEx.Net.CoinExEnvironment)">
+        <member name="M:CoinEx.Net.Interfaces.ICoinExTrackerFactory.CreateUserFuturesDataTracker(System.String,CryptoExchange.Net.Authentication.ApiCredentials,CryptoExchange.Net.Trackers.UserData.Objects.FuturesUserDataTrackerConfig,CoinEx.Net.CoinExEnvironment)">
             <summary>
             Create a new futures user data tracker
             </summary>
