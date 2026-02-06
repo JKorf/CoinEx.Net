@@ -162,7 +162,44 @@ namespace CoinEx.Net.Clients.FuturesApi
             ExchangeSymbolCache.UpdateSymbolInfo(_topicId, response.Data);
             return response;
         }
+        async Task<ExchangeResult<SharedSymbol[]>> IFuturesSymbolRestClient.GetFuturesSymbolsForBaseAssetAsync(string baseAsset)
+        {
+            if (!ExchangeSymbolCache.HasCached(_topicId))
+            {
+                var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                if (!symbols)
+                    return new ExchangeResult<SharedSymbol[]>(Exchange, symbols.Error!);
+            }
 
+            return new ExchangeResult<SharedSymbol[]>(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, baseAsset));
+        }
+
+        async Task<ExchangeResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(SharedSymbol symbol)
+        {
+            if (symbol.TradingMode == TradingMode.Spot)
+                throw new ArgumentException(nameof(symbol), "Spot symbols not allowed");
+
+            if (!ExchangeSymbolCache.HasCached(_topicId))
+            {
+                var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                if (!symbols)
+                    return new ExchangeResult<bool>(Exchange, symbols.Error!);
+            }
+
+            return new ExchangeResult<bool>(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbol));
+        }
+
+        async Task<ExchangeResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(string symbolName)
+        {
+            if (!ExchangeSymbolCache.HasCached(_topicId))
+            {
+                var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                if (!symbols)
+                    return new ExchangeResult<bool>(Exchange, symbols.Error!);
+            }
+
+            return new ExchangeResult<bool>(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbolName));
+        }
         #endregion
 
         #region Futures Order Client
@@ -440,6 +477,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 Leverage = x.Leverage,
                 StopLossPrice = x.StopLossPrice == 0 ? null : x.StopLossPrice,
                 TakeProfitPrice = x.TakeProfitPrice == 0 ? null : x.TakeProfitPrice,
+                PositionMode = SharedPositionMode.OneWay,
                 PositionSide = x.Side == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long
             }).ToArray());
         }

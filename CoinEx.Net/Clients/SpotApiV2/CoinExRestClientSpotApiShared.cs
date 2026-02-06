@@ -116,7 +116,44 @@ namespace CoinEx.Net.Clients.SpotApiV2
             ExchangeSymbolCache.UpdateSymbolInfo(_topicId, response.Data);
             return response;
         }
+        async Task<ExchangeResult<SharedSymbol[]>> ISpotSymbolRestClient.GetSpotSymbolsForBaseAssetAsync(string baseAsset)
+        {
+            if (!ExchangeSymbolCache.HasCached(_topicId))
+            {
+                var symbols = await ((ISpotSymbolRestClient)this).GetSpotSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                if (!symbols)
+                    return new ExchangeResult<SharedSymbol[]>(Exchange, symbols.Error!);
+            }
 
+            return new ExchangeResult<SharedSymbol[]>(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, baseAsset));
+        }
+
+        async Task<ExchangeResult<bool>> ISpotSymbolRestClient.SupportsSpotSymbolAsync(SharedSymbol symbol)
+        {
+            if (symbol.TradingMode != TradingMode.Spot)
+                throw new ArgumentException(nameof(symbol), "Only Spot symbols allowed");
+
+            if (!ExchangeSymbolCache.HasCached(_topicId))
+            {
+                var symbols = await ((ISpotSymbolRestClient)this).GetSpotSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                if (!symbols)
+                    return new ExchangeResult<bool>(Exchange, symbols.Error!);
+            }
+
+            return new ExchangeResult<bool>(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbol));
+        }
+
+        async Task<ExchangeResult<bool>> ISpotSymbolRestClient.SupportsSpotSymbolAsync(string symbolName)
+        {
+            if (!ExchangeSymbolCache.HasCached(_topicId))
+            {
+                var symbols = await ((ISpotSymbolRestClient)this).GetSpotSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
+                if (!symbols)
+                    return new ExchangeResult<bool>(Exchange, symbols.Error!);
+            }
+
+            return new ExchangeResult<bool>(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbolName));
+        }
         #endregion
 
         #region Ticker client
@@ -728,7 +765,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (deposits.Data.HasNext == true)
                 nextToken = new PageToken(page + 1, pageSize);
 
-            return deposits.AsExchangeResult<SharedDeposit[]>(Exchange, TradingMode.Spot, deposits.Data.Items.Select(x => new SharedDeposit(x.Asset, x.Quantity, x.Status == DepositStatus.Finished, x.CreateTime)
+            return deposits.AsExchangeResult<SharedDeposit[]>(Exchange, TradingMode.Spot, deposits.Data.Items.Select(x => 
+            new SharedDeposit(
+                x.Asset,
+                x.Quantity, 
+                x.Status == DepositStatus.Finished,
+                x.CreateTime,
+                x.Status == DepositStatus.Finished ? SharedTransferStatus.Completed
+                : x.Status == DepositStatus.Processing || x.Status == DepositStatus.Confirming ? SharedTransferStatus.InProgress
+                : SharedTransferStatus.Failed)
             {
                 Id = x.Id.ToString(),
                 Confirmations = x.Confirmations,
