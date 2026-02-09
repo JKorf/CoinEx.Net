@@ -29,7 +29,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 
             IndividualSubscriptionCount = Math.Max(1, symbols.Length);
 
-            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update", symbols, DoHandleMessage);
+            MessageRouter = MessageRouter.CreateWithoutTopicFilter<CoinExSocketUpdate<CoinExTickerUpdateWrapper>>("state.update", DoHandleMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTickerUpdateWrapper> message)
