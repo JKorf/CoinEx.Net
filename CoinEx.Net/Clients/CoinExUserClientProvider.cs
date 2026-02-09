@@ -14,8 +14,8 @@ namespace CoinEx.Net.Clients
     /// <inheritdoc />
     public class CoinExUserClientProvider : ICoinExUserClientProvider
     {
-        private static ConcurrentDictionary<string, ICoinExRestClient> _restClients = new ConcurrentDictionary<string, ICoinExRestClient>();
-        private static ConcurrentDictionary<string, ICoinExSocketClient> _socketClients = new ConcurrentDictionary<string, ICoinExSocketClient>();
+        private ConcurrentDictionary<string, ICoinExRestClient> _restClients = new ConcurrentDictionary<string, ICoinExRestClient>();
+        private ConcurrentDictionary<string, ICoinExSocketClient> _socketClients = new ConcurrentDictionary<string, ICoinExSocketClient>();
 
         private readonly IOptions<CoinExRestOptions> _restOptions;
         private readonly IOptions<CoinExSocketOptions> _socketOptions;
