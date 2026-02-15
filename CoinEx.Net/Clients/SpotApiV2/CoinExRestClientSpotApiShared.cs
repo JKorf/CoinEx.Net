@@ -26,7 +26,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #region Kline client
 
-        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false,
+        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(true, true, true, 1000, false,
             SharedKlineInterval.OneMinute,
             SharedKlineInterval.FiveMinutes,
             SharedKlineInterval.FifteenMinutes,
@@ -42,7 +42,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             MaxTotalDataPoints = 1000
         };
 
-        async Task<ExchangeWebResult<SharedKline[]>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
+        async Task<ExchangeWebResult<SharedKline[]>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
             if (!Enum.IsDefined(typeof(Enums.KlineInterval), interval))
@@ -397,55 +397,64 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }).ToArray());
         }
 
-        PaginatedEndpointOptions<GetClosedOrdersRequest> ISpotOrderRestClient.GetClosedSpotOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(SharedPaginationSupport.Descending, true, 500, true);
-        async Task<ExchangeWebResult<SharedSpotOrder[]>> ISpotOrderRestClient.GetClosedSpotOrdersAsync(GetClosedOrdersRequest request, INextPageToken? pageToken, CancellationToken ct)
+        PaginatedEndpointOptions<GetClosedOrdersRequest> ISpotOrderRestClient.GetClosedSpotOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(false, true, true, 500, true);
+        async Task<ExchangeWebResult<SharedSpotOrder[]>> ISpotOrderRestClient.GetClosedSpotOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
             var validationError = ((ISpotOrderRestClient)this).GetClosedSpotOrdersOptions.ValidateRequest(Exchange, request, request.Symbol!.TradingMode, SupportedTradingModes);
             if (validationError != null)
                 return new ExchangeWebResult<SharedSpotOrder[]>(Exchange, validationError);
 
             // Determine page token
-            int page = 1;
-            int pageSize = request.Limit ?? 500;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
+            var direction = DataDirection.Descending;
+            var pageSize = request.Limit ?? 500;
+            var symbol = request.Symbol!.GetSymbol(FormatSymbol);
+            var paginationParameters = ExchangeHelpers.ApplyPageFilter(pageRequest);
 
             // Get data
-            var orders = await Trading.GetClosedOrdersAsync(
+            var result = await Trading.GetClosedOrdersAsync(
                 AccountType.Spot,
                 request.Symbol!.GetSymbol(FormatSymbol),
-                page: page,
+                page: paginationParameters.Page,
                 pageSize: pageSize,
                 ct: ct).ConfigureAwait(false);
-            if (!orders)
-                return orders.AsExchangeResult<SharedSpotOrder[]>(Exchange, null, default);
+            if (!result)
+                return result.AsExchangeResult<SharedSpotOrder[]>(Exchange, null, default);
 
-            // Get next token
-            PageToken? nextToken = null;
-            if (orders.Data.HasNext == true)
-                nextToken = new PageToken(page + 1, pageSize);
+            var nextPageRequest = ExchangeHelpers.GetNextPageRequest(
+                () => PageRequest.NextPage((paginationParameters.Page ?? 1) + 1),
+                result.Data.Items.Length,
+                result.Data.Items.Select(x => x.CreateTime),
+                pageSize,
+                pageRequest,
+                ExchangeHelpers.TimeParameterSetType.None,
+                null,
+                direction,
+                request.StartTime,
+                request.EndTime);
 
-            return orders.AsExchangeResult<SharedSpotOrder[]>(Exchange, TradingMode.Spot, orders.Data.Items.Select(x => new SharedSpotOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
-                x.Symbol,
-                x.Id.ToString(),
-                ParseOrderType(x.OrderType),
-                x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                SharedOrderStatus.Filled, // Canceled orders are not returned
-                x.CreateTime)
-            {
-                ClientOrderId = x.ClientOrderId,
-                OrderPrice = x.Price,
-                OrderQuantity = new SharedOrderQuantity(x.QuantityAsset == null || !x.Symbol!.EndsWith(x.QuantityAsset) ? x.Quantity : null, x.Symbol!.EndsWith(x.QuantityAsset!) ? x.Quantity : null),
-                QuantityFilled = new SharedOrderQuantity(x.QuantityFilled, x.ValueFilled),
-                UpdateTime = x.UpdateTime,
-                Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
-                FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
-                TimeInForce = ParseTimeInForce(x.OrderType)
-            }).ToArray(), nextToken);
+            return result.AsExchangeResult(
+                    Exchange,
+                    TradingMode.Spot,
+                    ExchangeHelpers.ApplyFilter(result.Data.Items, x => x.CreateTime, request.StartTime, request.EndTime, direction)
+                    .Select(x => new SharedSpotOrder(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                        x.Symbol,
+                        x.Id.ToString(),
+                        ParseOrderType(x.OrderType),
+                        x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
+                        SharedOrderStatus.Filled, // Canceled orders are not returned
+                        x.CreateTime)
+                        {
+                            ClientOrderId = x.ClientOrderId,
+                            OrderPrice = x.Price,
+                            OrderQuantity = new SharedOrderQuantity(x.QuantityAsset == null || !x.Symbol!.EndsWith(x.QuantityAsset) ? x.Quantity : null, x.Symbol!.EndsWith(x.QuantityAsset!) ? x.Quantity : null),
+                            QuantityFilled = new SharedOrderQuantity(x.QuantityFilled, x.ValueFilled),
+                            UpdateTime = x.UpdateTime,
+                            Fee = x.FeeBaseAsset > 0 ? x.FeeBaseAsset : x.FeeQuoteAsset,
+                            FeeAsset = x.FeeBaseAsset > 0 ? request.Symbol?.BaseAsset : x.FeeQuoteAsset > 0 ? request.Symbol?.QuoteAsset : null,
+                            TimeInForce = ParseTimeInForce(x.OrderType)
+                        })
+                    .ToArray(), nextPageRequest);
         }
 
         EndpointOptions<GetOrderTradesRequest> ISpotOrderRestClient.GetSpotOrderTradesOptions { get; } = new EndpointOptions<GetOrderTradesRequest>(true);
@@ -479,8 +488,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }).ToArray());
         }
 
-        PaginatedEndpointOptions<GetUserTradesRequest> ISpotOrderRestClient.GetSpotUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(SharedPaginationSupport.Descending, true, 500, true);
-        async Task<ExchangeWebResult<SharedUserTrade[]>> ISpotOrderRestClient.GetSpotUserTradesAsync(GetUserTradesRequest request, INextPageToken? pageToken, CancellationToken ct)
+        PaginatedEndpointOptions<GetUserTradesRequest> ISpotOrderRestClient.GetSpotUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(false, true, true, 500, true);
+        async Task<ExchangeWebResult<SharedUserTrade[]>> ISpotOrderRestClient.GetSpotUserTradesAsync(GetUserTradesRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var validationError = ((ISpotOrderRestClient)this).GetSpotUserTradesOptions.ValidateRequest(Exchange, request, request.Symbol!.TradingMode, SupportedTradingModes);
             if (validationError != null)
@@ -489,11 +498,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
             // Determine page token
             int page = 1;
             int pageSize = request.Limit ?? 500;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
+            //if (pageToken is PageToken token)
+            //{
+            //    page = token.Page;
+            //    pageSize = token.PageSize;
+            //}
 
             // Get data
             var orders = await Trading.GetUserTradesAsync(
@@ -508,9 +517,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return orders.AsExchangeResult<SharedUserTrade[]>(Exchange, null, default);
 
             // Get next token
-            PageToken? nextToken = null;
-            if (orders.Data.HasNext)
-                nextToken = new PageToken(page + 1, pageSize);
+            //PageToken? nextToken = null;
+            //if (orders.Data.HasNext)
+            //    nextToken = new PageToken(page + 1, pageSize);
 
             return orders.AsExchangeResult<SharedUserTrade[]>(Exchange, request.Symbol!.TradingMode,orders.Data.Items.Select(x => new SharedUserTrade(
                 ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
@@ -526,7 +535,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
-            }).ToArray(), nextToken);
+            }).ToArray()/*, nextToken*/);
         }
                 
         EndpointOptions<CancelOrderRequest> ISpotOrderRestClient.CancelSpotOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
@@ -729,14 +738,14 @@ namespace CoinEx.Net.Clients.SpotApiV2
             });
         }
 
-        GetDepositsOptions IDepositRestClient.GetDepositsOptions { get; } = new GetDepositsOptions(SharedPaginationSupport.Descending, false, 100)
+        GetDepositsOptions IDepositRestClient.GetDepositsOptions { get; } = new GetDepositsOptions(false, true, false, 100)
         {
             RequiredOptionalParameters = new List<ParameterDescription>
             {
                 new ParameterDescription(nameof(GetWithdrawalsRequest.Asset), typeof(string), "Asset the deposits should be retrieved for", "ETH")
             }
         };
-        async Task<ExchangeWebResult<SharedDeposit[]>> IDepositRestClient.GetDepositsAsync(GetDepositsRequest request, INextPageToken? pageToken, CancellationToken ct)
+        async Task<ExchangeWebResult<SharedDeposit[]>> IDepositRestClient.GetDepositsAsync(GetDepositsRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var validationError = ((IDepositRestClient)this).GetDepositsOptions.ValidateRequest(Exchange, request, TradingMode.Spot, SupportedTradingModes);
             if (validationError != null)
@@ -745,11 +754,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
             // Determine page token
             int page = 1;
             int pageSize = request.Limit ?? 100;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
+            //if (pageToken is PageToken token)
+            //{
+            //    page = token.Page;
+            //    pageSize = token.PageSize;
+            //}
 
             // Get data
             var deposits = await Account.GetDepositHistoryAsync(
@@ -760,10 +769,10 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!deposits)
                 return deposits.AsExchangeResult<SharedDeposit[]>(Exchange, null, default);
 
-            // Get next token
-            PageToken? nextToken = null;
-            if (deposits.Data.HasNext == true)
-                nextToken = new PageToken(page + 1, pageSize);
+            //// Get next token
+            //PageToken? nextToken = null;
+            //if (deposits.Data.HasNext == true)
+            //    nextToken = new PageToken(page + 1, pageSize);
 
             return deposits.AsExchangeResult<SharedDeposit[]>(Exchange, TradingMode.Spot, deposits.Data.Items.Select(x => 
             new SharedDeposit(
@@ -779,7 +788,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Confirmations = x.Confirmations,
                 Network = x.Network,
                 TransactionId = x.TransactionId
-            }).ToArray(), nextToken);
+            }).ToArray()/*, nextToken*/);
         }
 
         #endregion
@@ -805,8 +814,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #region Withdrawal client
 
-        GetWithdrawalsOptions IWithdrawalRestClient.GetWithdrawalsOptions { get; } = new GetWithdrawalsOptions(SharedPaginationSupport.Descending, false, 100);
-        async Task<ExchangeWebResult<SharedWithdrawal[]>> IWithdrawalRestClient.GetWithdrawalsAsync(GetWithdrawalsRequest request, INextPageToken? pageToken, CancellationToken ct)
+        GetWithdrawalsOptions IWithdrawalRestClient.GetWithdrawalsOptions { get; } = new GetWithdrawalsOptions(false, true, false, 100);
+        async Task<ExchangeWebResult<SharedWithdrawal[]>> IWithdrawalRestClient.GetWithdrawalsAsync(GetWithdrawalsRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var validationError = ((IWithdrawalRestClient)this).GetWithdrawalsOptions.ValidateRequest(Exchange, request, TradingMode.Spot, SupportedTradingModes);
             if (validationError != null)
@@ -815,11 +824,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             // Determine page token
             int page = 1;
             int pageSize = request.Limit ?? 100;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
 
             // Get data
             var withdrawals = await Account.GetWithdrawalHistoryAsync(
@@ -830,11 +834,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!withdrawals)
                 return withdrawals.AsExchangeResult<SharedWithdrawal[]>(Exchange, null, default);
 
-            // Get next token
-            PageToken? nextToken = null;
-            if (withdrawals.Data.HasNext == true)
-                nextToken = new PageToken(page + 1, pageSize);
-
             return withdrawals.AsExchangeResult<SharedWithdrawal[]>(Exchange, TradingMode.Spot, withdrawals.Data.Items.Select(x => new SharedWithdrawal(x.Asset, x.ToAddress, x.Quantity, x.Status == WithdrawStatusV2.Finished, x.CreateTime)
             {
                 Id = x.Id.ToString(),
@@ -843,7 +842,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Tag = x.Memo,
                 TransactionId = x.TransactionId,
                 Fee = x.Fee
-            }).ToArray());
+            }).ToArray()/*, nextToken*/);
         }
 
         #endregion

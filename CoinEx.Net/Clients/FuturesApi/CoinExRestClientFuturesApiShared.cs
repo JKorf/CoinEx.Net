@@ -311,8 +311,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             }).ToArray());
         }
 
-        PaginatedEndpointOptions<GetClosedOrdersRequest> IFuturesOrderRestClient.GetClosedFuturesOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(SharedPaginationSupport.Descending, true, 50, true);
-        async Task<ExchangeWebResult<SharedFuturesOrder[]>> IFuturesOrderRestClient.GetClosedFuturesOrdersAsync(GetClosedOrdersRequest request, INextPageToken? pageToken, CancellationToken ct)
+        PaginatedEndpointOptions<GetClosedOrdersRequest> IFuturesOrderRestClient.GetClosedFuturesOrdersOptions { get; } = new PaginatedEndpointOptions<GetClosedOrdersRequest>(false, true, true, 50, true);
+        async Task<ExchangeWebResult<SharedFuturesOrder[]>> IFuturesOrderRestClient.GetClosedFuturesOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var validationError = ((IFuturesOrderRestClient)this).GetClosedFuturesOrdersOptions.ValidateRequest(Exchange, request, request.Symbol!.TradingMode, SupportedTradingModes);
             if (validationError != null)
@@ -321,11 +321,11 @@ namespace CoinEx.Net.Clients.FuturesApi
             // Determine page token
             int page = 1;
             int pageSize = request.Limit ?? 50;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
+            //if (pageToken is PageToken token)
+            //{
+            //    page = token.Page;
+            //    pageSize = token.PageSize;
+            //}
 
             // Get data
             var orders = await Trading.GetClosedOrdersAsync(
@@ -337,9 +337,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return orders.AsExchangeResult<SharedFuturesOrder[]>(Exchange, null, default);
 
             // Get next token
-            PageToken? nextToken = null;
-            if (orders.Data.HasNext)
-                nextToken = new PageToken(page + 1, pageSize);
+            //PageToken? nextToken = null;
+            //if (orders.Data.HasNext)
+            //    nextToken = new PageToken(page + 1, pageSize);
 
             return orders.AsExchangeResult<SharedFuturesOrder[]>(Exchange, SupportedTradingModes ,orders.Data.Items.Select(x => new SharedFuturesOrder(
                 ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
@@ -358,7 +358,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 UpdateTime = x.UpdateTime,
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset
-            }).ToArray(), nextToken);
+            }).ToArray()/*, nextToken*/);
         }
 
         EndpointOptions<GetOrderTradesRequest> IFuturesOrderRestClient.GetFuturesOrderTradesOptions { get; } = new EndpointOptions<GetOrderTradesRequest>(true);
@@ -392,8 +392,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             }).ToArray());
         }
 
-        PaginatedEndpointOptions<GetUserTradesRequest> IFuturesOrderRestClient.GetFuturesUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(SharedPaginationSupport.Descending, true, 50, true);
-        async Task<ExchangeWebResult<SharedUserTrade[]>> IFuturesOrderRestClient.GetFuturesUserTradesAsync(GetUserTradesRequest request, INextPageToken? pageToken, CancellationToken ct)
+        PaginatedEndpointOptions<GetUserTradesRequest> IFuturesOrderRestClient.GetFuturesUserTradesOptions { get; } = new PaginatedEndpointOptions<GetUserTradesRequest>(false, true, true, 50, true);
+        async Task<ExchangeWebResult<SharedUserTrade[]>> IFuturesOrderRestClient.GetFuturesUserTradesAsync(GetUserTradesRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var validationError = ((IFuturesOrderRestClient)this).GetFuturesUserTradesOptions.ValidateRequest(Exchange, request, request.Symbol!.TradingMode, SupportedTradingModes);
             if (validationError != null)
@@ -402,11 +402,11 @@ namespace CoinEx.Net.Clients.FuturesApi
             // Determine page token
             int page = 1;
             int pageSize = request.Limit ?? 50;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
+            //if (pageToken is PageToken token)
+            //{
+            //    page = token.Page;
+            //    pageSize = token.PageSize;
+            //}
 
             // Get data
             var orders = await Trading.GetUserTradesAsync(request.Symbol!.GetSymbol(FormatSymbol),
@@ -420,9 +420,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return orders.AsExchangeResult<SharedUserTrade[]>(Exchange, null, default);
 
             // Get next token
-            PageToken? nextToken = null;
-            if (orders.Data.HasNext)
-                nextToken = new PageToken(page + 1, pageSize);
+            //PageToken? nextToken = null;
+            //if (orders.Data.HasNext)
+            //    nextToken = new PageToken(page + 1, pageSize);
 
             return orders.AsExchangeResult<SharedUserTrade[]>(Exchange, request.Symbol!.TradingMode,orders.Data.Items.Select(x => new SharedUserTrade(
                 ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
@@ -438,7 +438,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 Fee = x.Fee,
                 FeeAsset = x.FeeAsset,
                 Role = x.Role == TransactionRole.Maker ? SharedRole.Maker : SharedRole.Taker
-            }).ToArray(), nextToken);
+            }).ToArray()/*, nextToken*/);
         }
 
         EndpointOptions<CancelOrderRequest> IFuturesOrderRestClient.CancelFuturesOrderOptions { get; } = new EndpointOptions<CancelOrderRequest>(true);
@@ -611,7 +611,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         #region Klines client
 
-        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false,
+        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(false, true, true, 1000, false,
             SharedKlineInterval.OneMinute,
             SharedKlineInterval.FiveMinutes,
             SharedKlineInterval.FifteenMinutes,
@@ -624,7 +624,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             SharedKlineInterval.OneDay,
             SharedKlineInterval.OneWeek);
 
-        async Task<ExchangeWebResult<SharedKline[]>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
+        async Task<ExchangeWebResult<SharedKline[]>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
             if (!Enum.IsDefined(typeof(Enums.KlineInterval), interval))
@@ -652,9 +652,9 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         #region Mark Price Klines client
 
-        GetKlinesOptions IMarkPriceKlineRestClient.GetMarkPriceKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false);
+        GetKlinesOptions IMarkPriceKlineRestClient.GetMarkPriceKlinesOptions { get; } = new GetKlinesOptions(false, true, true, 1000, false);
 
-        async Task<ExchangeWebResult<SharedFuturesKline[]>> IMarkPriceKlineRestClient.GetMarkPriceKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
+        async Task<ExchangeWebResult<SharedFuturesKline[]>> IMarkPriceKlineRestClient.GetMarkPriceKlinesAsync(GetKlinesRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
             if (!Enum.IsDefined(typeof(Enums.KlineInterval), interval))
@@ -683,9 +683,9 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         #region Index Price Klines client
 
-        GetKlinesOptions IIndexPriceKlineRestClient.GetIndexPriceKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false);
+        GetKlinesOptions IIndexPriceKlineRestClient.GetIndexPriceKlinesOptions { get; } = new GetKlinesOptions(false, true, true, 1000, false);
 
-        async Task<ExchangeWebResult<SharedFuturesKline[]>> IIndexPriceKlineRestClient.GetIndexPriceKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
+        async Task<ExchangeWebResult<SharedFuturesKline[]>> IIndexPriceKlineRestClient.GetIndexPriceKlinesAsync(GetKlinesRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
             if (!Enum.IsDefined(typeof(Enums.KlineInterval), interval))
@@ -695,6 +695,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return new ExchangeWebResult<SharedFuturesKline[]>(Exchange, validationError);
 
+#warning pagination
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
             var result = await ExchangeData.GetKlinesAsync(
                 symbol,
@@ -830,9 +831,9 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         #region Funding Rate client
-        GetFundingRateHistoryOptions IFundingRateRestClient.GetFundingRateHistoryOptions { get; } = new GetFundingRateHistoryOptions(SharedPaginationSupport.Descending, true, 100, false);
+        GetFundingRateHistoryOptions IFundingRateRestClient.GetFundingRateHistoryOptions { get; } = new GetFundingRateHistoryOptions(false, true, true, 100, false);
 
-        async Task<ExchangeWebResult<SharedFundingRate[]>> IFundingRateRestClient.GetFundingRateHistoryAsync(GetFundingRateHistoryRequest request, INextPageToken? pageToken, CancellationToken ct)
+        async Task<ExchangeWebResult<SharedFundingRate[]>> IFundingRateRestClient.GetFundingRateHistoryAsync(GetFundingRateHistoryRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var validationError = ((IFundingRateRestClient)this).GetFundingRateHistoryOptions.ValidateRequest(Exchange, request, request.Symbol!.TradingMode, SupportedTradingModes);
             if (validationError != null)
@@ -840,11 +841,11 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             int page = 1;
             int pageSize = 100;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
+            //if (pageToken is PageToken token)
+            //{
+            //    page = token.Page;
+            //    pageSize = token.PageSize;
+            //}
 
             // Get data
             var result = await ExchangeData.GetFundingRateHistoryAsync(
@@ -857,19 +858,19 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<SharedFundingRate[]>(Exchange, null, default);
 
-            PageToken? nextToken = null;
-            if (result.Data.HasNext)
-                nextToken = new PageToken(page + 1, pageSize);
+            //PageToken? nextToken = null;
+            //if (result.Data.HasNext)
+            //    nextToken = new PageToken(page + 1, pageSize);
 
             // Return
-            return result.AsExchangeResult<SharedFundingRate[]>(Exchange, request.Symbol!.TradingMode,result.Data.Items.Select(x => new SharedFundingRate(x.ActualFundingRate, x.FundingTime ?? default)).ToArray(), nextToken);
+            return result.AsExchangeResult<SharedFundingRate[]>(Exchange, request.Symbol!.TradingMode,result.Data.Items.Select(x => new SharedFundingRate(x.ActualFundingRate, x.FundingTime ?? default)).ToArray()/*, nextToken*/);
         }
         #endregion
 
         #region Position History client
 
-        GetPositionHistoryOptions IPositionHistoryRestClient.GetPositionHistoryOptions { get; } = new GetPositionHistoryOptions(SharedPaginationSupport.Descending, true, 100);
-        async Task<ExchangeWebResult<SharedPositionHistory[]>> IPositionHistoryRestClient.GetPositionHistoryAsync(GetPositionHistoryRequest request, INextPageToken? pageToken, CancellationToken ct)
+        GetPositionHistoryOptions IPositionHistoryRestClient.GetPositionHistoryOptions { get; } = new GetPositionHistoryOptions(false, true, true, 100);
+        async Task<ExchangeWebResult<SharedPositionHistory[]>> IPositionHistoryRestClient.GetPositionHistoryAsync(GetPositionHistoryRequest request, PageRequest? pageToken, CancellationToken ct)
         {
             var validationError = ((IPositionHistoryRestClient)this).GetPositionHistoryOptions.ValidateRequest(Exchange, request, request.Symbol?.TradingMode ?? request.TradingMode, SupportedTradingModes);
             if (validationError != null)
@@ -878,11 +879,11 @@ namespace CoinEx.Net.Clients.FuturesApi
             // Determine page token
             int page = 1;
             int pageSize = request.Limit ?? 100;
-            if (pageToken is PageToken token)
-            {
-                page = token.Page;
-                pageSize = token.PageSize;
-            }
+            //if (pageToken is PageToken token)
+            //{
+            //    page = token.Page;
+            //    pageSize = token.PageSize;
+            //}
 
             // Get data
             var orders = await Trading.GetPositionHistoryAsync(
@@ -896,9 +897,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return orders.AsExchangeResult<SharedPositionHistory[]>(Exchange, null, default);
 
             // Get next token
-            PageToken? nextToken = null;
-            if (orders.Data.HasNext)
-                nextToken = new PageToken(page + 1, pageSize);
+            //PageToken? nextToken = null;
+            //if (orders.Data.HasNext)
+            //    nextToken = new PageToken(page + 1, pageSize);
 
             return orders.AsExchangeResult<SharedPositionHistory[]>(Exchange, request.Symbol == null ? SupportedTradingModes : new[] { request.Symbol!.TradingMode }, orders.Data.Items.Select(x => new SharedPositionHistory(
                 ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol),
@@ -912,7 +913,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 Leverage = x.Leverage,
                 PositionId = x.Id.ToString()
-            }).ToArray(), nextToken);
+            }).ToArray()/*, nextToken*/);
         }
         #endregion
 
