@@ -85,9 +85,18 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="interval">Kline interval</param>
         /// <param name="limit">Max amount of results</param>
         /// <param name="priceType">Price type, either LastPrice(default) or IndexPrice</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, PriceType? priceType = null, CancellationToken ct = default);
+        Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(
+            string symbol,
+            KlineInterval interval,
+            int? limit = null,
+            PriceType? priceType = null,
+            DateTime? startTime = null,
+            DateTime? endTime = null,
+            CancellationToken ct = default);
 
         /// <summary>
         /// Get index prices
