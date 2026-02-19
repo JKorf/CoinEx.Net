@@ -54,7 +54,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             var direction = request.Direction ?? DataDirection.Ascending;
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
             var limit = request.Limit ?? 1000;
-            var pageParams = Pagination.GetPaginationParameters(direction, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
+            var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest, false);
 
             // Get data
             var result = await ExchangeData.GetKlinesAsync(
@@ -80,8 +80,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     result.Data.Select(x => x.OpenTime),
                     request.StartTime,
                     request.EndTime ?? DateTime.UtcNow,
-                    limit,
-                    direction,
                     pageParams);
 
             return result.AsExchangeResult(
@@ -407,7 +405,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }).ToArray());
         }
 
-        GetClosedOrdersOptions ISpotOrderRestClient.GetClosedSpotOrdersOptions { get; } = new GetClosedOrdersOptions(false, true, true, 500);
+        GetClosedOrdersOptions ISpotOrderRestClient.GetClosedSpotOrdersOptions { get; } = new GetClosedOrdersOptions(false, true, false, 500);
         async Task<ExchangeWebResult<SharedSpotOrder[]>> ISpotOrderRestClient.GetClosedSpotOrdersAsync(GetClosedOrdersRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
             var validationError = ((ISpotOrderRestClient)this).GetClosedSpotOrdersOptions.ValidateRequest(Exchange, request, request.Symbol!.TradingMode, SupportedTradingModes);
@@ -416,16 +414,16 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             // Determine page token
             var direction = DataDirection.Descending;
-            var pageSize = request.Limit ?? 500;
+            var limit = request.Limit ?? 500;
             var symbol = request.Symbol!.GetSymbol(FormatSymbol);
-            var pageParams = Pagination.GetPaginationParameters(direction, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
+            var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
 
             // Get data
             var result = await Trading.GetClosedOrdersAsync(
                 AccountType.Spot,
                 request.Symbol!.GetSymbol(FormatSymbol),
                 page: pageParams.Page,
-                pageSize: pageSize,
+                pageSize: limit,
                 ct: ct).ConfigureAwait(false);
             if (!result)
                 return result.AsExchangeResult<SharedSpotOrder[]>(Exchange, null, default);
@@ -436,8 +434,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     result.Data.Items.Select(x => x.CreateTime),
                     request.StartTime,
                     request.EndTime ?? DateTime.UtcNow,
-                    pageSize,
-                    direction,
                     pageParams);
 
             return result.AsExchangeResult(
@@ -504,9 +500,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedUserTrade[]>(Exchange, validationError);
 
             // Determine page token
-            int pageSize = request.Limit ?? 500;
+            int limit = request.Limit ?? 500;
             var direction = DataDirection.Descending;
-            var pageParams = Pagination.GetPaginationParameters(direction, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
+            var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
 
             // Get data
             var result = await Trading.GetUserTradesAsync(
@@ -515,7 +511,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 startTime: request.StartTime,
                 endTime: request.EndTime,
                 page: pageParams.Page,
-                pageSize: pageSize,
+                pageSize: limit,
                 ct: ct).ConfigureAwait(false);
             if (!result)
                 return result.AsExchangeResult<SharedUserTrade[]>(Exchange, null, default);
@@ -526,8 +522,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     result.Data.Items.Select(x => x.CreateTime),
                     request.StartTime,
                     request.EndTime ?? DateTime.UtcNow,
-                    pageSize,
-                    direction,
                     pageParams);
 
             return result.AsExchangeResult(
@@ -766,14 +760,14 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedDeposit[]>(Exchange, validationError);
 
             // Determine page token
-            int pageSize = request.Limit ?? 100;
+            int limit = request.Limit ?? 100;
             var direction = DataDirection.Descending;
-            var pageParams = Pagination.GetPaginationParameters(direction, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
+            var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
 
             // Get data
             var result = await Account.GetDepositHistoryAsync(
                 request.Asset!,
-                pageSize: pageSize,
+                pageSize: limit,
                 page: pageParams.Page,
                 ct: ct).ConfigureAwait(false);
             if (!result)
@@ -785,8 +779,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     result.Data.Items.Select(x => x.CreateTime),
                     request.StartTime,
                     request.EndTime ?? DateTime.UtcNow,
-                    pageSize,
-                    direction,
                     pageParams);
 
             return result.AsExchangeResult(
@@ -842,14 +834,14 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return new ExchangeWebResult<SharedWithdrawal[]>(Exchange, validationError);
 
             // Determine page token
-            int pageSize = request.Limit ?? 100;
+            int limit = request.Limit ?? 100;
             var direction = DataDirection.Descending;
-            var pageParams = Pagination.GetPaginationParameters(direction, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
+            var pageParams = Pagination.GetPaginationParameters(direction, limit, request.StartTime, request.EndTime ?? DateTime.UtcNow, pageRequest);
 
             // Get data
             var result = await Account.GetWithdrawalHistoryAsync(
                 request.Asset,
-                pageSize: pageSize,
+                pageSize: limit,
                 page: pageParams.Page,
                 ct: ct).ConfigureAwait(false);
             if (!result)
@@ -861,8 +853,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     result.Data.Items.Select(x => x.CreateTime),
                     request.StartTime,
                     request.EndTime ?? DateTime.UtcNow,
-                    pageSize,
-                    direction,
                     pageParams);
 
             return result.AsExchangeResult(

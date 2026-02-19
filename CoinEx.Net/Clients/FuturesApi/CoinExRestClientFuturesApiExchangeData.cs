@@ -74,7 +74,14 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, int? limit = null, PriceType? priceType = null, CancellationToken ct = default)
+        public async Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(
+            string symbol, 
+            KlineInterval interval,
+            int? limit = null,
+            PriceType? priceType = null,
+            DateTime? startTime = null,
+            DateTime? endTime = null,
+            CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
@@ -83,6 +90,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.AddEnum("period", interval);
             parameters.AddOptionalEnum("price_type", priceType);
             parameters.AddOptional("limit", limit);
+            parameters.AddOptionalMilliseconds("start_time", startTime);
+            parameters.AddOptionalMilliseconds("end_time", endTime);
             var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/kline", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExKline[]>(request, parameters, ct).ConfigureAwait(false);
         }

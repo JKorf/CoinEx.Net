@@ -162,7 +162,7 @@
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetTradeHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Nullable{CoinEx.Net.Enums.PriceType},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:CoinEx.Net.Clients.FuturesApi.CoinExRestClientFuturesApiExchangeData.GetIndexPricesAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
@@ -2975,7 +2975,7 @@
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
-        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Nullable{CoinEx.Net.Enums.PriceType},System.Threading.CancellationToken)">
+        <member name="M:CoinEx.Net.Interfaces.Clients.FuturesApi.ICoinExRestClientFuturesApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
             Get klines/candlesticks
             <para><a href="https://docs.coinex.com/api/v2/futures/market/http/list-market-kline" /></para>
@@ -2984,6 +2984,8 @@
             <param name="interval">Kline interval</param>
             <param name="limit">Max amount of results</param>
             <param name="priceType">Price type, either LastPrice(default) or IndexPrice</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
         </member>
