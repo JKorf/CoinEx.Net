@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -96,8 +97,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 return new CoinExRestClient(client, serviceProvider.GetRequiredService<ILoggerFactory>(), serviceProvider.GetRequiredService<IOptions<CoinExRestOptions>>());
             }).ConfigurePrimaryHttpMessageHandler((serviceProvider) => {
                 var options = serviceProvider.GetRequiredService<IOptions<CoinExRestOptions>>().Value;
-                return LibraryHelpers.CreateHttpClientMessageHandler(options.Proxy, options.HttpKeepAliveInterval);
-            });
+                return LibraryHelpers.CreateHttpClientMessageHandler(options);
+            }).SetHandlerLifetime(Timeout.InfiniteTimeSpan);
             services.Add(new ServiceDescriptor(typeof(ICoinExSocketClient), x => { return new CoinExSocketClient(x.GetRequiredService<IOptions<CoinExSocketOptions>>(), x.GetRequiredService<ILoggerFactory>()); }, socketClientLifeTime ?? ServiceLifetime.Singleton));
 
             services.AddTransient<ICryptoRestClient, CryptoRestClient>();
@@ -107,7 +108,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ITrackerFactory, CoinExTrackerFactory>();
             services.AddSingleton<ICoinExUserClientProvider, CoinExUserClientProvider>(x =>
             new CoinExUserClientProvider(
-                x.GetRequiredService<HttpClient>(),
+                x.GetRequiredService<IHttpClientFactory>().CreateClient(typeof(ICoinExRestClient).Name),
                 x.GetRequiredService<ILoggerFactory>(),
                 x.GetRequiredService<IOptions<CoinExRestOptions>>(),
                 x.GetRequiredService<IOptions<CoinExSocketOptions>>()));
