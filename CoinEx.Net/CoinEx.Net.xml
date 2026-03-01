@@ -3781,7 +3781,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetTradingFeesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Threading.CancellationToken)">
             <summary>
             Get trading fees
-            <para><a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /><br />
+            Endpoint:<br />
+            GET /v2/account/trade-fee-rate
+            </para>
             </summary>
             <param name="symbol">Symbol name, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -3791,7 +3796,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.SetAccountConfigAsync(System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Update account settings
-            <para><a href="https://docs.coinex.com/api/v2/account/settings/http/modify-account-settings" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/account/settings/http/modify-account-settings" /><br />
+            Endpoint:<br />
+            POST /v2/account/settings
+            </para>
             </summary>
             <param name="cetDiscountEnabled">Global switch for CET Deduction</param>
             <param name="ct">Cancelation token</param>
@@ -3800,7 +3810,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetBalancesAsync(System.Threading.CancellationToken)">
             <summary>
             Get balances
-            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-balance" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-balance" /><br />
+            Endpoint:<br />
+            GET /v2/assets/spot/balance
+            </para>
             </summary>
             <param name="ct">Cancelation token</param>
             <returns></returns>
@@ -3808,7 +3823,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetMarginBalancesAsync(System.Threading.CancellationToken)">
             <summary>
             Get margin balances
-            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-marigin-balance" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-marigin-balance" /><br />
+            Endpoint:<br />
+            GET /v2/assets/margin/balance
+            </para>
             </summary>
             <param name="ct">Cancelation token</param>
             <returns></returns>
@@ -3816,7 +3836,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetFinancialBalancesAsync(System.Threading.CancellationToken)">
             <summary>
             Get balances in the financial account
-            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-financial-balance" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-financial-balance" /><br />
+            Endpoint:<br />
+            GET /v2/assets/financial/balance
+            </para>
             </summary>
             <param name="ct">Cancelation token</param>
             <returns></returns>
@@ -3824,7 +3849,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetCreditAccountAsync(System.Threading.CancellationToken)">
             <summary>
             Get credit account info
-            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-credit-info" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-credit-info" /><br />
+            Endpoint:<br />
+            GET /v2/assets/credit/info
+            </para>
             </summary>
             <param name="ct">Cancelation token</param>
             <returns></returns>
@@ -3832,7 +3862,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetAutoMarketMakerAccountLiquidityAsync(System.Threading.CancellationToken)">
             <summary>
             Get automated market maker account liquidity
-            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-amm-liquidity" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-amm-liquidity" /><br />
+            Endpoint:<br />
+            GET /v2/assets/amm/liquidity
+            </para>
             </summary>
             <param name="ct">Cancelation token</param>
             <returns></returns>
@@ -3840,7 +3875,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.MarginBorrowAsync(System.String,System.String,System.Decimal,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Apply for margin borrowing
-            <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-borrow" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-borrow" /><br />
+            Endpoint:<br />
+            POST /v2/assets/margin/borrow
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="asset">Asset</param>
@@ -3852,7 +3892,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.MarginRepayAsync(System.String,System.String,System.Decimal,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Repay a margin loan
-            <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-repay" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-repay" /><br />
+            Endpoint:<br />
+            POST /v2/assets/margin/repay
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="asset">Asset</param>
@@ -3864,7 +3909,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetBorrowHistoryAsync(System.String,System.Nullable{CoinEx.Net.Enums.BorrowStatus},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get borrow history
-            <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-borrow-history" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-borrow-history" /><br />
+            Endpoint:<br />
+            GET /v2/assets/margin/borrow-history
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="status">Filter by status</param>
@@ -3876,7 +3926,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetBorrowLimitAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Get borrow limits
-            <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-interest-limit" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-interest-limit" /><br />
+            Endpoint:<br />
+            GET /v2/assets/margin/interest-limit
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="asset">Asset</param>
@@ -3886,7 +3941,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetDepositAddressAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Get the deposit address for an asset
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-address" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-address" /><br />
+            Endpoint:<br />
+            GET /v2/assets/deposit-address
+            </para>
             </summary>
             <param name="asset">The asset to deposit, for example `ETH`</param>
             <param name="network">Network</param>
@@ -3896,7 +3956,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.RenewDepositAddressAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Renew deposit address
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/update-deposit-address" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/update-deposit-address" /><br />
+            Endpoint:<br />
+            POST /v2/assets/renewal-deposit-address
+            </para>
             </summary>
             <param name="asset">The asset, for example `ETH`</param>
             <param name="network">Network</param>
@@ -3906,7 +3971,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetDepositHistoryAsync(System.String,System.String,System.Nullable{CoinEx.Net.Enums.DepositStatus},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get deposit history
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-deposit-history" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-deposit-history" /><br />
+            Endpoint:<br />
+            GET /v2/assets/deposit-history
+            </para>
             </summary>
             <param name="asset">Asset, for example `ETH`</param>
             <param name="transactionId">Filter by transaction id</param>
@@ -3919,7 +3989,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.WithdrawAsync(System.String,System.Decimal,System.String,System.Nullable{CoinEx.Net.Enums.MovementMethod},System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
             <summary>
             Withdraw funds to an external address or another CoinEx user
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /><br />
+            Endpoint:<br />
+            POST /v2/assets/withdraw
+            </para>
             </summary>
             <param name="asset">Asset to withdraw, for example `ETH`</param>
             <param name="quantity">Withdrawal quantity</param>
@@ -3935,7 +4010,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.CancelWithdrawalAsync(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel a pending withdrawal
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/cancel-withdrawal" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/cancel-withdrawal" /><br />
+            Endpoint:<br />
+            POST /v2/assets/cancel-withdraw
+            </para>
             </summary>
             <param name="withdrawalId">The withdrawal id</param>
             <param name="ct">Cancelation token</param>
@@ -3944,7 +4024,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetWithdrawalHistoryAsync(System.String,System.Nullable{System.Int64},System.Nullable{CoinEx.Net.Enums.WithdrawStatusV2},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get withdrawal history
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-withdrawal-history" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-withdrawal-history" /><br />
+            Endpoint:<br />
+            GET /v2/assets/withdraw
+            </para>
             </summary>
             <param name="asset">Filter by asset, for example `ETH`</param>
             <param name="withdrawId">Filter by withdrawal id</param>
@@ -3957,7 +4042,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetDepositWithdrawalConfigAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get withdraw and deposit information for an asset
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /><br />
+            Endpoint:<br />
+            GET /v2/assets/deposit-withdraw-config
+            </para>
             </summary>
             <param name="asset">The asset, for example `ETH`</param>
             <param name="ct">Cancelation token</param>
@@ -3966,7 +4056,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetAllDepositWithdrawalConfigsAsync(System.Threading.CancellationToken)">
             <summary>
             Get withdraw and deposit information for all assets
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-all-deposit-withdrawal-config" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-all-deposit-withdrawal-config" /><br />
+            Endpoint:<br />
+            GET /v2/assets/all-deposit-withdraw-config
+            </para>
             </summary>
             <param name="ct">Cancelation token</param>
             <returns></returns>
@@ -3974,7 +4069,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.TransferAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.AccountType,System.Decimal,System.String,System.Threading.CancellationToken)">
             <summary>
             Transfer between accounts
-            <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /><br />
+            Endpoint:<br />
+            POST /v2/assets/transfer
+            </para>
             </summary>
             <param name="asset">Asset to transfer, for example `ETH`</param>
             <param name="fromAccount">From account</param>
@@ -3987,7 +4087,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetTransfersAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.TransferStatus},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get transfer history
-            <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/list-transfer-history" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/transfer/http/list-transfer-history" /><br />
+            Endpoint:<br />
+            GET /v2/assets/transfer-history
+            </para>
             </summary>
             <param name="asset">Asset, for example `ETH`</param>
             <param name="transferType">Transfer type. Must be either Margin or Futures</param>
@@ -4003,7 +4108,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.AddAutoMarketMakerLiquidityAsync(System.String,System.Decimal,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Add AAM liquidity
-            <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/add-liquidtiy" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/amm/http/add-liquidtiy" /><br />
+            Endpoint:<br />
+            POST /v2/assets/amm/add-liquidity
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETH`</param>
             <param name="baseAssetQuantity">Base asset quantity to add</param>
@@ -4014,7 +4124,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.RemoveAutoMarketMakerLiquidityAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Remove AAM liquidity. Currently only support withdrawing all liquidity
-            <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /><br />
+            Endpoint:<br />
+            POST /v2/assets/amm/remove-liquidity
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="ct">Cancelation token</param>
@@ -4023,7 +4138,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiAccount.GetTransactionHistoryAsync(CoinEx.Net.Enums.TransactionType,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get account transaction history
-            <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-transcation-history" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-transcation-history" /><br />
+            Endpoint:<br />
+            GET /v2/assets/spot/transcation-history
+            </para>
             </summary>
             <param name="transactionType"></param>
             <param name="asset">Filter by asset, for example `ETH`</param>
@@ -4042,15 +4162,25 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetServerTimeAsync(System.Threading.CancellationToken)">
             <summary>
             Get server time
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/common/http/time" /><br />
+            Endpoint:<br />
+            GET /v2/time
+            </para>
             </summary>
-            <para><a href="https://docs.coinex.com/api/v2/common/http/time" /></para>
             <param name="ct">Cancelation token</param>
             <returns></returns>
         </member>
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetSymbolsAsync(System.Threading.CancellationToken)">
             <summary>
             Get symbol information
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market" /><br />
+            Endpoint:<br />
+            GET /v2/spot/market
+            </para>
             </summary>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
@@ -4058,7 +4188,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetAssetsAsync(System.Threading.CancellationToken)">
             <summary>
             Get asset information
-            <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-assets-info" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-assets-info" /><br />
+            Endpoint:<br />
+            GET /v2/assets/info
+            </para>
             </summary>
             <param name="ct">Cancelation Token</param>
             <returns></returns>
@@ -4066,7 +4201,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetTickersAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
             <summary>
             Get symbol tickers
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-ticker" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-ticker" /><br />
+            Endpoint:<br />
+            GET /v2/spot/ticker
+            </para>
             </summary>
             <param name="symbols">Fitler by symbol names, for example `ETHUSDT`</param>
             <param name="ct">Cancelation Token</param>
@@ -4075,7 +4215,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetOrderBookAsync(System.String,System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Get the orderbook for a symbol
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-depth" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-depth" /><br />
+            Endpoint:<br />
+            GET /v2/spot/depth
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="limit">Amount of rows, 5, 10, 20 or 50</param>
@@ -4086,7 +4231,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetTradeHistoryAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Get the trade history for a symbol
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-deals" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-deals" /><br />
+            Endpoint:<br />
+            GET /v2/spot/deals
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="limit">Max amount of results</param>
@@ -4097,7 +4247,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetKlinesAsync(System.String,CoinEx.Net.Enums.KlineInterval,System.Nullable{System.Int32},System.Nullable{CoinEx.Net.Enums.PriceType},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
             Get klines/candlesticks
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-kline" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-kline" /><br />
+            Endpoint:<br />
+            GET /v2/spot/kline
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="interval">Kline interval</param>
@@ -4111,7 +4266,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiExchangeData.GetIndexPricesAsync(System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
             <summary>
             Get index prices
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-index" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-index" /><br />
+            Endpoint:<br />
+            GET /v2/spot/index
+            </para>
             </summary>
             <param name="symbols">Filter by symbols, for example `ETHUSDT`</param>
             <param name="ct">Cancelation Token</param>
@@ -4130,7 +4290,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new order
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/put-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/order
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type, Spot or Margin</param>
@@ -4148,7 +4313,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,CoinEx.Net.Enums.OrderSide,CoinEx.Net.Enums.OrderTypeV2,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Boolean},System.Nullable{CoinEx.Net.Enums.SelfTradePreventionMode},System.Threading.CancellationToken)">
             <summary>
             Place a new stop order
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/put-stop-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/stop-order
+            </para>
             </summary>
             <param name="symbol">The symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type, Spot or Margin</param>
@@ -4167,7 +4337,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExPlaceOrderRequest},System.Threading.CancellationToken)">
             <summary>
             Place multiple orders in a single call
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-multi-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/put-multi-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/batch-order
+            </para>
             </summary>
             <param name="requests">The orders to place</param>
             <param name="ct">Cancelation Token</param>
@@ -4176,7 +4351,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.PlaceMultipleStopOrdersAsync(System.Collections.Generic.IEnumerable{CoinEx.Net.Objects.Models.V2.CoinExPlaceStopOrderRequest},System.Threading.CancellationToken)">
             <summary>
             Place multiple stop orders in a single call
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/put-multi-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/put-multi-stop-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/batch-stop-order
+            </para>
             </summary>
             <param name="requests">The stop orders to place</param>
             <param name="ct">Cancelation Token</param>
@@ -4185,7 +4365,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Get an order by id
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/get-order-status" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/get-order-status" /><br />
+            Endpoint:<br />
+            GET /v2/spot/order-status
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="orderId">Order id</param>
@@ -4195,7 +4380,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetOpenOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get a list of open orders
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-pending-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/list-pending-order" /><br />
+            Endpoint:<br />
+            GET /v2/spot/pending-order
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4209,7 +4399,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetClosedOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get a list of closed orders. Note that orders canceled without having any trades will not be returned
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-finished-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/list-finished-order" /><br />
+            Endpoint:<br />
+            GET /v2/spot/finished-order
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4223,7 +4418,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetOpenStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get a list of open stop orders
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-pending-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/list-pending-stop-order" /><br />
+            Endpoint:<br />
+            GET /v2/spot/pending-stop-order
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4237,7 +4437,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetClosedStopOrdersAsync(CoinEx.Net.Enums.AccountType,System.String,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get a list of closed stop orders. Note that orders canceled without having any trades will not be returned
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/list-finished-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/list-finished-stop-order" /><br />
+            Endpoint:<br />
+            GET /v2/spot/finished-stop-order
+            </para>
             </summary>
             <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4250,7 +4455,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.EditOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Edit an active order
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/edit-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/edit-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/modify-order
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4263,7 +4473,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.EditStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Decimal,System.Decimal,System.Nullable{System.Decimal},System.Threading.CancellationToken)">
             <summary>
             Edit an active stop order
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/edit-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/edit-stop-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/modify-stop-order
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4277,7 +4492,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelAllOrdersAsync(System.String,CoinEx.Net.Enums.AccountType,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Threading.CancellationToken)">
             <summary>
             Cancel all orders for a symbol
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-all-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-all-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/cancel-all-order
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4288,7 +4508,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel an active order
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/cancel-order
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4299,7 +4524,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Cancel multiple orders
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-batch-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-batch-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/cancel-batch-order
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="orderIds">Ids of orders to cancel</param>
@@ -4309,7 +4539,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelStopOrderAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Cancel an active stop order
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-stop-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/cancel-stop-order
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4320,7 +4555,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelOrdersByClientOrderIdAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
             <summary>
             Cancel an active order by its client order id
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-order-by-client-id" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-order-by-client-id" /><br />
+            Endpoint:<br />
+            POST /v2/spot/cancel-order-by-client-id
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4331,7 +4571,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelStopOrdersByClientOrderIdAsync(System.String,CoinEx.Net.Enums.AccountType,System.String,System.Threading.CancellationToken)">
             <summary>
             Cancel an active stop order by its client order id
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-stop-order-by-client-id" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-stop-order-by-client-id" /><br />
+            Endpoint:<br />
+            POST /v2/spot/cancel-stop-order-by-client-id
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4342,7 +4587,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.CancelStopOrdersAsync(System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Cancel multiple stop orders
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-batch-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/http/cancel-batch-stop-order" /><br />
+            Endpoint:<br />
+            POST /v2/spot/cancel-batch-stop-order
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="orderIds">Stop order ids to cancel</param>
@@ -4352,7 +4602,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetUserTradesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Nullable{CoinEx.Net.Enums.OrderSide},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get trade list
-            <para><a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-deals" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-deals" /><br />
+            Endpoint:<br />
+            GET /v2/spot/user-deals
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4367,7 +4622,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExRestClientSpotApiTrading.GetOrderTradesAsync(System.String,CoinEx.Net.Enums.AccountType,System.Int64,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Get trades for a specific order
-            <para><a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-order-deals" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/deal/http/list-user-order-deals" /><br />
+            Endpoint:<br />
+            GET /v2/spot/order-deals
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="accountType">Account type</param>
@@ -4398,7 +4658,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTicker[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for the specified symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbols">The symbols to subscribe, for example `ETHUSDT`</param>
             <param name="onMessage">Data handler</param>
@@ -4408,7 +4673,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTickerUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTicker[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
@@ -4417,7 +4687,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to order book updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="depth">Order book depth, 5, 10, 20 or 50</param>
@@ -4430,7 +4705,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToOrderBookUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.String,System.Boolean,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderBook}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to order book updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbols">Symbols, for example `ETHUSDT`</param>
             <param name="depth">Order book depth, 5, 10, 20 or 50</param>
@@ -4443,7 +4723,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="onMessage">Data handler</param>
@@ -4453,7 +4738,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbols">Symbols, for example `ETHUSDT`</param>
             <param name="onMessage">Data handler</param>
@@ -4463,7 +4753,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExTrade[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to live trade updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
@@ -4472,7 +4767,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToIndexPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to index price updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="onMessage">Data handler</param>
@@ -4482,7 +4782,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToIndexPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExIndexPriceUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to index price updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbols">Symbols, for example `ETHUSDT`</param>
             <param name="onMessage">Data handler</param>
@@ -4492,7 +4797,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToBookPriceUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to book price updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbol">Symbol, for example `ETHUSDT`</param>
             <param name="onMessage">Data handler</param>
@@ -4502,7 +4812,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToBookPriceUpdatesAsync(System.Collections.Generic.IEnumerable{System.String},System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBookPriceUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to book price updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="symbols">Symbols, for example `ETHUSDT`</param>
             <param name="onMessage">Data handler</param>
@@ -4512,7 +4827,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToOrderUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExOrderUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user order updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/ws/user-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/ws/user-order" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
@@ -4521,7 +4841,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToStopOrderUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExStopOrderUpdate}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user stop order updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/order/ws/user-stop-order" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/order/ws/user-stop-order" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
@@ -4530,7 +4855,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToUserTradeUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExUserTrade}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user trade updates
-            <para><a href="https://docs.coinex.com/api/v2/spot/deal/ws/user-deals" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/spot/deal/ws/user-deals" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
@@ -4539,7 +4869,12 @@
         <member name="M:CoinEx.Net.Interfaces.Clients.SpotApiV2.ICoinExSocketClientSpotApi.SubscribeToBalanceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{CoinEx.Net.Objects.Models.V2.CoinExBalanceUpdate[]}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to user balance updates
-            <para><a href="https://docs.coinex.com/api/v2/assets/balance/ws/spot_balance" /></para>
+            <para>
+            Docs:<br />
+            <a href="https://docs.coinex.com/api/v2/assets/balance/ws/spot_balance" /><br />
+            Endpoint:<br />
+            WSS /v2/spot
+            </para>
             </summary>
             <param name="onMessage">Data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>

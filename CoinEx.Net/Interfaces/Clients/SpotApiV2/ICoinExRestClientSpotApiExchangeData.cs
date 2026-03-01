@@ -15,8 +15,13 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     {
         /// <summary>
         /// Get server time
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/common/http/time" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/time
+        /// </para>
         /// </summary>
-        /// <para><a href="https://docs.coinex.com/api/v2/common/http/time" /></para>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default);
@@ -32,7 +37,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get symbol information
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/spot/market
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -40,7 +50,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get asset information
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-assets-info" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-assets-info" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/info
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -48,7 +63,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get symbol tickers
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-ticker" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-ticker" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/spot/ticker
+        /// </para>
         /// </summary>
         /// <param name="symbols">Fitler by symbol names, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>
@@ -57,7 +77,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get the orderbook for a symbol
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-depth" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-depth" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/spot/depth
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="limit">Amount of rows, 5, 10, 20 or 50</param>
@@ -68,7 +93,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get the trade history for a symbol
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-deals" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-deals" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/spot/deals
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="limit">Max amount of results</param>
@@ -79,7 +109,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get klines/candlesticks
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-kline" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-kline" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/spot/kline
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="interval">Kline interval</param>
@@ -100,7 +135,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get index prices
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-index" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/http/list-market-index" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/spot/index
+        /// </para>
         /// </summary>
         /// <param name="symbols">Filter by symbols, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>

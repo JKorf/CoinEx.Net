@@ -30,7 +30,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to symbol ticker updates for the specified symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbols">The symbols to subscribe, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
@@ -40,7 +45,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         
         /// <summary>
         /// Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
@@ -49,7 +59,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to order book updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="depth">Order book depth, 5, 10, 20 or 50</param>
@@ -62,7 +77,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to order book updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-depth" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="depth">Order book depth, 5, 10, 20 or 50</param>
@@ -75,7 +95,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to live trade updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
@@ -85,7 +110,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to live trade updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
@@ -95,7 +125,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to live trade updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-deals" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
@@ -104,7 +139,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to index price updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
@@ -114,7 +154,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to index price updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-index" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
@@ -124,7 +169,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to book price updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
@@ -134,7 +184,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to book price updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/market/ws/market-bbo" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
         /// <param name="onMessage">Data handler</param>
@@ -144,7 +199,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to user order updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/order/ws/user-order" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/order/ws/user-order" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
@@ -153,7 +213,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to user stop order updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/order/ws/user-stop-order" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/order/ws/user-stop-order" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
@@ -162,7 +227,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to user trade updates
-        /// <para><a href="https://docs.coinex.com/api/v2/spot/deal/ws/user-deals" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/spot/deal/ws/user-deals" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
@@ -171,7 +241,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Subscribe to user balance updates
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/ws/spot_balance" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/balance/ws/spot_balance" /><br />
+        /// Endpoint:<br />
+        /// WSS /v2/spot
+        /// </para>
         /// </summary>
         /// <param name="onMessage">Data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>

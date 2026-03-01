@@ -15,7 +15,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     {
         /// <summary>
         /// Get trading fees
-        /// <para><a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/account/trade-fee-rate
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol name, for example `ETHUSDT`</param>
         /// <param name="accountType">Account type</param>
@@ -25,7 +30,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Update account settings
-        /// <para><a href="https://docs.coinex.com/api/v2/account/settings/http/modify-account-settings" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/account/settings/http/modify-account-settings" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/account/settings
+        /// </para>
         /// </summary>
         /// <param name="cetDiscountEnabled">Global switch for CET Deduction</param>
         /// <param name="ct">Cancelation token</param>
@@ -34,7 +44,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get balances
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-balance" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-balance" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/spot/balance
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -42,7 +57,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get margin balances
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-marigin-balance" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-marigin-balance" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/margin/balance
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -50,7 +70,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get balances in the financial account
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-financial-balance" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-financial-balance" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/financial/balance
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -58,7 +83,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get credit account info
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-credit-info" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-credit-info" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/credit/info
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -66,7 +96,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get automated market maker account liquidity
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-amm-liquidity" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-amm-liquidity" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/amm/liquidity
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -74,7 +109,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Apply for margin borrowing
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-borrow" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-borrow" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/margin/borrow
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="asset">Asset</param>
@@ -86,7 +126,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Repay a margin loan
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-repay" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/margin-repay" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/margin/repay
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="asset">Asset</param>
@@ -98,7 +143,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get borrow history
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-borrow-history" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-borrow-history" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/margin/borrow-history
+        /// </para>
         /// </summary>
         /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
         /// <param name="status">Filter by status</param>
@@ -110,7 +160,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get borrow limits
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-interest-limit" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/loan-flat/http/list-margin-interest-limit" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/margin/interest-limit
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="asset">Asset</param>
@@ -120,7 +175,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get the deposit address for an asset
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-address" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-address" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/deposit-address
+        /// </para>
         /// </summary>
         /// <param name="asset">The asset to deposit, for example `ETH`</param>
         /// <param name="network">Network</param>
@@ -130,7 +190,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Renew deposit address
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/update-deposit-address" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/update-deposit-address" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/renewal-deposit-address
+        /// </para>
         /// </summary>
         /// <param name="asset">The asset, for example `ETH`</param>
         /// <param name="network">Network</param>
@@ -140,7 +205,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get deposit history
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-deposit-history" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-deposit-history" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/deposit-history
+        /// </para>
         /// </summary>
         /// <param name="asset">Asset, for example `ETH`</param>
         /// <param name="transactionId">Filter by transaction id</param>
@@ -153,7 +223,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Withdraw funds to an external address or another CoinEx user
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/withdrawal" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/withdraw
+        /// </para>
         /// </summary>
         /// <param name="asset">Asset to withdraw, for example `ETH`</param>
         /// <param name="quantity">Withdrawal quantity</param>
@@ -169,7 +244,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Cancel a pending withdrawal
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/cancel-withdrawal" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/cancel-withdrawal" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/cancel-withdraw
+        /// </para>
         /// </summary>
         /// <param name="withdrawalId">The withdrawal id</param>
         /// <param name="ct">Cancelation token</param>
@@ -178,7 +258,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get withdrawal history
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-withdrawal-history" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-withdrawal-history" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/withdraw
+        /// </para>
         /// </summary>
         /// <param name="asset">Filter by asset, for example `ETH`</param>
         /// <param name="withdrawId">Filter by withdrawal id</param>
@@ -191,7 +276,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get withdraw and deposit information for an asset
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/get-deposit-withdrawal-config" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/deposit-withdraw-config
+        /// </para>
         /// </summary>
         /// <param name="asset">The asset, for example `ETH`</param>
         /// <param name="ct">Cancelation token</param>
@@ -200,7 +290,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get withdraw and deposit information for all assets
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-all-deposit-withdrawal-config" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/deposit-withdrawal/http/list-all-deposit-withdrawal-config" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/all-deposit-withdraw-config
+        /// </para>
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
@@ -208,7 +303,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Transfer between accounts
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/transfer/http/transfer" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/transfer
+        /// </para>
         /// </summary>
         /// <param name="asset">Asset to transfer, for example `ETH`</param>
         /// <param name="fromAccount">From account</param>
@@ -221,7 +321,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get transfer history
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/transfer/http/list-transfer-history" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/transfer/http/list-transfer-history" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/transfer-history
+        /// </para>
         /// </summary>
         /// <param name="asset">Asset, for example `ETH`</param>
         /// <param name="transferType">Transfer type. Must be either Margin or Futures</param>
@@ -237,7 +342,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Add AAM liquidity
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/add-liquidtiy" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/amm/http/add-liquidtiy" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/amm/add-liquidity
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETH`</param>
         /// <param name="baseAssetQuantity">Base asset quantity to add</param>
@@ -248,7 +358,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Remove AAM liquidity. Currently only support withdrawing all liquidity
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/amm/http/remove-liquidtiy" /><br />
+        /// Endpoint:<br />
+        /// POST /v2/assets/amm/remove-liquidity
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation token</param>
@@ -257,7 +372,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
 
         /// <summary>
         /// Get account transaction history
-        /// <para><a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-transcation-history" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://docs.coinex.com/api/v2/assets/balance/http/get-spot-transcation-history" /><br />
+        /// Endpoint:<br />
+        /// GET /v2/assets/spot/transcation-history
+        /// </para>
         /// </summary>
         /// <param name="transactionType"></param>
         /// <param name="asset">Filter by asset, for example `ETH`</param>
