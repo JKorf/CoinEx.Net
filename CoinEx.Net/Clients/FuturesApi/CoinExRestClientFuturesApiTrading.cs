@@ -210,6 +210,15 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<WebCallResult<CoinExPaginated<CoinExFuturesOrder>>> GetClosedOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
+            if (clientOrderId != null)
+            {
+                clientOrderId = LibraryHelpers.ApplyBrokerId(
+                    clientOrderId,
+                    LibraryHelpers.GetClientReference(() => _baseClient.ClientOptions.BrokerId, _baseClient.Exchange),
+                    32,
+                    _baseClient.ClientOptions.AllowAppendingClientOrderId);
+            }
+
             var parameters = new ParameterCollection();
             parameters.AddEnum("market_type", AccountType.Futures);
             parameters.AddOptionalEnum("side", side);

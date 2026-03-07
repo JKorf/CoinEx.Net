@@ -16,7 +16,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Get trading fees for a symbol
         /// <para><a href="https://docs.coinex.com/api/v2/account/fees/http/get-account-trade-fees" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExTradeFee>> GetTradingFeesAsync(string symbol, CancellationToken ct = default);
@@ -33,9 +33,9 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// Set leverage for a symbol
         /// <para><a href="https://docs.coinex.com/api/v2/futures/position/http/adjust-position-leverage" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="mode">Margin mode</param>
-        /// <param name="leverage">Leverage</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="mode">["<c>margin_mode</c>"] Margin mode</param>
+        /// <param name="leverage">["<c>leverage</c>"] Leverage</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExLeverage>> SetLeverageAsync(string symbol, MarginMode mode, int leverage, CancellationToken ct = default);

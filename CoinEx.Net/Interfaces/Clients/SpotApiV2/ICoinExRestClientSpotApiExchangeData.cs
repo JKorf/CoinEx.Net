@@ -70,7 +70,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/ticker
         /// </para>
         /// </summary>
-        /// <param name="symbols">Fitler by symbol names, for example `ETHUSDT`</param>
+        /// <param name="symbols">["<c>market</c>"] Fitler by symbol names, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExTicker[]>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);
@@ -84,9 +84,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/depth
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="limit">Amount of rows, 5, 10, 20 or 50</param>
-        /// <param name="mergeLevel">The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="limit">["<c>limit</c>"] Amount of rows, 5, 10, 20 or 50</param>
+        /// <param name="mergeLevel">["<c>interval</c>"] The merge level, 0.00000000001 up to 1000, 0 for no merging</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int limit, string? mergeLevel = null, CancellationToken ct = default);
@@ -100,9 +100,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/deals
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="limit">Max amount of results</param>
-        /// <param name="lastId">The starting point of the query, 0 means to acquire from the latest record</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="limit">["<c>limit</c>"] Max amount of results</param>
+        /// <param name="lastId">["<c>last_id</c>"] The starting point of the query, 0 means to acquire from the latest record</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExTrade[]>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default);
@@ -116,12 +116,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/kline
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="interval">Kline interval</param>
-        /// <param name="limit">Max amount of results</param>
-        /// <param name="priceType">Price type, either LastPrice(default) or IndexPrice</param>
-        /// <param name="startTime">Filter by start time</param>
-        /// <param name="endTime">Filter by end time</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="interval">["<c>period</c>"] Kline interval</param>
+        /// <param name="limit">["<c>limit</c>"] Max amount of results</param>
+        /// <param name="priceType">["<c>price_type</c>"] Price type, either LastPrice(default) or IndexPrice</param>
+        /// <param name="startTime">["<c>start_time</c>"] Filter by start time</param>
+        /// <param name="endTime">["<c>end_time</c>"] Filter by end time</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(
@@ -142,7 +142,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/index
         /// </para>
         /// </summary>
-        /// <param name="symbols">Filter by symbols, for example `ETHUSDT`</param>
+        /// <param name="symbols">["<c>market</c>"] Filter by symbols, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExIndexPrice[]>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default);

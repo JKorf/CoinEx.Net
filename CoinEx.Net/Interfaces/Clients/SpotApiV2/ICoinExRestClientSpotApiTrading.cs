@@ -22,16 +22,16 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/order
         /// </para>
         /// </summary>
-        /// <param name="symbol">The symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type, Spot or Margin</param>
-        /// <param name="side">Order side</param>
-        /// <param name="type">Order type</param>
-        /// <param name="quantity">Quantity</param>
-        /// <param name="price">Price of the order</param>
-        /// <param name="quantityAsset">The asset the quantity is in, for market orders van be the base or quote asset</param>
-        /// <param name="clientOrderId">Client order id</param>
-        /// <param name="hide">Hide the order</param>
-        /// <param name="stpMode">Self trade prevention mode</param>
+        /// <param name="symbol">["<c>market</c>"] The symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type, Spot or Margin</param>
+        /// <param name="side">["<c>side</c>"] Order side</param>
+        /// <param name="type">["<c>type</c>"] Order type</param>
+        /// <param name="quantity">["<c>amount</c>"] Quantity</param>
+        /// <param name="price">["<c>price</c>"] Price of the order</param>
+        /// <param name="quantityAsset">["<c>ccy</c>"] The asset the quantity is in, for market orders van be the base or quote asset</param>
+        /// <param name="clientOrderId">["<c>client_id</c>"] Client order id</param>
+        /// <param name="hide">["<c>is_hide</c>"] Hide the order</param>
+        /// <param name="stpMode">["<c>stp_mode</c>"] Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExOrder>> PlaceOrderAsync(
@@ -56,17 +56,17 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/stop-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">The symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type, Spot or Margin</param>
-        /// <param name="side">Order side</param>
-        /// <param name="type">Order type</param>
-        /// <param name="quantity">Quantity</param>
-        /// <param name="price">Price of the order</param>
-        /// <param name="quantityAsset">The asset the quantity is in, for market orders van be the base or quote asset</param>
-        /// <param name="clientOrderId">Client order id</param>
-        /// <param name="triggerPrice">Price to trigger on</param>
-        /// <param name="hide">Hide the order</param>
-        /// <param name="stpMode">Self trade prevention mode</param>
+        /// <param name="symbol">["<c>market</c>"] The symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type, Spot or Margin</param>
+        /// <param name="side">["<c>side</c>"] Order side</param>
+        /// <param name="type">["<c>type</c>"] Order type</param>
+        /// <param name="quantity">["<c>amount</c>"] Quantity</param>
+        /// <param name="price">["<c>price</c>"] Price of the order</param>
+        /// <param name="quantityAsset">["<c>ccy</c>"] The asset the quantity is in, for market orders van be the base or quote asset</param>
+        /// <param name="clientOrderId">["<c>client_id</c>"] Client order id</param>
+        /// <param name="triggerPrice">["<c>trigger_price</c>"] Price to trigger on</param>
+        /// <param name="hide">["<c>is_hide</c>"] Hide the order</param>
+        /// <param name="stpMode">["<c>stp_mode</c>"] Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExStopId>> PlaceStopOrderAsync(
@@ -92,7 +92,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/batch-order
         /// </para>
         /// </summary>
-        /// <param name="requests">The orders to place</param>
+        /// <param name="requests">["<c>orders</c>"] The orders to place</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CallResult<CoinExBatchOrderResult>[]>> PlaceMultipleOrdersAsync(
@@ -108,7 +108,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/batch-stop-order
         /// </para>
         /// </summary>
-        /// <param name="requests">The stop orders to place</param>
+        /// <param name="requests">["<c>orders</c>"] The stop orders to place</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CallResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
@@ -124,8 +124,8 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/order-status
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="orderId">Order id</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="orderId">["<c>order_id</c>"] Order id</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExOrder>> GetOrderAsync(string symbol, long orderId, CancellationToken ct = default);
@@ -139,12 +139,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/pending-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="side">Filter by side</param>
-        /// <param name="clientOrderId">Filter by client order id</param>
-        /// <param name="page">Page number</param>
-        /// <param name="pageSize">Page size</param>
+        /// <param name="symbol">["<c>market</c>"] Filter by symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="side">["<c>side</c>"] Filter by side</param>
+        /// <param name="clientOrderId">["<c>client_id</c>"] Filter by client order id</param>
+        /// <param name="page">["<c>page</c>"] Page number</param>
+        /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExOrder>>> GetOpenOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
@@ -158,12 +158,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/finished-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="side">Filter by side</param>
-        /// <param name="clientOrderId">Filter by client order id</param>
-        /// <param name="page">Page number</param>
-        /// <param name="pageSize">Page size</param>
+        /// <param name="symbol">["<c>market</c>"] Filter by symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="side">["<c>side</c>"] Filter by side</param>
+        /// <param name="clientOrderId">["<c>client_id</c>"] Filter by client order id</param>
+        /// <param name="page">["<c>page</c>"] Page number</param>
+        /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExOrder>>> GetClosedOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
@@ -177,12 +177,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/pending-stop-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="side">Filter by side</param>
-        /// <param name="clientOrderId">Filter by client order id</param>
-        /// <param name="page">Page number</param>
-        /// <param name="pageSize">Page size</param>
+        /// <param name="symbol">["<c>market</c>"] Filter by symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="side">["<c>side</c>"] Filter by side</param>
+        /// <param name="clientOrderId">["<c>client_id</c>"] Filter by client order id</param>
+        /// <param name="page">["<c>page</c>"] Page number</param>
+        /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetOpenStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
@@ -196,11 +196,11 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/finished-stop-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Filter by symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="side">Filter by side</param>
-        /// <param name="page">Page number</param>
-        /// <param name="pageSize">Page size</param>
+        /// <param name="symbol">["<c>market</c>"] Filter by symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="side">["<c>side</c>"] Filter by side</param>
+        /// <param name="page">["<c>page</c>"] Page number</param>
+        /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(AccountType accountType, string? symbol = null, OrderSide? side = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
@@ -214,11 +214,11 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/modify-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="orderId">Order id</param>
-        /// <param name="quantity">New quantity</param>
-        /// <param name="price">New price</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="orderId">["<c>order_id</c>"] Order id</param>
+        /// <param name="quantity">["<c>amount</c>"] New quantity</param>
+        /// <param name="price">["<c>price</c>"] New price</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExOrder>> EditOrderAsync(
@@ -238,12 +238,12 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/modify-stop-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="stopOrderId">Order id</param>
-        /// <param name="quantity">New quantity</param>
-        /// <param name="price">New price</param>
-        /// <param name="triggerPrice">New trigger price</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="stopOrderId">["<c>stop_id</c>"] Order id</param>
+        /// <param name="quantity">["<c>amount</c>"] New quantity</param>
+        /// <param name="price">["<c>price</c>"] New price</param>
+        /// <param name="triggerPrice">["<c>trigger_price</c>"] New trigger price</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExStopId>> EditStopOrderAsync(
@@ -264,9 +264,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/cancel-all-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="side">Only cancel a specific order side</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="side">["<c>side</c>"] Only cancel a specific order side</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult> CancelAllOrdersAsync(string symbol, AccountType accountType, OrderSide? side = null, CancellationToken ct = default);
@@ -280,9 +280,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/cancel-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="orderId">Id of order to cancel</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="orderId">["<c>order_id</c>"] Id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExOrder>> CancelOrderAsync(string symbol, AccountType accountType, long orderId, CancellationToken ct = default);
@@ -296,8 +296,8 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/cancel-batch-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="orderIds">Ids of orders to cancel</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="orderIds">["<c>order_ids</c>"] Ids of orders to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExBatchResult<CoinExOrder>[]>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
@@ -311,9 +311,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/cancel-stop-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="stopOrderId">Id of stop order to cancel</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="stopOrderId">["<c>stop_id</c>"] Id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExStopOrder>> CancelStopOrderAsync(string symbol, AccountType accountType, long stopOrderId, CancellationToken ct = default);
@@ -327,9 +327,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/cancel-order-by-client-id
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="clientOrderId">Client order id of order to cancel</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="clientOrderId">["<c>client_id</c>"] Client order id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExOrder[]>> CancelOrdersByClientOrderIdAsync(string symbol, AccountType accountType, string clientOrderId, CancellationToken ct = default);
@@ -343,9 +343,9 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/cancel-stop-order-by-client-id
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="clientStopOrderId">Client order id of stop order to cancel</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="clientStopOrderId">["<c>client_id</c>"] Client order id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExStopOrder[]>> CancelStopOrdersByClientOrderIdAsync(string symbol, AccountType accountType, string clientStopOrderId, CancellationToken ct = default);
@@ -359,8 +359,8 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// POST /v2/spot/cancel-batch-stop-order
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="orderIds">Stop order ids to cancel</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="orderIds">["<c>stop_ids</c>"] Stop order ids to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExBatchResult<CoinExStopOrder>[]>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
@@ -374,13 +374,13 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/user-deals
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="side">Filter by side</param>
-        /// <param name="startTime">Filter by start time</param>
-        /// <param name="endTime">Filter by end time</param>
-        /// <param name="page">Page number</param>
-        /// <param name="pageSize">Page size</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="side">["<c>side</c>"] Filter by side</param>
+        /// <param name="startTime">["<c>start_time</c>"] Filter by start time</param>
+        /// <param name="endTime">["<c>end_Time</c>"] Filter by end time</param>
+        /// <param name="page">["<c>page</c>"] Page number</param>
+        /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetUserTradesAsync(string symbol, AccountType accountType, OrderSide? side = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
@@ -394,11 +394,11 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// GET /v2/spot/order-deals
         /// </para>
         /// </summary>
-        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
-        /// <param name="accountType">Account type</param>
-        /// <param name="orderId">The order id</param>
-        /// <param name="page">Page number</param>
-        /// <param name="pageSize">Page size</param>
+        /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
+        /// <param name="accountType">["<c>market_type</c>"] Account type</param>
+        /// <param name="orderId">["<c>order_id</c>"] The order id</param>
+        /// <param name="page">["<c>page</c>"] Page number</param>
+        /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetOrderTradesAsync(string symbol, AccountType accountType, long orderId, int? page = null, int? pageSize = null, CancellationToken ct = default);
