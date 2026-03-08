@@ -15,34 +15,34 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExOrderBook
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
 
         /// <summary>
-        /// Is full order book
+        /// ["<c>is_full</c>"] Is full order book
         /// </summary>
         [JsonPropertyName("is_full")]
         public bool IsFull { get; set; }
 
         /// <summary>
-        /// The book data
+        /// ["<c>depth</c>"] The book data
         /// </summary>
         [JsonPropertyName("depth")]
         public CoinExOrderBookData Data { get; set; } = null!;
         /// <summary>
-        /// Last price, only for websocket updates
+        /// ["<c>last</c>"] Last price, only for websocket updates
         /// </summary>
         [JsonPropertyName("last")]
         public decimal? LastPrice { get; set; }
         /// <summary>
-        /// Update time, only for websocket updates
+        /// ["<c>updated_at</c>"] Update time, only for websocket updates
         /// </summary>
         [JsonPropertyName("updated_at")]
         public DateTime? UpdateTime { get; set; }
         /// <summary>
-        /// Checksum, only for websocket updates
+        /// ["<c>checksum</c>"] Checksum, only for websocket updates
         /// </summary>
         [JsonPropertyName("checksum")]
         public long? Checksum { get; set; }
@@ -55,28 +55,28 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExOrderBookData
     { 
         /// <summary>
-        /// Asks list
+        /// ["<c>asks</c>"] Asks list
         /// </summary>
         [JsonPropertyName("asks")]
         public CoinExOrderBookEntry[] Asks { get; set; } = Array.Empty<CoinExOrderBookEntry>();
         /// <summary>
-        /// Bids list
+        /// ["<c>bids</c>"] Bids list
         /// </summary>
         [JsonPropertyName("bids")]
         public CoinExOrderBookEntry[] Bids { get; set; } = Array.Empty<CoinExOrderBookEntry>();
 
         /// <summary>
-        /// Last price
+        /// ["<c>last</c>"] Last price
         /// </summary>
         [JsonPropertyName("last")]
         public decimal LastPrice { get; set; }
         /// <summary>
-        /// Update time
+        /// ["<c>updated_at</c>"] Update time
         /// </summary>
         [JsonPropertyName("updated_at")]
         public DateTime UpdateTime { get; set; }
         /// <summary>
-        /// Checksum for validating the order book is correct
+        /// ["<c>checksum</c>"] Checksum for validating the order book is correct
         /// </summary>
         [JsonPropertyName("checksum")]
         public long Checksum { get; set; }

@@ -13,12 +13,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExBatchOrderResult: CoinExOrder
     {
         /// <summary>
-        /// Result code
+        /// ["<c>code</c>"] Result code
         /// </summary>
         [JsonPropertyName("code")]
         public int Code { get; set; }
         /// <summary>
-        /// Result message
+        /// ["<c>message</c>"] Result message
         /// </summary>
         [JsonPropertyName("message")]
         public string Message { get; set; } = string.Empty;

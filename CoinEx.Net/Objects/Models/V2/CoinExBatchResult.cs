@@ -11,18 +11,18 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExBatchResult<T>
     {
         /// <summary>
-        /// Result code
+        /// ["<c>code</c>"] Result code
         /// </summary>
         [JsonPropertyName("code")]
         public int Code { get; set; }
         /// <summary>
-        /// Result message
+        /// ["<c>message</c>"] Result message
         /// </summary>
         [JsonPropertyName("message")]
         public string Message { get; set; } = string.Empty;
 
         /// <summary>
-        /// The result data, only available when Success is true
+        /// ["<c>data</c>"] The result data, only available when Success is true
         /// </summary>
         [JsonPropertyName("data")]
         public T? Data { get; set; }

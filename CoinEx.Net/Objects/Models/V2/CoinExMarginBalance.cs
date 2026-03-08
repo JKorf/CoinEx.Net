@@ -10,49 +10,49 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExMarginBalance
     {
         /// <summary>
-        /// Margin account
+        /// ["<c>margin_account</c>"] Margin account
         /// </summary>
         [JsonPropertyName("margin_account")]
         public string MarginAccount { get; set; } = string.Empty;
 
         /// <summary>
-        /// Base asset
+        /// ["<c>base_ccy</c>"] Base asset
         /// </summary>
         [JsonPropertyName("base_ccy")]
         public string BaseAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Quote asset
+        /// ["<c>quote_ccy</c>"] Quote asset
         /// </summary>
         [JsonPropertyName("quote_ccy")]
         public string QuoteAsset { get; set; } = string.Empty;
 
         /// <summary>
-        /// Current risk rate
+        /// ["<c>risk_rate</c>"] Current risk rate
         /// </summary>
         [JsonPropertyName("risk_rate")]
         public decimal? RiskRate { get; set; }
         /// <summary>
-        /// Current liquidation price
+        /// ["<c>liq_price</c>"] Current liquidation price
         /// </summary>
         [JsonPropertyName("liq_price")]
         public decimal? LiquidationPrice { get; set; }
         /// <summary>
-        /// Available
+        /// ["<c>available</c>"] Available
         /// </summary>
         [JsonPropertyName("available")]
         public CoinExMarginAssetsBalance Available { get; set; } = null!;
         /// <summary>
-        /// Frozen
+        /// ["<c>frozen</c>"] Frozen
         /// </summary>
         [JsonPropertyName("frozen")]
         public CoinExMarginAssetsBalance Frozen { get; set; } = null!;
         /// <summary>
-        /// Repaid
+        /// ["<c>repaid</c>"] Repaid
         /// </summary>
         [JsonPropertyName("repaid")]
         public CoinExMarginAssetsBalance Repaid { get; set; } = null!;
         /// <summary>
-        /// Interest
+        /// ["<c>interest</c>"] Interest
         /// </summary>
         [JsonPropertyName("interest")]
         public CoinExMarginAssetsBalance Interest { get; set; } = null!;
@@ -65,12 +65,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExMarginAssetsBalance
     {
         /// <summary>
-        /// Base asset amount
+        /// ["<c>base_ccy</c>"] Base asset amount
         /// </summary>
         [JsonPropertyName("base_ccy")]
         public decimal BaseAsset { get; set; }
         /// <summary>
-        /// Quote asset amount
+        /// ["<c>quote_ccy</c>"] Quote asset amount
         /// </summary>
         [JsonPropertyName("quote_ccy")]
         public decimal QuoteAsset { get; set; }

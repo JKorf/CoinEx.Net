@@ -10,22 +10,22 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExAamLiquidity
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Base asset amount in AMM account
+        /// ["<c>base_ccy_amount</c>"] Base asset amount in AMM account
         /// </summary>
         [JsonPropertyName("base_ccy_amount")]
         public decimal BaseAssetQuantity { get; set; }
         /// <summary>
-        /// Quote asset amount in AMM account
+        /// ["<c>quote_ccy_amount</c>"] Quote asset amount in AMM account
         /// </summary>
         [JsonPropertyName("quote_ccy_amount")]
         public decimal QuoteAssetQuantity { get; set; }
         /// <summary>
-        /// Liquidity percentage in AMM account
+        /// ["<c>liquidity_proportion</c>"] Liquidity percentage in AMM account
         /// </summary>
         [JsonPropertyName("liquidity_proportion")]
         public decimal LiquidityProportion { get; set; }

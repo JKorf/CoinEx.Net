@@ -13,27 +13,27 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExAsset
     {
         /// <summary>
-        /// Short name
+        /// ["<c>short_name</c>"] Short name
         /// </summary>
         [JsonPropertyName("short_name")]
         public string ShortName { get; set; } = string.Empty;
         /// <summary>
-        /// Full name
+        /// ["<c>full_name</c>"] Full name
         /// </summary>
         [JsonPropertyName("full_name")]
         public string FullName { get; set; } = string.Empty;
         /// <summary>
-        /// Website url
+        /// ["<c>website_url</c>"] Website url
         /// </summary>
         [JsonPropertyName("website_url")]
         public string WebsiteUrl { get; set; } = string.Empty;
         /// <summary>
-        /// White paper url
+        /// ["<c>white_paper_url</c>"] White paper url
         /// </summary>
         [JsonPropertyName("white_paper_url")]
         public string WhitePaperUrl { get; set; } = string.Empty;
         /// <summary>
-        /// Network info
+        /// ["<c>chain_info</c>"] Network info
         /// </summary>
         [JsonPropertyName("chain_info")]
         public CoinExAssetNetwork[] Networks { get; set; } = Array.Empty<CoinExAssetNetwork>();
@@ -46,17 +46,17 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExAssetNetwork
     {
         /// <summary>
-        /// Network name
+        /// ["<c>chain_name</c>"] Network name
         /// </summary>
         [JsonPropertyName("chain_name")]
         public string Name { get; set; } = string.Empty;
         /// <summary>
-        /// Identity
+        /// ["<c>identity</c>"] Identity
         /// </summary>
         [JsonPropertyName("identity")]
         public string? Identity { get; set; }
         /// <summary>
-        /// Explorer url
+        /// ["<c>explorer_url</c>"] Explorer url
         /// </summary>
         [JsonPropertyName("explorer_url")]
         public string ExplorerUrl { get; set; } = string.Empty;

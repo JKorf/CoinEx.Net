@@ -12,88 +12,88 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExWithdrawal
     {
         /// <summary>
-        /// Withdrawal id
+        /// ["<c>withdraw_id</c>"] Withdrawal id
         /// </summary>
         [JsonPropertyName("withdraw_id")]
         public long Id { get; set; }
         /// <summary>
-        /// Creation time
+        /// ["<c>created_at</c>"] Creation time
         /// </summary>
         [JsonPropertyName("created_at")]
         public DateTime CreateTime { get; set; }
         /// <summary>
-        /// Asset
+        /// ["<c>ccy</c>"] Asset
         /// </summary>
         [JsonPropertyName("ccy")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Network
+        /// ["<c>chain</c>"] Network
         /// </summary>
         [JsonPropertyName("chain")]
         public string Network { get; set; } = string.Empty;
         /// <summary>
-        /// Memo
+        /// ["<c>memo</c>"] Memo
         /// </summary>
         [JsonPropertyName("memo")]
         public string Memo { get; set; } = string.Empty;
         /// <summary>
-        /// Quantity
+        /// ["<c>amount</c>"] Quantity
         /// </summary>
         [JsonPropertyName("amount")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// Fee asset
+        /// ["<c>fee_ccy</c>"] Fee asset
         /// </summary>
         [JsonPropertyName("fee_ccy")]
         public string FeeAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Actual withdrawal quantity
+        /// ["<c>actual_amount</c>"] Actual withdrawal quantity
         /// </summary>
         [JsonPropertyName("actual_amount")]
         public decimal ActualQuantity { get; set; }
         /// <summary>
-        /// Withdraw method
+        /// ["<c>withdraw_method</c>"] Withdraw method
         /// </summary>
         [JsonPropertyName("withdraw_method")]
         public string WithdrawMethod { get; set; } = string.Empty;
         /// <summary>
-        /// Fee
+        /// ["<c>tx_fee</c>"] Fee
         /// </summary>
         [JsonPropertyName("tx_fee")]
         public decimal Fee { get; set; }
         /// <summary>
-        /// Transaction id
+        /// ["<c>tx_id</c>"] Transaction id
         /// </summary>
         [JsonPropertyName("tx_id")]
         public string TransactionId { get; set; } = string.Empty;
         /// <summary>
-        /// Destination address
+        /// ["<c>to_address</c>"] Destination address
         /// </summary>
         [JsonPropertyName("to_address")]
         public string ToAddress { get; set; } = string.Empty;
         /// <summary>
-        /// Number of confirmations
+        /// ["<c>confirmations</c>"] Number of confirmations
         /// </summary>
         [JsonPropertyName("confirmations")]
         public int Confirmations { get; set; }
         /// <summary>
-        /// Blockchain explorer url for the transaction
+        /// ["<c>explorer_tx_url</c>"] Blockchain explorer url for the transaction
         /// </summary>
         [JsonPropertyName("explorer_tx_url")]
         public string TransactionExplorerUrl { get; set; } = string.Empty;
         /// <summary>
-        /// Blockchain explorer url for the deposit address
+        /// ["<c>explorer_address_url</c>"] Blockchain explorer url for the deposit address
         /// </summary>
         [JsonPropertyName("explorer_address_url")]
         public string WithdrawalAddressExplorerUrl { get; set; } = string.Empty;
 
         /// <summary>
-        /// Status
+        /// ["<c>status</c>"] Status
         /// </summary>
         [JsonPropertyName("status")]
         public WithdrawStatusV2 Status { get; set; }
         /// <summary>
-        /// Remark
+        /// ["<c>remark</c>"] Remark
         /// </summary>
         [JsonPropertyName("remark")]
         public string? Remark { get; set; } = string.Empty;

@@ -11,12 +11,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExDepositWithdrawalConfig
     {
         /// <summary>
-        /// Asset information
+        /// ["<c>asset</c>"] Asset information
         /// </summary>
         [JsonPropertyName("asset")]
         public CoinExDepositWithdrawalAsset Asset { get; set; } = null!;
         /// <summary>
-        /// Available networks
+        /// ["<c>chains</c>"] Available networks
         /// </summary>
         [JsonPropertyName("chains")]
         public CoinExNetwork[] Networks { get; set; } = null!;
@@ -29,27 +29,27 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExDepositWithdrawalAsset
     {
         /// <summary>
-        /// Asset name
+        /// ["<c>ccy</c>"] Asset name
         /// </summary>
         [JsonPropertyName("ccy")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Is deposit enabled
+        /// ["<c>deposit_enabled</c>"] Is deposit enabled
         /// </summary>
         [JsonPropertyName("deposit_enabled")]
         public bool DepositEnabled { get; set; }
         /// <summary>
-        /// Is withdrawal enabled
+        /// ["<c>withdraw_enabled</c>"] Is withdrawal enabled
         /// </summary>
         [JsonPropertyName("withdraw_enabled")]
         public bool WithdrawEnabled { get; set; }
         /// <summary>
-        /// Is inter user transfer enabled
+        /// ["<c>inter_transfer_enabled</c>"] Is inter user transfer enabled
         /// </summary>
         [JsonPropertyName("inter_transfer_enabled")]
         public bool InterTransferEnabled { get; set; }
         /// <summary>
-        /// Is st
+        /// ["<c>is_st</c>"] Is st
         /// </summary>
         [JsonPropertyName("is_st")]
         public bool IsSt { get; set; }
@@ -62,72 +62,72 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExNetwork
     {
         /// <summary>
-        /// Network name
+        /// ["<c>chain</c>"] Network name
         /// </summary>
         [JsonPropertyName("chain")]
         public string Network { get; set; } = string.Empty;
         /// <summary>
-        /// Min deposit quantity
+        /// ["<c>min_deposit_amount</c>"] Min deposit quantity
         /// </summary>
         [JsonPropertyName("min_deposit_amount")]
         public decimal MinDepositQuantity { get; set; }
         /// <summary>
-        /// Min withdraw quantity
+        /// ["<c>min_withdraw_amount</c>"] Min withdraw quantity
         /// </summary>
         [JsonPropertyName("min_withdraw_amount")]
         public decimal MinWithdrawQuantity { get; set; }
         /// <summary>
-        /// Is deposit enabled
+        /// ["<c>deposit_enabled</c>"] Is deposit enabled
         /// </summary>
         [JsonPropertyName("deposit_enabled")]
         public bool DepositEnabled { get; set; }
         /// <summary>
-        /// Deposit delay
+        /// ["<c>deposit_delay_minutes</c>"] Deposit delay
         /// </summary>
         [JsonPropertyName("deposit_delay_minutes")]
         public int? DepositDelayInMinutes { get; set; }
         /// <summary>
-        /// Is withdrawal enabled
+        /// ["<c>withdraw_enabled</c>"] Is withdrawal enabled
         /// </summary>
         [JsonPropertyName("withdraw_enabled")]
         public bool WithdrawEnabled { get; set; }
         /// <summary>
-        /// Number of confirmations needed
+        /// ["<c>safe_confirmations</c>"] Number of confirmations needed
         /// </summary>
         [JsonPropertyName("safe_confirmations")]
         public int? SafeConfirmations { get; set; }
         /// <summary>
-        /// Number of confirmations before transaction is irreversable
+        /// ["<c>irreversible_confirmations</c>"] Number of confirmations before transaction is irreversable
         /// </summary>
         [JsonPropertyName("irreversible_confirmations")]
         public int? IrreversableConfirmations { get; set; }
         /// <summary>
-        /// Deflation rate
+        /// ["<c>deflation_rate</c>"] Deflation rate
         /// </summary>
         [JsonPropertyName("deflation_rate")]
         public decimal? DeflationRate { get; set; }
         /// <summary>
-        /// Withdrawal fee
+        /// ["<c>withdrawal_fee</c>"] Withdrawal fee
         /// </summary>
         [JsonPropertyName("withdrawal_fee")]
         public decimal? WithdrawalFee { get; set; }
         /// <summary>
-        /// Withdrawal precision
+        /// ["<c>withdrawal_precision</c>"] Withdrawal precision
         /// </summary>
         [JsonPropertyName("withdrawal_precision")]
         public int? WithdrawalPrecision { get; set; }
         /// <summary>
-        /// Memo
+        /// ["<c>memo</c>"] Memo
         /// </summary>
         [JsonPropertyName("memo")]
         public string Memo { get; set; } = string.Empty;
         /// <summary>
-        /// Is memo required for deposits
+        /// ["<c>is_memo_required_for_deposit</c>"] Is memo required for deposits
         /// </summary>
         [JsonPropertyName("is_memo_required_for_deposit")]
         public bool MemoRequired { get; set; }
         /// <summary>
-        /// Blockchain explorer url
+        /// ["<c>explorer_asset_url</c>"] Blockchain explorer url
         /// </summary>
         [JsonPropertyName("explorer_asset_url")]
         public string ExplorerUrl { get; set; } = string.Empty;

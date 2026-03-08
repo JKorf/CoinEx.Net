@@ -10,17 +10,17 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExTradeFee
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Fee for maker trades
+        /// ["<c>maker_rate</c>"] Fee for maker trades
         /// </summary>
         [JsonPropertyName("maker_rate")]
         public decimal MakerFeeRate { get; set; }
         /// <summary>
-        /// Fee for taker trades
+        /// ["<c>taker_rate</c>"] Fee for taker trades
         /// </summary>
         [JsonPropertyName("taker_rate")]
         public decimal TakerFeeRate { get; set; }

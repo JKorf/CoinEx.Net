@@ -12,23 +12,23 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExIndexPrice
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Timestamp
+        /// ["<c>created_at</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("created_at")]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// Price
+        /// ["<c>price</c>"] Price
         /// </summary>
         [JsonPropertyName("price")]
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Index sources
+        /// ["<c>sources</c>"] Index sources
         /// </summary>
         [JsonPropertyName("sources")]
         public CoinExIndexPriceSource[] Sources { get; set; } = Array.Empty<CoinExIndexPriceSource>();
@@ -41,22 +41,22 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExIndexPriceSource
     {
         /// <summary>
-        /// Exchange
+        /// ["<c>exchange</c>"] Exchange
         /// </summary>
         [JsonPropertyName("exchange")]
         public string Exchange { get; set; } = string.Empty;
         /// <summary>
-        /// Timestamp
+        /// ["<c>created_at</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("created_at")]
         public DateTime Timestamp { get; set; }
         /// <summary>
-        /// Weight of the source
+        /// ["<c>index_weight</c>"] Weight of the source
         /// </summary>
         [JsonPropertyName("index_weight")]
         public decimal Weight { get; set; }
         /// <summary>
-        /// Price
+        /// ["<c>index_price</c>"] Price
         /// </summary>
         [JsonPropertyName("index_price")]
         public decimal? Price { get; set; }

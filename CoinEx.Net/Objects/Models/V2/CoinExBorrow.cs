@@ -12,47 +12,47 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExBorrow
     {
         /// <summary>
-        /// Id
+        /// ["<c>borrow_id</c>"] Id
         /// </summary>
         [JsonPropertyName("borrow_id")]
         public long BorrowId { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Asset
+        /// ["<c>ccy</c>"] Asset
         /// </summary>
         [JsonPropertyName("ccy")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Daily interest rate
+        /// ["<c>daily_interest_rate</c>"] Daily interest rate
         /// </summary>
         [JsonPropertyName("daily_interest_rate")]
         public decimal DailyInterestRate { get; set; }
         /// <summary>
-        /// Expire time
+        /// ["<c>expired_at</c>"] Expire time
         /// </summary>
         [JsonPropertyName("expired_at")]
         public DateTime ExireTime { get; set; }
         /// <summary>
-        /// Borrow amount
+        /// ["<c>borrow_amount</c>"] Borrow amount
         /// </summary>
         [JsonPropertyName("borrow_amount")]
         public decimal BorrowQuantity { get; set; }
         /// <summary>
-        /// Amount to repay
+        /// ["<c>to_repaid_amount</c>"] Amount to repay
         /// </summary>
         [JsonPropertyName("to_repaid_amount")]
         public decimal ToRepayQuantity { get; set; }
         /// <summary>
-        /// Borrow status
+        /// ["<c>status</c>"] Borrow status
         /// </summary>
         [JsonPropertyName("status")]
         public BorrowStatus Status { get; set; }
         /// <summary>
-        /// Is auto renewing
+        /// ["<c>is_auto_renew</c>"] Is auto renewing
         /// </summary>
         [JsonPropertyName("is_auto_renew")]
         public bool? IsAutoRenew { get; set; }

@@ -11,12 +11,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExPositionUpdate
     {
         /// <summary>
-        /// Event that triggered the update
+        /// ["<c>event</c>"] Event that triggered the update
         /// </summary>
         [JsonPropertyName("event")]
         public PositionUpdateType Event { get; set; }
         /// <summary>
-        /// Position data
+        /// ["<c>position</c>"] Position data
         /// </summary>
         [JsonPropertyName("position")]
         public CoinExStreamPosition Position { get; set; } = null!;
@@ -29,12 +29,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExStreamPosition : CoinExPosition
     {
         /// <summary>
-        /// First filled price
+        /// ["<c>first_filled_price</c>"] First filled price
         /// </summary>
         [JsonPropertyName("first_filled_price")]
         public decimal FirstFilledPrice { get; set; }
         /// <summary>
-        /// Last filled price
+        /// ["<c>latest_filled_price</c>"] Last filled price
         /// </summary>
         [JsonPropertyName("latest_filled_price")]
         public decimal LastFilledPrice { get; set; }

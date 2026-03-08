@@ -11,12 +11,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExStopOrderUpdate
     {
         /// <summary>
-        /// Event that triggered the update
+        /// ["<c>event</c>"] Event that triggered the update
         /// </summary>
         [JsonPropertyName("event")]
         public StopOrderUpdateType Event { get; set; }
         /// <summary>
-        /// Order data
+        /// ["<c>stop</c>"] Order data
         /// </summary>
         [JsonPropertyName("stop")]
         public CoinExStopOrder Order { get; set; } = null!;

@@ -10,37 +10,37 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExFuturesBalance
     {
         /// <summary>
-        /// Asset
+        /// ["<c>ccy</c>"] Asset
         /// </summary>
         [JsonPropertyName("ccy")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Available balance
+        /// ["<c>available</c>"] Available balance
         /// </summary>
         [JsonPropertyName("available")]
         public decimal Available { get; set; }
         /// <summary>
-        /// Frozen balance
+        /// ["<c>frozen</c>"] Frozen balance
         /// </summary>
         [JsonPropertyName("frozen")]
         public decimal Frozen { get; set; }
         /// <summary>
-        /// Position margin
+        /// ["<c>margin</c>"] Position margin
         /// </summary>
         [JsonPropertyName("margin")]
         public decimal Margin { get; set; }
         /// <summary>
-        /// Unrealized profit and loss
+        /// ["<c>unrealized_pnl</c>"] Unrealized profit and loss
         /// </summary>
         [JsonPropertyName("unrealized_pnl")]
         public decimal UnrealizedPnl { get; set; }
         /// <summary>
-        /// Transferable balance
+        /// ["<c>transferrable</c>"] Transferable balance
         /// </summary>
         [JsonPropertyName("transferrable")]
         public decimal Transferable { get; set; }
         /// <summary>
-        /// Equity
+        /// ["<c>equity</c>"] Equity
         /// </summary>
         [JsonPropertyName("equity")]
         public decimal? Equity { get; set; }

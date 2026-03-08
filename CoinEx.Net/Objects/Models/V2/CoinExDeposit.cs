@@ -12,72 +12,72 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExDeposit
     {
         /// <summary>
-        /// Deposit id
+        /// ["<c>deposit_id</c>"] Deposit id
         /// </summary>
         [JsonPropertyName("deposit_id")]
         public long Id { get; set; }
         /// <summary>
-        /// Creation time
+        /// ["<c>created_at</c>"] Creation time
         /// </summary>
         [JsonPropertyName("created_at")]
         public DateTime CreateTime { get; set; }
         /// <summary>
-        /// Transaction id
+        /// ["<c>tx_id</c>"] Transaction id
         /// </summary>
         [JsonPropertyName("tx_id")]
         public string TransactionId { get; set; } = string.Empty;
         /// <summary>
-        /// Asset
+        /// ["<c>ccy</c>"] Asset
         /// </summary>
         [JsonPropertyName("ccy")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Network
+        /// ["<c>chain</c>"] Network
         /// </summary>
         [JsonPropertyName("chain")]
         public string Network { get; set; } = string.Empty;
         /// <summary>
-        /// Quantity deposited
+        /// ["<c>amount</c>"] Quantity deposited
         /// </summary>
         [JsonPropertyName("amount")]
         public decimal Quantity { get; set; }
         /// <summary>
-        /// Actual amount received
+        /// ["<c>actual_amount</c>"] Actual amount received
         /// </summary>
         [JsonPropertyName("actual_amount")]
         public decimal? QuantityCredited { get; set; }
         /// <summary>
-        /// Deposit address
+        /// ["<c>to_address</c>"] Deposit address
         /// </summary>
         [JsonPropertyName("to_address")]
         public string DepositAddress { get; set; } = string.Empty;
         /// <summary>
-        /// Amount of confirmations
+        /// ["<c>confirmations</c>"] Amount of confirmations
         /// </summary>
         [JsonPropertyName("confirmations")]
         public int Confirmations { get; set; }
         /// <summary>
-        /// Status of the deposit
+        /// ["<c>status</c>"] Status of the deposit
         /// </summary>
         [JsonPropertyName("status")]
         public DepositStatus Status { get; set; }
         /// <summary>
-        /// Blockchain explorer url for the transaction
+        /// ["<c>tx_explorer_url</c>"] Blockchain explorer url for the transaction
         /// </summary>
         [JsonPropertyName("tx_explorer_url")]
         public string TransactionExplorerUrl { get; set; } = string.Empty;
         /// <summary>
-        /// Blockchain explorer url for the deposit address
+        /// ["<c>to_addr_explorer_url</c>"] Blockchain explorer url for the deposit address
         /// </summary>
         [JsonPropertyName("to_addr_explorer_url")]
         public string DepositAddressExplorerUrl { get; set; } = string.Empty;
         /// <summary>
-        /// Remark
+        /// ["<c>remark</c>"] Remark
         /// </summary>
         [JsonPropertyName("remark")]
         public string Remark { get; set; } = string.Empty;
         /// <summary>
-        /// Deposit method
+        /// ["<c>deposit_method</c>"] Deposit method
         /// </summary>
         [JsonPropertyName("deposit_method")]
         public MovementMethod DepositMethod { get; set; }

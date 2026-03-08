@@ -10,52 +10,52 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExTicker
     {
         /// <summary>
-        /// Symbol name
+        /// ["<c>market</c>"] Symbol name
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Last price
+        /// ["<c>last</c>"] Last price
         /// </summary>
         [JsonPropertyName("last")]
         public decimal LastPrice { get; set; }
         /// <summary>
-        /// Open price
+        /// ["<c>open</c>"] Open price
         /// </summary>
         [JsonPropertyName("open")]
         public decimal OpenPrice { get; set; }
         /// <summary>
-        /// Close price
+        /// ["<c>close</c>"] Close price
         /// </summary>
         [JsonPropertyName("close")]
         public decimal ClosePrice { get; set; }
         /// <summary>
-        /// High price
+        /// ["<c>high</c>"] High price
         /// </summary>
         [JsonPropertyName("high")]
         public decimal HighPrice { get; set; }
         /// <summary>
-        /// Low price
+        /// ["<c>low</c>"] Low price
         /// </summary>
         [JsonPropertyName("low")]
         public decimal LowPrice { get; set; }
         /// <summary>
-        /// Volume in base asset
+        /// ["<c>volume</c>"] Volume in base asset
         /// </summary>
         [JsonPropertyName("volume")]
         public decimal Volume { get; set; }
         /// <summary>
-        /// Volume in quote asset
+        /// ["<c>value</c>"] Volume in quote asset
         /// </summary>
         [JsonPropertyName("value")]
         public decimal Value { get; set; }
         /// <summary>
-        /// Sell volume
+        /// ["<c>volume_sell</c>"] Sell volume
         /// </summary>
         [JsonPropertyName("volume_sell")]
         public decimal SellVolume { get; set; }
         /// <summary>
-        /// Buy volume
+        /// ["<c>volume_buy</c>"] Buy volume
         /// </summary>
         [JsonPropertyName("volume_buy")]
         public decimal BuyVolume { get; set; }

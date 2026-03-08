@@ -10,27 +10,27 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExCreditBalance
     {
         /// <summary>
-        /// Account assets
+        /// ["<c>equity</c>"] Account assets
         /// </summary>
         [JsonPropertyName("equity")]
         public decimal Equity { get; set; }
         /// <summary>
-        /// To be repaid
+        /// ["<c>repaid</c>"] To be repaid
         /// </summary>
         [JsonPropertyName("repaid")]
         public decimal ToBeRepaid { get; set; }
         /// <summary>
-        /// Current risk rate
+        /// ["<c>risk_rate</c>"] Current risk rate
         /// </summary>
         [JsonPropertyName("risk_rate")]
         public decimal? RiskRate { get; set; }
         /// <summary>
-        /// Withdrawal risk rate
+        /// ["<c>withdrawal_risk</c>"] Withdrawal risk rate
         /// </summary>
         [JsonPropertyName("withdrawal_risk")]
         public decimal WithdrawalRiskRate { get; set; }
         /// <summary>
-        /// Market value of available withdrawal
+        /// ["<c>withdrawal_value</c>"] Market value of available withdrawal
         /// </summary>
         [JsonPropertyName("withdrawal_value")]
         public decimal WithdrawalValueAvailable { get; set; }

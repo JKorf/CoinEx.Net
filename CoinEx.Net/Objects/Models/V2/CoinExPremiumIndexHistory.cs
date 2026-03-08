@@ -11,17 +11,17 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExPremiumIndexHistory
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Timestamp
+        /// ["<c>created_at</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("created_at")]
         public DateTime? Timestamp { get; set; }
         /// <summary>
-        /// 	Premium index. The main basis for calculating the funding rate
+        /// 	["<c>premium_index</c>"] Premium index. The main basis for calculating the funding rate
         /// </summary>
         [JsonPropertyName("premium_index")]
         public decimal PremiumIndex { get; set; }

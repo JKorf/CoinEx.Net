@@ -19,27 +19,27 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExBalanceUpdate
     {
         /// <summary>
-        /// Margin symbol
+        /// ["<c>margin_market</c>"] Margin symbol
         /// </summary>
         [JsonPropertyName("margin_market")]
         public string? MarginSymbol { get; set; }
         /// <summary>
-        /// Asset name
+        /// ["<c>ccy</c>"] Asset name
         /// </summary>
         [JsonPropertyName("ccy")]
         public string Asset { get; set; } = string.Empty;
         /// <summary>
-        /// Available amount
+        /// ["<c>available</c>"] Available amount
         /// </summary>
         [JsonPropertyName("available")]
         public decimal Available { get; set; }
         /// <summary>
-        /// Frozen amount
+        /// ["<c>frozen</c>"] Frozen amount
         /// </summary>
         [JsonPropertyName("frozen")]
         public decimal Frozen { get; set; }
         /// <summary>
-        /// Update time
+        /// ["<c>updated_at</c>"] Update time
         /// </summary>
         [JsonPropertyName("updated_at")]
         public DateTime UpdateTime { get; set; }

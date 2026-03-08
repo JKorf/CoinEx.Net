@@ -10,52 +10,52 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExSymbol
     {
         /// <summary>
-        /// Symbol name
+        /// ["<c>market</c>"] Symbol name
         /// </summary>
         [JsonPropertyName("market")]
         public string Name { get; set; } = string.Empty;
         /// <summary>
-        /// Maker fee rate
+        /// ["<c>maker_fee_rate</c>"] Maker fee rate
         /// </summary>
         [JsonPropertyName("maker_fee_rate")]
         public decimal MakerFeeRate { get; set; }
         /// <summary>
-        /// Taker fee rate
+        /// ["<c>taker_fee_rate</c>"] Taker fee rate
         /// </summary>
         [JsonPropertyName("taker_fee_rate")]
         public decimal TakerFeeRate { get; set; }
         /// <summary>
-        /// Minimal order quantiy
+        /// ["<c>min_amount</c>"] Minimal order quantiy
         /// </summary>
         [JsonPropertyName("min_amount")]
         public decimal MinOrderQuantity { get; set; }
         /// <summary>
-        /// Base asset
+        /// ["<c>base_ccy</c>"] Base asset
         /// </summary>
         [JsonPropertyName("base_ccy")]
         public string BaseAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Quote asset
+        /// ["<c>quote_ccy</c>"] Quote asset
         /// </summary>
         [JsonPropertyName("quote_ccy")]
         public string QuoteAsset { get; set; } = string.Empty;
         /// <summary>
-        /// Quantity precision
+        /// ["<c>base_ccy_precision</c>"] Quantity precision
         /// </summary>
         [JsonPropertyName("base_ccy_precision")]
         public int QuantityPrecision { get; set; }
         /// <summary>
-        /// Price precision
+        /// ["<c>quote_ccy_precision</c>"] Price precision
         /// </summary>
         [JsonPropertyName("quote_ccy_precision")]
         public int PricePrecision { get; set; }
         /// <summary>
-        /// Is Automated Market Maker available
+        /// ["<c>is_amm_available</c>"] Is Automated Market Maker available
         /// </summary>
         [JsonPropertyName("is_amm_available")]
         public bool AutoMarketMakerAvailable { get; set; }
         /// <summary>
-        /// Is Margin Trading available
+        /// ["<c>is_margin_available</c>"] Is Margin Trading available
         /// </summary>
         [JsonPropertyName("is_margin_available")]
         public bool MarginTradingAvailable { get; set; }

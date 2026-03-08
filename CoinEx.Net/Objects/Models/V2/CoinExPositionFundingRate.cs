@@ -12,52 +12,52 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExPositionFundingRate
     {
         /// <summary>
-        /// Position id
+        /// ["<c>position_id</c>"] Position id
         /// </summary>
         [JsonPropertyName("position_id")]
         public long Id { get; set; }
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Account type
+        /// ["<c>market_type</c>"] Account type
         /// </summary>
         [JsonPropertyName("market_type")]
         public AccountType AccountType { get; set; }
         /// <summary>
-        /// Position side
+        /// ["<c>side</c>"] Position side
         /// </summary>
         [JsonPropertyName("side")]
         public PositionSide Side { get; set; }
         /// <summary>
-        /// Margin mode
+        /// ["<c>margin_mode</c>"] Margin mode
         /// </summary>
         [JsonPropertyName("margin_mode")]
         public MarginMode MarginMode { get; set; }
         /// <summary>
-        /// Open interest
+        /// ["<c>open_interest</c>"] Open interest
         /// </summary>
         [JsonPropertyName("open_interest")]
         public decimal OpenInterest { get; set; }
         /// <summary>
-        /// Settlement price
+        /// ["<c>settle_price</c>"] Settlement price
         /// </summary>
         [JsonPropertyName("settle_price")]
         public decimal SettlePrice { get; set; }
         /// <summary>
-        /// Funding rate
+        /// ["<c>funding_rate</c>"] Funding rate
         /// </summary>
         [JsonPropertyName("funding_rate")]
         public decimal FundingRate { get; set; }
         /// <summary>
-        /// Funding value
+        /// ["<c>funding_value</c>"] Funding value
         /// </summary>
         [JsonPropertyName("funding_value")]
         public decimal FundingValue { get; set; }
         /// <summary>
-        /// Timestamp
+        /// ["<c>created_at</c>"] Timestamp
         /// </summary>
         [JsonPropertyName("created_at")]
         public DateTime CreateTime { get; set; }

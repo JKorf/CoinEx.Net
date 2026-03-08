@@ -11,22 +11,22 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExFundingRateHistory
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Funding time
+        /// ["<c>funding_time</c>"] Funding time
         /// </summary>
         [JsonPropertyName("funding_time")]
         public DateTime? FundingTime { get; set; }
         /// <summary>
-        /// Theoretical funding rate. The theoretical funding rate to be collected for the current period after calculation
+        /// ["<c>theoretical_funding_rate</c>"] Theoretical funding rate. The theoretical funding rate to be collected for the current period after calculation
         /// </summary>
         [JsonPropertyName("theoretical_funding_rate")]
         public decimal TheoreticalFundingrate { get; set; }
         /// <summary>
-        /// Actual funding rate. The actual funding rate charged in the current period
+        /// ["<c>actual_funding_rate</c>"] Actual funding rate. The actual funding rate charged in the current period
         /// </summary>
         [JsonPropertyName("actual_funding_rate")]
         public decimal ActualFundingRate { get; set; }

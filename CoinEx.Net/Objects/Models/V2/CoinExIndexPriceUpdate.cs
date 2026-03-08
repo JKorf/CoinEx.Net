@@ -11,17 +11,17 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExIndexPriceUpdate
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Index price
+        /// ["<c>index_price</c>"] Index price
         /// </summary>
         [JsonPropertyName("index_price")]
         public decimal IndexPrice { get; set; }
         /// <summary>
-        /// Mark price
+        /// ["<c>mark_price</c>"] Mark price
         /// </summary>
         [JsonPropertyName("mark_price")]
         public decimal? MarkPrice { get; set; }

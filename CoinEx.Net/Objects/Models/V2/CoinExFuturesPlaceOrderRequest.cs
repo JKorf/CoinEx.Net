@@ -15,22 +15,22 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExFuturesPlaceOrderRequest
     {
         /// <summary>
-        /// The symbol, for example `ETHUSDT`
+        /// ["<c>market</c>"] The symbol, for example `ETHUSDT`
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// The account type
+        /// ["<c>market_type</c>"] The account type
         /// </summary>
         [JsonPropertyName("market_type")]
         public AccountType AccountType { get; set; }
         /// <summary>
-        /// The side
+        /// ["<c>side</c>"] The side
         /// </summary>
         [JsonPropertyName("side")]
         public OrderSide Side { get; set; }
         /// <summary>
-        /// The order type
+        /// ["<c>type</c>"] The order type
         /// </summary>
         [JsonPropertyName("type")]
         public OrderTypeV2 OrderType { get; set; }

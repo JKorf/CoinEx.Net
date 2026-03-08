@@ -12,12 +12,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExPositionLevels
     {
         /// <summary>
-        /// Symbol
+        /// ["<c>market</c>"] Symbol
         /// </summary>
         [JsonPropertyName("market")]
         public string Symbol { get; set; } = string.Empty;
         /// <summary>
-        /// Levels
+        /// ["<c>level</c>"] Levels
         /// </summary>
         [JsonPropertyName("level")]
         public CoinExPositionLevel[] Levels { get; set; } = Array.Empty<CoinExPositionLevel>();
@@ -30,22 +30,22 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExPositionLevel
     {
         /// <summary>
-        /// Upper limit of the current position
+        /// ["<c>amount</c>"] Upper limit of the current position
         /// </summary>
         [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
         /// <summary>
-        /// Leverage of current level
+        /// ["<c>leverage</c>"] Leverage of current level
         /// </summary>
         [JsonPropertyName("leverage")]
         public decimal Leverage { get; set; }
         /// <summary>
-        /// Current maintenance margin rate
+        /// ["<c>maintenance_margin_rate</c>"] Current maintenance margin rate
         /// </summary>
         [JsonPropertyName("maintenance_margin_rate")]
         public decimal MaintenanceMarginRate { get; set; }
         /// <summary>
-        /// Minimum initial margin rate for the current level
+        /// ["<c>min_initial_margin_rate</c>"] Minimum initial margin rate for the current level
         /// </summary>
         [JsonPropertyName("min_initial_margin_rate")]
         public decimal MinInitialMarginRate { get; set; }

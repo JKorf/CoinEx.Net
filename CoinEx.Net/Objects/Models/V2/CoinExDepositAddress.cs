@@ -10,12 +10,12 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExDepositAddress
     {
         /// <summary>
-        /// Memo
+        /// ["<c>memo</c>"] Memo
         /// </summary>
         [JsonPropertyName("memo")]
         public string? Memo { get; set; }
         /// <summary>
-        /// Deposit address
+        /// ["<c>address</c>"] Deposit address
         /// </summary>
         [JsonPropertyName("address")]
         public string Address { get; set; } = string.Empty;

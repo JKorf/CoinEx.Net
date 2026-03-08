@@ -10,7 +10,7 @@ namespace CoinEx.Net.Objects.Models.V2
     public record CoinExStopId
     {
         /// <summary>
-        /// Stop order id
+        /// ["<c>stop_id</c>"] Stop order id
         /// </summary>
         [JsonPropertyName("stop_id")]
         public long StopOrderId { get; set; }
