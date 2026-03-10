@@ -11,17 +11,17 @@ namespace CoinEx.Net.Enums
     public enum AccountType
     {
         /// <summary>
-        /// Spot account
+        /// ["<c>SPOT</c>"] Spot account
         /// </summary>
         [Map("SPOT")]
         Spot,
         /// <summary>
-        /// Margin account
+        /// ["<c>MARGIN</c>"] Margin account
         /// </summary>
         [Map("MARGIN")]
         Margin,
         /// <summary>
-        /// Futures account
+        /// ["<c>FUTURES</c>"] Futures account
         /// </summary>
         [Map("FUTURES")]
         Futures

@@ -11,12 +11,12 @@ namespace CoinEx.Net.Enums
     public enum TriggerDirection
     {
         /// <summary>
-        /// Should trigger when the price is higher than the trigger price
+        /// ["<c>higher</c>"] Should trigger when the price is higher than the trigger price
         /// </summary>
         [Map("higher")]
         Higher,
         /// <summary>
-        /// Should trigger when the price is lower than the trigger price
+        /// ["<c>lower</c>"] Should trigger when the price is lower than the trigger price
         /// </summary>
         [Map("lower")]
         Lower

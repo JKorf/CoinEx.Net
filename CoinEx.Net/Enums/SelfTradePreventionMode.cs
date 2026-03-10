@@ -11,17 +11,17 @@ namespace CoinEx.Net.Enums
     public enum SelfTradePreventionMode
     {
         /// <summary>
-        /// Cancel the maker order
+        /// ["<c>cm</c>"] Cancel the maker order
         /// </summary>
         [Map("cm")]
         CancelMaker,
         /// <summary>
-        /// Cancel the taker order
+        /// ["<c>ct</c>"] Cancel the taker order
         /// </summary>
         [Map("ct")]
         CancelTaker,
         /// <summary>
-        /// Cancel both orders
+        /// ["<c>both</c>"] Cancel both orders
         /// </summary>
         [Map("both")]
         CancelBoth

@@ -11,12 +11,12 @@ namespace CoinEx.Net.Enums
     public enum TransactionRole
     {
         /// <summary>
-        /// Maker of a new order book entry
+        /// ["<c>maker</c>"] Maker of a new order book entry
         /// </summary>
         [Map("maker")]
         Maker,
         /// <summary>
-        /// Taker of an existing order book entry
+        /// ["<c>taker</c>"] Taker of an existing order book entry
         /// </summary>
         [Map("taker")]
         Taker

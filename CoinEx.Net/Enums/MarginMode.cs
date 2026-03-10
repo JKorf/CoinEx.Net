@@ -11,12 +11,12 @@ namespace CoinEx.Net.Enums
     public enum MarginMode
     {
         /// <summary>
-        /// Isolated margin mode
+        /// ["<c>isolated</c>"] Isolated margin mode
         /// </summary>
         [Map("isolated")]
         Isolated,
         /// <summary>
-        /// Cross margin mode
+        /// ["<c>cross</c>"] Cross margin mode
         /// </summary>
         [Map("cross")]
         Cross

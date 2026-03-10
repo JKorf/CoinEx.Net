@@ -11,22 +11,22 @@ namespace CoinEx.Net.Enums
     public enum OrderUpdateType
     {
         /// <summary>
-        /// Order created
+        /// ["<c>put</c>"] Order created
         /// </summary>
         [Map("put")]
         Put,
         /// <summary>
-        /// Order updated
+        /// ["<c>update</c>"] Order updated
         /// </summary>
         [Map("update")]
         Update,
         /// <summary>
-        /// Order was edited
+        /// ["<c>modify</c>"] Order was edited
         /// </summary>
         [Map("modify")]
         Edit,
         /// <summary>
-        /// Order finished
+        /// ["<c>finish</c>"] Order finished
         /// </summary>
         [Map("finish")]
         Finish,

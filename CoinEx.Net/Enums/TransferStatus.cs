@@ -11,22 +11,22 @@ namespace CoinEx.Net.Enums
     public enum TransferStatus
     {
         /// <summary>
-        /// Created
+        /// ["<c>created</c>"] Created
         /// </summary>
         [Map("created")]
         Created,
         /// <summary>
-        /// Asset deducted
+        /// ["<c>deducted</c>"] Asset deducted
         /// </summary>
         [Map("deducted")]
         Deducted,
         /// <summary>
-        /// Failed to transfer
+        /// ["<c>failed</c>"] Failed to transfer
         /// </summary>
         [Map("failed")]
         Failed,
         /// <summary>
-        /// Transfer completed
+        /// ["<c>finished</c>"] Transfer completed
         /// </summary>
         [Map("finished")]
         Finished

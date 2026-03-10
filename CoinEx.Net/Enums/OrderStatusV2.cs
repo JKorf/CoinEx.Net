@@ -11,27 +11,27 @@ namespace CoinEx.Net.Enums
     public enum OrderStatusV2
     {
         /// <summary>
-        /// Open
+        /// ["<c>open</c>"] Open
         /// </summary>
         [Map("open")]
         Open,
         /// <summary>
-        /// Partially filled
+        /// ["<c>part_filled</c>"] Partially filled
         /// </summary>
         [Map("part_filled")]
         PartiallyFilled,
         /// <summary>
-        /// Fully filled
+        /// ["<c>filled</c>"] Fully filled
         /// </summary>
         [Map("filled")]
         Filled,
         /// <summary>
-        /// Partially filled, partially canceled
+        /// ["<c>part_canceled</c>"] Partially filled, partially canceled
         /// </summary>
         [Map("part_canceled")]
         PartiallyCanceled,
         /// <summary>
-        /// Fully canceled
+        /// ["<c>canceled</c>"] Fully canceled
         /// </summary>
         [Map("canceled")]
         Canceled

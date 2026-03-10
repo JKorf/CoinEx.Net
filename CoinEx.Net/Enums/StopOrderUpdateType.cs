@@ -11,17 +11,17 @@ namespace CoinEx.Net.Enums
     public enum StopOrderUpdateType
     {
         /// <summary>
-        /// Order created
+        /// ["<c>put</c>"] Order created
         /// </summary>
         [Map("put")]
         Put,
         /// <summary>
-        /// Order active
+        /// ["<c>active</c>"] Order active
         /// </summary>
         [Map("active")]
         Active,
         /// <summary>
-        /// Order canceled
+        /// ["<c>cancel</c>"] Order canceled
         /// </summary>
         [Map("cancel")]
         Cancel

@@ -11,32 +11,32 @@ namespace CoinEx.Net.Enums
     public enum PositionUpdateType
     {
         /// <summary>
-        /// Update
+        /// ["<c>update</c>"] Update
         /// </summary>
         [Map("update")]
         Update,
         /// <summary>
-        /// Close
+        /// ["<c>close</c>"] Close
         /// </summary>
         [Map("close")]
         Close,
         /// <summary>
-        /// System closing
+        /// ["<c>sys_close</c>"] System closing
         /// </summary>
         [Map("sys_close")]
         SystemClose,
         /// <summary>
-        /// Auto delveraging
+        /// ["<c>adl</c>"] Auto delveraging
         /// </summary>
         [Map("adl")]
         AutoDeleverage,
         /// <summary>
-        /// Liquidation
+        /// ["<c>liq</c>"] Liquidation
         /// </summary>
         [Map("liq")]
         Liquidation,
         /// <summary>
-        /// Alert
+        /// ["<c>alert</c>"] Alert
         /// </summary>
         [Map("alert")]
         Alert

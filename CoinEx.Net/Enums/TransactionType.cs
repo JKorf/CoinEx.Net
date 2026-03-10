@@ -11,22 +11,22 @@ namespace CoinEx.Net.Enums
     public enum TransactionType
     {
         /// <summary>
-        /// Deposit
+        /// ["<c>deposit</c>"] Deposit
         /// </summary>
         [Map("deposit")]
         Deposit,
         /// <summary>
-        /// Withdrawal
+        /// ["<c>withdraw</c>"] Withdrawal
         /// </summary>
         [Map("withdraw")]
         Withdrawal,
         /// <summary>
-        /// Trade
+        /// ["<c>trade</c>"] Trade
         /// </summary>
         [Map("trade")]
         Trade,
         /// <summary>
-        /// Maker cashback
+        /// ["<c>maker_cash_back</c>"] Maker cashback
         /// </summary>
         [Map("maker_cash_back")]
         MakerCashback

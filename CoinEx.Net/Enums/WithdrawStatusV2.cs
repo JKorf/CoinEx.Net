@@ -11,47 +11,47 @@ namespace CoinEx.Net.Enums
     public enum WithdrawStatusV2
     {
         /// <summary>
-        /// Created
+        /// ["<c>created</c>"] Created
         /// </summary>
         [Map("created")]
         Created,
         /// <summary>
-        /// To be audited
+        /// ["<c>audit_required</c>"] To be audited
         /// </summary>
         [Map("audit_required")]
         AuditRequired,
         /// <summary>
-        /// Approved
+        /// ["<c>audited</c>"] Approved
         /// </summary>
         [Map("audited")]
         Audited,
         /// <summary>
-        /// Procesing
+        /// ["<c>processing</c>"] Procesing
         /// </summary>
         [Map("processing")]
         Processing,
         /// <summary>
-        /// Waiting for blockchain confirmation
+        /// ["<c>confirming</c>"] Waiting for blockchain confirmation
         /// </summary>
         [Map("confirming")]
         Confirming,
         /// <summary>
-        /// Finished
+        /// ["<c>finished</c>"] Finished
         /// </summary>
         [Map("finished")]
         Finished,
         /// <summary>
-        /// Withdrawal canceld
+        /// ["<c>cancelled</c>"] Withdrawal canceld
         /// </summary>
         [Map("cancelled")]
         Canceled,
         /// <summary>
-        /// Cancelation failed
+        /// ["<c>cancellation_failed</c>"] Cancelation failed
         /// </summary>
         [Map("cancellation_failed")]
         CancelationFailed,
         /// <summary>
-        /// Withdrawal failed
+        /// ["<c>failed</c>"] Withdrawal failed
         /// </summary>
         [Map("failed")]
         Failed

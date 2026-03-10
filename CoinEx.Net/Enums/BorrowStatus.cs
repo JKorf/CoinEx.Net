@@ -11,22 +11,22 @@ namespace CoinEx.Net.Enums
     public enum BorrowStatus
     {
         /// <summary>
-        /// Borrowing
+        /// ["<c>loan</c>"] Borrowing
         /// </summary>
         [Map("loan")]
         Loan,
         /// <summary>
-        /// In debt
+        /// ["<c>debt</c>"] In debt
         /// </summary>
         [Map("debt")]
         Debt,
         /// <summary>
-        /// Forcefully liquidated
+        /// ["<c>liquidated</c>"] Forcefully liquidated
         /// </summary>
         [Map("liquidated")]
         Liquidated,
         /// <summary>
-        /// Has been repaid
+        /// ["<c>finish</c>"] Has been repaid
         /// </summary>
         [Map("finish")]
         Finish

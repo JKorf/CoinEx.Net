@@ -11,32 +11,32 @@ namespace CoinEx.Net.Enums
     public enum DepositStatus
     {
         /// <summary>
-        /// Currently processing
+        /// ["<c>processing</c>"] Currently processing
         /// </summary>
         [Map("processing")]
         Processing,
         /// <summary>
-        /// Awaiting blockchain confirmation
+        /// ["<c>confirming</c>"] Awaiting blockchain confirmation
         /// </summary>
         [Map("confirming")]
         Confirming,
         /// <summary>
-        /// Canceled
+        /// ["<c>cancelled</c>"] Canceled
         /// </summary>
         [Map("cancelled")]
         Canceled,
         /// <summary>
-        /// Finished
+        /// ["<c>finished</c>"] Finished
         /// </summary>
         [Map("finished")]
         Finished,
         /// <summary>
-        /// Deposit amount was too small
+        /// ["<c>too_small</c>"] Deposit amount was too small
         /// </summary>
         [Map("too_small")]
         TooSmall,
         /// <summary>
-        /// Exception
+        /// ["<c>exception</c>"] Exception
         /// </summary>
         [Map("exception")]
         Exception

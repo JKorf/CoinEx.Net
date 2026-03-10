@@ -11,17 +11,17 @@ namespace CoinEx.Net.Enums
     public enum PriceType
     {
         /// <summary>
-        /// Last price
+        /// ["<c>latest_price</c>"] Last price
         /// </summary>
         [Map("latest_price")]
         LastPrice,
         /// <summary>
-        /// Mark price
+        /// ["<c>mark_price</c>"] Mark price
         /// </summary>
         [Map("mark_price")]
         MarkPrice,
         /// <summary>
-        /// Index price
+        /// ["<c>index_price</c>"] Index price
         /// </summary>
         [Map("index_price")]
         IndexPrice

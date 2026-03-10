@@ -11,12 +11,12 @@ namespace CoinEx.Net.Enums
     public enum ContractType
     {
         /// <summary>
-        /// Linear contract
+        /// ["<c>linear</c>"] Linear contract
         /// </summary>
         [Map("linear")]
         Linear,
         /// <summary>
-        /// Inverse contract
+        /// ["<c>inverse</c>"] Inverse contract
         /// </summary>
         [Map("inverse")]
         Inverse

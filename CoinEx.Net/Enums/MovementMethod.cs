@@ -11,12 +11,12 @@ namespace CoinEx.Net.Enums
     public enum MovementMethod
     {
         /// <summary>
-        /// On chain
+        /// ["<c>on_chain</c>"] On chain
         /// </summary>
         [Map("on_chain")]
         OnChain,
         /// <summary>
-        /// Between users
+        /// ["<c>inter_user</c>"] Between users
         /// </summary>
         [Map("inter_user")]
         InterUser
