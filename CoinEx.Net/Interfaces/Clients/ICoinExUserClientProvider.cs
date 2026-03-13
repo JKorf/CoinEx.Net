@@ -14,7 +14,7 @@ namespace CoinEx.Net.Interfaces.Clients
         /// <param name="userIdentifier">The identifier for the user</param>
         /// <param name="credentials">The credentials for the user</param>
         /// <param name="environment">The environment to use</param>
-        void InitializeUserClient(string userIdentifier, ApiCredentials credentials, CoinExEnvironment? environment = null);
+        void InitializeUserClient(string userIdentifier, CoinExCredentials credentials, CoinExEnvironment? environment = null);
 
         /// <summary>
         /// Reset the cached clients for a user. This can be useful when a user changes API credentials.
@@ -27,7 +27,7 @@ namespace CoinEx.Net.Interfaces.Clients
         /// <param name="userIdentifier">The identifier for user</param>
         /// <param name="credentials">The credentials for the user. Required the first time a client is requested for this user unless <see cref="InitializeUserClient" /> has been called prior for this user.</param>
         /// <param name="environment">The environment to use</param>
-        ICoinExRestClient GetRestClient(string userIdentifier, ApiCredentials? credentials = null, CoinExEnvironment? environment = null);
+        ICoinExRestClient GetRestClient(string userIdentifier, CoinExCredentials? credentials = null, CoinExEnvironment? environment = null);
 
         /// <summary>
         /// Get the Socket client for a specific user. In case the client does not exist yet it will be created and the <paramref name="credentials"/> should be provided, unless <see cref="InitializeUserClient" /> has been called prior for this user.
@@ -35,6 +35,6 @@ namespace CoinEx.Net.Interfaces.Clients
         /// <param name="userIdentifier">The identifier for user</param>
         /// <param name="credentials">The credentials for the user. Required the first time a client is requested for this user unless <see cref="InitializeUserClient" /> has been called prior for this user.</param>
         /// <param name="environment">The environment to use</param>
-        ICoinExSocketClient GetSocketClient(string userIdentifier, ApiCredentials? credentials = null, CoinExEnvironment? environment = null);
+        ICoinExSocketClient GetSocketClient(string userIdentifier, CoinExCredentials? credentials = null, CoinExEnvironment? environment = null);
     }
 }

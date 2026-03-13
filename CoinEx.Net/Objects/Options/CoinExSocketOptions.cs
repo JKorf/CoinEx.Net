@@ -6,7 +6,7 @@ namespace CoinEx.Net.Objects.Options
     /// <summary>
     /// Options for the CoinExSocketClient
     /// </summary>
-    public class CoinExSocketOptions : SocketExchangeOptions<CoinExEnvironment>
+    public class CoinExSocketOptions : SocketExchangeOptions<CoinExEnvironment, CoinExCredentials>
     {
         /// <summary>
         /// Default options for the CoinExRestClient
@@ -33,12 +33,12 @@ namespace CoinEx.Net.Objects.Options
         /// <summary>
         /// Options for the Spot API
         /// </summary>
-        public SocketApiOptions SpotOptions { get; private set; } = new SocketApiOptions();
+        public SocketApiOptions<CoinExCredentials> SpotOptions { get; private set; } = new SocketApiOptions<CoinExCredentials>();
 
         /// <summary>
         /// Options for the Futures API
         /// </summary>
-        public SocketApiOptions FuturesOptions { get; private set; } = new SocketApiOptions();
+        public SocketApiOptions<CoinExCredentials> FuturesOptions { get; private set; } = new SocketApiOptions<CoinExCredentials>();
 
         internal CoinExSocketOptions Set(CoinExSocketOptions targetOptions)
         {

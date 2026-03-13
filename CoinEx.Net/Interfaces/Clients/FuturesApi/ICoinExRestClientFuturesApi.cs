@@ -7,7 +7,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     /// <summary>
     /// Futures API
     /// </summary>
-    public interface ICoinExRestClientFuturesApi : IRestApiClient, IDisposable
+    public interface ICoinExRestClientFuturesApi : IRestApiClient<CoinExCredentials>, IDisposable
     {
         /// <summary>
         /// Endpoints related to account settings, info or actions

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CoinEx.Net.Interfaces.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
+using CoinEx.Net.Clients.SpotApiV2;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -19,7 +20,7 @@ namespace CoinEx.Net.UnitTests
         public void CheckSignatureExample1()
         {
             var authProvider = new CoinExV2AuthenticationProvider(
-                new ApiCredentials("XXXXXXXXXX", "XXXXXXXXXX")
+                new CoinExCredentials("XXXXXXXXXX", "XXXXXXXXXX")
                 );
             var client = (RestApiClient)new CoinExRestClient().SpotApiV2;
 
@@ -49,7 +50,7 @@ namespace CoinEx.Net.UnitTests
         public void CheckSignatureExample2()
         {
             var authProvider = new CoinExV2AuthenticationProvider(
-                new ApiCredentials("XXXXXXXXXX", "XXXXXXXXXX")
+                new CoinExCredentials("XXXXXXXXXX", "XXXXXXXXXX")
                 );
             var client = (RestApiClient)new CoinExRestClient().SpotApiV2;
 
@@ -174,8 +175,8 @@ namespace CoinEx.Net.UnitTests
 
             Assert.That(((BaseApiClient)restClient.SpotApiV2).OutputOriginalData, Is.True);
             Assert.That(((BaseApiClient)socketClient.SpotApiV2).OutputOriginalData, Is.False);
-            Assert.That(((BaseApiClient)restClient.SpotApiV2).AuthenticationProvider.ApiKey, Is.EqualTo("123"));
-            Assert.That(((BaseApiClient)socketClient.SpotApiV2).AuthenticationProvider.ApiKey, Is.EqualTo("456"));
+            Assert.That(((CoinExRestClientSpotApi)restClient.SpotApiV2).AuthenticationProvider.PublicKey, Is.EqualTo("123"));
+            Assert.That(((CoinExSocketClientSpotApi)socketClient.SpotApiV2).AuthenticationProvider.PublicKey, Is.EqualTo("456"));
             Assert.That(((BaseApiClient)restClient.SpotApiV2).ClientOptions.Proxy.Host, Is.EqualTo("host"));
             Assert.That(((BaseApiClient)restClient.SpotApiV2).ClientOptions.Proxy.Port, Is.EqualTo(80));
             Assert.That(((BaseApiClient)socketClient.SpotApiV2).ClientOptions.Proxy.Host, Is.EqualTo("host2"));

@@ -19,7 +19,7 @@ namespace CoinEx.Net.UnitTests
             var client = new CoinExRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new ApiCredentials("1", "2");
+                opts.ApiCredentials = new CoinExCredentials("1", "2");
             });
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.SpotApiV2.Account.GetTradingFeesAsync("ETHUSDT", Enums.AccountType.Spot), "GetTradingFees");
@@ -70,7 +70,7 @@ namespace CoinEx.Net.UnitTests
             var client = new CoinExRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new ApiCredentials("1", "2");
+                opts.ApiCredentials = new CoinExCredentials("1", "2");
             });
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/SpotApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.SpotApiV2.Trading.PlaceOrderAsync("ETHUSDT", Enums.AccountType.Spot, Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1), "PlaceOrder");
@@ -100,7 +100,7 @@ namespace CoinEx.Net.UnitTests
             var client = new CoinExRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new ApiCredentials("1", "2");
+                opts.ApiCredentials = new CoinExCredentials("1", "2");
             });
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Account", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.FuturesApi.Account.GetBalancesAsync(), "GetBalances");
@@ -135,7 +135,7 @@ namespace CoinEx.Net.UnitTests
             var client = new CoinExRestClient(opts =>
             {
                 opts.AutoTimestamp = false;
-                opts.ApiCredentials = new ApiCredentials("1", "2");
+                opts.ApiCredentials = new CoinExCredentials("1", "2");
             });
             var tester = new RestRequestValidator<CoinExRestClient>(client, "Endpoints/FuturesApi/Trading", "https://api.coinex.com", IsAuthenticated, nestedPropertyForCompare: "data");
             await tester.ValidateAsync(client => client.FuturesApi.Trading.PlaceOrderAsync("ETHUSDT", Enums.OrderSide.Buy, Enums.OrderTypeV2.Limit, 1), "PlaceOrder");

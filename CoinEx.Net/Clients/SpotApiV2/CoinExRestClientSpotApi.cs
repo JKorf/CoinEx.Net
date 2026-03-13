@@ -26,7 +26,7 @@ using CoinEx.Net.Clients.MessageHandlers;
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExRestClientSpotApi" />
-    internal partial class CoinExRestClientSpotApi : RestApiClient, ICoinExRestClientSpotApi
+    internal partial class CoinExRestClientSpotApi : RestApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExRestClientSpotApi
     {
         #region fields
         /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override CoinExV2AuthenticationProvider CreateAuthenticationProvider(CoinExCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
         /// <inheritdoc />

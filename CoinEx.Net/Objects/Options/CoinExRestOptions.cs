@@ -6,7 +6,7 @@ namespace CoinEx.Net.Objects.Options
     /// <summary>
     /// Options for the CoinExRestClient
     /// </summary>
-    public class CoinExRestOptions : RestExchangeOptions<CoinExEnvironment>
+    public class CoinExRestOptions : RestExchangeOptions<CoinExEnvironment, CoinExCredentials>
     {
         /// <summary>
         /// Default options for the CoinExRestClient
@@ -47,12 +47,12 @@ namespace CoinEx.Net.Objects.Options
         /// <summary>
         /// Options for the Spot API
         /// </summary>
-        public RestApiOptions SpotOptions { get; private set; } = new RestApiOptions();
+        public RestApiOptions<CoinExCredentials> SpotOptions { get; private set; } = new RestApiOptions<CoinExCredentials>();
 
         /// <summary>
         /// Options for the Futures API
         /// </summary>
-        public RestApiOptions FuturesOptions { get; private set; } = new RestApiOptions();
+        public RestApiOptions<CoinExCredentials> FuturesOptions { get; private set; } = new RestApiOptions<CoinExCredentials>();
 
         internal CoinExRestOptions Set(CoinExRestOptions targetOptions)
         {

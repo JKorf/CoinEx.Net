@@ -29,7 +29,7 @@ namespace CoinEx.Net.UnitTests
             return new CoinExSocketClient(Options.Create(new CoinExSocketOptions
             {
                 OutputOriginalData = true,
-                ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null
+                ApiCredentials = Authenticated ? new CoinExCredentials(key, sec) : null
             }), loggerFactory);
         }
 
