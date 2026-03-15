@@ -48,7 +48,7 @@ namespace CoinEx.Net
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
 
             request.Headers ??= new Dictionary<string, string>();
-            request.Headers.Add("X-COINEX-KEY", Credential.PublicKey);
+            request.Headers.Add("X-COINEX-KEY", Credential.Key);
             request.Headers.Add("X-COINEX-SIGN", sign);
             request.Headers.Add("X-COINEX-TIMESTAMP", timestamp);
         }
@@ -60,7 +60,7 @@ namespace CoinEx.Net
             var sign = SignHMACSHA256(signData!, SignOutputType.Hex);
             var parameters = new Dictionary<string, object>
             {
-                { "access_id", Credential.PublicKey },
+                { "access_id", Credential.Key },
                 { "signed_str", sign },
                 { "timestamp", timestamp }
             };
