@@ -18,7 +18,7 @@ namespace CoinEx.Net
     {
         private static IStringMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
-        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.Hmac];
+        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.HMAC];
         public CoinExV2AuthenticationProvider(CoinExCredentials credentials): base(credentials)
         {
         }
