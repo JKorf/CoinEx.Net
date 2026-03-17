@@ -791,9 +791,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                             x.Quantity, 
                             x.Status == DepositStatus.Finished,
                             x.CreateTime,
-                            x.Status == DepositStatus.Finished ? SharedTransferStatus.Completed
-                            : x.Status == DepositStatus.Processing || x.Status == DepositStatus.Confirming ? SharedTransferStatus.InProgress
-                            : SharedTransferStatus.Failed)
+                            ParseTransferStatus(x.Status))
                         {
                             Id = x.Id.ToString(),
                             Confirmations = x.Confirmations,
@@ -801,6 +799,18 @@ namespace CoinEx.Net.Clients.SpotApiV2
                             TransactionId = x.TransactionId
                         })
                     .ToArray(), nextPageRequest);
+        }
+
+        private SharedTransferStatus ParseTransferStatus(DepositStatus status)
+        {
+            if (status == DepositStatus.Finished)
+                return SharedTransferStatus.Completed;
+            if (status == DepositStatus.Processing || status == DepositStatus.Confirming)
+                return SharedTransferStatus.InProgress;
+            if (status == DepositStatus.Exception || status == DepositStatus.TooSmall)
+                return SharedTransferStatus.Failed;
+
+            return SharedTransferStatus.Unknown;
         }
 
         #endregion
