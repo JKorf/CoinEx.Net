@@ -14,12 +14,11 @@ using System.Net.Http;
 
 namespace CoinEx.Net
 {
-    internal class CoinExV2AuthenticationProvider : AuthenticationProvider<CoinExCredentials, HMACCredential>
+    internal class CoinExV2AuthenticationProvider : AuthenticationProvider<CoinExCredentials, CoinExCredentials>
     {
         private static IStringMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
-        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.HMAC];
-        public CoinExV2AuthenticationProvider(CoinExCredentials credentials): base(credentials)
+        public CoinExV2AuthenticationProvider(CoinExCredentials credentials): base(credentials, credentials)
         {
         }
 

@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.Interfaces;
+﻿using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects.Options;
 
 namespace CoinEx.Net.Objects.Options
@@ -47,12 +48,12 @@ namespace CoinEx.Net.Objects.Options
         /// <summary>
         /// Options for the Spot API
         /// </summary>
-        public RestApiOptions<CoinExCredentials> SpotOptions { get; private set; } = new RestApiOptions<CoinExCredentials>();
+        public RestApiOptions SpotOptions { get; private set; } = new RestApiOptions();
 
         /// <summary>
         /// Options for the Futures API
         /// </summary>
-        public RestApiOptions<CoinExCredentials> FuturesOptions { get; private set; } = new RestApiOptions<CoinExCredentials>();
+        public RestApiOptions FuturesOptions { get; private set; } = new RestApiOptions();
 
         internal CoinExRestOptions Set(CoinExRestOptions targetOptions)
         {

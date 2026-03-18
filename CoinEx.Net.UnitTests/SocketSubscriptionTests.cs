@@ -1,6 +1,7 @@
 ﻿using CoinEx.Net.Clients;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Testing;
 using Microsoft.Extensions.Logging;
