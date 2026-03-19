@@ -51,10 +51,6 @@ namespace Microsoft.Extensions.DependencyInjection
             if (options.Rest == null || options.Socket == null)
                 throw new ArgumentException("Options null");
 
-            LibraryHelpers.ValidateCredentials(options.ApiCredentials);
-            LibraryHelpers.ValidateCredentials(options.Rest.ApiCredentials);
-            LibraryHelpers.ValidateCredentials(options.Socket.ApiCredentials);
-
             var restEnvName = options.Rest.Environment?.Name ?? options.Environment?.Name ?? CoinExEnvironment.Live.Name;
             var socketEnvName = options.Socket.Environment?.Name ?? options.Environment?.Name ?? CoinExEnvironment.Live.Name;
             options.Rest.Environment = CoinExEnvironment.GetEnvironmentByName(restEnvName) ?? options.Rest.Environment!;
