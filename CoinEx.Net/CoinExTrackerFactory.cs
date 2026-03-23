@@ -90,7 +90,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, ApiCredentials credentials, SpotUserDataTrackerConfig? config = null, CoinExEnvironment? environment = null)
+        public IUserSpotDataTracker CreateUserSpotDataTracker(string userIdentifier, CoinExCredentials credentials, SpotUserDataTrackerConfig? config = null, CoinExEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<ICoinExUserClientProvider>() ?? new CoinExUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);
@@ -119,7 +119,7 @@ namespace CoinEx.Net
         }
 
         /// <inheritdoc />
-        public IUserFuturesDataTracker CreateUserFuturesDataTracker(string userIdentifier, ApiCredentials credentials, FuturesUserDataTrackerConfig? config = null, CoinExEnvironment? environment = null)
+        public IUserFuturesDataTracker CreateUserFuturesDataTracker(string userIdentifier, CoinExCredentials credentials, FuturesUserDataTrackerConfig? config = null, CoinExEnvironment? environment = null)
         {
             var clientProvider = _serviceProvider?.GetRequiredService<ICoinExUserClientProvider>() ?? new CoinExUserClientProvider();
             var restClient = clientProvider.GetRestClient(userIdentifier, credentials, environment);

@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.Interfaces;
+﻿using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects.Options;
 
 namespace CoinEx.Net.Objects.Options
@@ -6,7 +7,7 @@ namespace CoinEx.Net.Objects.Options
     /// <summary>
     /// Options for the CoinExSocketClient
     /// </summary>
-    public class CoinExSocketOptions : SocketExchangeOptions<CoinExEnvironment>
+    public class CoinExSocketOptions : SocketExchangeOptions<CoinExEnvironment, CoinExCredentials>
     {
         /// <summary>
         /// Default options for the CoinExRestClient

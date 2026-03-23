@@ -51,7 +51,7 @@ namespace CoinEx.Net.Clients
         }
 
         /// <inheritdoc />
-        public void InitializeUserClient(string userIdentifier, ApiCredentials credentials, CoinExEnvironment? environment = null)
+        public void InitializeUserClient(string userIdentifier, CoinExCredentials credentials, CoinExEnvironment? environment = null)
         {
             CreateRestClient(userIdentifier, credentials, environment);
             CreateSocketClient(userIdentifier, credentials, environment);
@@ -65,7 +65,7 @@ namespace CoinEx.Net.Clients
         }
 
         /// <inheritdoc />
-        public ICoinExRestClient GetRestClient(string userIdentifier, ApiCredentials? credentials = null, CoinExEnvironment? environment = null)
+        public ICoinExRestClient GetRestClient(string userIdentifier, CoinExCredentials? credentials = null, CoinExEnvironment? environment = null)
         {
             if (!_restClients.TryGetValue(userIdentifier, out var client) || client.Disposed)
                 client = CreateRestClient(userIdentifier, credentials, environment);
@@ -74,7 +74,7 @@ namespace CoinEx.Net.Clients
         }
 
         /// <inheritdoc />
-        public ICoinExSocketClient GetSocketClient(string userIdentifier, ApiCredentials? credentials = null, CoinExEnvironment? environment = null)
+        public ICoinExSocketClient GetSocketClient(string userIdentifier, CoinExCredentials? credentials = null, CoinExEnvironment? environment = null)
         {
             if (!_socketClients.TryGetValue(userIdentifier, out var client) || client.Disposed)
                 client = CreateSocketClient(userIdentifier, credentials, environment);
@@ -82,7 +82,7 @@ namespace CoinEx.Net.Clients
             return client;
         }
 
-        private ICoinExRestClient CreateRestClient(string userIdentifier, ApiCredentials? credentials, CoinExEnvironment? environment)
+        private ICoinExRestClient CreateRestClient(string userIdentifier, CoinExCredentials? credentials, CoinExEnvironment? environment)
         {
             var clientRestOptions = SetRestEnvironment(environment);
             var client = new CoinExRestClient(_httpClient, _loggerFactory, clientRestOptions);
@@ -94,7 +94,7 @@ namespace CoinEx.Net.Clients
             return client;
         }
 
-        private ICoinExSocketClient CreateSocketClient(string userIdentifier, ApiCredentials? credentials, CoinExEnvironment? environment)
+        private ICoinExSocketClient CreateSocketClient(string userIdentifier, CoinExCredentials? credentials, CoinExEnvironment? environment)
         {
             var clientSocketOptions = SetSocketEnvironment(environment);
             var client = new CoinExSocketClient(clientSocketOptions!, _loggerFactory);

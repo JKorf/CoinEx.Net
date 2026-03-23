@@ -12,7 +12,7 @@ using CryptoExchange.Net.Objects.Options;
 namespace CoinEx.Net.Clients
 {
     /// <inheritdoc cref="ICoinExSocketClient" />
-    public class CoinExSocketClient : BaseSocketClient, ICoinExSocketClient
+    public class CoinExSocketClient : BaseSocketClient<CoinExEnvironment, CoinExCredentials>, ICoinExSocketClient
     {
         #region Api clients
 
@@ -55,20 +55,6 @@ namespace CoinEx.Net.Clients
         public static void SetDefaultOptions(Action<CoinExSocketOptions> optionsDelegate)
         {
             CoinExSocketOptions.Default = ApplyOptionsDelegate(optionsDelegate);
-        }
-
-        /// <inheritdoc />
-        public void SetOptions(UpdateOptions options)
-        {
-            FuturesApi.SetOptions(options);
-            SpotApiV2.SetOptions(options);
-        }
-
-        /// <inheritdoc />
-        public void SetApiCredentials(ApiCredentials credentials)
-        {
-            FuturesApi.SetApiCredentials(credentials);
-            SpotApiV2.SetApiCredentials(credentials);
         }
     }
 }

@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 namespace CoinEx.Net.Clients.SpotApiV2
 {
     /// <inheritdoc cref="ICoinExSocketClientSpotApi" />
-    internal partial class CoinExSocketClientSpotApi : SocketApiClient, ICoinExSocketClientSpotApi
+    internal partial class CoinExSocketClientSpotApi : SocketApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExSocketClientSpotApi
     {
         #region fields
         /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override CoinExV2AuthenticationProvider CreateAuthenticationProvider(CoinExCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
         public ICoinExSocketClientSpotApiShared SharedClient => this;

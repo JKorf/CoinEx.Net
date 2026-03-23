@@ -24,6 +24,7 @@
     <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
     <NoWarn>$(NoWarn);SYSLIB1100;SYSLIB1101</NoWarn>
     <PackageReleaseNotes>https://github.com/JKorf/CoinEx.Net?tab=readme-ov-file#release-notes</PackageReleaseNotes>
+    <NoWarn>$(NoWarn);SYSLIB1100;SYSLIB1101</NoWarn>
   </PropertyGroup>
   <PropertyGroup Label="AOT" Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
     <IsAotCompatible>true</IsAotCompatible>
@@ -54,7 +55,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Crc32.NET" Version="1.2.0" />
-    <PackageReference Include="CryptoExchange.Net" Version="10.8.0" />
+    <PackageReference Include="CryptoExchange.Net" Version="11.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.101">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

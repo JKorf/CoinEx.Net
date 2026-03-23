@@ -14,15 +14,12 @@ using System.Net.Http;
 
 namespace CoinEx.Net
 {
-    internal class CoinExV2AuthenticationProvider : AuthenticationProvider
+    internal class CoinExV2AuthenticationProvider : AuthenticationProvider<CoinExCredentials, CoinExCredentials>
     {
         private static IStringMessageSerializer _serializer = new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
-        public override ApiCredentialsType[] SupportedCredentialTypes => [ApiCredentialsType.Hmac];
-        public CoinExV2AuthenticationProvider(ApiCredentials credentials): base(credentials)
+        public CoinExV2AuthenticationProvider(CoinExCredentials credentials): base(credentials, credentials)
         {
-            if (credentials.CredentialType != ApiCredentialsType.Hmac)
-                throw new Exception("Only Hmac authentication is supported");
         }
 
         public override void ProcessRequest(RestApiClient apiClient, RestRequestConfiguration request)
@@ -50,7 +47,7 @@ namespace CoinEx.Net
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
 
             request.Headers ??= new Dictionary<string, string>();
-            request.Headers.Add("X-COINEX-KEY", _credentials.Key);
+            request.Headers.Add("X-COINEX-KEY", Credential.Key);
             request.Headers.Add("X-COINEX-SIGN", sign);
             request.Headers.Add("X-COINEX-TIMESTAMP", timestamp);
         }
@@ -62,7 +59,7 @@ namespace CoinEx.Net
             var sign = SignHMACSHA256(signData!, SignOutputType.Hex);
             var parameters = new Dictionary<string, object>
             {
-                { "access_id", _credentials.Key },
+                { "access_id", Credential.Key },
                 { "signed_str", sign },
                 { "timestamp", timestamp }
             };

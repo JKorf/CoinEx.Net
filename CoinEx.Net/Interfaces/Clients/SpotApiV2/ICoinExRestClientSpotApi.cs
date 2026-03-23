@@ -1,4 +1,5 @@
-﻿using CryptoExchange.Net.Interfaces;
+﻿using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Interfaces.Clients;
 using System;
 
@@ -7,7 +8,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     /// <summary>
     /// Spot API
     /// </summary>
-    public interface ICoinExRestClientSpotApi : IRestApiClient, IDisposable
+    public interface ICoinExRestClientSpotApi : IRestApiClient<CoinExCredentials>, IDisposable
     {
         /// <summary>
         /// Endpoints related to account settings, info or actions

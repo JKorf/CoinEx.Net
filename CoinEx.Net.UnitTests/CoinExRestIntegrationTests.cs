@@ -33,7 +33,7 @@ namespace CoinEx.Net.UnitTests
             return new CoinExRestClient(null, loggerFactory, Options.Create(new Objects.Options.CoinExRestOptions
             {
                 OutputOriginalData = true,
-                ApiCredentials = Authenticated ? new ApiCredentials(key, sec) : null
+                ApiCredentials = Authenticated ? new CoinExCredentials(key, sec) : null
             }));
         }
 
@@ -74,7 +74,7 @@ namespace CoinEx.Net.UnitTests
             await RunAndCheckResult(client => client.SpotApiV2.ExchangeData.GetTickersAsync(default, default), false);
             await RunAndCheckResult(client => client.SpotApiV2.ExchangeData.GetOrderBookAsync("ETHUSDT", 5, default, default), false);
             await RunAndCheckResult(client => client.SpotApiV2.ExchangeData.GetTradeHistoryAsync("ETHUSDT", default, default, default), false);
-            await RunAndCheckResult(client => client.SpotApiV2.ExchangeData.GetKlinesAsync("ETHUSDT", Enums.KlineInterval.OneDay, default, default, default), false);
+            await RunAndCheckResult(client => client.SpotApiV2.ExchangeData.GetKlinesAsync("ETHUSDT", Enums.KlineInterval.OneDay, default, default, default, default, default), false);
             await RunAndCheckResult(client => client.SpotApiV2.ExchangeData.GetIndexPricesAsync(default, default), false);
         }
 
@@ -103,7 +103,7 @@ namespace CoinEx.Net.UnitTests
             await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetTickersAsync(default, default), false);
             await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetOrderBookAsync("ETHUSDT", 5, default, default), false);
             await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetTradeHistoryAsync("ETHUSDT", default, default, default), false);
-            await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetKlinesAsync("ETHUSDT", Enums.KlineInterval.OneDay, default, default, default), false);
+            await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetKlinesAsync("ETHUSDT", Enums.KlineInterval.OneDay, default, default, default, default, default), false);
             await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetIndexPricesAsync(default, default), false);
             await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetFundingRatesAsync(default, default), false);
             await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetFundingRateHistoryAsync("ETHUSDT", default, default, default, default, default), false);

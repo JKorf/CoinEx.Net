@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc cref="ICoinExRestClientFuturesApi" />
-    internal partial class CoinExRestClientFuturesApi : RestApiClient, ICoinExRestClientFuturesApi
+    internal partial class CoinExRestClientFuturesApi : RestApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExRestClientFuturesApi
     {
         #region fields
         /// <inheritdoc />
@@ -69,7 +69,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         public ICoinExRestClientFuturesApiShared SharedClient => this;
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override CoinExV2AuthenticationProvider CreateAuthenticationProvider(CoinExCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
 

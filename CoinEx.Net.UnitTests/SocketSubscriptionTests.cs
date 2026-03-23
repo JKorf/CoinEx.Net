@@ -1,6 +1,7 @@
 ﻿using CoinEx.Net.Clients;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Testing;
 using Microsoft.Extensions.Logging;
@@ -40,7 +41,7 @@ namespace CoinEx.Net.UnitTests
             var client = new CoinExSocketClient(Options.Create(new CoinExSocketOptions
             {
                 OutputOriginalData = true,
-                ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456")
+                ApiCredentials = new CoinExCredentials("123", "456")
             }), logger);
             var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/SpotApi", "wss://socket.coinex.com", "data");
             await tester.ValidateAsync<CoinExTicker[]>((client, handler) => client.SpotApiV2.SubscribeToTickerUpdatesAsync(handler), "Tickers", nestedJsonProperty: "data.state_list", ignoreProperties: ["period"]);
@@ -60,7 +61,7 @@ namespace CoinEx.Net.UnitTests
             var client = new CoinExSocketClient(opts =>
             {
                 opts.OutputOriginalData = true;
-                opts.ApiCredentials = new CryptoExchange.Net.Authentication.ApiCredentials("123", "456");
+                opts.ApiCredentials = new CoinExCredentials("123", "456");
             });
             var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/FuturesApi", "wss://socket.coinex.com", "data");
             await tester.ValidateAsync<CoinExFuturesTickerUpdate[]>((client, handler) => client.FuturesApi.SubscribeToTickerUpdatesAsync(handler), "Tickers", nestedJsonProperty: "data.state_list", ignoreProperties: ["period"]);

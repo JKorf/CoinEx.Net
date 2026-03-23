@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Interfaces.Clients;
 using CryptoExchange.Net.Objects;
@@ -13,7 +14,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     /// <summary>
     /// Futures streams
     /// </summary>
-    public interface ICoinExSocketClientFuturesApi : ISocketApiClient, IDisposable
+    public interface ICoinExSocketClientFuturesApi : ISocketApiClient<CoinExCredentials>, IDisposable
     {
         /// <summary>
         /// Get the shared socket subscription client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.

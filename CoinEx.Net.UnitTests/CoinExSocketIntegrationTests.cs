@@ -2,6 +2,7 @@
 using CoinEx.Net.Objects.Models;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Testing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -29,7 +30,7 @@ namespace CoinEx.Net.UnitTests
             return new CoinExSocketClient(Options.Create(new CoinExSocketOptions
             {
                 OutputOriginalData = true,
-                ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null
+                ApiCredentials = Authenticated ? new CoinExCredentials(key, sec) : null
             }), loggerFactory);
         }
 

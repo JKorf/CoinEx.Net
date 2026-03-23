@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Interfaces.Clients;
 using CryptoExchange.Net.Objects;
@@ -13,7 +14,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
     /// <summary>
     /// Spot streams
     /// </summary>
-    public interface ICoinExSocketClientSpotApi : ISocketApiClient, IDisposable
+    public interface ICoinExSocketClientSpotApi : ISocketApiClient<CoinExCredentials>, IDisposable
     {
         /// <summary>
         /// Get the shared socket subscription client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.

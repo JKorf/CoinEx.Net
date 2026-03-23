@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 namespace CoinEx.Net.Clients.FuturesApi
 {
     /// <inheritdoc cref="ICoinExSocketClientFuturesApi" />
-    internal partial class CoinExSocketClientFuturesApi : SocketApiClient, ICoinExSocketClientFuturesApi
+    internal partial class CoinExSocketClientFuturesApi : SocketApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExSocketClientFuturesApi
     {
         #region fields
         /// <inheritdoc />
@@ -64,7 +64,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         /// <inheritdoc />
-        protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
+        protected override CoinExV2AuthenticationProvider CreateAuthenticationProvider(CoinExCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
         /// <inheritdoc />

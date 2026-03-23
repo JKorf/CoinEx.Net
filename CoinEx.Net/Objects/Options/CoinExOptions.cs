@@ -10,7 +10,7 @@ namespace CoinEx.Net.Objects.Options
     /// <summary>
     /// CoinEx options
     /// </summary>
-    public class CoinExOptions : LibraryOptions<CoinExRestOptions, CoinExSocketOptions, ApiCredentials, CoinExEnvironment>
+    public class CoinExOptions : LibraryOptions<CoinExRestOptions, CoinExSocketOptions, CoinExCredentials, CoinExEnvironment>
     {
         /// <summary>
         /// Whether to allow the client to adjust the clientOrderId parameter send by the user when placing orders to include a client reference. This reference is used by the exchange to allocate a small percentage of the paid trading fees to developer of this library. Defaults to false.<br />
