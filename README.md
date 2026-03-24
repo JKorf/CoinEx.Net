@@ -45,8 +45,7 @@ CoinEx.Net is available on [GitHub packages](https://github.com/JKorf/CoinEx.Net
 The NuGet package files are added along side the source with the latest GitHub release which can found [here](https://github.com/JKorf/CoinEx.Net/releases).
 
 ## How to use
-*REST Endpoints*  
-
+*Basic request:*
 ```csharp
 // Get the ETH/USDT ticker via rest request
 var restClient = new CoinExRestClient();
@@ -54,8 +53,22 @@ var tickerResult = await restClient.SpotApiV2.ExchangeData.GetTickersAsync(new [
 var lastPrice = tickerResult.Data.LastPrice;
 ```
 
-*Websocket streams*  
+*Place order:*
+```csharp
+var restClient = new CoinExRestClient(opts => {
+	opts.ApiCredentials = new CoinExCredentials("APIKEY", "APISECRET");
+});
 
+// Place Limit order to go long for 0.1 ETH at 2000
+var orderResult = await restClient.FuturesApi.Trading.PlaceOrderAsync(
+    "ETHUSDT",
+    OrderSide.Buy,
+    OrderTypeV2.Limit,
+    0.1m,
+    price: 2000);
+```
+
+*WebSocket subscription:*
 ```csharp
 // Subscribe to ETH/USDT ticker updates via the websocket API
 var socketClient = new CoinExSocketClient();
