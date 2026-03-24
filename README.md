@@ -191,6 +191,14 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 10.9.0 - 24 Mar 2026
+    * Updated CryptoExchange.Net to version 11.0.1, see https://github.com/JKorf/CryptoExchange.Net/releases/ for full release notes
+    * Updated class for supplying API credentials from ApiCredentials to CoinExCredentials
+    * Updated Shared order status parsing to default to Unknown value if not parsable
+
+    * Notes for updating:
+        * Update ApiCredentials to CoinExCredentials for authentication, i.e. `ApiCredentials = new ApiCredentials(..)` => `ApiCredentials = new CoinExCredentials(..)`
+
 * Version 10.8.0 - 06 Mar 2026
     * Updated CryptoExchange.Net to version 10.8.0, see https://github.com/JKorf/CryptoExchange.Net/releases/ for full release notes
     * Improved method XML comments
