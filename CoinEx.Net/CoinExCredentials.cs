@@ -43,5 +43,8 @@ namespace CoinEx.Net
             Secret = secret;
             return this;
         }
+
+        /// <inheritdoc />
+        public override ApiCredentials Copy() => new CoinExCredentials(this);
     }
 }
