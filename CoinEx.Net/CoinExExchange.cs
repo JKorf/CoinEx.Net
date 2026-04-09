@@ -122,7 +122,7 @@ namespace CoinEx.Net
 
         private void Initialize()
         {
-            var overallGuard = new RateLimitGuard(RateLimitGuard.PerHost, Array.Empty<IGuardFilter>(), 400, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding);// 400 requests per IP
+            var overallGuard = new RateLimitGuard(RateLimitGuard.PerHost, Array.Empty<IGuardFilter>(), 400, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding, shared: true);// 400 requests per IP
             CoinExRestPublic = new RateLimitGate("CoinEx Public").AddGuard(overallGuard);
             CoinExRestSpotOrder = new RateLimitGate("CoinEx Spot Order")
                 .AddGuard(overallGuard)
