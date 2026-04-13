@@ -7,9 +7,9 @@
   <PropertyGroup>
     <PackageId>CoinEx.Net</PackageId>
     <Authors>JKorf</Authors>
-    <PackageVersion>10.9.2</PackageVersion>
-    <AssemblyVersion>10.9.2</AssemblyVersion>
-    <FileVersion>10.9.2</FileVersion>
+    <PackageVersion>10.9.3</PackageVersion>
+    <AssemblyVersion>10.9.3</AssemblyVersion>
+    <FileVersion>10.9.3</FileVersion>
     <Description>A high-performance .NET client library for the CoinEx REST and WebSocket APIs, providing strongly typed models, automatic WebSocket reconnection, client-side rate limiting, local order book support, and seamless integration with other CryptoExchange.Net based clients.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>CoinEx;CoinEx.Net;CoinEx.com;CoinEx Client;CoinEx API;CryptoCurrency;CryptoCurrency Exchange;CryptoExchange.Net</PackageTags>
