@@ -208,6 +208,34 @@ namespace CoinEx.Net.Clients.FuturesApi
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
+
+        /// <inheritdoc />
+        public Task<CallResult<UpdateSubscription>> SubscribeToPremiumIndexUpdatesAsync(string symbol, Action<DataEvent<CoinExPremiumUpdate>> onMessage, CancellationToken ct = default)
+            => SubscribeToPremiumIndexUpdatesAsync(new[] { symbol }, onMessage, ct);
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToPremiumIndexUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExPremiumUpdate>> onMessage, CancellationToken ct = default)
+        {
+            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExPremiumUpdate>>((receiveTime, originalData, invocations, data) =>
+            {
+                UpdateTimeOffset(data.Data.UpdateTime);
+
+                onMessage(
+                    new DataEvent<CoinExPremiumUpdate>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
+                        .WithUpdateType(SocketUpdateType.Update)
+                        .WithStreamId(data.Method)
+                        .WithSymbol(data.Data.Symbol)
+                        .WithDataTimestamp(data.Data.UpdateTime, GetTimeOffset())
+                    );
+            });
+
+            var subscription = new CoinExSubscription<CoinExPremiumUpdate>(_logger, this, "premium", symbols.ToArray(), new Dictionary<string, object>
+            {
+                { "market_list", symbols.ToArray() }
+            }, internalHandler);
+            return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
+        }
+
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEvent<CoinExFuturesOrderUpdate>> onMessage, CancellationToken ct = default)
         {

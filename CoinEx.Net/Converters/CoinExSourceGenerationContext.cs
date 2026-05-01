@@ -85,6 +85,7 @@ namespace CoinEx.Net.Converters
     [JsonSerializable(typeof(CoinExSocketUpdate<CoinExBalanceUpdateWrapper>))]
     [JsonSerializable(typeof(CoinExSocketUpdate<CoinExTickerUpdateWrapper>))]
     [JsonSerializable(typeof(CoinExSocketUpdate<CoinExTradeWrapper>))]
+    [JsonSerializable(typeof(CoinExSocketUpdate<CoinExPremiumUpdate>))]
     [JsonSerializable(typeof(IDictionary<string, object>))]
     [JsonSerializable(typeof(CoinExPaginated<CoinExFundingRateHistory>))]
     [JsonSerializable(typeof(CoinExPaginated<CoinExLiquidation>))]

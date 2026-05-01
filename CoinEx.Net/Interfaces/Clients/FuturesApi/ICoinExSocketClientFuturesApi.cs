@@ -136,6 +136,26 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default);
 
         /// <summary>
+        /// Subscribe to premium index price updates
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-premium" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example `ETHUSDT`</param>
+        /// <param name="onMessage">Data handler</param>
+        /// <param name="ct">Cancellation token for closing this subscription</param>
+        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        Task<CallResult<UpdateSubscription>> SubscribeToPremiumIndexUpdatesAsync(string symbol, Action<DataEvent<CoinExPremiumUpdate>> onMessage, CancellationToken ct = default);
+
+        /// <summary>
+        /// Subscribe to premium index price updates
+        /// <para><a href="https://docs.coinex.com/api/v2/futures/market/ws/market-premium" /></para>
+        /// </summary>
+        /// <param name="symbols">Symbols, for example `ETHUSDT`</param>
+        /// <param name="onMessage">Data handler</param>
+        /// <param name="ct">Cancellation token for closing this subscription</param>
+        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        Task<CallResult<UpdateSubscription>> SubscribeToPremiumIndexUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExPremiumUpdate>> onMessage, CancellationToken ct = default);
+
+        /// <summary>
         /// Subscribe to user order updates
         /// <para><a href="https://docs.coinex.com/api/v2/futures/order/ws/user-order" /></para>
         /// </summary>

@@ -23,6 +23,7 @@ namespace CoinEx.Net.Clients.MessageHandlers
             AddTopicMapping<CoinExSocketUpdate<CoinExBookPriceUpdate>>(x => x.Data.Symbol);
             AddTopicMapping<CoinExSocketUpdate<CoinExOrderBook>>(x => x.Data.Symbol);
             AddTopicMapping<CoinExSocketUpdate<CoinExIndexPriceUpdate>>(x => x.Data.Symbol);
+            AddTopicMapping<CoinExSocketUpdate<CoinExPremiumUpdate>>(x => x.Data.Symbol);
         }
 
         protected override MessageTypeDefinition[] TypeEvaluators { get; } = [
