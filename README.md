@@ -192,6 +192,9 @@ Make a one time donation in a crypto currency of your choice. If you prefer to d
 Alternatively, sponsor me on Github using [Github Sponsors](https://github.com/sponsors/JKorf). 
 
 ## Release notes
+* Version 10.10.0 - 01 May 2026
+    * Added SubscribeToPremiumIndexUpdatesAsync subscription
+
 * Version 10.9.3 - 13 Apr 2026
     * Fixed subscription not getting closed when CoinExSpotSymbolOrderBook start fails
 
