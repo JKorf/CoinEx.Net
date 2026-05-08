@@ -50,7 +50,13 @@ The NuGet package files are added along side the source with the latest GitHub r
 // Get the ETH/USDT ticker via rest request
 var restClient = new CoinExRestClient();
 var tickerResult = await restClient.SpotApiV2.ExchangeData.GetTickersAsync(new [] { "ETHUSDT" });
-var lastPrice = tickerResult.Data.LastPrice;
+if (!tickerResult.Success)
+{
+    Console.WriteLine(tickerResult.Error);
+    return;
+}
+
+var lastPrice = tickerResult.Data.First().LastPrice;
 ```
 
 *Place order:*
@@ -72,13 +78,27 @@ var orderResult = await restClient.FuturesApi.Trading.PlaceOrderAsync(
 ```csharp
 // Subscribe to ETH/USDT ticker updates via the websocket API
 var socketClient = new CoinExSocketClient();
-var tickerSubscriptionResult = socketClient.SpotApiV2.SubscribeToTickerUpdatesAsync(new [] { "ETHUSDT" }, (update) =>
+var tickerSubscriptionResult = await socketClient.SpotApiV2.SubscribeToTickerUpdatesAsync(new [] { "ETHUSDT" }, (update) =>
 {
 	var lastPrice = update.Data.First().LastPrice;
 });
 ```
 
 For information on the clients, dependency injection, response processing and more see the [CoinEx.Net documentation](https://cryptoexchange.jkorf.dev?library=CoinEx.Net) or have a look at the examples [here](https://github.com/JKorf/CoinEx.Net/tree/master/Examples) or [here](https://github.com/JKorf/CryptoExchange.Net/tree/master/Examples).
+
+## AI / LLM documentation
+
+CoinEx.Net includes AI-oriented documentation and examples for code generation tools:
+
+|File|Purpose|
+|--|--|
+|[`CLAUDE.md`](CLAUDE.md)|Assistant skill with core CoinEx.Net patterns, pitfalls, and examples|
+|[`llms.txt`](llms.txt)|Short LLM index with links to docs, examples, and critical usage rules|
+|[`llms-full.txt`](llms-full.txt)|Detailed LLM context with endpoint routing, code patterns, and anti-hallucination checks|
+|[`docs/ai-api-map.md`](docs/ai-api-map.md)|Table-style intent-to-method map for Spot V2, Futures, WebSocket, and SharedApis|
+|[`Examples/ai-friendly`](Examples/ai-friendly)|Compilable single-file examples for common REST, WebSocket, shared API, and error handling workflows|
+
+GitHub Copilot and Cursor instructions are also provided in `.github/copilot-instructions.md` and `.cursor/rules/coinex-net.mdc`; both point back to the root AI context files.
 
 ## CryptoExchange.Net
 CoinEx.Net is based on the [CryptoExchange.Net](https://github.com/JKorf/CryptoExchange.Net) base library. Other exchange API implementations based on the CryptoExchange.Net base library are available and follow the same logic.
@@ -165,14 +185,14 @@ A Discord server is available [here](https://discord.gg/MSpeEtSY8t). Feel free t
 ### V2 Futures
 |API|Supported|Location|
 |--|--:|--|
-|Ticker rest|✓|`restClient.SpotApiV2.ExchangeData`|
-|Ticker websocket|✓|`socketClient.SpotApiV2`|
-|Orders rest|✓|`restClient.SpotApiV2.Trading`|
-|Orders websocket|✓|`socketClient.SpotApiV2`|
-|Executions rest|✓|`restClient.SpotApiV2.Trading`|
-|Executions websocket|✓|`socketClient.SpotApiV2`|
-|Position rest|✓|`restClient.SpotApiV2.Trading`|
-|Position websocket|✓|`socketClient.SpotApiV2`|
+|Ticker rest|✓|`restClient.FuturesApi.ExchangeData`|
+|Ticker websocket|✓|`socketClient.FuturesApi`|
+|Orders rest|✓|`restClient.FuturesApi.Trading`|
+|Orders websocket|✓|`socketClient.FuturesApi`|
+|Executions rest|✓|`restClient.FuturesApi.Trading`|
+|Executions websocket|✓|`socketClient.FuturesApi`|
+|Position rest|✓|`restClient.FuturesApi.Trading`|
+|Position websocket|✓|`socketClient.FuturesApi`|
 
 ## Support the project
 Any support is greatly appreciated.

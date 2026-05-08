@@ -1,0 +1,623 @@
+# CoinEx.Net Full LLM Context
+
+> Detailed AI/LLM reference for generating correct C#/.NET code with CoinEx.Net. Use this file when `llms.txt` is too brief and the task needs concrete examples, endpoint routing guidance, or anti-hallucination rules.
+
+CoinEx.Net is a strongly typed .NET client library for the CoinEx REST and WebSocket APIs. It is part of the CryptoExchange.Net ecosystem and uses the same result, shared API, logging, rate limiting, dependency injection, and socket subscription patterns as the other JKorf exchange libraries.
+
+Current package version in this repository: 10.10.0.
+CryptoExchange.Net dependency: 11.1.0.
+Target frameworks: netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
+Native AOT: supported on compatible .NET targets.
+
+Primary documentation:
+- README.md: overview, installation, feature table, release notes, basic examples
+- docs site: https://cryptoexchange.jkorf.dev/CoinEx.Net/
+- API quick map: `docs/ai-api-map.md`
+- source interfaces: `CoinEx.Net/Interfaces/Clients/**`
+- AI examples: `Examples/ai-friendly/`
+- assistant skill: `CLAUDE.md`
+
+## Golden Rules For AI Code Generation
+
+- Use `CoinExRestClient` for REST and `CoinExSocketClient` for WebSocket. Do not generate raw `HttpClient` calls to CoinEx endpoints.
+- Use `CoinExCredentials`, not generic `ApiCredentials`, for API key setup.
+- Include `using CoinEx.Net;` when using `CoinExCredentials` or `CoinExEnvironment`.
+- Always check `.Success` before reading `.Data`.
+- REST methods return `WebCallResult<T>` or `WebCallResult`.
+- WebSocket subscriptions return `CallResult<UpdateSubscription>`.
+- Reuse clients. Do not instantiate REST or socket clients per request in production code.
+- Prefer dependency injection for long-running services.
+- Store WebSocket subscriptions and unsubscribe during shutdown.
+- Do not call `.Result` or `.Wait()` on async methods.
+- Do not invent endpoint names. If unsure, inspect `CoinEx.Net/Interfaces/Clients/**`.
+- For current spot REST examples, use `SpotApiV2`, not `SpotApi`.
+- For futures examples, use `FuturesApi`; CoinEx.Net does not split futures into Binance-style USD-M and COIN-M branches.
+- For spot trading methods, pass `AccountType.Spot` or `AccountType.Margin`.
+- Use `OrderTypeV2` for spot and futures order type values.
+- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each API surface's `.SharedClient`.
+
+## Installation
+
+```bash
+dotnet add package CoinEx.Net
+```
+
+## Required Usings
+
+Typical REST/trading code:
+
+```csharp
+using CoinEx.Net;
+using CoinEx.Net.Clients;
+using CoinEx.Net.Enums;
+```
+
+Shared API code:
+
+```csharp
+using CoinEx.Net.Clients;
+using CryptoExchange.Net.SharedApis;
+```
+
+Retry/error helper code may also need:
+
+```csharp
+using CryptoExchange.Net.Objects;
+```
+
+Dependency injection setup:
+
+```csharp
+using CoinEx.Net;
+using Microsoft.Extensions.DependencyInjection;
+```
+
+## Client Setup
+
+Public market data does not require credentials:
+
+```csharp
+var client = new CoinExRestClient();
+
+var tickers = await client.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" });
+if (!tickers.Success)
+{
+    Console.WriteLine(tickers.Error);
+    return;
+}
+
+Console.WriteLine(tickers.Data.First().LastPrice);
+```
+
+Private account and trading endpoints require credentials:
+
+```csharp
+var client = new CoinExRestClient(options =>
+{
+    options.ApiCredentials = new CoinExCredentials("API_KEY", "API_SECRET");
+});
+```
+
+Socket client with credentials:
+
+```csharp
+var socketClient = new CoinExSocketClient(options =>
+{
+    options.ApiCredentials = new CoinExCredentials("API_KEY", "API_SECRET");
+});
+```
+
+Environments:
+
+```csharp
+var live = new CoinExRestClient(options => options.Environment = CoinExEnvironment.Live);
+var customEnvironment = CoinExEnvironment.CreateCustom(
+    "custom",
+    "https://rest.example",
+    "wss://socket.example");
+```
+
+CoinEx.Net currently exposes `CoinExEnvironment.Live`. Do not invent a testnet environment unless it exists in `CoinExEnvironment`.
+
+## Dependency Injection
+
+Current DI shape:
+
+```csharp
+services.AddCoinEx(options =>
+{
+    options.Rest.ApiCredentials = new CoinExCredentials("API_KEY", "API_SECRET");
+    options.Socket.ApiCredentials = new CoinExCredentials("API_KEY", "API_SECRET");
+});
+```
+
+Inject:
+
+```csharp
+using CoinEx.Net.Interfaces.Clients;
+
+public class MyService
+{
+    private readonly ICoinExRestClient _restClient;
+    private readonly ICoinExSocketClient _socketClient;
+
+    public MyService(ICoinExRestClient restClient, ICoinExSocketClient socketClient)
+    {
+        _restClient = restClient;
+        _socketClient = socketClient;
+    }
+}
+```
+
+## Result Handling Pattern
+
+Always branch on `.Success`.
+
+```csharp
+var result = await client.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" });
+if (!result.Success)
+{
+    Console.WriteLine($"Code: {result.Error?.Code}");
+    Console.WriteLine($"Message: {result.Error?.Message}");
+    return;
+}
+
+var price = result.Data.First().LastPrice;
+```
+
+For retry logic, only retry transient errors:
+
+```csharp
+async Task<WebCallResult<T>> WithRetry<T>(Func<Task<WebCallResult<T>>> call, int maxAttempts = 3)
+{
+    WebCallResult<T> last = default!;
+
+    for (var attempt = 1; attempt <= maxAttempts; attempt++)
+    {
+        last = await call();
+        if (last.Success)
+            return last;
+
+        if (last.Error?.IsTransient != true)
+            return last;
+
+        await Task.Delay(TimeSpan.FromMilliseconds(250 * Math.Pow(2, attempt)));
+    }
+
+    return last;
+}
+```
+
+## Main API Surface
+
+REST:
+
+```text
+CoinExRestClient
+  .SpotApiV2
+    .ExchangeData
+    .Account
+    .Trading
+    .SharedClient
+  .FuturesApi
+    .ExchangeData
+    .Account
+    .Trading
+    .SharedClient
+```
+
+WebSocket:
+
+```text
+CoinExSocketClient
+  .SpotApiV2
+    .SharedClient
+    SubscribeToTickerUpdatesAsync
+    SubscribeToOrderBookUpdatesAsync
+    SubscribeToTradeUpdatesAsync
+    SubscribeToIndexPriceUpdatesAsync
+    SubscribeToBookPriceUpdatesAsync
+    SubscribeToOrderUpdatesAsync
+    SubscribeToStopOrderUpdatesAsync
+    SubscribeToUserTradeUpdatesAsync
+    SubscribeToBalanceUpdatesAsync
+  .FuturesApi
+    .SharedClient
+    SubscribeToTickerUpdatesAsync
+    SubscribeToOrderBookUpdatesAsync
+    SubscribeToTradeUpdatesAsync
+    SubscribeToIndexPriceUpdatesAsync
+    SubscribeToBookPriceUpdatesAsync
+    SubscribeToPremiumIndexUpdatesAsync
+    SubscribeToOrderUpdatesAsync
+    SubscribeToStopOrderUpdatesAsync
+    SubscribeToUserTradeUpdatesAsync
+    SubscribeToBalanceUpdatesAsync
+    SubscribeToPositionUpdatesAsync
+```
+
+Important: CoinEx spot margin is represented by `AccountType.Margin` on spot trading/account methods. It is not a separate `SpotApiV2.Margin` branch.
+
+## Intent To Method Map
+
+For a broader quick reference, see `docs/ai-api-map.md`.
+
+Common REST tasks:
+
+```text
+Get spot symbols -> client.SpotApiV2.ExchangeData.GetSymbolsAsync()
+Get spot ticker -> client.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" })
+Get all spot tickers -> client.SpotApiV2.ExchangeData.GetTickersAsync()
+Get spot balances -> client.SpotApiV2.Account.GetBalancesAsync()
+Get margin balances -> client.SpotApiV2.Account.GetMarginBalancesAsync()
+Place spot order -> client.SpotApiV2.Trading.PlaceOrderAsync(symbol, AccountType.Spot, ...)
+Place margin order -> client.SpotApiV2.Trading.PlaceOrderAsync(symbol, AccountType.Margin, ...)
+Get spot order -> client.SpotApiV2.Trading.GetOrderAsync(symbol, orderId)
+Cancel spot order -> client.SpotApiV2.Trading.CancelOrderAsync(symbol, AccountType.Spot, orderId)
+Get futures ticker -> client.FuturesApi.ExchangeData.GetTickersAsync(new[] { "ETHUSDT" })
+Set futures leverage -> client.FuturesApi.Account.SetLeverageAsync(symbol, MarginMode.Cross, leverage)
+Place futures order -> client.FuturesApi.Trading.PlaceOrderAsync(symbol, side, OrderTypeV2.Market, quantity)
+Get futures positions -> client.FuturesApi.Trading.GetPositionsAsync(symbol)
+Close futures position -> client.FuturesApi.Trading.ClosePositionAsync(symbol, OrderTypeV2.Market, quantity: quantity)
+Set futures take profit -> client.FuturesApi.Trading.SetTakeProfitAsync(symbol, PriceType.LastPrice, price)
+Set futures stop loss -> client.FuturesApi.Trading.SetStopLossAsync(symbol, PriceType.LastPrice, price)
+```
+
+Common WebSocket tasks:
+
+```text
+Subscribe spot ticker -> socketClient.SpotApiV2.SubscribeToTickerUpdatesAsync(new[] { symbol }, handler)
+Subscribe spot order book -> socketClient.SpotApiV2.SubscribeToOrderBookUpdatesAsync(symbol, depth, mergeLevel, fullBookUpdates, handler)
+Subscribe spot orders -> socketClient.SpotApiV2.SubscribeToOrderUpdatesAsync(handler)
+Subscribe spot balances -> socketClient.SpotApiV2.SubscribeToBalanceUpdatesAsync(handler)
+Subscribe futures ticker -> socketClient.FuturesApi.SubscribeToTickerUpdatesAsync(new[] { symbol }, handler)
+Subscribe futures positions -> socketClient.FuturesApi.SubscribeToPositionUpdatesAsync(handler)
+Subscribe futures premium index -> socketClient.FuturesApi.SubscribeToPremiumIndexUpdatesAsync(symbol, handler)
+```
+
+## Spot Order Example
+
+```csharp
+using CoinEx.Net;
+using CoinEx.Net.Clients;
+using CoinEx.Net.Enums;
+
+var client = new CoinExRestClient(options =>
+{
+    options.ApiCredentials = new CoinExCredentials("API_KEY", "API_SECRET");
+});
+
+var order = await client.SpotApiV2.Trading.PlaceOrderAsync(
+    symbol: "BTCUSDT",
+    accountType: AccountType.Spot,
+    side: OrderSide.Buy,
+    type: OrderTypeV2.Limit,
+    quantity: 0.001m,
+    price: 50000m);
+
+if (!order.Success)
+{
+    Console.WriteLine(order.Error);
+    return;
+}
+
+Console.WriteLine(order.Data.Id);
+```
+
+Market order:
+
+```csharp
+var order = await client.SpotApiV2.Trading.PlaceOrderAsync(
+    symbol: "BTCUSDT",
+    accountType: AccountType.Spot,
+    side: OrderSide.Buy,
+    type: OrderTypeV2.Market,
+    quantity: 100m,
+    quantityAsset: "USDT");
+```
+
+Margin order:
+
+```csharp
+var order = await client.SpotApiV2.Trading.PlaceOrderAsync(
+    symbol: "BTCUSDT",
+    accountType: AccountType.Margin,
+    side: OrderSide.Sell,
+    type: OrderTypeV2.Limit,
+    quantity: 0.001m,
+    price: 60000m);
+```
+
+## Futures Order Example
+
+```csharp
+using CoinEx.Net;
+using CoinEx.Net.Clients;
+using CoinEx.Net.Enums;
+
+var client = new CoinExRestClient(options =>
+{
+    options.ApiCredentials = new CoinExCredentials("API_KEY", "API_SECRET");
+});
+
+var leverage = await client.FuturesApi.Account.SetLeverageAsync("ETHUSDT", MarginMode.Cross, 5);
+if (!leverage.Success)
+{
+    Console.WriteLine(leverage.Error);
+    return;
+}
+
+var order = await client.FuturesApi.Trading.PlaceOrderAsync(
+    symbol: "ETHUSDT",
+    side: OrderSide.Buy,
+    type: OrderTypeV2.Market,
+    quantity: 0.01m);
+
+if (!order.Success)
+{
+    Console.WriteLine(order.Error);
+    return;
+}
+```
+
+Use `ClosePositionAsync` when the user specifically wants to close or reduce an existing futures position:
+
+```csharp
+var close = await client.FuturesApi.Trading.ClosePositionAsync(
+    "ETHUSDT",
+    OrderTypeV2.Market,
+    quantity: 0.01m);
+```
+
+## WebSocket Subscription Example
+
+```csharp
+using CoinEx.Net.Clients;
+
+var socketClient = new CoinExSocketClient();
+
+var tickerSub = await socketClient.SpotApiV2.SubscribeToTickerUpdatesAsync(
+    new[] { "BTCUSDT" },
+    update =>
+    {
+        foreach (var ticker in update.Data)
+            Console.WriteLine(ticker.LastPrice);
+    });
+
+if (!tickerSub.Success)
+{
+    Console.WriteLine(tickerSub.Error);
+    return;
+}
+
+Console.ReadLine();
+
+await socketClient.UnsubscribeAsync(tickerSub.Data);
+```
+
+Multiple subscriptions should all be checked before `.Data` is used:
+
+```csharp
+var bookSub = await socketClient.SpotApiV2.SubscribeToOrderBookUpdatesAsync(
+    "BTCUSDT",
+    20,
+    "0",
+    true,
+    update => Console.WriteLine(update.Data.Data.Bids.FirstOrDefault()?.Price));
+
+if (!bookSub.Success)
+{
+    await socketClient.UnsubscribeAsync(tickerSub.Data);
+    Console.WriteLine(bookSub.Error);
+    return;
+}
+```
+
+## SharedApis Multi-Exchange Pattern
+
+Use CryptoExchange.Net.SharedApis when the user asks for code that can work against CoinEx and other exchanges.
+
+```csharp
+using CoinEx.Net.Clients;
+using CryptoExchange.Net.SharedApis;
+
+ISpotTickerRestClient tickerClient = new CoinExRestClient().SpotApiV2.SharedClient;
+var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
+
+var ticker = await tickerClient.GetSpotTickerAsync(new GetTickerRequest(symbol));
+if (!ticker.Success)
+{
+    Console.WriteLine(ticker.Error);
+    return;
+}
+
+Console.WriteLine(ticker.Data.LastPrice);
+```
+
+Shared WebSocket subscriptions return an `UpdateSubscription` in `.Data`. For shared interface variables, unsubscribe through the concrete socket client:
+
+```csharp
+var socketClient = new CoinExSocketClient();
+ITickerSocketClient tickerSocket = socketClient.SpotApiV2.SharedClient;
+
+var sub = await tickerSocket.SubscribeToTickerUpdatesAsync(
+    new SubscribeTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")),
+    update => Console.WriteLine(update.Data.LastPrice));
+
+if (!sub.Success)
+{
+    Console.WriteLine(sub.Error);
+    return;
+}
+
+Console.ReadLine();
+
+await socketClient.UnsubscribeAsync(sub.Data);
+```
+
+Do not call `tickerSocket.UnsubscribeAsync(...)` on `ITickerSocketClient`; that shared interface does not expose the method.
+
+## Symbol And Precision Handling
+
+For order quantities and prices, use symbol metadata. Do not manually truncate decimal strings.
+
+```csharp
+var symbols = await client.SpotApiV2.ExchangeData.GetSymbolsAsync();
+if (!symbols.Success)
+{
+    Console.WriteLine(symbols.Error);
+    return;
+}
+
+var symbol = symbols.Data.First(x => x.Name == "BTCUSDT");
+var quantity = Math.Round(0.00123456m, symbol.QuantityPrecision, MidpointRounding.ToZero);
+var price = Math.Round(50000.123456m, symbol.PricePrecision, MidpointRounding.ToZero);
+```
+
+CoinEx symbol metadata includes base/quote assets, min order quantity, quantity precision, price precision, maker fee, taker fee, AMM availability, and margin availability.
+
+## Error Handling Notes
+
+CoinEx.Net returns API/network/rate-limit errors through `.Error` on result objects. It generally does not throw for normal API failures. Exceptions are for misconfiguration, disposal, cancellation, or programming errors.
+
+Common categories:
+
+```text
+Authentication/signature failure: credentials, permissions, or timestamp/signing issue; do not retry blindly.
+Rate limit or temporary service issue: transient; back off and retry if appropriate.
+Invalid symbol: permanent for that request; check GetSymbolsAsync.
+Invalid price/quantity/precision: fix order parameters using symbol metadata.
+Insufficient balance: permanent for current account state; surface to caller.
+Order not found: may be expected for already-filled/canceled/missing orders or wrong AccountType.
+```
+
+## AI-Friendly Examples
+
+Use these examples when generating code:
+
+```text
+Examples/ai-friendly/01-spot-quickstart.cs
+  Client setup, public ticker, authenticated balance, limit spot order, order status, cancellation.
+
+Examples/ai-friendly/02-futures.cs
+  Futures leverage, market order, position lookup, close position.
+
+Examples/ai-friendly/03-websocket.cs
+  Public ticker stream, order book stream, trade stream, authenticated user streams, success checks, teardown.
+
+Examples/ai-friendly/04-multi-exchange.cs
+  CryptoExchange.Net.SharedApis REST and socket patterns.
+
+Examples/ai-friendly/05-error-handling.cs
+  WebCallResult pattern, transient retry, CoinEx error categories, symbol precision handling.
+```
+
+These files are intended to be copied into a console `Program.cs` after `dotnet add package CoinEx.Net`.
+
+## Anti-Hallucination Checklist
+
+Before finalizing generated code:
+
+- Does it compile with the current package?
+- Does it include `using CoinEx.Net;` when using credentials or environments?
+- Does every REST/socket result check `.Success` before `.Data`?
+- Does it use the correct API branch: `SpotApiV2` or `FuturesApi`?
+- Does spot trading include `AccountType.Spot` or `AccountType.Margin`?
+- Does it use `OrderTypeV2`, not Binance order type enums?
+- Does it avoid raw CoinEx URLs and manual signing?
+- Does it avoid legacy `CoinExClient`?
+- Does it avoid `.Result` and `.Wait()`?
+- Are WebSocket subscriptions unsubscribed on shutdown?
+- For shared socket interfaces, does it keep the concrete socket client for `UnsubscribeAsync(sub.Data)`?
+- For order quantities/prices, does it use symbol metadata where precision matters?
+- Does it avoid inventing `CoinExEnvironment.Testnet`?
+
+## Source Of Truth For Method Names
+
+When unsure, inspect these files instead of guessing:
+
+```text
+CoinEx.Net/Interfaces/Clients/ICoinExRestClient.cs
+CoinEx.Net/Interfaces/Clients/ICoinExSocketClient.cs
+CoinEx.Net/Interfaces/Clients/SpotApiV2/ICoinExRestClientSpotApi*.cs
+CoinEx.Net/Interfaces/Clients/SpotApiV2/ICoinExSocketClientSpotApi*.cs
+CoinEx.Net/Interfaces/Clients/FuturesApi/ICoinExRestClientFuturesApi*.cs
+CoinEx.Net/Interfaces/Clients/FuturesApi/ICoinExSocketClientFuturesApi*.cs
+```
+
+Prefer the interface files over memory when generating endpoint names, parameters, callback names, and return types.
+
+## Common Wrong Patterns To Avoid
+
+Wrong:
+
+```csharp
+var client = new CoinExClient();
+```
+
+Use:
+
+```csharp
+var client = new CoinExRestClient();
+```
+
+Wrong:
+
+```csharp
+options.ApiCredentials = new ApiCredentials("key", "secret");
+```
+
+Use:
+
+```csharp
+options.ApiCredentials = new CoinExCredentials("key", "secret");
+```
+
+Wrong:
+
+```csharp
+var result = await client.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" });
+Console.WriteLine(result.Data.First().LastPrice);
+```
+
+Use:
+
+```csharp
+var result = await client.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" });
+if (!result.Success)
+{
+    Console.WriteLine(result.Error);
+    return;
+}
+Console.WriteLine(result.Data.First().LastPrice);
+```
+
+Wrong:
+
+```csharp
+restClient.SpotApiV2.Trading.PlaceOrderAsync("BTCUSDT", OrderSide.Buy, OrderTypeV2.Limit, 0.001m);
+```
+
+Use:
+
+```csharp
+restClient.SpotApiV2.Trading.PlaceOrderAsync(
+    "BTCUSDT",
+    AccountType.Spot,
+    OrderSide.Buy,
+    OrderTypeV2.Limit,
+    0.001m,
+    price: 50000m);
+```
+
+Wrong:
+
+```csharp
+await sharedTickerSocket.UnsubscribeAsync(sub.Data);
+```
+
+Use:
+
+```csharp
+await socketClient.UnsubscribeAsync(sub.Data);
+```

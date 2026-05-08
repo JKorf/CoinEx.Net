@@ -1,0 +1,104 @@
+---
+description: Conventions for using CoinEx.Net when working with the CoinEx cryptocurrency exchange in C#/.NET. Apply when generating code that interacts with the CoinEx API.
+globs:
+  - "**/*.cs"
+  - "**/*.csproj"
+alwaysApply: false
+---
+
+# CoinEx.Net Conventions
+
+This codebase uses **CoinEx.Net** for CoinEx cryptocurrency exchange access. Do not write raw `HttpClient` calls to CoinEx endpoints.
+
+## Client setup pattern
+
+```csharp
+using CoinEx.Net;
+using CoinEx.Net.Clients;
+
+var restClient = new CoinExRestClient(options =>
+{
+    options.ApiCredentials = new CoinExCredentials("API_KEY", "API_SECRET");
+});
+```
+
+For public market data only, no credentials are needed: `new CoinExRestClient()`.
+
+## Result pattern
+
+All methods return `WebCallResult<T>` for REST or `CallResult<T>` for WebSocket. Always check `.Success` before reading `.Data`:
+
+```csharp
+var tickers = await restClient.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" });
+if (!tickers.Success) { /* tickers.Error */ return; }
+var price = tickers.Data.First().LastPrice;
+```
+
+## API surface
+
+- `restClient.SpotApiV2.{ExchangeData|Account|Trading}`
+- `restClient.FuturesApi.{ExchangeData|Account|Trading}`
+- `socketClient.SpotApiV2` for spot WebSocket subscriptions
+- `socketClient.FuturesApi` for futures WebSocket subscriptions
+- `restClient.SpotApiV2.SharedClient` and `restClient.FuturesApi.SharedClient`
+- `socketClient.SpotApiV2.SharedClient` and `socketClient.FuturesApi.SharedClient`
+
+## Order placement
+
+Spot order placement includes `AccountType`:
+
+```csharp
+var order = await restClient.SpotApiV2.Trading.PlaceOrderAsync(
+    "BTCUSDT", AccountType.Spot, OrderSide.Buy, OrderTypeV2.Limit,
+    quantity: 0.001m, price: 50000m);
+```
+
+Futures order placement does not include `AccountType`:
+
+```csharp
+var order = await restClient.FuturesApi.Trading.PlaceOrderAsync(
+    "ETHUSDT", OrderSide.Buy, OrderTypeV2.Market, quantity: 0.01m);
+```
+
+## WebSocket pattern
+
+```csharp
+var socketClient = new CoinExSocketClient();
+var sub = await socketClient.SpotApiV2.SubscribeToTickerUpdatesAsync(
+    new[] { "BTCUSDT" },
+    update => { /* update.Data.First().LastPrice */ });
+if (!sub.Success) { /* sub.Error */ return; }
+
+await socketClient.UnsubscribeAsync(sub.Data);
+```
+
+## Multi-exchange code
+
+For exchange-agnostic code, use `CryptoExchange.Net.SharedApis`:
+
+```csharp
+using CryptoExchange.Net.SharedApis;
+
+var shared = new CoinExRestClient().SpotApiV2.SharedClient;
+var ticker = await shared.GetSpotTickerAsync(
+    new GetTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")));
+```
+
+## Hard rules
+
+- Never write raw `HttpClient` to CoinEx endpoints
+- Never use `.Result` or `.Wait()`; use async/await
+- Never instantiate clients per-request in production code
+- Never skip checking `WebCallResult.Success`
+- Never use `CoinExClient`; use `CoinExRestClient`
+- Always use `CoinExCredentials("key", "secret")`, not generic `ApiCredentials`
+- Always use `SpotApiV2` for current spot V2 REST examples
+- Always store WebSocket subscriptions and unsubscribe on shutdown
+- Do not copy Binance-only concepts such as `timeInForce`, USD-M/COIN-M split, or Binance testnet environments into CoinEx examples
+
+## Reference
+
+- Skill: `CLAUDE.md` in repo root has fuller examples
+- AI context: `llms.txt` and `llms-full.txt` in repo root
+- API map: `docs/ai-api-map.md`
+- Examples: `Examples/ai-friendly/`
