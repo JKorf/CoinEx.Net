@@ -118,24 +118,10 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
         {
-            var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExOrderBook>>((receiveTime, originalData, invocations, data) =>
-            {
-                if (data.Data.UpdateTime != null)
-                    UpdateTimeOffset(data.Data.UpdateTime.Value);
-
-                onMessage(
-                    new DataEvent<CoinExOrderBook>(CoinExExchange.ExchangeName, data.Data, receiveTime, originalData)
-                        .WithUpdateType(SocketUpdateType.Update)
-                        .WithStreamId(data.Method)
-                        .WithSymbol(data.Data.Symbol)
-                        .WithDataTimestamp(data.Data.Data.UpdateTime, GetTimeOffset())
-                    );
-            });
-
-            var subscription = new CoinExSubscription<CoinExOrderBook>(_logger, this, "depth", symbols.ToArray(), new Dictionary<string, object>
+            var subscription = new CoinExFuturesOrderBookSubscription(_logger, this, symbols.ToArray(), new Dictionary<string, object>
             {
                 { "market_list", symbols.Select(x => new object[] { x, depth, mergeLevel ?? "0", fullBookUpdates }).ToArray() }
-            }, internalHandler);
+            }, onMessage);
             return await SubscribeAsync(BaseAddress.AppendPath("v2/futures"), subscription, ct).ConfigureAwait(false);
         }
 
