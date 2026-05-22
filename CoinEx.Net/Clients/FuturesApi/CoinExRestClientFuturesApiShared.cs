@@ -616,7 +616,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!order)
                 return order.AsExchangeResult<SharedId>(Exchange, null, default);
 
-            return order.AsExchangeResult(Exchange, request.Symbol!.TradingMode, new SharedId(order.Data.FirstOrDefault()?.Data?.Id.ToString() ?? request.OrderId));
+            return order.AsExchangeResult(Exchange, request.Symbol!.TradingMode, new SharedId(request.OrderId));
         }
         #endregion
 
