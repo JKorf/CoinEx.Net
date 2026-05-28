@@ -1,6 +1,7 @@
 # ![.CoinEx.Net](https://github.com/JKorf/CoinEx.Net/blob/master/CoinEx.Net/Icon/icon.png?raw=true) CoinEx.Net
 
 [![.NET](https://img.shields.io/github/actions/workflow/status/JKorf/CoinEx.Net/dotnet.yml?style=for-the-badge)](https://github.com/JKorf/CoinEx.Net/actions/workflows/dotnet.yml) ![License](https://img.shields.io/github/license/JKorf/CoinEx.Net?style=for-the-badge)
+![Since](https://img.shields.io/badge/since-2018-brightgreen?style=for-the-badge)
 
 CoinEx.Net is a strongly typed client library for accessing the [CoinEx REST and Websocket API](https://github.com/coinexcom/coinex_exchange_api/wiki).
 
