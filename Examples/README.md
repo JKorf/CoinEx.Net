@@ -1,13 +1,11 @@
 # Examples
 
-### CoinEx.Examples.Api
-A minimal API showing how to integrate CoinEx.Net in a web API project
+| Project | Topic |
+|---|---|
+| `CoinEx.Examples.Api` | Minimal ASP.NET Core API integration, dependency injection, public ticker endpoint, private balances endpoint |
+| `CoinEx.Examples.Console` | Basic REST ticker request and WebSocket ticker subscription |
+| `CoinEx.Examples.OrderPlacement` | Spot and futures order placement, order status lookup, and cancellation |
+| `CoinEx.Examples.OrderBook` | Client-side order book implementation with live console display |
+| `CoinEx.Examples.Tracker` | Trade tracker with rolling market statistics |
 
-### CoinEx.Examples.Console
-A simple console client demonstrating basic usage
-
-### CoinEx.Examples.OrderBook
-Example of using the client side order book implementation
-
-### CoinEx.Examples.Tracker
-Example of using the trade tracker
+The `ai-friendly` folder contains standalone copy/paste examples intended for quick onboarding and AI coding assistant context.

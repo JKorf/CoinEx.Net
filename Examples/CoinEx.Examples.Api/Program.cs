@@ -1,5 +1,5 @@
+using CoinEx.Net;
 using CoinEx.Net.Interfaces.Clients;
-using CryptoExchange.Net.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +13,9 @@ builder.Services.AddCoinEx();
 // OR to provide API credentials for accessing private endpoints, or setting other options:
 /*
 builder.Services.AddCoinEx(options =>
-{    
-   options.ApiCredentials = new ApiCredentials("<APIKEY>", "<APISECRET>");
-   options.Rest.RequestTimeout = TimeSpan.FromSeconds(5);
+{
+    options.ApiCredentials = new CoinExCredentials("<APIKEY>", "<APISECRET>");
+    options.Rest.RequestTimeout = TimeSpan.FromSeconds(5);
 });
 */
 
@@ -28,14 +28,18 @@ app.UseHttpsRedirection();
 app.MapGet("/{Symbol}", async ([FromServices] ICoinExRestClient client, string symbol) =>
 {
     var result = await client.SpotApiV2.ExchangeData.GetTickersAsync(new[] { symbol });
-    return (object)(result.Success ? result.Data : result.Error!);
+    return result.Success
+        ? Results.Ok(result.Data.FirstOrDefault()?.LastPrice)
+        : Results.Problem(result.Error?.Message, statusCode: 502);
 })
 .WithOpenApi();
 
 app.MapGet("/Balances", async ([FromServices] ICoinExRestClient client) =>
 {
     var result = await client.SpotApiV2.Account.GetBalancesAsync();
-    return (object)(result.Success ? result.Data : result.Error!);
+    return result.Success
+        ? Results.Ok(result.Data)
+        : Results.Problem(result.Error?.Message, statusCode: 502);
 })
 .WithOpenApi();
 

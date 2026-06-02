@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Examples.OrderBook",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Examples.Tracker", "CoinEx.Examples.Tracker\CoinEx.Examples.Tracker.csproj", "{93B8A062-C9D7-497E-BD98-ACBF40666D8A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoinEx.Examples.OrderPlacement", "CoinEx.Examples.OrderPlacement\CoinEx.Examples.OrderPlacement.csproj", "{5C965388-43E4-4EF0-896A-A4CC755E447F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{93B8A062-C9D7-497E-BD98-ACBF40666D8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93B8A062-C9D7-497E-BD98-ACBF40666D8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93B8A062-C9D7-497E-BD98-ACBF40666D8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C965388-43E4-4EF0-896A-A4CC755E447F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C965388-43E4-4EF0-896A-A4CC755E447F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C965388-43E4-4EF0-896A-A4CC755E447F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C965388-43E4-4EF0-896A-A4CC755E447F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
