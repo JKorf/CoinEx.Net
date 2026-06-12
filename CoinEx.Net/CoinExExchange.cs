@@ -65,6 +65,12 @@ namespace CoinEx.Net
         public static ExchangeType Type { get; } = ExchangeType.CEX;
 
         internal static JsonSerializerContext _serializerContext = JsonSerializerContextCache.GetOrCreate<CoinExSourceGenerationContext>();
+        internal static ParameterSerializationSettings _parameterSerializationSettings = new ParameterSerializationSettings
+        {
+            Sort = false,
+            Decimal = DecimalSerialization.String,
+            DateTimes = DateTimeSerialization.MillisecondsString
+        };
 
         /// <summary>
         /// Aliases for CoinEx assets

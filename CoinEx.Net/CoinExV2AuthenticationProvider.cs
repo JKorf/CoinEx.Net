@@ -24,7 +24,7 @@ namespace CoinEx.Net
 
         public override void ProcessRequest(RestApiClient apiClient, RestRequestConfiguration request)
         {
-            if (!request.Authenticated)
+            if (!request.RequestDefinition.Authenticated)
                 return;
 
             string parameterString;
@@ -38,12 +38,12 @@ namespace CoinEx.Net
             }
             else
             {
-                parameterString = GetSerializedBody(_serializer, request.BodyParameters ?? new Dictionary<string, object>());
+                parameterString = GetSerializedBody(_serializer, request.BodyParameters ?? new Parameters(CoinExExchange._parameterSerializationSettings));
                 request.SetBodyContent(parameterString);
             }
 
             var timestamp = GetMillisecondTimestamp(apiClient);
-            var signData = request.Method.ToString().ToUpperInvariant() + request.Path + parameterString + timestamp;
+            var signData = request.RequestDefinition.Method.ToString().ToUpperInvariant() + request.RequestDefinition.Path + parameterString + timestamp;
             var sign = SignHMACSHA256(signData, SignOutputType.Hex);
 
             request.Headers ??= new Dictionary<string, string>();

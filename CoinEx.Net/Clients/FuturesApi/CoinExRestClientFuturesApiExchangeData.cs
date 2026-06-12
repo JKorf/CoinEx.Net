@@ -22,59 +22,61 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
+        public async Task<HttpResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
         {
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/time", CoinExExchange.RateLimiter.CoinExRestPublic);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/time", CoinExExchange.RateLimiter.CoinExRestPublic);
             var result = await _baseClient.SendAsync<CoinExServerTime>(request, null, ct).ConfigureAwait(false);
-            return result.As(result.Data?.ServerTime ?? default);
+            if (!result.Success)
+                return HttpResult.Fail<DateTime>(result);
+            return HttpResult.Ok(result, result.Data.ServerTime);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExFuturesSymbol[]>> GetSymbolsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExFuturesSymbol[]>> GetSymbolsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("market", symbols == null ? null :string.Join(",", symbols));
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/market", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings);
+            parameters.Add("market", symbols == null ? null :string.Join(",", symbols));
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/market", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExFuturesSymbol[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExFuturesTicker[]>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExFuturesTicker[]>> GetTickersAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/ticker", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings);
+            parameters.Add("market", symbols == null ? null : string.Join(",", symbols));
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/ticker", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExFuturesTicker[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int limit, string? mergeLevel = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExOrderBook>> GetOrderBookAsync(string symbol, int limit, string? mergeLevel = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol },
                 { "limit", limit },
                 { "interval", mergeLevel ?? "0" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/depth", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/depth", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExOrderBook>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExTrade[]>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExTrade[]>> GetTradeHistoryAsync(string symbol, int? limit = null, long? lastId = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol }
             };
-            parameters.AddOptional("limit", limit);
-            parameters.AddOptional("last_id", lastId);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/deals", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            parameters.Add("limit", limit);
+            parameters.Add("last_id", lastId);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/deals", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExTrade[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExKline[]>> GetKlinesAsync(
+        public async Task<HttpResult<CoinExKline[]>> GetKlinesAsync(
             string symbol, 
             KlineInterval interval,
             int? limit = null,
@@ -83,101 +85,101 @@ namespace CoinEx.Net.Clients.FuturesApi
             DateTime? endTime = null,
             CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol }
             };
-            parameters.AddEnum("period", interval);
-            parameters.AddOptionalEnum("price_type", priceType);
-            parameters.AddOptional("limit", limit);
-            parameters.AddOptionalMilliseconds("start_time", startTime);
-            parameters.AddOptionalMilliseconds("end_time", endTime);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/kline", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            parameters.Add("period", interval);
+            parameters.Add("price_type", priceType);
+            parameters.Add("limit", limit);
+            parameters.Add("start_time", startTime);
+            parameters.Add("end_time", endTime);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/kline", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExKline[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExIndexPrice[]>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExIndexPrice[]>> GetIndexPricesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/index", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings);
+            parameters.Add("market", symbols == null ? null : string.Join(",", symbols));
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/index", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExIndexPrice[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExFundingRate[]>> GetFundingRatesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExFundingRate[]>> GetFundingRatesAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/funding-rate", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings);
+            parameters.Add("market", symbols == null ? null : string.Join(",", symbols));
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/funding-rate", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExFundingRate[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPaginated<CoinExFundingRateHistory>>> GetFundingRateHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExPaginated<CoinExFundingRateHistory>>> GetFundingRateHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol }
             };
-            parameters.AddOptionalMilliseconds("start_time", startTime);
-            parameters.AddOptionalMilliseconds("end_time", endTime);
-            parameters.AddOptional("page", page);
-            parameters.AddOptional("limit", pageSize);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/funding-rate-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            parameters.Add("start_time", startTime);
+            parameters.Add("end_time", endTime);
+            parameters.Add("page", page);
+            parameters.Add("limit", pageSize);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/funding-rate-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendPaginatedAsync<CoinExFundingRateHistory>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPremiumIndexHistory[]>> GetPremiumIndexPriceHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExPremiumIndexHistory[]>> GetPremiumIndexPriceHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol }
             };
-            parameters.AddOptionalMilliseconds("start_time", startTime);
-            parameters.AddOptionalMilliseconds("end_time", endTime);
-            parameters.AddOptional("page", page);
-            parameters.AddOptional("limit", pageSize);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/premium-index-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            parameters.Add("start_time", startTime);
+            parameters.Add("end_time", endTime);
+            parameters.Add("page", page);
+            parameters.Add("limit", pageSize);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/premium-index-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExPremiumIndexHistory[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPositionLevels[]>> GetPositionLevelsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExPositionLevels[]>> GetPositionLevelsAsync(IEnumerable<string>? symbols = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection();
-            parameters.AddOptional("market", symbols == null ? null : string.Join(",", symbols));
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/position-level", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings);
+            parameters.Add("market", symbols == null ? null : string.Join(",", symbols));
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/position-level", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExPositionLevels[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExPaginated<CoinExLiquidation>>> GetLiquidationHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExPaginated<CoinExLiquidation>>> GetLiquidationHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol }
             };
-            parameters.AddOptionalMilliseconds("start_time", startTime);
-            parameters.AddOptionalMilliseconds("end_time", endTime);
-            parameters.AddOptional("page", page);
-            parameters.AddOptional("limit", pageSize);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/liquidation-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            parameters.Add("start_time", startTime);
+            parameters.Add("end_time", endTime);
+            parameters.Add("page", page);
+            parameters.Add("limit", pageSize);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/liquidation-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendPaginatedAsync<CoinExLiquidation>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExBasis[]>> GetBasisHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExBasis[]>> GetBasisHistoryAsync(string symbol, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol }
             };
-            parameters.AddOptionalMilliseconds("start_time", startTime);
-            parameters.AddOptionalMilliseconds("end_time", endTime);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/futures/basis-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
+            parameters.Add("start_time", startTime);
+            parameters.Add("end_time", endTime);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/futures/basis-history", CoinExExchange.RateLimiter.CoinExRestPublic, 1, false);
             return await _baseClient.SendAsync<CoinExBasis[]>(request, parameters, ct).ConfigureAwait(false);
         }
     }

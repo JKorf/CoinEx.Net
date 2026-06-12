@@ -30,7 +30,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 
             IndividualSubscriptionCount = Math.Min(1, symbols.Length);
 
-            MessageRouter = MessageRouter.CreateWithTopicFilters<CoinExSocketUpdate<CoinExOrderBook>>("depth.update", symbols, DoHandleMessage);
+            MessageRouter = MessageRouter.CreateForEvent<CoinExSocketUpdate<CoinExOrderBook>>("depth.update", symbols, DoHandleMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExOrderBook> message)
@@ -43,7 +43,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(message.Data.Data.UpdateTime, _client.GetTimeOffset())
                 .WithUpdateType(message.Data.IsFull ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         protected override Query? GetSubQuery(SocketConnection connection)

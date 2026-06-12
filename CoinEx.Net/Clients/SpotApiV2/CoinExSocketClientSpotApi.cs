@@ -44,7 +44,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
         internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
-            : base(logger, options.Environment.SocketBaseAddress, options, options.SpotOptions)
+            : base(logger, CoinExExchange.Metadata.Id, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
             KeepAliveInterval = TimeSpan.Zero; // Server doesn't correctly respond to ping frames
 
@@ -93,7 +93,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #region public
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<CoinExMaintenance[]>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToSystemNoticeUpdatesAsync(Action<DataEvent<CoinExMaintenance[]>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExMaintenance[]>>((receiveTime, originalData, invocations, data) =>
             {
@@ -112,7 +112,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExTickerSubscription(_logger, this, [], new Dictionary<string, object>
             {
@@ -122,7 +122,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTickerUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTicker[]>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExTickerSubscription(_logger, this, symbols.ToArray(), new Dictionary<string, object>
             {
@@ -132,11 +132,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
             => SubscribeToOrderBookUpdatesAsync(new [] { symbol }, depth, mergeLevel, fullBookUpdates, onMessage, ct);
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(IEnumerable<string> symbols, int depth, string? mergeLevel, bool fullBookUpdates, Action<DataEvent<CoinExOrderBook>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExOrderBookSubscription(_logger, this, symbols.ToArray(), new Dictionary<string, object>
             {
@@ -146,15 +146,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
             => SubscribeToTradeUpdatesAsync(new[] { symbol }, onMessage, ct);
 
         /// <inheritdoc />
-        public Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
             => SubscribeToTradeUpdatesAsync(new string[] { }, onMessage, ct);
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExTrade[]>> onMessage, CancellationToken ct = default)
         {
             var subscription = new CoinExTradesSubscription(_logger, this, symbols.ToArray(), new Dictionary<string, object>
             {
@@ -164,11 +164,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
             => SubscribeToIndexPriceUpdatesAsync(new[] { symbol }, onMessage, ct);
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToIndexPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExIndexPriceUpdate>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExIndexPriceUpdate>>((receiveTime, originalData, invocations, data) =>
             {
@@ -188,11 +188,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
+        public Task<WebSocketResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(string symbol, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
             => SubscribeToBookPriceUpdatesAsync(new[] { symbol }, onMessage, ct);
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToBookPriceUpdatesAsync(IEnumerable<string> symbols, Action<DataEvent<CoinExBookPriceUpdate>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExBookPriceUpdate>>((receiveTime, originalData, invocations, data) =>
             {
@@ -215,7 +215,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEvent<CoinExOrderUpdate>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(Action<DataEvent<CoinExOrderUpdate>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExOrderUpdate>>((receiveTime, originalData, invocations, data) =>
             {
@@ -239,7 +239,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToStopOrderUpdatesAsync(Action<DataEvent<CoinExStopOrderUpdate>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToStopOrderUpdatesAsync(Action<DataEvent<CoinExStopOrderUpdate>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExStopOrderUpdate>>((receiveTime, originalData, invocations, data) =>
             {
@@ -262,7 +262,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(Action<DataEvent<CoinExUserTrade>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(Action<DataEvent<CoinExUserTrade>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExUserTrade>>((receiveTime, originalData, invocations, data) =>
             {
@@ -285,7 +285,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<CoinExBalanceUpdate[]>> onMessage, CancellationToken ct = default)
+        public async Task<WebSocketResult<UpdateSubscription>> SubscribeToBalanceUpdatesAsync(Action<DataEvent<CoinExBalanceUpdate[]>> onMessage, CancellationToken ct = default)
         {
             var internalHandler = new Action<DateTime, string?, int, CoinExSocketUpdate<CoinExBalanceUpdateWrapper>>((receiveTime, originalData, invocations, data) =>
             {

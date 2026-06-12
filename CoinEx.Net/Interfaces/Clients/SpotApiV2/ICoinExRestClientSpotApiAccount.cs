@@ -26,7 +26,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="accountType">["<c>market_type</c>"] Account type</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExTradeFee>> GetTradingFeesAsync(string symbol, AccountType accountType, CancellationToken ct = default);
+        Task<HttpResult<CoinExTradeFee>> GetTradingFeesAsync(string symbol, AccountType accountType, CancellationToken ct = default);
 
         /// <summary>
         /// Update account settings
@@ -40,7 +40,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="cetDiscountEnabled">["<c>cet_discount_enabled</c>"] Global switch for CET Deduction</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult> SetAccountConfigAsync(bool cetDiscountEnabled, CancellationToken ct = default);
+        Task<HttpResult> SetAccountConfigAsync(bool cetDiscountEnabled, CancellationToken ct = default);
 
         /// <summary>
         /// Get balances
@@ -53,7 +53,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBalance[]>> GetBalancesAsync(CancellationToken ct = default);
+        Task<HttpResult<CoinExBalance[]>> GetBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get margin balances
@@ -66,7 +66,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExMarginBalance[]>> GetMarginBalancesAsync(CancellationToken ct = default);
+        Task<HttpResult<CoinExMarginBalance[]>> GetMarginBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get balances in the financial account
@@ -79,7 +79,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBalance[]>> GetFinancialBalancesAsync(CancellationToken ct = default);
+        Task<HttpResult<CoinExBalance[]>> GetFinancialBalancesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get credit account info
@@ -92,7 +92,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExCreditBalance>> GetCreditAccountAsync(CancellationToken ct = default);
+        Task<HttpResult<CoinExCreditBalance>> GetCreditAccountAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get automated market maker account liquidity
@@ -105,7 +105,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExAmmBalance[]>> GetAutoMarketMakerAccountLiquidityAsync(CancellationToken ct = default);
+        Task<HttpResult<CoinExAmmBalance[]>> GetAutoMarketMakerAccountLiquidityAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Apply for margin borrowing
@@ -122,7 +122,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="autoRenew">["<c>is_auto_renew</c>"] Whether to renew automatically. Automatic renewal means that after the loan expires, the system will renew the loan based on the latest borrowing interest rate and cycle.</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBorrow>> MarginBorrowAsync(string symbol, string asset, decimal quantity, bool autoRenew, CancellationToken ct = default);
+        Task<HttpResult<CoinExBorrow>> MarginBorrowAsync(string symbol, string asset, decimal quantity, bool autoRenew, CancellationToken ct = default);
 
         /// <summary>
         /// Repay a margin loan
@@ -139,7 +139,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="borrowId">["<c>borrow_id</c>"] Loan record ID</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult> MarginRepayAsync(string symbol, string asset, decimal quantity, long? borrowId = null, CancellationToken ct = default);
+        Task<HttpResult> MarginRepayAsync(string symbol, string asset, decimal quantity, long? borrowId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get borrow history
@@ -156,7 +156,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExBorrow>>> GetBorrowHistoryAsync(string? symbol = null, BorrowStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExBorrow>>> GetBorrowHistoryAsync(string? symbol = null, BorrowStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get borrow limits
@@ -171,7 +171,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="asset">["<c>ccy</c>"] Asset</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBorrowLimit>> GetBorrowLimitAsync(string symbol, string asset, CancellationToken ct = default);
+        Task<HttpResult<CoinExBorrowLimit>> GetBorrowLimitAsync(string symbol, string asset, CancellationToken ct = default);
 
         /// <summary>
         /// Get the deposit address for an asset
@@ -186,7 +186,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="network">["<c>chain</c>"] Network</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExDepositAddress>> GetDepositAddressAsync(string asset, string network, CancellationToken ct = default);
+        Task<HttpResult<CoinExDepositAddress>> GetDepositAddressAsync(string asset, string network, CancellationToken ct = default);
 
         /// <summary>
         /// Renew deposit address
@@ -201,7 +201,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="network">["<c>chain</c>"] Network</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExDepositAddress>> RenewDepositAddressAsync(string asset, string network, CancellationToken ct = default);
+        Task<HttpResult<CoinExDepositAddress>> RenewDepositAddressAsync(string asset, string network, CancellationToken ct = default);
 
         /// <summary>
         /// Get deposit history
@@ -219,7 +219,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExDeposit>>> GetDepositHistoryAsync(string? asset = null, string? transactionId = null, DepositStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExDeposit>>> GetDepositHistoryAsync(string? asset = null, string? transactionId = null, DepositStatus? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Withdraw funds to an external address or another CoinEx user
@@ -240,7 +240,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="extraParameters">["<c>extra</c>"] If it is a withdrawal from the KDA chain, you need to append the chain_id field to the extra field</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quantity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, string? memo = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExWithdrawal>> WithdrawAsync(string asset, decimal quantity, string toAddress, MovementMethod? method = null, string? network = null, string? remark = null, string? memo = null, Dictionary<string, object>? extraParameters = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel a pending withdrawal
@@ -254,7 +254,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="withdrawalId">["<c>withdraw_id</c>"] The withdrawal id</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default);
+        Task<HttpResult> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default);
 
         /// <summary>
         /// Get withdrawal history
@@ -272,7 +272,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? asset = null, long? withdrawId = null, WithdrawStatusV2? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExWithdrawal>>> GetWithdrawalHistoryAsync(string? asset = null, long? withdrawId = null, WithdrawStatusV2? status = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get withdraw and deposit information for an asset
@@ -286,7 +286,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="asset">["<c>ccy</c>"] The asset, for example `ETH`</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExDepositWithdrawalConfig>> GetDepositWithdrawalConfigAsync(string asset, CancellationToken ct = default);
+        Task<HttpResult<CoinExDepositWithdrawalConfig>> GetDepositWithdrawalConfigAsync(string asset, CancellationToken ct = default);
 
         /// <summary>
         /// Get withdraw and deposit information for all assets
@@ -299,7 +299,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// </summary>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExDepositWithdrawalConfig[]>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default);
+        Task<HttpResult<CoinExDepositWithdrawalConfig[]>> GetAllDepositWithdrawalConfigsAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Transfer between accounts
@@ -317,7 +317,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="marginSymbol">["<c>market</c>"] Margin symbol, only needed when from or to account type is Margin</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult> TransferAsync(string asset, AccountType fromAccount, AccountType toAccount, decimal quantity, string? marginSymbol = null, CancellationToken ct = default);
+        Task<HttpResult> TransferAsync(string asset, AccountType fromAccount, AccountType toAccount, decimal quantity, string? marginSymbol = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get transfer history
@@ -337,7 +337,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExTransfer>>> GetTransfersAsync(string asset, AccountType transferType, TransferStatus? status = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExTransfer>>> GetTransfersAsync(string asset, AccountType transferType, TransferStatus? status = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Add AAM liquidity
@@ -353,7 +353,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="quoteAssetQuantity">["<c>quote_ccy_amount</c>"] Quote asset quantity to add</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExAamLiquidity>> AddAutoMarketMakerLiquidityAsync(string symbol, decimal baseAssetQuantity, decimal quoteAssetQuantity, CancellationToken ct = default);
+        Task<HttpResult<CoinExAamLiquidity>> AddAutoMarketMakerLiquidityAsync(string symbol, decimal baseAssetQuantity, decimal quoteAssetQuantity, CancellationToken ct = default);
 
         /// <summary>
         /// Remove AAM liquidity. Currently only support withdrawing all liquidity
@@ -367,7 +367,7 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExAamLiquidity>> RemoveAutoMarketMakerLiquidityAsync(string symbol, CancellationToken ct = default);
+        Task<HttpResult<CoinExAamLiquidity>> RemoveAutoMarketMakerLiquidityAsync(string symbol, CancellationToken ct = default);
 
         /// <summary>
         /// Get account transaction history
@@ -386,6 +386,6 @@ namespace CoinEx.Net.Interfaces.Clients.SpotApiV2
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExTransaction>>> GetTransactionHistoryAsync(TransactionType transactionType, string? asset = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExTransaction>>> GetTransactionHistoryAsync(TransactionType transactionType, string? asset = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
     }
 }

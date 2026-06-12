@@ -51,7 +51,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #region ctor
         internal CoinExRestClientSpotApi(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
-            base(logger, httpClient, options.Environment.RestBaseAddress, options, options.SpotOptions)
+            base(logger, CoinExExchange.Metadata.Id, httpClient, options.Environment.RestBaseAddress, options, options.SpotOptions)
         {
             Account = new CoinExRestClientSpotApiAccount(this);
             ExchangeData = new CoinExRestClientSpotApiExchangeData(this);
@@ -74,44 +74,38 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #region methods
 
-        internal Task<WebCallResult> SendAsync(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
-            => SendToAddressAsync(BaseAddress, definition, parameters, cancellationToken, weight);
-
-        internal async Task<WebCallResult> SendToAddressAsync(string baseAddress, RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
+        internal async Task<HttpResult> SendAsync(RequestDefinition definition, Parameters? parameters, CancellationToken cancellationToken, int? weight = null)
         {
-            var result = await base.SendAsync<CoinExApiResult>(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
-            if (!result)
-                return result.AsDataless();
+            var result = await base.SendAsync<CoinExApiResult>(definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
+            if (!result.Success)
+                return result;
 
             if (result.Data.Code != 0)
-                return result.AsDatalessError(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
+                return HttpResult.Fail(result, new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
-            return result.AsDataless();
+            return result;
         }
 
-        internal Task<WebCallResult<T>> SendAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
-            => SendToAddressAsync<T>(BaseAddress, definition, parameters, cancellationToken, weight);
-
-        internal async Task<WebCallResult<T>> SendToAddressAsync<T>(string baseAddress, RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
+        internal async Task<HttpResult<T>> SendAsync<T>(RequestDefinition definition, Parameters? parameters, CancellationToken cancellationToken, int? weight = null)
         {
-            var result = await base.SendAsync<CoinExApiResult<T>>(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
-            if (!result)
-                return result.As<T>(default);
+            var result = await base.SendAsync<CoinExApiResult<T>>(definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
+            if (!result.Success)
+                return HttpResult.Fail<T>(result);
 
             if (result.Data.Code != 0)
-                return result.AsError<T>(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
+                return HttpResult.Fail<T>(result, new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
-            return result.As(result.Data.Data);
+            return HttpResult.Ok(result, result.Data.Data);
         }
 
-        internal async Task<WebCallResult<CoinExPaginated<T>>> SendPaginatedAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null) where T : class
+        internal async Task<HttpResult<CoinExPaginated<T>>> SendPaginatedAsync<T>(RequestDefinition definition, Parameters? parameters, CancellationToken cancellationToken, int? weight = null)
         {
-            var result = await base.SendAsync<CoinExPageApiResult<T[]>>(BaseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
-            if (!result)
-                return result.As<CoinExPaginated<T>>(default);
+            var result = await base.SendAsync<CoinExPageApiResult<T[]>>(definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
+            if (!result.Success)
+                return HttpResult.Fail<CoinExPaginated<T>>(result);
 
             if (result.Data.Code != 0)
-                return result.AsError<CoinExPaginated<T>>(new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
+                return HttpResult.Fail<CoinExPaginated<T>>(result, new ServerError(result.Data.Code, GetErrorInfo(result.Data.Code, result.Data.Message!)));
 
             var resultPage = new CoinExPaginated<T>
             {
@@ -120,12 +114,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 Items = result.Data.Data
             };
 
-            return result.As(resultPage);
+            return HttpResult.Ok(result, resultPage);
         }
         #endregion
 
         /// <inheritdoc />
-        protected override async Task<WebCallResult<DateTime>> GetServerTimestampAsync() => await ExchangeData.GetServerTimeAsync().ConfigureAwait(false);
+        protected override async Task<HttpResult<DateTime>> GetServerTimestampAsync() => await ExchangeData.GetServerTimeAsync().ConfigureAwait(false);
 
         /// <inheritdoc />
         public ICoinExRestClientSpotApiShared SharedClient => this;
