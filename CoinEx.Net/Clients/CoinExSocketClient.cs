@@ -43,8 +43,8 @@ namespace CoinEx.Net.Clients
         {
             Initialize(options.Value);
 
-            FuturesApi = AddApiClient(new CoinExSocketClientFuturesApi(_logger, options.Value));
-            SpotApiV2 = AddApiClient(new SpotApiV2.CoinExSocketClientSpotApi(_logger, options.Value));
+            FuturesApi = AddApiClient(new CoinExSocketClientFuturesApi(loggerFactory, options.Value));
+            SpotApiV2 = AddApiClient(new SpotApiV2.CoinExSocketClientSpotApi(loggerFactory, options.Value));
         }
         #endregion
 

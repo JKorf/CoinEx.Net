@@ -50,8 +50,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         #endregion
 
         #region ctor
-        internal CoinExRestClientSpotApi(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
-            base(logger, CoinExExchange.Metadata.Id, httpClient, options.Environment.RestBaseAddress, options, options.SpotOptions)
+        internal CoinExRestClientSpotApi(ILoggerFactory? loggerFactory, HttpClient? httpClient, CoinExRestOptions options) :
+            base(loggerFactory, CoinExExchange.Metadata.Id, httpClient, options.Environment.RestBaseAddress, options, options.SpotOptions)
         {
             Account = new CoinExRestClientSpotApiAccount(this);
             ExchangeData = new CoinExRestClientSpotApiExchangeData(this);

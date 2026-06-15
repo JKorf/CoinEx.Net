@@ -43,8 +43,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         /// <summary>
         /// Create a new instance of CoinExSocketClient with default options
         /// </summary>
-        internal CoinExSocketClientSpotApi(ILogger logger, CoinExSocketOptions options)
-            : base(logger, CoinExExchange.Metadata.Id, options.Environment.SocketBaseAddress, options, options.SpotOptions)
+        internal CoinExSocketClientSpotApi(ILoggerFactory? loggerFactory, CoinExSocketOptions options)
+            : base(loggerFactory, CoinExExchange.Metadata.Id, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
             KeepAliveInterval = TimeSpan.Zero; // Server doesn't correctly respond to ping frames
 

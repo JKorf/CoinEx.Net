@@ -34,9 +34,6 @@ namespace CoinEx.Net.Clients.FuturesApi
         protected override ErrorMapping ErrorMapping => CoinExErrors.RestErrorMapping;
         #endregion
 
-        /// <inheritdoc />
-        public string ExchangeName => "CoinEx";
-
         #region Api clients
         /// <inheritdoc />
         public ICoinExRestClientFuturesApiAccount Account { get; }
@@ -47,8 +44,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         #endregion
 
         #region ctor
-        internal CoinExRestClientFuturesApi(ILogger logger, HttpClient? httpClient, CoinExRestOptions options) :
-            base(logger, CoinExExchange.Metadata.Id, httpClient, options.Environment.RestBaseAddress, options, options.FuturesOptions)
+        internal CoinExRestClientFuturesApi(ILoggerFactory? loggerFactory, HttpClient? httpClient, CoinExRestOptions options) :
+            base(loggerFactory, CoinExExchange.Metadata.Id, httpClient, options.Environment.RestBaseAddress, options, options.FuturesOptions)
         {
             Account = new CoinExRestClientFuturesApiAccount(this);
             ExchangeData = new CoinExRestClientFuturesApiExchangeData(this);
