@@ -41,7 +41,7 @@ var publicClient = new CoinExRestClient();
 
 ## Core Pattern: Result Handling
 
-REST methods return `WebCallResult<T>` or `WebCallResult`. WebSocket subscriptions return `CallResult<UpdateSubscription>`. Always check `.Success` before accessing `.Data`.
+REST methods return `HttpResult<T>` or `HttpResult`. WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`. Always check `.Success` before accessing `.Data`.
 
 ```csharp
 var tickers = await restClient.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" });

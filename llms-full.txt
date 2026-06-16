@@ -23,8 +23,8 @@ Primary documentation:
 - Use `CoinExCredentials`, not generic `ApiCredentials`, for API key setup.
 - Include `using CoinEx.Net;` when using `CoinExCredentials` or `CoinExEnvironment`.
 - Always check `.Success` before reading `.Data`.
-- REST methods return `WebCallResult<T>` or `WebCallResult`.
-- WebSocket subscriptions return `CallResult<UpdateSubscription>`.
+- REST methods return `HttpResult<T>` or `HttpResult`.
+- WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`.
 - Reuse clients. Do not instantiate REST or socket clients per request in production code.
 - Prefer dependency injection for long-running services.
 - Store WebSocket subscriptions and unsubscribe during shutdown.
@@ -168,9 +168,9 @@ var price = result.Data.First().LastPrice;
 For retry logic, only retry transient errors:
 
 ```csharp
-async Task<WebCallResult<T>> WithRetry<T>(Func<Task<WebCallResult<T>>> call, int maxAttempts = 3)
+async Task<HttpResult<T>> WithRetry<T>(Func<Task<HttpResult<T>>> call, int maxAttempts = 3)
 {
-    WebCallResult<T> last = default!;
+    HttpResult<T> last = default!;
 
     for (var attempt = 1; attempt <= maxAttempts; attempt++)
     {
@@ -509,7 +509,7 @@ Examples/ai-friendly/04-multi-exchange.cs
   CryptoExchange.Net.SharedApis REST and socket patterns.
 
 Examples/ai-friendly/05-error-handling.cs
-  WebCallResult pattern, transient retry, CoinEx error categories, symbol precision handling.
+  HttpResult pattern, transient retry, CoinEx error categories, symbol precision handling.
 ```
 
 These files are intended to be copied into a console `Program.cs` after `dotnet add package CoinEx.Net`.
