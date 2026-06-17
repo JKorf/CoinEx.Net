@@ -20,7 +20,6 @@ namespace CoinEx.Net
             SpotUserDataTrackerConfig? config) : base(
                 logger,
                 restClient.SpotApiV2.SharedClient,
-                null,
                 restClient.SpotApiV2.SharedClient,
                 socketClient.SpotApiV2.SharedClient,
                 restClient.SpotApiV2.SharedClient,
@@ -48,7 +47,6 @@ namespace CoinEx.Net
             string? userIdentifier,
             FuturesUserDataTrackerConfig? config) : base(logger,
                 restClient.FuturesApi.SharedClient,
-                null,
                 restClient.FuturesApi.SharedClient,
                 socketClient.FuturesApi.SharedClient,
                 restClient.FuturesApi.SharedClient,
