@@ -25,6 +25,7 @@ Primary documentation:
 - Always check `.Success` before reading `.Data`.
 - REST methods return `HttpResult<T>` or `HttpResult`.
 - WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`.
+- Shared non-I/O symbol/cache helpers return `ExchangeCallResult<T>`.
 - Reuse clients. Do not instantiate REST or socket clients per request in production code.
 - Prefer dependency injection for long-running services.
 - Store WebSocket subscriptions and unsubscribe during shutdown.
@@ -34,7 +35,7 @@ Primary documentation:
 - For futures examples, use `FuturesApi`; CoinEx.Net does not split futures into Binance-style USD-M and COIN-M branches.
 - For spot trading methods, pass `AccountType.Spot` or `AccountType.Margin`.
 - Use `OrderTypeV2` for spot and futures order type values.
-- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each API surface's `.SharedClient`.
+- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each API surface's `.SharedClient` and call `.Discover()` to inspect supported shared features.
 
 ## Installation
 
@@ -422,6 +423,10 @@ using CoinEx.Net.Clients;
 using CryptoExchange.Net.SharedApis;
 
 ISpotTickerRestClient tickerClient = new CoinExRestClient().SpotApiV2.SharedClient;
+var info = tickerClient.Discover();
+var supported = info.Features.Where(x => x.Supported).Select(x => x.EndpointName);
+Console.WriteLine($"{info.Exchange} {info.TypeName}: {string.Join(", ", supported)}");
+
 var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
 
 var ticker = await tickerClient.GetSpotTickerAsync(new GetTickerRequest(symbol));
@@ -506,10 +511,10 @@ Examples/ai-friendly/03-websocket.cs
   Public ticker stream, order book stream, trade stream, authenticated user streams, success checks, teardown.
 
 Examples/ai-friendly/04-multi-exchange.cs
-  CryptoExchange.Net.SharedApis REST and socket patterns.
+  CryptoExchange.Net.SharedApis REST/socket patterns plus capability discovery.
 
 Examples/ai-friendly/05-error-handling.cs
-  HttpResult pattern, transient retry, CoinEx error categories, symbol precision handling.
+  HttpResult, WebSocketResult, ExchangeCallResult, transient retry, CoinEx error categories, symbol precision handling.
 ```
 
 These files are intended to be copied into a console `Program.cs` after `dotnet add package CoinEx.Net`.

@@ -14,8 +14,8 @@ These examples are optimized for AI coding assistants and quick onboarding. Each
 | `01-spot-quickstart.cs` | Client setup, public ticker, authenticated balance, place limit order, query order status |
 | `02-futures.cs` | Futures leverage, market order, get position, close position |
 | `03-websocket.cs` | Subscribe to ticker, order book, trades, user streams with proper teardown |
-| `04-multi-exchange.cs` | `CryptoExchange.Net.SharedApis` pattern for exchange-agnostic code |
-| `05-error-handling.cs` | `HttpResult` patterns, retry, common error scenarios |
+| `04-multi-exchange.cs` | `CryptoExchange.Net.SharedApis` pattern, capability discovery, and shared subscriptions |
+| `05-error-handling.cs` | `HttpResult`, `WebSocketResult`, and `ExchangeCallResult` patterns, retry, common error scenarios |
 
 ## Running
 

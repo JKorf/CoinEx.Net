@@ -2,7 +2,7 @@
 
 > Strongly typed .NET client library for the CoinEx REST and WebSocket APIs. Supports CoinEx Spot V2, margin account operations, Futures, account/asset operations, typed market data, order placement, WebSocket subscriptions, local order books, and shared multi-exchange abstractions through CryptoExchange.Net.
 
-CoinEx.Net is the C# client for CoinEx in the CryptoExchange.Net ecosystem. It provides typed REST and WebSocket clients, automatic WebSocket reconnection, client-side rate limiting, structured error handling via `HttpResult<T>` / `WebSocketResult<T>`, native AOT support, and shared API interfaces for exchange-agnostic applications. Current version: 10.10.0. Targets netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
+CoinEx.Net is the C# client for CoinEx in the CryptoExchange.Net ecosystem. REST methods return `HttpResult<T>` / `HttpResult`, WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`, and shared symbol/cache helpers return `ExchangeCallResult<T>`. It also provides typed REST and WebSocket clients, automatic WebSocket reconnection, client-side rate limiting, native AOT support, and shared API interfaces for exchange-agnostic applications. Current version: 10.10.0. Targets netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
 
 ## Documentation
 
@@ -18,8 +18,8 @@ CoinEx.Net is the C# client for CoinEx in the CryptoExchange.Net ecosystem. It p
 - [Spot Quickstart](https://github.com/JKorf/CoinEx.Net/blob/master/Examples/ai-friendly/01-spot-quickstart.cs): Client setup, ticker, account balance, limit order placement, order status check
 - [Futures Trading](https://github.com/JKorf/CoinEx.Net/blob/master/Examples/ai-friendly/02-futures.cs): Futures leverage, market order, position retrieval, position close
 - [WebSocket Streams](https://github.com/JKorf/CoinEx.Net/blob/master/Examples/ai-friendly/03-websocket.cs): Ticker subscription, order book/trade subscriptions, authenticated user streams with proper teardown
-- [Multi-Exchange Pattern](https://github.com/JKorf/CoinEx.Net/blob/master/Examples/ai-friendly/04-multi-exchange.cs): Using CryptoExchange.Net SharedApis for exchange-agnostic code
-- [Error Handling](https://github.com/JKorf/CoinEx.Net/blob/master/Examples/ai-friendly/05-error-handling.cs): HttpResult pattern, retry logic, common errors and their handling
+- [Multi-Exchange Pattern](https://github.com/JKorf/CoinEx.Net/blob/master/Examples/ai-friendly/04-multi-exchange.cs): CryptoExchange.Net SharedApis, capability discovery, and shared subscriptions
+- [Error Handling](https://github.com/JKorf/CoinEx.Net/blob/master/Examples/ai-friendly/05-error-handling.cs): HttpResult, WebSocketResult, and ExchangeCallResult patterns
 - [Full Examples Repository](https://github.com/JKorf/CoinEx.Net/tree/master/Examples): Console, API, order book, and tracker examples
 
 ## Critical Usage Rules
