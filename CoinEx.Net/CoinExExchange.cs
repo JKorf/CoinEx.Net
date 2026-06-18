@@ -101,7 +101,7 @@ namespace CoinEx.Net
         /// <summary>
         /// Rate limiter configuration for the CoinEx API
         /// </summary>
-        public static CoinExRateLimiters RateLimiter { get; } = new CoinExRateLimiters();
+        public static CoinExRateLimiters RateLimiter { get; set; } = new CoinExRateLimiters();
     }
 
     /// <summary>
@@ -120,13 +120,19 @@ namespace CoinEx.Net
         public event Action<RateLimitUpdateEvent> RateLimitUpdated;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        internal CoinExRateLimiters()
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public CoinExRateLimiters()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             Initialize();
         }
 
-        private void Initialize()
+        /// <summary>
+        /// Initialize the rate limits
+        /// </summary>
+        protected virtual void Initialize()
         {
             var overallGuard = new RateLimitGuard(RateLimitGuard.PerHost, Array.Empty<IGuardFilter>(), 400, TimeSpan.FromSeconds(1), RateLimitWindowType.Sliding, shared: true);// 400 requests per IP
             CoinExRestPublic = new RateLimitGate("CoinEx Public").AddGuard(overallGuard);
