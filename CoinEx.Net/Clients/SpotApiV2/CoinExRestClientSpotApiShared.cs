@@ -846,7 +846,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data.Items, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                     .Select(x => 
-                        new SharedWithdrawal(x.Asset, x.ToAddress, x.Quantity, x.Status == WithdrawStatusV2.Finished, x.CreateTime)
+                        new SharedWithdrawal(
+                            x.Asset,
+                            x.ToAddress,
+                            x.Quantity,
+                            x.Status == WithdrawStatusV2.Finished,
+                            x.CreateTime,
+                            GetWithdrawalStatus(x))
                         {
                             Id = x.Id.ToString(),
                             Confirmations = x.Confirmations,
@@ -858,6 +864,25 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     .ToArray(), nextPageRequest);
         }
 
+        private SharedTransferStatus GetWithdrawalStatus(CoinExWithdrawal x)
+        {
+            if (x.Status == WithdrawStatusV2.Canceled || x.Status == WithdrawStatusV2.Failed)
+                return SharedTransferStatus.Failed;
+
+            if (x.Status == WithdrawStatusV2.Finished)
+                return SharedTransferStatus.Completed;
+
+            if (x.Status == WithdrawStatusV2.Audited
+                || x.Status == WithdrawStatusV2.AuditRequired
+                || x.Status == WithdrawStatusV2.Confirming
+                || x.Status == WithdrawStatusV2.Processing
+                || x.Status == WithdrawStatusV2.Created)
+            {
+                return SharedTransferStatus.InProgress;
+            }
+
+            return SharedTransferStatus.Unknown;
+        }
         #endregion
 
         #region Withdraw client
