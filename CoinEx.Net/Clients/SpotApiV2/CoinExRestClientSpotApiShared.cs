@@ -22,7 +22,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         public void SetDefaultExchangeParameter(string key, object value) => ExchangeParameters.SetStaticParameter(Exchange, key, value);
         public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
-        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(this);
+        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(CoinExExchange.Metadata, this);
 
         #region Kline client
 
@@ -116,19 +116,19 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 QuantityDecimals = s.QuantityPrecision
             }).ToArray());
 
-            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, response.Data!);
+            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, response.Data!);
             return response;
         }
         async Task<ExchangeCallResult<SharedSymbol[]>> ISpotSymbolRestClient.GetSpotSymbolsForBaseAssetAsync(string baseAsset)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((ISpotSymbolRestClient)this).GetSpotSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<SharedSymbol[]>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, baseAsset));
+            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, EnvironmentName, null, baseAsset));
         }
 
         async Task<ExchangeCallResult<bool>> ISpotSymbolRestClient.SupportsSpotSymbolAsync(SharedSymbol symbol)
@@ -136,26 +136,26 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (symbol.TradingMode != TradingMode.Spot)
                 throw new ArgumentException(nameof(symbol), "Only Spot symbols allowed");
 
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((ISpotSymbolRestClient)this).GetSpotSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbol));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbol));
         }
 
         async Task<ExchangeCallResult<bool>> ISpotSymbolRestClient.SupportsSpotSymbolAsync(string symbolName)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((ISpotSymbolRestClient)this).GetSpotSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbolName));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbolName));
         }
         #endregion
 
@@ -173,7 +173,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedSpotTicker>(result);
 
             var ticker = result.Data.Single();
-            return HttpResult.Ok(result, new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
+            return HttpResult.Ok(result, new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
             {
                 QuoteVolume = ticker.Value
             });
@@ -190,7 +190,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!result.Success)
                 return HttpResult.Fail<SharedSpotTicker[]>(result);
 
-            return HttpResult.Ok(result, result.Data.Select(x => new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
+            return HttpResult.Ok(result, result.Data.Select(x => new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
             {
                 QuoteVolume = x.Value
             }).ToArray());
@@ -212,7 +212,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedBookTicker>(resultTicker);
 
             return HttpResult.Ok(resultTicker, new SharedBookTicker(
-                ExchangeSymbolCache.ParseSymbol(_topicId, resultTicker.Data.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, resultTicker.Data.Symbol),
                 resultTicker.Data.Symbol,
                 resultTicker.Data.Data.Asks[0].Price,
                 resultTicker.Data.Data.Asks[0].Quantity,
@@ -341,7 +341,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedSpotOrder>(orders);
 
             return HttpResult.Ok(orders, new SharedSpotOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, orders.Data.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, orders.Data.Symbol),
                 orders.Data.Symbol,
                 orders.Data.Id.ToString(),
                 ParseOrderType(orders.Data.OrderType),
@@ -374,7 +374,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedSpotOrder[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Items.Select(x => new SharedSpotOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                 x.Symbol,
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
@@ -426,7 +426,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data.Items, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                     .Select(x => new SharedSpotOrder(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                         x.Symbol,
                         x.Id.ToString(),
                         ParseOrderType(x.OrderType),
@@ -461,7 +461,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedUserTrade[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Items.Select(x => new SharedUserTrade(
-                ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
@@ -511,7 +511,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data.Items, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                     .Select(x => new SharedUserTrade(
-                        ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                         x.Symbol,
                         x.OrderId.ToString(),
                         x.Id.ToString(),
@@ -606,7 +606,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedSpotOrder>(Exchange, new ServerError(new ErrorInfo(ErrorType.UnknownOrder, "Order not found")));
 
             return HttpResult.Ok(order, new SharedSpotOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, orderData.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, orderData.Symbol),
                 orderData.Symbol,
                 orderData.Id.ToString(),
                 ParseOrderType(orderData.OrderType),
@@ -993,7 +993,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             }
 
             return HttpResult.Ok(orders, new SharedSpotTriggerOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, order.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Symbol),
                 order.Symbol,
                 order.ClientOrderId?.ToString() ?? order.StopOrderId.ToString(),
                 ParseOrderType(order.Type),

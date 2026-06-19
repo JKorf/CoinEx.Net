@@ -28,7 +28,8 @@ namespace CoinEx.Net
                 ["https://viabtc.github.io/coinex_api_en_doc/",
                  "https://docs.coinex.com/api/v2/"],
                 PlatformType.CryptoCurrencyExchange,
-                CentralizationType.Centralized
+                CentralizationType.Centralized,
+                CoinExEnvironment.All
                 );
 
         /// <summary>

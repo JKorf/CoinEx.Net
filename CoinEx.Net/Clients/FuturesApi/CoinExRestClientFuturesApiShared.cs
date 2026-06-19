@@ -22,7 +22,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public void SetDefaultExchangeParameter(string key, object value) => ExchangeParameters.SetStaticParameter(Exchange, key, value);
         public void ResetDefaultExchangeParameters() => ExchangeParameters.ResetStaticParameters();
-        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(this);
+        public SharedClientInfo Discover() => SharedUtils.GetClientInfo(CoinExExchange.Metadata, this);
 
         #region Balance Client
         GetBalancesOptions IBalanceRestClient.GetBalancesOptions { get; } = new GetBalancesOptions(_exchangeName, AccountTypeFilter.Futures);
@@ -65,7 +65,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (ticker == null || funding == null)
                 return HttpResult.Fail<SharedFuturesTicker>(resultTicker.Result, new ServerError(new ErrorInfo(ErrorType.Unknown, "Not found")));
 
-            return HttpResult.Ok(resultTicker.Result, new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
+            return HttpResult.Ok(resultTicker.Result, new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
             {
                 IndexPrice = ticker.IndexPrice,
                 MarkPrice = ticker.MarkPrice,
@@ -92,7 +92,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             return HttpResult.Ok(resultTickers.Result, resultTickers.Result.Data.Select(x =>
             {
                 var funding = resultFunding.Result.Data.Single(p => p.Symbol == x.Symbol);
-                return new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
+                return new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
                 {
                     IndexPrice = x.IndexPrice,
                     MarkPrice = x.MarkPrice,
@@ -118,7 +118,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return HttpResult.Fail<SharedBookTicker>(resultTicker);
 
             return HttpResult.Ok(resultTicker, new SharedBookTicker(
-                ExchangeSymbolCache.ParseSymbol(_topicId, resultTicker.Data.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, resultTicker.Data.Symbol),
                 resultTicker.Data.Symbol,
                 resultTicker.Data.Data.Asks[0].Price,
                 resultTicker.Data.Data.Asks[0].Quantity,
@@ -158,19 +158,19 @@ namespace CoinEx.Net.Clients.FuturesApi
                 ContractSize = 1
             }).ToArray());
 
-            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, response.Data!);
+            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, response.Data!);
             return response;
         }
         async Task<ExchangeCallResult<SharedSymbol[]>> IFuturesSymbolRestClient.GetFuturesSymbolsForBaseAssetAsync(string baseAsset)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<SharedSymbol[]>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, baseAsset));
+            return ExchangeCallResult<SharedSymbol[]>.Ok(Exchange, ExchangeSymbolCache.GetSymbolsForBaseAsset(_topicId, EnvironmentName, null, baseAsset));
         }
 
         async Task<ExchangeCallResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(SharedSymbol symbol)
@@ -178,26 +178,26 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (symbol.TradingMode == TradingMode.Spot)
                 throw new ArgumentException(nameof(symbol), "Spot symbols not allowed");
 
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbol));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbol));
         }
 
         async Task<ExchangeCallResult<bool>> IFuturesSymbolRestClient.SupportsFuturesSymbolAsync(string symbolName)
         {
-            if (!ExchangeSymbolCache.HasCached(_topicId))
+            if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
             {
                 var symbols = await ((IFuturesSymbolRestClient)this).GetFuturesSymbolsAsync(new GetSymbolsRequest()).ConfigureAwait(false);
                 if (!symbols.Success)
                     return ExchangeCallResult<bool>.Fail(Exchange, symbols.Error!);
             }
 
-            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, symbolName));
+            return ExchangeCallResult<bool>.Ok(Exchange, ExchangeSymbolCache.SupportsSymbol(_topicId, EnvironmentName, null, symbolName));
         }
         #endregion
 
@@ -252,7 +252,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return HttpResult.Fail<SharedFuturesOrder>(order);
 
             return HttpResult.Ok(order, new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, order.Data.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Data.Symbol),
                 order.Data.Symbol,
                 order.Data.Id.ToString(),
                 ParseOrderType(order.Data.OrderType),
@@ -284,7 +284,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return HttpResult.Fail<SharedFuturesOrder[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Items.Select(x => new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                 x.Symbol,
                 x.Id.ToString(),
                 ParseOrderType(x.OrderType),
@@ -335,7 +335,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data.Items, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                     .Select(x => 
                         new SharedFuturesOrder(
-                            ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                            ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                             x.Symbol,
                             x.Id.ToString(),
                             ParseOrderType(x.OrderType),
@@ -369,7 +369,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return HttpResult.Fail<SharedUserTrade[]>(orders);
 
             return HttpResult.Ok(orders, orders.Data.Items.Select(x => new SharedUserTrade(
-                ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                 x.Symbol,
                 x.OrderId.ToString(),
                 x.Id.ToString(),
@@ -420,7 +420,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data.Items, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                     .Select(x =>
                         new SharedUserTrade(
-                            ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), 
+                            ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), 
                             x.Symbol,
                             x.OrderId.ToString(),
                             x.Id.ToString(),
@@ -464,7 +464,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result.Success)
                 return HttpResult.Fail<SharedPosition[]>(result);
 
-            return HttpResult.Ok(result, result.Data.Items.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol), x.Symbol, x.OpenInterest, x.UpdateTime)
+            return HttpResult.Ok(result, result.Data.Items.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.OpenInterest, x.UpdateTime)
             {
                 UnrealizedPnl = x.UnrealizedPnl,
                 LiquidationPrice = x.LiquidationPrice,
@@ -572,7 +572,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return HttpResult.Fail<SharedFuturesOrder>(Exchange, new ServerError(new ErrorInfo(ErrorType.UnknownOrder, "Order not found")));
 
             return HttpResult.Ok(order, new SharedFuturesOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, orderData.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, orderData.Symbol),
                 orderData.Symbol,
                 orderData.Id.ToString(),
                 ParseOrderType(orderData.OrderType),
@@ -960,7 +960,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data.Items, x => x.CreateTime, request.StartTime, request.EndTime, direction)
                    .Select(x => 
                         new SharedPositionHistory(
-                            ExchangeSymbolCache.ParseSymbol(_topicId, x.Symbol),
+                            ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
                             x.Symbol,
                             x.Side == PositionSide.Long ? SharedPositionSide.Long : SharedPositionSide.Short,
                             x.AverageEntryPrice,
@@ -1057,7 +1057,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             }
 
             return HttpResult.Ok(orders, new SharedFuturesTriggerOrder(
-                ExchangeSymbolCache.ParseSymbol(_topicId, order.Symbol),
+                ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, order.Symbol),
                 order.Symbol,
                 order.ClientOrderId?.ToString() ?? order.StopOrderId.ToString(),
                 ParseOrderType(order.Type),
