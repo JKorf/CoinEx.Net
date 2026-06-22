@@ -37,7 +37,12 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result.Success)
                 return HttpResult.Fail<SharedBalance[]>(result);
 
-            return HttpResult.Ok(result, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray());
+            return HttpResult.Ok(result, result.Data.Select(x => 
+                new SharedBalance(
+                    SupportedTradingModes, 
+                    x.Asset,
+                    x.Available,
+                    x.Available + x.Frozen)).ToArray());
         }
 
         #endregion

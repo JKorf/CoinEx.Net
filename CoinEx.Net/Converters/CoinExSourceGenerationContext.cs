@@ -1,6 +1,7 @@
 using CoinEx.Net.Objects.Internal;
 using CoinEx.Net.Objects.Models.V2;
 using CoinEx.Net.Objects.Sockets.V2;
+using CryptoExchange.Net.Objects;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -152,6 +153,8 @@ namespace CoinEx.Net.Converters
     [JsonSerializable(typeof(decimal))]
     [JsonSerializable(typeof(DateTime))]
     [JsonSerializable(typeof(DateTime?))]
+    [JsonSerializable(typeof(Parameters))]
+    [JsonSerializable(typeof(Parameters[]))]
     internal partial class CoinExSourceGenerationContext : JsonSerializerContext
     {
     }

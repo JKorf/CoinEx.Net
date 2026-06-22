@@ -264,7 +264,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 if (!result.Success)
                 return HttpResult.Fail<SharedBalance[]>(result);
 
-                return HttpResult.Ok(result, result.Data.Select(x => new SharedBalance(x.Asset, x.Available, x.Available + x.Frozen)).ToArray());
+                return HttpResult.Ok(result, result.Data.Select(x => 
+                    new SharedBalance(
+                        SupportedTradingModes, 
+                        x.Asset,
+                        x.Available, 
+                        x.Available + x.Frozen)).ToArray());
             }
             else
             {
@@ -275,8 +280,20 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 var resultList = new List<SharedBalance>();
                 foreach(var item in result.Data)
                 {
-                    resultList.Add(new SharedBalance(item.BaseAsset, item.Available.BaseAsset, item.Available.BaseAsset + item.Frozen.BaseAsset) { IsolatedMarginSymbol = item.MarginAccount });
-                    resultList.Add(new SharedBalance(item.QuoteAsset, item.Available.QuoteAsset, item.Available.QuoteAsset + item.Frozen.QuoteAsset) { IsolatedMarginSymbol = item.MarginAccount });
+                    resultList.Add(
+                        new SharedBalance(
+                            SupportedTradingModes,
+                            item.BaseAsset, 
+                            item.Available.BaseAsset,
+                            item.Available.BaseAsset + item.Frozen.BaseAsset)
+                        { IsolatedMarginSymbol = item.MarginAccount });
+                    resultList.Add(
+                        new SharedBalance(
+                            SupportedTradingModes,
+                            item.QuoteAsset,
+                            item.Available.QuoteAsset,
+                            item.Available.QuoteAsset + item.Frozen.QuoteAsset)
+                        { IsolatedMarginSymbol = item.MarginAccount });
                 }
 
                 return HttpResult.Ok(result, resultList.ToArray());
