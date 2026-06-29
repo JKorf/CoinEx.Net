@@ -174,7 +174,7 @@ namespace CoinEx.Net.UnitTests
             await tester.ValidateAsync(client => client.FuturesApi.Trading.GetAutoSettlementHistoryAsync("ETHUSDT", 1), "GetAutoSettlementHistory");
         }
 
-        private bool IsAuthenticated(WebCallResult result)
+        private bool IsAuthenticated(IHttpResult result)
         {
             return result.RequestHeaders.Any(x => x.Key == "X-COINEX-KEY");
         }

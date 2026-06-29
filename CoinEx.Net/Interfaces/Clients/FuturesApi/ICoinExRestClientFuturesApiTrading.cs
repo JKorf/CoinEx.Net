@@ -27,7 +27,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="stpMode">["<c>stp_mode</c>"] Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExFuturesOrder>> PlaceOrderAsync(
+        Task<HttpResult<CoinExFuturesOrder>> PlaceOrderAsync(
             string symbol,
             OrderSide side,
             OrderTypeV2 type,
@@ -54,7 +54,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="stpMode">["<c>stp_mode</c>"] Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExStopId>> PlaceStopOrderAsync(
+        Task<HttpResult<CoinExStopId>> PlaceStopOrderAsync(
             string symbol,
             OrderSide side,
             OrderTypeV2 type,
@@ -74,7 +74,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="requests">["<c>orders</c>"] Orders to place</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CallResult<CoinExFuturesOrder>[]>> PlaceMultipleOrdersAsync(
+        Task<HttpResult<CallResult<CoinExFuturesOrder>[]>> PlaceMultipleOrdersAsync(
             IEnumerable<CoinExFuturesPlaceOrderRequest> requests,
             CancellationToken ct = default);
 
@@ -85,7 +85,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="requests">["<c>orders</c>"] Stop orders to place</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CallResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
+        Task<HttpResult<CallResult<CoinExStopId>[]>> PlaceMultipleStopOrdersAsync(
             IEnumerable<CoinExFuturesPlaceStopOrderRequest> requests,
             CancellationToken ct = default);
 
@@ -97,7 +97,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="orderId">["<c>order_id</c>"] Order id</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExFuturesOrder>> GetOrderAsync(string symbol, long orderId, CancellationToken ct = default);
+        Task<HttpResult<CoinExFuturesOrder>> GetOrderAsync(string symbol, long orderId, CancellationToken ct = default);
 
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExFuturesOrder>>> GetOpenOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExFuturesOrder>>> GetOpenOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get a list of closed orders. Note that orders canceled without having any trades will not be returned
@@ -124,7 +124,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExFuturesOrder>>> GetClosedOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExFuturesOrder>>> GetClosedOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get a list of open stop orders
@@ -137,7 +137,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetOpenStopOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExStopOrder>>> GetOpenStopOrdersAsync(string? symbol = null, OrderSide? side = null, string? clientOrderId = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get a list of closed stop orders. Note that orders canceled without having any trades will not be returned
@@ -149,7 +149,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(string? symbol = null, OrderSide? side = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExStopOrder>>> GetClosedStopOrdersAsync(string? symbol = null, OrderSide? side = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Edit an active order
@@ -161,7 +161,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="price">["<c>price</c>"] New price</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExFuturesOrder>> EditOrderAsync(
+        Task<HttpResult<CoinExFuturesOrder>> EditOrderAsync(
             string symbol,
             long orderId,
             decimal quantity,
@@ -179,7 +179,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="triggerPrice">["<c>trigger_price</c>"] New trigger price</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExStopId>> EditStopOrderAsync(
+        Task<HttpResult<CoinExStopId>> EditStopOrderAsync(
             string symbol,
             long stopOrderId,
             decimal quantity,
@@ -195,7 +195,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="side">["<c>side</c>"] Only cancel a specific order side</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult> CancelAllOrdersAsync(string symbol, OrderSide? side = null, CancellationToken ct = default);
+        Task<HttpResult> CancelAllOrdersAsync(string symbol, OrderSide? side = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active order
@@ -205,7 +205,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="orderId">["<c>order_id</c>"] Id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExFuturesOrder>> CancelOrderAsync(string symbol, long orderId, CancellationToken ct = default);
+        Task<HttpResult<CoinExFuturesOrder>> CancelOrderAsync(string symbol, long orderId, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active stop order
@@ -215,7 +215,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="stopOrderId">["<c>stop_id</c>"] Id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExStopOrder>> CancelStopOrderAsync(string symbol, long stopOrderId, CancellationToken ct = default);
+        Task<HttpResult<CoinExStopOrder>> CancelStopOrderAsync(string symbol, long stopOrderId, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active order by its client order id
@@ -225,7 +225,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="clientOrderId">["<c>client_id</c>"] Client order id of order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExFuturesOrder>[]>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default);
+        Task<HttpResult<CoinExBatchResult<CoinExFuturesOrder>[]>> CancelOrderByClientOrderIdAsync(string symbol, string clientOrderId, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active stop order by its client order id
@@ -235,7 +235,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="clientStopOrderId">["<c>client_id</c>"] Client order id of stop order to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExStopOrder>[]>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default);
+        Task<HttpResult<CoinExBatchResult<CoinExStopOrder>[]>> CancelStopOrderByClientOrderIdAsync(string symbol, string clientStopOrderId, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel multiple orders
@@ -245,7 +245,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="orderIds">["<c>order_ids</c>"] Ids of orders to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExFuturesOrder>[]>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
+        Task<HttpResult<CoinExBatchResult<CoinExFuturesOrder>[]>> CancelOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel multiple stop orders
@@ -255,7 +255,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="orderIds">["<c>stop_ids</c>"] Ids of stop orders to cancel</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExBatchResult<CoinExStopOrder>[]>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
+        Task<HttpResult<CoinExBatchResult<CoinExStopOrder>[]>> CancelStopOrdersAsync(string symbol, IEnumerable<long> orderIds, CancellationToken ct = default);
 
         /// <summary>
         /// Get trade list
@@ -269,7 +269,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetUserTradesAsync(string symbol, OrderSide? side = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExUserTrade>>> GetUserTradesAsync(string symbol, OrderSide? side = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get trades for a specific order
@@ -281,7 +281,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExUserTrade>>> GetOrderTradesAsync(string symbol, long orderId, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExUserTrade>>> GetOrderTradesAsync(string symbol, long orderId, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get user positions
@@ -292,7 +292,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExPosition>>> GetPositionsAsync(string? symbol = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExPosition>>> GetPositionsAsync(string? symbol = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get position history
@@ -305,7 +305,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExPosition>>> GetPositionHistoryAsync(string? symbol = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExPosition>>> GetPositionHistoryAsync(string? symbol = null, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// (partially) Close an open position
@@ -319,7 +319,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="hidden">["<c>is_hide</c>"] Is hidden</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExFuturesOrder>> ClosePositionAsync(string symbol, OrderTypeV2 orderType, decimal? price = null, decimal? quantity = null, string? clientOrderId = null, bool? hidden = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExFuturesOrder>> ClosePositionAsync(string symbol, OrderTypeV2 orderType, decimal? price = null, decimal? quantity = null, string? clientOrderId = null, bool? hidden = null, CancellationToken ct = default);
 
         /// <summary>
         /// Adjust the margin for a position. Positive quantity for increasing, negative quantity for decreasing
@@ -329,7 +329,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="quantity">["<c>amount</c>"] Quantity to increase (positive number) or decrease (negative number)</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPosition>> AdjustPositionMarginAsync(string symbol, decimal quantity, CancellationToken ct = default);
+        Task<HttpResult<CoinExPosition>> AdjustPositionMarginAsync(string symbol, decimal quantity, CancellationToken ct = default);
 
         /// <summary>
         /// Set stop loss for a position
@@ -341,7 +341,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="stopLossQuantity">["<c>stop_loss_amount</c>"] Stop loss quantity, null for full position</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, decimal? stopLossQuantity = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPosition>> SetStopLossAsync(string symbol, PriceType stopLossType, decimal stopLossPrice, decimal? stopLossQuantity = null, CancellationToken ct = default);
 
         /// <summary>
         /// Edit stop loss order
@@ -353,7 +353,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="stopLossPrice">["<c>stop_loss_price</c>"] Stop loss price</param>
         /// <param name="stopLossQuantity">["<c>stop_loss_amount</c>"] Stop loss quantity</param>
         /// <param name="ct">Cancelation Token</param>
-        Task<WebCallResult<CoinExPosition>> EditStopLossAsync(string symbol, long stopLossOrderId, PriceType? stopLossType = null, decimal? stopLossPrice = null, decimal? stopLossQuantity = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPosition>> EditStopLossAsync(string symbol, long stopLossOrderId, PriceType? stopLossType = null, decimal? stopLossPrice = null, decimal? stopLossQuantity = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active position stop loss
@@ -362,7 +362,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
         /// <param name="stopLossOrderId">["<c>stop_loss_id</c>"] Stop loss order id. If not not provided all stop losses are canceled</param>
         /// <param name="ct">Cancelation Token</param>
-        Task<WebCallResult<CoinExPosition>> CancelStopLossAsync(string symbol, long? stopLossOrderId = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPosition>> CancelStopLossAsync(string symbol, long? stopLossOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Set take profit for a position
@@ -373,7 +373,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="takeProfitPrice">["<c>take_profit_price</c>"] Take profit price</param>
         /// <param name="takeProfitQuantity">["<c>take_profit_amount</c>"] Take profit quantity, null for full position</param>
         /// <param name="ct">Cancelation Token</param>
-        Task<WebCallResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, decimal? takeProfitQuantity = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPosition>> SetTakeProfitAsync(string symbol, PriceType takeProfitType, decimal takeProfitPrice, decimal? takeProfitQuantity = null, CancellationToken ct = default);
 
         /// <summary>
         /// Edit take profit order
@@ -385,7 +385,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="takeProfitPrice">["<c>take_profit_price</c>"] Take profit price</param>
         /// <param name="takeProfitQuantity">["<c>take_profit_amount</c>"] Take profit quantity</param>
         /// <param name="ct">Cancelation Token</param>
-        Task<WebCallResult<CoinExPosition>> EditTakeProfitAsync(string symbol, long takeProfitOrderId, PriceType? takeProfitType = null, decimal? takeProfitPrice = null, decimal? takeProfitQuantity = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPosition>> EditTakeProfitAsync(string symbol, long takeProfitOrderId, PriceType? takeProfitType = null, decimal? takeProfitPrice = null, decimal? takeProfitQuantity = null, CancellationToken ct = default);
 
         /// <summary>
         /// Cancel an active position take profit
@@ -394,7 +394,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="symbol">["<c>market</c>"] Symbol, for example `ETHUSDT`</param>
         /// <param name="takeProfitOrderId">["<c>take_profit_id</c>"] Take profit order id. If not not provided all take profits are canceled</param>
         /// <param name="ct">Cancelation Token</param>
-        Task<WebCallResult<CoinExPosition>> CancelTakeProfitAsync(string symbol, long? takeProfitOrderId = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPosition>> CancelTakeProfitAsync(string symbol, long? takeProfitOrderId = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get margin adjustment history
@@ -408,7 +408,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExPositionMargin>>> GetMarginHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExPositionMargin>>> GetMarginHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get funding rate history
@@ -422,7 +422,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExPositionFundingRate>>> GetFundingRateHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExPositionFundingRate>>> GetFundingRateHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get auto deleveraging history
@@ -436,7 +436,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExPositionAdl>>> GetAutoDeleverageHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExPositionAdl>>> GetAutoDeleverageHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get position settlement history
@@ -450,6 +450,6 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="pageSize">["<c>limit</c>"] Page size</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<WebCallResult<CoinExPaginated<CoinExPositionSettlement>>> GetAutoSettlementHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExPaginated<CoinExPositionSettlement>>> GetAutoSettlementHistoryAsync(string symbol, long positionId, DateTime? startTime = null, DateTime? endTime = null, int? page = null, int? pageSize = null, CancellationToken ct = default);
     }
 }

@@ -26,7 +26,7 @@ namespace CoinEx.Net.UnitTests
                 OutputOriginalData = true
             }), logger);
 
-            var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/SpotApi", "wss://socket.coinex.com", "data");
+            var tester = new SocketSubscriptionValidator<CoinExSocketClient>(client, "Subscriptions/SpotApi", "wss://socket.coinex.com/v2/spot", "data");
             await tester.ValidateConcurrentAsync<CoinExTrade[]>(
                 (client, handler) => client.SpotApiV2.SubscribeToTradeUpdatesAsync("ETHUSDT", handler),
                 (client, handler) => client.SpotApiV2.SubscribeToTradeUpdatesAsync("BTCUSDT", handler),

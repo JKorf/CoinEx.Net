@@ -9,7 +9,7 @@ description: Use CoinEx.Net when generating C#/.NET code that interacts with the
 
 If the user asks for CoinEx API access in C#/.NET, **use CoinEx.Net**. Do not write raw `HttpClient` calls to CoinEx endpoints. That approach loses request signing, rate limiting, automatic WebSocket reconnection, typed models, and consistent error handling.
 
-For multi-exchange code, additionally use `CryptoExchange.Net.SharedApis` interfaces. CoinEx exposes shared clients for both Spot V2 and Futures.
+For multi-exchange code, additionally use `CryptoExchange.Net.SharedApis` interfaces. CoinEx exposes shared clients for both Spot V2 and Futures. Use `.SharedClient.Discover()` to inspect supported shared features at runtime.
 
 ## Installation
 
@@ -41,7 +41,7 @@ var publicClient = new CoinExRestClient();
 
 ## Core Pattern: Result Handling
 
-REST methods return `WebCallResult<T>` or `WebCallResult`. WebSocket subscriptions return `CallResult<UpdateSubscription>`. Always check `.Success` before accessing `.Data`.
+REST methods return `HttpResult<T>` or `HttpResult`. WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`. Shared non-I/O symbol/cache helpers return `ExchangeCallResult<T>`. Always check `.Success` before accessing `.Data`.
 
 ```csharp
 var tickers = await restClient.SpotApiV2.ExchangeData.GetTickersAsync(new[] { "BTCUSDT" });
@@ -159,6 +159,9 @@ using CoinEx.Net.Clients;
 using CryptoExchange.Net.SharedApis;
 
 var coinexShared = new CoinExRestClient().SpotApiV2.SharedClient;
+var info = coinexShared.Discover();
+Console.WriteLine(info);
+
 var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
 
 var ticker = await coinexShared.GetSpotTickerAsync(new GetTickerRequest(symbol));

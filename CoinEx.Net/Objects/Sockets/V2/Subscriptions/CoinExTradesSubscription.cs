@@ -30,7 +30,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 
             IndividualSubscriptionCount = Math.Max(1, symbols.Length);
 
-            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", symbols, DoHandleRouteMessage);
+            MessageRouter = MessageRouter.CreateForEvent<CoinExSocketUpdate<CoinExTradeWrapper>>("deals.update", symbols, DoHandleRouteMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
@@ -38,7 +38,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
             if (_symbols?.Any() == true)
             {
                 if (!_symbols.Contains(message.Data.Symbol))
-                    return CallResult.SuccessResult;
+                    return CallResult.Ok();
             }
 
             var timestamp = message.Data.Trades.Max(x => x.Timestamp);
@@ -49,7 +49,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         public CallResult DoHandleRouteMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<CoinExTradeWrapper> message)
@@ -63,7 +63,7 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
                 .WithSymbol(message.Data.Symbol)
                 .WithDataTimestamp(timestamp, _client.GetTimeOffset())
                 .WithUpdateType(ConnectionInvocations == 1 ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
         protected override Query? GetSubQuery(SocketConnection connection)

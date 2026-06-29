@@ -22,39 +22,39 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExTradeFee>> GetTradingFeesAsync(string symbol, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExTradeFee>> GetTradingFeesAsync(string symbol, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol }
             };
-            parameters.AddEnum("market_type", AccountType.Futures);
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/account/trade-fee-rate", CoinExExchange.RateLimiter.CoinExRestSpotAccount, 1, true);
+            parameters.Add("market_type", AccountType.Futures);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/account/trade-fee-rate", CoinExExchange.RateLimiter.CoinExRestSpotAccount, 1, true);
             return await _baseClient.SendAsync<CoinExTradeFee>(request, parameters, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default)
+        public async Task<HttpResult<CoinExFuturesBalance[]>> GetBalancesAsync(CancellationToken ct = default)
         {
-            var request = _definitions.GetOrCreate(HttpMethod.Get, "v2/assets/futures/balance", CoinExExchange.RateLimiter.CoinExRestFuturesAccount, 1, true);
+            var request = _definitions.GetOrCreate(HttpMethod.Get, _baseClient.BaseAddress, "v2/assets/futures/balance", CoinExExchange.RateLimiter.CoinExRestFuturesAccount, 1, true);
             var result = await _baseClient.SendAsync<CoinExFuturesBalance[]>(request, null, ct).ConfigureAwait(false);
-            if (result && result.Data == null)
-                return result.As<CoinExFuturesBalance[]>(Array.Empty<CoinExFuturesBalance>());
+            if (result.Success && result.Data == null)
+                return HttpResult.Ok<CoinExFuturesBalance[]>(result, Array.Empty<CoinExFuturesBalance>());
 
             return result;
         }
 
         /// <inheritdoc />
-        public async Task<WebCallResult<CoinExLeverage>> SetLeverageAsync(string symbol, MarginMode mode, int leverage, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExLeverage>> SetLeverageAsync(string symbol, MarginMode mode, int leverage, CancellationToken ct = default)
         {
-            var parameters = new ParameterCollection()
+            var parameters = new Parameters(CoinExExchange._parameterSerializationSettings)
             {
                 { "market", symbol },
                 { "leverage", leverage }
             };
-            parameters.AddEnum("market_Type", AccountType.Futures);
-            parameters.AddEnum("margin_mode", mode);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "v2/futures/adjust-position-leverage", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
+            parameters.Add("market_Type", AccountType.Futures);
+            parameters.Add("margin_mode", mode);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "v2/futures/adjust-position-leverage", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
             return await _baseClient.SendAsync<CoinExLeverage>(request, parameters, ct).ConfigureAwait(false);
         }
     }

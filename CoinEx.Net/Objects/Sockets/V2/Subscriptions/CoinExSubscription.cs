@@ -31,13 +31,16 @@ namespace CoinEx.Net.Objects.Sockets.V2.Subscriptions
 
             IndividualSubscriptionCount = Math.Max(1, symbols?.Length ?? 1);
 
-            MessageRouter = MessageRouter.CreateWithOptionalTopicFilters<CoinExSocketUpdate<T>>(_topic + ".update", symbols, DoHandleMessage);
+            if (symbols == null || symbols.Length == 0)
+                MessageRouter = MessageRouter.CreateForEvent<CoinExSocketUpdate<T>>(_topic + ".update", DoHandleMessage);
+            else
+                MessageRouter = MessageRouter.CreateForEvent<CoinExSocketUpdate<T>>(_topic + ".update", symbols, DoHandleMessage);
         }
 
         public CallResult DoHandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketUpdate<T> message)
         {
             _handler.Invoke(receiveTime, originalData, ConnectionInvocations, message);
-            return CallResult.SuccessResult;
+            return CallResult.Ok();
         }
 
 

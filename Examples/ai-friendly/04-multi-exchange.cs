@@ -1,6 +1,7 @@
 // 04-multi-exchange.cs
 //
-// Demonstrates: writing exchange-agnostic code using CryptoExchange.Net.SharedApis.
+// Demonstrates: writing exchange-agnostic code using CryptoExchange.Net.SharedApis
+// with capability discovery and shared REST/WebSocket calls.
 // Same code works against CoinEx, Binance, OKX, Bybit, Kraken, and other
 // exchanges from the CryptoExchange.Net family.
 //
@@ -18,6 +19,8 @@ using CryptoExchange.Net.SharedApis;
 // IBalanceRestClient, etc. - a common abstraction across exchanges.
 
 ISpotTickerRestClient coinexShared = new CoinExRestClient().SpotApiV2.SharedClient;
+var info = coinexShared.Discover();
+Console.WriteLine(info);
 
 // To add Binance or OKX, install the package and:
 //   ISpotTickerRestClient binanceShared = new BinanceRestClient().SpotApi.SharedClient;

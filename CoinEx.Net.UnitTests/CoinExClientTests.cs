@@ -34,7 +34,7 @@ namespace CoinEx.Net.UnitTests
                     return headers["X-COINEX-SIGN"].ToString();
                 },
                 "444976F4F21D422AB7091B47D9201EB02A6614FF1F4C7B9F6CA57BFF632030A5",
-                new Dictionary<string, object>
+                new Parameters(CoinExExchange._parameterSerializationSettings)
                 {
                     { "market", "BTCUSDT" },
                     { "market_type", "SPOT" },
@@ -42,8 +42,7 @@ namespace CoinEx.Net.UnitTests
                     { "page", "1" },
                     { "limit", "10" },
                 },
-                time: DateTimeConverter.ParseFromDouble(1700490704564),
-                disableOrdering: true);
+                time: DateTimeConverter.ParseFromDouble(1700490704564));
         }
 
         [Test]
@@ -64,7 +63,7 @@ namespace CoinEx.Net.UnitTests
                     return headers["X-COINEX-SIGN"].ToString();
                 },
                 "5128936CEDB75A512991A47BCCB0A78F6D9F6F540C07A17AE68D31F16E06A17F",
-                new Dictionary<string, object>
+                new Parameters(CoinExExchange._parameterSerializationSettings)
                 {
                     { "market", "BTCUSDT" },
                     { "market_type", "SPOT" },
@@ -72,8 +71,7 @@ namespace CoinEx.Net.UnitTests
                     { "page", "1" },
                     { "limit", "10" },
                 },
-                time: DateTimeConverter.ParseFromDouble(1700490704564),
-                disableOrdering: true);
+                time: DateTimeConverter.ParseFromDouble(1700490704564));
         }
 
         [Test]

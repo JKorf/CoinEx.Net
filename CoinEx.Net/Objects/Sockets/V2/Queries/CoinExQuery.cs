@@ -24,15 +24,15 @@ namespace CoinEx.Net.Objects.Sockets.V2.Queries
             _client = client;
             var id = ((CoinExSocketRequest)Request).Id.ToString();
 
-            MessageRouter = MessageRouter.CreateWithoutTopicFilter<CoinExSocketResponse>(id, HandleMessage);
+            MessageRouter = MessageRouter.CreateForQuery<CoinExSocketResponse>(id, HandleMessage);
         }
 
         public CallResult<CoinExSocketResponse> HandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, CoinExSocketResponse message)
         {
             if (message.Code != 0)
-                return new CallResult<CoinExSocketResponse>(new ServerError(message.Code, _client.GetErrorInfo(message.Code, message.Message)));
+                return CallResult<CoinExSocketResponse>.Fail(new ServerError(message.Code, _client.GetErrorInfo(message.Code, message.Message)), originalData);
 
-            return new CallResult<CoinExSocketResponse>(message, originalData, null);
+            return CallResult<CoinExSocketResponse>.Ok(message, originalData);
         }
     }
 }
