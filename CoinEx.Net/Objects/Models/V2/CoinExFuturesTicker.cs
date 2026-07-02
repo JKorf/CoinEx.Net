@@ -17,5 +17,10 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("mark_price")]
         public decimal MarkPrice { get; set; }
+        /// <summary>
+        /// ["<c>open_interest_volume</c>"] Open interest
+        /// </summary>
+        [JsonPropertyName("open_interest_volume")]
+        public decimal OpenInterest { get; set; }
     }
 }
