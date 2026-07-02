@@ -31,6 +31,12 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("risk_rate")]
         public decimal? RiskRate { get; set; }
+        // Seems to be a typo in the API
+        [JsonInclude, JsonPropertyName("rik_rate")]
+        internal decimal? RikRate
+        {
+            set => RiskRate = value;
+        }
         /// <summary>
         /// ["<c>liq_price</c>"] Current liquidation price
         /// </summary>
