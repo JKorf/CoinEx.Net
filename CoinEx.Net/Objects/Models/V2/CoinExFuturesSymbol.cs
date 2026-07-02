@@ -81,5 +81,20 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("tick_size")]
         public decimal TickSize { get; set; }
+        /// <summary>
+        /// ["<c>is_api_trading_available</c>"] Is API trading available
+        /// </summary>
+        [JsonPropertyName("is_api_trading_available")]
+        public bool ApiTradingAvailable { get; set; }
+        /// <summary>
+        /// ["<c>status</c>"] Symbol status
+        /// </summary>
+        [JsonPropertyName("status")]
+        public SymbolStatus Status { get; set; }
+        /// <summary>
+        /// ["<c>delisted_at</c>"] Delist timestamp
+        /// </summary>
+        [JsonPropertyName("delisted_at")]
+        public DateTime? DelistTime { get; set; }
     }
 }

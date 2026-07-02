@@ -1,4 +1,6 @@
+using CoinEx.Net.Enums;
 using CryptoExchange.Net.Converters.SystemTextJson;
+using System;
 using System.Text.Json.Serialization;
 
 namespace CoinEx.Net.Objects.Models.V2
@@ -59,5 +61,25 @@ namespace CoinEx.Net.Objects.Models.V2
         /// </summary>
         [JsonPropertyName("is_margin_available")]
         public bool MarginTradingAvailable { get; set; }
+        /// <summary>
+        /// ["<c>is_pre_market_trading_available</c>"] Is pre-market trading
+        /// </summary>
+        [JsonPropertyName("is_pre_market_trading_available")]
+        public bool PreMarketTradingAvailable { get; set; }
+        /// <summary>
+        /// ["<c>is_api_trading_available</c>"] Is API trading available
+        /// </summary>
+        [JsonPropertyName("is_api_trading_available")]
+        public bool ApiTradingAvailable { get; set; }
+        /// <summary>
+        /// ["<c>status</c>"] Symbol status
+        /// </summary>
+        [JsonPropertyName("status")]
+        public SymbolStatus Status { get; set; }
+        /// <summary>
+        /// ["<c>delisted_at</c>"] Delist timestamp
+        /// </summary>
+        [JsonPropertyName("delisted_at")]
+        public DateTime? DelistTime { get; set; }
     }
 }
