@@ -98,6 +98,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         #region Spot Symbol client
 
+        SharedSymbolCatalog? ISpotSymbolRestClient.SpotSymbolCatalog => ExchangeSymbolCache.GetSymbolCatalog(_topicId, EnvironmentName, null);
         GetSpotSymbolsOptions ISpotSymbolRestClient.GetSpotSymbolsOptions { get; } = new GetSpotSymbolsOptions(_exchangeName, false);
         async Task<HttpResult<SharedSpotSymbol[]>> ISpotSymbolRestClient.GetSpotSymbolsAsync(GetSymbolsRequest request, CancellationToken ct)
         {
@@ -105,20 +106,65 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (validationError != null)
                 return HttpResult.Fail<SharedSpotSymbol[]>(Exchange, validationError);
 
-            var result = await ExchangeData.GetSymbolsAsync(ct: ct).ConfigureAwait(false);
-            if (!result.Success)
-                return HttpResult.Fail<SharedSpotSymbol[]>(result);
+            var symbolsTask = ExchangeData.GetSymbolsAsync(ct: ct);
+            var assetsTask = ExchangeData.GetAssetsAsync(ct: ct);
+            await Task.WhenAll(symbolsTask, assetsTask).ConfigureAwait(false);
+            var symbolsResult = symbolsTask.Result;
+            var assetsResult = assetsTask.Result;
+            if (!symbolsResult.Success)
+                return HttpResult.Fail<SharedSpotSymbol[]>(symbolsResult);
+            if (!assetsResult.Success)
+                return HttpResult.Fail<SharedSpotSymbol[]>(assetsResult);
 
-            var response = HttpResult.Ok(result, result.Data.Select(s => new SharedSpotSymbol(s.BaseAsset, s.QuoteAsset, s.Name, true)
+            var data = symbolsResult.Data
+                .Select(x => ParseSymbol(x, assetsResult.Data))
+                .ToArray();
+
+            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, data);
+            return HttpResult.Ok(symbolsResult, SharedUtils.ApplySymbolFilter(data, request));
+        }
+
+        private SharedSpotSymbol ParseSymbol(CoinExSymbol s, CoinExAsset[] assets)
+        {
+            var result = new SharedSpotSymbol(s.BaseAsset, s.QuoteAsset, s.Name, true)
             {
                 MinTradeQuantity = s.MinOrderQuantity,
                 PriceDecimals = s.PricePrecision,
-                QuantityDecimals = s.QuantityPrecision
-            }).ToArray());
+                QuantityDecimals = s.QuantityPrecision,
+                DisplayName = s.Name
+            };
 
-            ExchangeSymbolCache.UpdateSymbolInfo(_topicId, EnvironmentName, null, response.Data!);
-            return response;
+            if (LibraryHelpers.IsCommodity(result.BaseAsset))
+            {
+                result.BaseAssetType = SharedAssetType.TradFi;
+                result.BaseAssetSubType = SharedAssetSubType.Commodity;
+            }
+            else
+            {
+                var baseAsset = assets.SingleOrDefault(x => x.ShortName == s.BaseAsset);
+                if (baseAsset != null)
+                {
+                    if (baseAsset.FullName.Contains("xStock"))
+                    {
+                        result.BaseAssetType = SharedAssetType.TradFi;
+                        result.BaseAssetSubType = SharedAssetSubType.Stock;
+                    }
+                    else
+                    {
+                        result.BaseAssetType = SharedAssetType.Crypto;
+                        if (LibraryHelpers.IsStableCoin(result.BaseAsset))
+                            result.BaseAssetSubType = SharedAssetSubType.StableCoin;
+                    }
+                }
+            }
+
+            result.QuoteAssetType = SharedAssetType.Crypto;
+            if (LibraryHelpers.IsStableCoin(result.QuoteAsset))
+                result.QuoteAssetSubType = SharedAssetSubType.StableCoin;
+
+            return result;
         }
+
         async Task<ExchangeCallResult<SharedSymbol[]>> ISpotSymbolRestClient.GetSpotSymbolsForBaseAssetAsync(string baseAsset)
         {
             if (!ExchangeSymbolCache.HasCached(_topicId, EnvironmentName, null))
