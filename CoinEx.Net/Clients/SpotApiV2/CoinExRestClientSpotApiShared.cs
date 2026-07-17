@@ -147,7 +147,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     if (baseAsset.FullName.Contains("xStock"))
                     {
                         result.BaseAssetType = SharedAssetType.TradFi;
-                        result.BaseAssetSubType = SharedAssetSubType.Stock;
+                        result.BaseAssetSubType = SharedAssetSubType.Equity;
                     }
                     else
                     {
