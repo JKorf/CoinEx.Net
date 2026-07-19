@@ -171,6 +171,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 QuantityDecimals = s.QuantityPrecision,
                 PriceDecimals = s.PricePrecision,
                 ContractSize = 1,
+                DisplayName = s.Symbol,
                 QuoteAssetType = SharedAssetType.Crypto,
                 QuoteAssetSubType = SharedAssetSubType.StableCoin
             };
