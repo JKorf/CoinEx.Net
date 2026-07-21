@@ -84,6 +84,8 @@ var ticker = await shared.GetSpotTickerAsync(
     new GetTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")));
 ```
 
+Shared `ISpotSymbolRestClient` and `IFuturesSymbolRestClient` results include `DisplayName` and base/quote asset type/subtype metadata. Use those fields in `GetSymbolsRequest` to filter symbols. Their `SpotSymbolCatalog` / `FuturesSymbolCatalog` properties are populated only after the corresponding `Get*SymbolsAsync` call succeeds.
+
 ## Hard rules
 
 - Never write raw `HttpClient` to CoinEx endpoints

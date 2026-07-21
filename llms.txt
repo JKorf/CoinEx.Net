@@ -2,7 +2,7 @@
 
 > Strongly typed .NET client library for the CoinEx REST and WebSocket APIs. Supports CoinEx Spot V2, margin account operations, Futures, account/asset operations, typed market data, order placement, WebSocket subscriptions, local order books, and shared multi-exchange abstractions through CryptoExchange.Net.
 
-CoinEx.Net is the C# client for CoinEx in the CryptoExchange.Net ecosystem. REST methods return `HttpResult<T>` / `HttpResult`, WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`, and shared symbol/cache helpers return `ExchangeCallResult<T>`. It also provides typed REST and WebSocket clients, automatic WebSocket reconnection, client-side rate limiting, native AOT support, and shared API interfaces for exchange-agnostic applications. Current version: 10.10.0. Targets netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
+CoinEx.Net is the C# client for CoinEx in the CryptoExchange.Net ecosystem. REST methods return `HttpResult<T>` / `HttpResult`, WebSocket subscriptions return `WebSocketResult<UpdateSubscription>`, and shared symbol/cache helpers return `ExchangeCallResult<T>`. It also provides typed REST and WebSocket clients, automatic WebSocket reconnection, client-side rate limiting, native AOT support, and shared API interfaces for exchange-agnostic applications. Shared spot and futures symbols expose catalogs, display names, and asset type/subtype metadata for filtering and discovery. Current version: 11.2.0. Targets netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
 
 ## Documentation
 

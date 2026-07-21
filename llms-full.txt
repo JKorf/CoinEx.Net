@@ -4,8 +4,8 @@
 
 CoinEx.Net is a strongly typed .NET client library for the CoinEx REST and WebSocket APIs. It is part of the CryptoExchange.Net ecosystem and uses the same result, shared API, logging, rate limiting, dependency injection, and socket subscription patterns as the other JKorf exchange libraries.
 
-Current package version in this repository: 10.10.0.
-CryptoExchange.Net dependency: 11.1.0.
+Current package version in this repository: 11.2.0.
+CryptoExchange.Net dependency: 12.2.0.
 Target frameworks: netstandard2.0, netstandard2.1, net8.0, net9.0, net10.0.
 Native AOT: supported on compatible .NET targets.
 
@@ -36,6 +36,7 @@ Primary documentation:
 - For spot trading methods, pass `AccountType.Spot` or `AccountType.Margin`.
 - Use `OrderTypeV2` for spot and futures order type values.
 - For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each API surface's `.SharedClient` and call `.Discover()` to inspect supported shared features.
+- Shared spot/futures symbol results include display names and asset type/subtype metadata. `GetSymbolsRequest` supports filtering on those classifications.
 
 ## Installation
 
@@ -438,6 +439,28 @@ if (!ticker.Success)
 
 Console.WriteLine(ticker.Data.LastPrice);
 ```
+
+Shared symbol clients support asset classification filters and expose a catalog after a successful symbol request:
+
+```csharp
+ISpotSymbolRestClient symbolClient = new CoinExRestClient().SpotApiV2.SharedClient;
+var symbols = await symbolClient.GetSpotSymbolsAsync(new GetSymbolsRequest(
+    baseAssetType: SharedAssetType.TradFi,
+    baseAssetSubType: SharedAssetSubType.Equity));
+
+if (!symbols.Success)
+{
+    Console.WriteLine(symbols.Error);
+    return;
+}
+
+foreach (var item in symbols.Data)
+    Console.WriteLine($"{item.DisplayName}: {item.BaseAssetType}/{item.BaseAssetSubType}");
+
+var catalog = symbolClient.SpotSymbolCatalog;
+```
+
+`SpotSymbolCatalog` and `FuturesSymbolCatalog` are only available after `GetSpotSymbolsAsync` or `GetFuturesSymbolsAsync` has completed successfully. CoinEx populates `DisplayName`, `BaseAssetType`, `BaseAssetSubType`, `QuoteAssetType`, and `QuoteAssetSubType`, including crypto/stablecoin and recognized TradFi equity/commodity classifications.
 
 Shared WebSocket subscriptions return an `UpdateSubscription` in `.Data`. For shared interface variables, unsubscribe through the concrete socket client:
 

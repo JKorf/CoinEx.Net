@@ -162,6 +162,10 @@ Use this file to route common user intents to the correct CoinEx.Net client memb
 | Shared spot socket client | `new CoinExSocketClient().SpotApiV2.SharedClient` |
 | Shared futures socket client | `new CoinExSocketClient().FuturesApi.SharedClient` |
 | Discover shared capabilities | `client.SpotApiV2.SharedClient.Discover()` / `client.FuturesApi.SharedClient.Discover()` |
+| Get/filter shared spot symbols | `ISpotSymbolRestClient.GetSpotSymbolsAsync(new GetSymbolsRequest(...))` |
+| Get/filter shared futures symbols | `IFuturesSymbolRestClient.GetFuturesSymbolsAsync(new GetSymbolsRequest(...))` |
+| Read shared spot symbol catalog | `ISpotSymbolRestClient.SpotSymbolCatalog` after a successful `GetSpotSymbolsAsync` call |
+| Read shared futures symbol catalog | `IFuturesSymbolRestClient.FuturesSymbolCatalog` after a successful `GetFuturesSymbolsAsync` call |
 | Shared spot ticker REST | `ISpotTickerRestClient.GetSpotTickerAsync(new GetTickerRequest(symbol))` |
 | Shared futures ticker REST | `IFuturesTickerRestClient.GetFuturesTickerAsync(new GetTickerRequest(symbol))` |
 | Shared spot order REST | `ISpotOrderRestClient.PlaceSpotOrderAsync(...)` |
@@ -172,6 +176,8 @@ Use this file to route common user intents to the correct CoinEx.Net client memb
 | Shared order book socket | `IOrderBookSocketClient.SubscribeToOrderBookUpdatesAsync(...)` |
 
 Shared REST calls return `HttpResult<T>` / `HttpResult`. Shared socket subscriptions return `WebSocketResult<UpdateSubscription>`. Shared non-I/O symbol/cache helpers such as symbol support checks return `ExchangeCallResult<T>`.
+
+Shared spot and futures symbol results populate `DisplayName`, `BaseAssetType`, `BaseAssetSubType`, `QuoteAssetType`, and `QuoteAssetSubType`. `GetSymbolsRequest` can filter by those asset type/subtype fields; CoinEx classifies crypto/stablecoin assets and recognized TradFi equities/commodities.
 
 For shared socket subscriptions, keep the concrete socket client and unsubscribe with `await socketClient.UnsubscribeAsync(subscription.Data)`.
 

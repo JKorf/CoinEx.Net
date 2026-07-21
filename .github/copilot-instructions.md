@@ -47,7 +47,7 @@ Store the returned `UpdateSubscription` and unsubscribe on shutdown via `socketC
 
 ## Cross-exchange
 
-For code that needs to work across multiple exchanges, use `CryptoExchange.Net.SharedApis` interfaces accessed through `.SharedClient` properties. CoinEx exposes shared clients on `SpotApiV2` and `FuturesApi`.
+For code that needs to work across multiple exchanges, use `CryptoExchange.Net.SharedApis` interfaces accessed through `.SharedClient` properties. CoinEx exposes shared clients on `SpotApiV2` and `FuturesApi`. Shared spot/futures symbol results include display names and asset type/subtype metadata, which can be filtered through `GetSymbolsRequest`. Read `SpotSymbolCatalog` or `FuturesSymbolCatalog` only after the corresponding shared symbol request succeeds.
 
 ## Avoid
 

@@ -171,6 +171,8 @@ Console.WriteLine(ticker.Data.LastPrice);
 
 Available shared interfaces include ticker, symbol, order, balance, position, fee, order book, recent trade, kline, funding rate, leverage, deposit, withdrawal, transfer, and socket subscription interfaces depending on spot or futures support.
 
+The shared spot and futures symbol interfaces expose `SpotSymbolCatalog` and `FuturesSymbolCatalog`. Call `GetSpotSymbolsAsync` or `GetFuturesSymbolsAsync` successfully before reading the catalog. CoinEx shared symbol results include `DisplayName` plus base/quote asset type and subtype metadata, and `GetSymbolsRequest` can filter on those asset classifications.
+
 ## Dependency Injection
 
 ```csharp
