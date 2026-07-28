@@ -30,10 +30,17 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (validationError != null)
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
-            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.ToType(update.Data.Select(x => new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
-            {
-                QuoteVolume = x.Value
-            }).ToArray())), ct).ConfigureAwait(false);
+            var result = await SubscribeToTickerUpdatesAsync(update => handler(update.ToType(update.Data.Select(x => 
+                new SharedSpotTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    x.Symbol, 
+                    x.LastPrice,
+                    x.HighPrice,
+                    x.LowPrice,
+                    new SharedOrderQuantity(x.Volume, x.Value), 
+                    x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
+                {
+                }).ToArray())), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -56,9 +63,15 @@ namespace CoinEx.Net.Clients.FuturesApi
             {
                 foreach (var ticker in update.Data)
                 {
-                    handler(update.ToType(new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
+                    handler(update.ToType(new SharedSpotTicker(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol),
+                        ticker.Symbol,
+                        ticker.LastPrice,
+                        ticker.HighPrice,
+                        ticker.LowPrice,
+                        new SharedOrderQuantity(ticker.Volume, ticker.Value),
+                        Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
                     {
-                        QuoteVolume = ticker.Value
                     }));
                 }
             }, ct).ConfigureAwait(false);
@@ -81,7 +94,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)) : [request.Symbol!.GetSymbol(FormatSymbol)];
             var result = await SubscribeToTradeUpdatesAsync(symbols, update => handler(update.ToType(update.Data.Select(x => 
-                new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Symbol), update.Symbol!, x.Quantity, x.Price, x.Timestamp)
+                new SharedTrade(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Symbol), update.Symbol!, new SharedOrderQuantity(x.Quantity), x.Price, x.Timestamp)
             {
                 Side = x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell
             }).ToArray())), ct).ConfigureAwait(false);

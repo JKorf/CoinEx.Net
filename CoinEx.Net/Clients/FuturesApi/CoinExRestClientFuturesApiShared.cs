@@ -70,7 +70,15 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (ticker == null || funding == null)
                 return HttpResult.Fail<SharedFuturesTicker>(resultTicker.Result, new ServerError(new ErrorInfo(ErrorType.Unknown, "Not found")));
 
-            return HttpResult.Ok(resultTicker.Result, new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
+            return HttpResult.Ok(resultTicker.Result, 
+                new SharedFuturesTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol),
+                    ticker.Symbol, 
+                    ticker.LastPrice,
+                    ticker.HighPrice, 
+                    ticker.LowPrice,
+                    new SharedOrderQuantity(ticker.Volume, ticker.Value), 
+                    ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
             {
                 IndexPrice = ticker.IndexPrice,
                 MarkPrice = ticker.MarkPrice,
@@ -97,7 +105,14 @@ namespace CoinEx.Net.Clients.FuturesApi
             return HttpResult.Ok(resultTickers.Result, resultTickers.Result.Data.Select(x =>
             {
                 var funding = resultFunding.Result.Data.Single(p => p.Symbol == x.Symbol);
-                return new SharedFuturesTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
+                return new SharedFuturesTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    x.Symbol, 
+                    x.LastPrice,
+                    x.HighPrice, 
+                    x.LowPrice,
+                    new SharedOrderQuantity(x.Volume, x.Value), 
+                    x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
                 {
                     IndexPrice = x.IndexPrice,
                     MarkPrice = x.MarkPrice,
@@ -703,7 +718,15 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return HttpResult.Ok(result, ExchangeHelpers.ApplyFilter(result.Data, x => x.OpenTime, request.StartTime, request.EndTime, direction)
                    .Select(x =>  
-                        new SharedKline(request.Symbol, symbol, x.OpenTime, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenPrice, x.Volume))
+                        new SharedKline(
+                            request.Symbol,
+                            symbol, 
+                            x.OpenTime,
+                            x.ClosePrice,
+                            x.HighPrice, 
+                            x.LowPrice,
+                            x.OpenPrice,
+                            new SharedOrderQuantity(x.Volume, x.Value)))
                    .ToArray(), nextPageRequest);
         }
 
@@ -827,7 +850,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return HttpResult.Fail<SharedTrade[]>(result);
 
             return HttpResult.Ok(result, result.Data.Select(x => 
-            new SharedTrade(request.Symbol, symbol, x.Quantity, x.Price, x.Timestamp)
+            new SharedTrade(request.Symbol, symbol, new SharedOrderQuantity(x.Quantity), x.Price, x.Timestamp)
             {
                 Side = x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell
             }).ToArray());

@@ -72,6 +72,7 @@ namespace CoinEx.Net
                 symbol,
                 limit,
                 period,
+                TradeQuantityType.BaseAsset,
                 exchangeParameters
                 );
         }

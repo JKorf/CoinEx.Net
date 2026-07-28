@@ -90,7 +90,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                            x.HighPrice,
                            x.LowPrice,
                            x.OpenPrice,
-                           x.Volume))
+                           new SharedOrderQuantity(x.Volume, x.Value)))
                    .ToArray(), nextPageRequest);
         }
 
@@ -219,9 +219,16 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedSpotTicker>(result);
 
             var ticker = result.Data.Single();
-            return HttpResult.Ok(result, new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol), ticker.Symbol, ticker.LastPrice, ticker.HighPrice, ticker.LowPrice, ticker.Volume, ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
+            return HttpResult.Ok(result, 
+                new SharedSpotTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, ticker.Symbol),
+                    ticker.Symbol,
+                    ticker.LastPrice, 
+                    ticker.HighPrice,
+                    ticker.LowPrice,
+                    new SharedOrderQuantity(ticker.Volume, ticker.Value), 
+                    ticker.OpenPrice == 0 ? null : Math.Round(ticker.LastPrice / ticker.OpenPrice * 100 - 100, 2))
             {
-                QuoteVolume = ticker.Value
             });
         }
 
@@ -236,10 +243,17 @@ namespace CoinEx.Net.Clients.SpotApiV2
             if (!result.Success)
                 return HttpResult.Fail<SharedSpotTicker[]>(result);
 
-            return HttpResult.Ok(result, result.Data.Select(x => new SharedSpotTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.LastPrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
-            {
-                QuoteVolume = x.Value
-            }).ToArray());
+            return HttpResult.Ok(result, result.Data.Select(x => 
+                new SharedSpotTicker(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    x.Symbol,
+                    x.LastPrice,
+                    x.HighPrice,
+                    x.LowPrice,
+                    new SharedOrderQuantity(x.Volume, x.Value),
+                    x.OpenPrice == 0 ? null : Math.Round(x.LastPrice / x.OpenPrice * 100 - 100, 2))
+                {
+                }).ToArray());
         }
 
         #endregion
@@ -287,7 +301,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return HttpResult.Fail<SharedTrade[]>(result);
 
             return HttpResult.Ok(result, result.Data.Select(x => 
-            new SharedTrade(request.Symbol, symbol, x.Quantity, x.Price, x.Timestamp)
+            new SharedTrade(request.Symbol, symbol, new SharedOrderQuantity(x.Quantity), x.Price, x.Timestamp)
             {
                 Side = x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell
             }).ToArray());
