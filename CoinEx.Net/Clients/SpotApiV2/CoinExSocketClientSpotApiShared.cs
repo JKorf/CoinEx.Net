@@ -132,7 +132,15 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
             
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)) : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToBookPriceUpdatesAsync(symbols, update => handler(update.ToType(new SharedBookTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol), update.Data.Symbol, update.Data.BestAskPrice, update.Data.BestAskQuantity, update.Data.BestBidPrice, update.Data.BestBidQuantity))), ct).ConfigureAwait(false);
+            var result = await SubscribeToBookPriceUpdatesAsync(symbols, update => handler(
+                update.ToType(
+                    new SharedBookTicker(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol),
+                        update.Data.Symbol, 
+                        update.Data.BestAskPrice, 
+                        new SharedOrderQuantity(update.Data.BestAskQuantity),
+                        update.Data.BestBidPrice, 
+                        new SharedOrderQuantity(update.Data.BestBidQuantity)))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -151,7 +159,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)) : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToOrderBookUpdatesAsync(symbols, request.Limit ?? 20, null, true, update => handler(update.ToType(new SharedOrderBook(update.Data.Data.Asks, update.Data.Data.Bids))), ct).ConfigureAwait(false);
+            var result = await SubscribeToOrderBookUpdatesAsync(symbols, request.Limit ?? 20, null, true, update => handler(
+                update.ToType(
+                    new SharedOrderBook(SharedQuantityType.BaseAsset, update.Data.Data.Asks, update.Data.Data.Bids))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -226,7 +236,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
                         update.Data.OrderId.ToString(),
                         update.Data.Id.ToString(),
                         update.Data.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                        update.Data.Quantity,
+                        new SharedOrderQuantity(update.Data.Quantity),
                         update.Data.Price,                        
                         update.Data.CreateTime)
                     {

@@ -141,9 +141,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, resultTicker.Data.Symbol),
                 resultTicker.Data.Symbol,
                 resultTicker.Data.Data.Asks[0].Price,
-                resultTicker.Data.Data.Asks[0].Quantity,
+                new SharedOrderQuantity(resultTicker.Data.Data.Asks[0].Quantity),
                 resultTicker.Data.Data.Bids[0].Price,
-                resultTicker.Data.Data.Bids[0].Quantity));
+                new SharedOrderQuantity(resultTicker.Data.Data.Bids[0].Quantity)));
         }
 
         #endregion
@@ -188,7 +188,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 ContractSize = 1,
                 DisplayName = s.Symbol,
                 QuoteAssetType = SharedAssetType.Crypto,
-                QuoteAssetSubType = SharedAssetSubType.StableCoin
+                QuoteAssetSubType = SharedAssetSubType.StableCoin,
+                MakerFeePercentage = s.MakerFeeRate * 100,
+                TakerFeePercentage = s.TakerFeeRate * 100
             };
 
             if (LibraryHelpers.IsCommodity(result.BaseAsset))
@@ -431,7 +433,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 x.OrderId.ToString(),
                 x.Id.ToString(),
                 x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                x.Quantity,
+                new SharedOrderQuantity(x.Quantity),
                 x.Price,
                 x.CreateTime)
             {
@@ -482,7 +484,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                             x.OrderId.ToString(),
                             x.Id.ToString(),
                             x.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                            x.Quantity,
+                            new SharedOrderQuantity(x.Quantity),
                             x.Price,
                             x.CreateTime)
                         {
@@ -521,17 +523,22 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result.Success)
                 return HttpResult.Fail<SharedPosition[]>(result);
 
-            return HttpResult.Ok(result, result.Data.Items.Select(x => new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol), x.Symbol, x.OpenInterest, x.UpdateTime)
-            {
-                UnrealizedPnl = x.UnrealizedPnl,
-                LiquidationPrice = x.LiquidationPrice,
-                AverageOpenPrice = x.AverageEntryPrice,
-                Leverage = x.Leverage,
-                StopLossPrice = x.StopLossPrice == 0 ? null : x.StopLossPrice,
-                TakeProfitPrice = x.TakeProfitPrice == 0 ? null : x.TakeProfitPrice,
-                PositionMode = SharedPositionMode.OneWay,
-                PositionSide = x.Side == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long
-            }).ToArray());
+            return HttpResult.Ok(result, result.Data.Items.Select(x => 
+                new SharedPosition(
+                    ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, x.Symbol),
+                    x.Symbol,
+                    new SharedOrderQuantity(x.OpenInterest),
+                    x.UpdateTime)
+                {
+                    UnrealizedPnl = x.UnrealizedPnl,
+                    LiquidationPrice = x.LiquidationPrice,
+                    AverageOpenPrice = x.AverageEntryPrice,
+                    Leverage = x.Leverage,
+                    StopLossPrice = x.StopLossPrice == 0 ? null : x.StopLossPrice,
+                    TakeProfitPrice = x.TakeProfitPrice == 0 ? null : x.TakeProfitPrice,
+                    PositionMode = SharedPositionMode.OneWay,
+                    PositionSide = x.Side == PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long
+                }).ToArray());
         }
 
         ClosePositionOptions IFuturesOrderRestClient.ClosePositionOptions { get; } = new ClosePositionOptions(_exchangeName, true);
@@ -922,7 +929,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (!result.Success)
                 return HttpResult.Fail<SharedOrderBook>(result);
 
-            return HttpResult.Ok(result, new SharedOrderBook(result.Data.Data.Asks, result.Data.Data.Bids));
+            return HttpResult.Ok(result, new SharedOrderBook(SharedQuantityType.BaseAsset, result.Data.Data.Asks, result.Data.Data.Bids));
         }
 
         #endregion
@@ -944,7 +951,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             if (symbol == null)
                 return HttpResult.Fail<SharedOpenInterest>(result, new ServerError(new ErrorInfo(ErrorType.UnknownSymbol, "Symbol not found")));
 
-            return HttpResult.Ok(result, new SharedOpenInterest(symbol.OpenInterestVolume));
+            return HttpResult.Ok(result, new SharedOpenInterest(new SharedOrderQuantity(symbol.OpenInterestVolume)));
         }
 
         #endregion
@@ -1030,7 +1037,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                             x.Side == PositionSide.Long ? SharedPositionSide.Long : SharedPositionSide.Short,
                             x.AverageEntryPrice,
                             x.SettlePrice,
-                            x.AthPositionQuantity,
+                            new SharedOrderQuantity(x.AthPositionQuantity),
                             x.RealizedPnl,
                             x.UpdateTime ?? x.CreateTime)
                         {

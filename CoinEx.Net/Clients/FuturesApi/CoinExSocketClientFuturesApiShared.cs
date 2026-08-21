@@ -116,7 +116,15 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)) : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToBookPriceUpdatesAsync(symbols, update => handler(update.ToType(new SharedBookTicker(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol), update.Data.Symbol, update.Data.BestAskPrice, update.Data.BestAskQuantity, update.Data.BestBidPrice, update.Data.BestBidQuantity))), ct).ConfigureAwait(false);
+            var result = await SubscribeToBookPriceUpdatesAsync(symbols, update => handler(
+                update.ToType(
+                    new SharedBookTicker(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Symbol),
+                        update.Data.Symbol,
+                        update.Data.BestAskPrice,
+                        new SharedOrderQuantity(update.Data.BestAskQuantity), 
+                        update.Data.BestBidPrice,
+                        new SharedOrderQuantity(update.Data.BestBidQuantity)))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -134,7 +142,9 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var symbols = request.Symbols?.Length > 0 ? request.Symbols.Select(x => x.GetSymbol(FormatSymbol)) : [request.Symbol!.GetSymbol(FormatSymbol)];
-            var result = await SubscribeToOrderBookUpdatesAsync(symbols, request.Limit ?? 20, null, true, update => handler(update.ToType(new SharedOrderBook(update.Data.Data.Asks, update.Data.Data.Bids))), ct).ConfigureAwait(false);
+            var result = await SubscribeToOrderBookUpdatesAsync(symbols, request.Limit ?? 20, null, true, update => handler(
+                update.ToType(
+                    new SharedOrderBook(SharedQuantityType.BaseAsset, update.Data.Data.Asks, update.Data.Data.Bids))), ct).ConfigureAwait(false);
 
             return result;
         }
@@ -211,7 +221,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                         update.Data.OrderId.ToString(),
                         update.Data.Id.ToString(),
                         update.Data.Side == OrderSide.Buy ? SharedOrderSide.Buy : SharedOrderSide.Sell,
-                        update.Data.Quantity,
+                        new SharedOrderQuantity(update.Data.Quantity),
                         update.Data.Price,
                         update.Data.CreateTime)
                     {
@@ -236,17 +246,23 @@ namespace CoinEx.Net.Clients.FuturesApi
                 return WebSocketResult.Fail<UpdateSubscription>(_exchangeName, validationError);
 
             var result = await SubscribeToPositionUpdatesAsync(
-                update => handler(update.ToType<SharedPosition[]>(new[] { new SharedPosition(ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Position.Symbol), update.Data.Position.Symbol, update.Data.Position.OpenInterest, update.Data.Position.UpdateTime)
-                {
-                    AverageOpenPrice = update.Data.Position.AverageEntryPrice,
-                    PositionMode = SharedPositionMode.OneWay,
-                    PositionSide = update.Data.Position.Side == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,
-                    LiquidationPrice = update.Data.Position.LiquidationPrice,
-                    Leverage = update.Data.Position.Leverage,
-                    UnrealizedPnl = update.Data.Position.UnrealizedPnl,
-                    TakeProfitPrice = update.Data.Position.TakeProfitPrice == 0 ? null : update.Data.Position.TakeProfitPrice,
-                    StopLossPrice = update.Data.Position.StopLossPrice == 0 ? null : update.Data.Position.StopLossPrice,
-                } })),
+                update => handler(update.ToType<SharedPosition[]>(new[] { 
+                    new SharedPosition(
+                        ExchangeSymbolCache.ParseSymbol(_topicId, EnvironmentName, null, update.Data.Position.Symbol), 
+                        update.Data.Position.Symbol,
+                        new SharedOrderQuantity(update.Data.Position.OpenInterest),
+                        update.Data.Position.UpdateTime)
+                    {
+                        AverageOpenPrice = update.Data.Position.AverageEntryPrice,
+                        PositionMode = SharedPositionMode.OneWay,
+                        PositionSide = update.Data.Position.Side == Enums.PositionSide.Short ? SharedPositionSide.Short : SharedPositionSide.Long,
+                        LiquidationPrice = update.Data.Position.LiquidationPrice,
+                        Leverage = update.Data.Position.Leverage,
+                        UnrealizedPnl = update.Data.Position.UnrealizedPnl,
+                        TakeProfitPrice = update.Data.Position.TakeProfitPrice == 0 ? null : update.Data.Position.TakeProfitPrice,
+                        StopLossPrice = update.Data.Position.StopLossPrice == 0 ? null : update.Data.Position.StopLossPrice,
+                    } 
+                })),
                 ct: ct).ConfigureAwait(false);
 
             return result;
