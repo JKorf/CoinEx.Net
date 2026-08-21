@@ -172,12 +172,15 @@ Use this file to route common user intents to the correct CoinEx.Net client memb
 | Shared futures order REST | `IFuturesOrderRestClient.PlaceFuturesOrderAsync(...)` |
 | Shared balance REST | `IBalanceRestClient.GetBalancesAsync(...)` |
 | Shared position REST | `IPositionRestClient.GetPositionsAsync(...)` |
+| Shared futures open interest (public) | `IOpenInterestRestClient.GetOpenInterestAsync(new GetOpenInterestRequest(symbol))` |
 | Shared ticker socket | `ITickerSocketClient.SubscribeToTickerUpdatesAsync(...)` |
 | Shared order book socket | `IOrderBookSocketClient.SubscribeToOrderBookUpdatesAsync(...)` |
 
 Shared REST calls return `HttpResult<T>` / `HttpResult`. Shared socket subscriptions return `WebSocketResult<UpdateSubscription>`. Shared non-I/O symbol/cache helpers such as symbol support checks return `ExchangeCallResult<T>`.
 
 Shared spot and futures symbol results populate `DisplayName`, `BaseAssetType`, `BaseAssetSubType`, `QuoteAssetType`, and `QuoteAssetSubType`. `GetSymbolsRequest` can filter by those asset type/subtype fields; CoinEx classifies crypto/stablecoin assets and recognized TradFi equities/commodities.
+
+Shared book-ticker, trade, position, and open-interest quantities use `SharedOrderQuantity` and populate `QuantityInBaseAsset`. Shared order books report `QuantityType == SharedQuantityType.BaseAsset`. The shared futures open-interest call does not require credentials.
 
 For shared socket subscriptions, keep the concrete socket client and unsubscribe with `await socketClient.UnsubscribeAsync(subscription.Data)`.
 
