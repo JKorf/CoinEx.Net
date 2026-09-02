@@ -32,6 +32,8 @@ namespace CoinEx.Net.Clients.FuturesApi
     internal partial class CoinExSocketClientFuturesApi : SocketApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExSocketClientFuturesApi
     {
         #region fields
+        private readonly CoinExSocketClientFuturesSharedApi _sharedApi;
+
         /// <inheritdoc />
         public new CoinExSocketOptions ClientOptions => (CoinExSocketOptions)base.ClientOptions;
 
@@ -46,6 +48,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             : base(loggerFactory, CoinExExchange.Metadata.Id, options.Environment.SocketBaseAddress, options, options.FuturesOptions)
         {
             KeepAliveInterval = TimeSpan.Zero; // Server doesn't correctly respond to ping frames
+
+            _sharedApi = new CoinExSocketClientFuturesSharedApi(this);
 
             RegisterPeriodicQuery(
                 "Ping",
@@ -78,7 +82,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
-        public ICoinExSocketClientFuturesApiShared SharedClient => this;
+        public ICoinExSocketClientFuturesApiShared SharedClient => _sharedApi;
+        public ICoinExSocketClientFuturesSharedApi SharedApi => _sharedApi;
 
         /// <inheritdoc />
         public override ReadOnlySpan<byte> PreprocessStreamMessage(SocketConnection connection, WebSocketMessageType type, ReadOnlySpan<byte> data)

@@ -17,9 +17,15 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     public interface ICoinExSocketClientFuturesApi : ISocketApiClient<CoinExCredentials>, IDisposable
     {
         /// <summary>
-        /// Get the shared socket subscription client. This interface is shared with other exchanges to allow for a common implementation for different exchanges.
+        /// [V1] Get the shared socket subscription client. For new implementations prefer <see cref="SharedApi"/>
         /// </summary>
         ICoinExSocketClientFuturesApiShared SharedClient { get; }
+        /// <summary>
+        /// [V2] Gets the aggregate Shared API interface. Shared APIs provide a common,
+        /// exchange-independent contract for accessing functionality across different
+        /// exchange client libraries.
+        /// </summary>
+        ICoinExSocketClientFuturesSharedApi SharedApi { get; }
 
         /// <summary>
         /// Subscribe to symbol ticker updates for all symbols. Note that only one ticker subscription can be active at the same time; new ticker subscription will override the old subscriptions.

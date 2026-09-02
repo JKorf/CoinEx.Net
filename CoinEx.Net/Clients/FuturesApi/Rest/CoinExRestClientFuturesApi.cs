@@ -27,6 +27,8 @@ namespace CoinEx.Net.Clients.FuturesApi
     internal partial class CoinExRestClientFuturesApi : RestApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExRestClientFuturesApi
     {
         #region fields
+        private readonly CoinExRestClientFuturesSharedApi _sharedApi;
+
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
@@ -55,6 +57,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             ExchangeData = new CoinExRestClientFuturesApiExchangeData(this);
             Trading = new CoinExRestClientFuturesApiTrading(this);
 
+            _sharedApi = new CoinExRestClientFuturesSharedApi(this);
+
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
 
         }
@@ -67,7 +71,8 @@ namespace CoinEx.Net.Clients.FuturesApi
         /// <inheritdoc />
         protected override IMessageSerializer CreateSerializer() => new SystemTextJsonMessageSerializer(SerializerOptions.WithConverters(CoinExExchange._serializerContext));
 
-        public ICoinExRestClientFuturesApiShared SharedClient => this;
+        public ICoinExRestClientFuturesApiShared SharedClient => _sharedApi;
+        public ICoinExRestClientFuturesSharedApi SharedApi => _sharedApi;
 
         /// <inheritdoc />
         protected override CoinExV2AuthenticationProvider CreateAuthenticationProvider(CoinExCredentials credentials)

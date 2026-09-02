@@ -1,15 +1,16 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
+﻿using CoinEx.Net.Clients;
+using CoinEx.Net.Clients.SpotApiV2;
+using CoinEx.Net.Interfaces.Clients;
 using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net.Objects;
-using CoinEx.Net.Clients;
 using CryptoExchange.Net.Clients;
-using System.Net.Http;
+using CryptoExchange.Net.Converters.SystemTextJson;
+using CryptoExchange.Net.Objects;
+using CryptoExchange.Net.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CoinEx.Net.Interfaces.Clients;
-using CryptoExchange.Net.Converters.SystemTextJson;
-using CoinEx.Net.Clients.SpotApiV2;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace CoinEx.Net.UnitTests
 {
@@ -179,6 +180,42 @@ namespace CoinEx.Net.UnitTests
             Assert.That(((BaseApiClient)restClient.SpotApiV2).ClientOptions.Proxy.Port, Is.EqualTo(80));
             Assert.That(((BaseApiClient)socketClient.SpotApiV2).ClientOptions.Proxy.Host, Is.EqualTo("host2"));
             Assert.That(((BaseApiClient)socketClient.SpotApiV2).ClientOptions.Proxy.Port, Is.EqualTo(81));
+        }
+
+        [Test]
+        public void TestSpotRestSharedApiDiscoveryMatchesAggregate()
+        {
+            var (missingOptions, missingInterfaces) = TestHelpers.ValidateSharedApi(new CoinExRestClient().SpotApiV2.SharedApi);
+
+            Assert.That(missingOptions, Is.Empty);
+            Assert.That(missingInterfaces, Is.Empty);
+        }
+
+        [Test]
+        public void TestSpotSocketSharedApiDiscoveryMatchesAggregate()
+        {
+            var (missingOptions, missingInterfaces) = TestHelpers.ValidateSharedApi(new CoinExSocketClient().SpotApiV2.SharedApi);
+
+            Assert.That(missingOptions, Is.Empty);
+            Assert.That(missingInterfaces, Is.Empty);
+        }
+
+        [Test]
+        public void TestFuturesRestSharedApiDiscoveryMatchesAggregate()
+        {
+            var (missingOptions, missingInterfaces) = TestHelpers.ValidateSharedApi(new CoinExRestClient().FuturesApi.SharedApi);
+
+            Assert.That(missingOptions, Is.Empty);
+            Assert.That(missingInterfaces, Is.Empty);
+        }
+
+        [Test]
+        public void TestFuturesSocketSharedApiDiscoveryMatchesAggregate()
+        {
+            var (missingOptions, missingInterfaces) = TestHelpers.ValidateSharedApi(new CoinExSocketClient().FuturesApi.SharedApi);
+
+            Assert.That(missingOptions, Is.Empty);
+            Assert.That(missingInterfaces, Is.Empty);
         }
     }
 }
