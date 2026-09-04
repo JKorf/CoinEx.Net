@@ -15,12 +15,13 @@ namespace CoinEx.Net.Clients.FuturesApi
 {
     internal partial class CoinExSocketClientFuturesSharedApi
     {
-        #region Book Ticker client
 
         public SubscribeBookTickerOptions SubscribeBookTickerOptions { get; } = new SubscribeBookTickerOptions(_exchangeName, false)
         {
             SupportsMultipleSymbols = true
         };
+        #region Subscribe To Book Ticker Updates
+
         public async Task<WebSocketResult<UpdateSubscription>> SubscribeToBookTickerUpdatesAsync(SubscribeBookTickerRequest request, Action<DataEvent<SharedBookTicker>> handler, CancellationToken ct)
         {
             var validationError = SubscribeBookTickerOptions.ValidateRequest(request, this);
@@ -40,6 +41,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return result;
         }
+
         #endregion
     }
 }

@@ -17,7 +17,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
 {
     internal partial class CoinExRestClientSpotSharedApi
     {
-        #region Order Book client
+        #region Get Order Book
+
+        async Task<ICallResult<SharedOrderBook>> IGetOrderBook.GetOrderBookAsync(GetOrderBookRequest request, CancellationToken ct)
+            => await GetOrderBookAsync(request, ct).ConfigureAwait(false);
+
         public GetOrderBookOptions GetOrderBookOptions { get; } = new GetOrderBookOptions(_exchangeName, new [] { 5, 10, 20, 50 }, false);
         public async Task<HttpResult<SharedOrderBook>> GetOrderBookAsync(GetOrderBookRequest request, CancellationToken ct)
         {
@@ -34,6 +38,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             return HttpResult.Ok(result, new SharedOrderBook(SharedQuantityType.BaseAsset, null, result.Data.Data.Asks, result.Data.Data.Bids));
         }
+
         #endregion
     }
 }

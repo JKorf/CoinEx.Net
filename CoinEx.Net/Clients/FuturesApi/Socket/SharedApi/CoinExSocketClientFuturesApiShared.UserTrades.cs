@@ -15,8 +15,9 @@ namespace CoinEx.Net.Clients.FuturesApi
 {
     internal partial class CoinExSocketClientFuturesSharedApi
     {
-        #region User Trade client
         public SubscribeUserTradeOptions SubscribeUserTradeOptions { get; } = new SubscribeUserTradeOptions(_exchangeName, false);
+        #region Subscribe To User Trade Updates
+
         public async Task<WebSocketResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(SubscribeUserTradeRequest request, Action<DataEvent<SharedUserTrade[]>> handler, CancellationToken ct)
         {
             var validationError = SubscribeUserTradeOptions.ValidateRequest(request, this);
@@ -45,6 +46,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return result;
         }
+
         #endregion
     }
 }

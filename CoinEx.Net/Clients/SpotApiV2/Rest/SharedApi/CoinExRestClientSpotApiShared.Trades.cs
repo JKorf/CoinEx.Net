@@ -17,7 +17,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
 {
     internal partial class CoinExRestClientSpotSharedApi
     {
-        #region Recent Trades
+
+        #region Get Recent Trades
+
+        async Task<ICallResult<SharedTrade[]>> IGetRecentTrades.GetRecentTradesAsync(GetRecentTradesRequest request, CancellationToken ct)
+            => await GetRecentTradesAsync(request, ct).ConfigureAwait(false);
 
         public GetRecentTradesOptions GetRecentTradesOptions { get; } = new GetRecentTradesOptions(_exchangeName, 1000, false);
 
@@ -43,5 +47,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         #endregion
+
     }
 }

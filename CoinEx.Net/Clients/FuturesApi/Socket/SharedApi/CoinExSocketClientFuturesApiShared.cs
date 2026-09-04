@@ -26,7 +26,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public CoinExSocketClientFuturesSharedApi(CoinExSocketClientFuturesApi api)
             : base(
-                  SharedTransport.Rest,
+                  SharedTransport.Socket,
                   api.Exchange,
                   [TradingMode.PerpetualLinear, TradingMode.PerpetualInverse],
                   () => api.Authenticated,

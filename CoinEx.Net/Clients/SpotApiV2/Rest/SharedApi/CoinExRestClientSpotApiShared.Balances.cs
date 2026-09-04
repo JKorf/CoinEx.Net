@@ -17,7 +17,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
 {
     internal partial class CoinExRestClientSpotSharedApi
     {
-        #region Balance client
+        #region Get Balances
+
+        async Task<ICallResult<SharedBalance[]>> IGetBalances.GetBalancesAsync(GetBalancesRequest request, CancellationToken ct)
+            => await GetBalancesAsync(request, ct).ConfigureAwait(false);
+
         public GetBalancesOptions GetBalancesOptions { get; } = new GetBalancesOptions(_exchangeName, AccountTypeFilter.Spot, AccountTypeFilter.Margin);
 
         public async Task<HttpResult<SharedBalance[]>> GetBalancesAsync(GetBalancesRequest request, CancellationToken ct)
@@ -69,5 +73,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         #endregion
+
     }
 }

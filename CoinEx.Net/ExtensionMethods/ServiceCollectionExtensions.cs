@@ -1,4 +1,4 @@
-﻿using CoinEx.Net;
+using CoinEx.Net;
 using CoinEx.Net.Clients;
 using CoinEx.Net.Interfaces;
 using CoinEx.Net.Interfaces.Clients;
@@ -119,6 +119,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 x.GetRequiredService<ILoggerFactory>(),
                 x.GetRequiredService<IOptions<CoinExRestOptions>>(),
                 x.GetRequiredService<IOptions<CoinExSocketOptions>>()));
+
+            services.AddTransient<ICoinExSharedApiClient, CoinExSharedApiClient>();
+
+            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedApi);
+            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedApi);
+            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedApi);
+            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExSocketClient>().FuturesApi.SharedApi);
 
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient);

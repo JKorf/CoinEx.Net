@@ -16,7 +16,11 @@ namespace CoinEx.Net.Clients.FuturesApi
 {
     internal partial class CoinExRestClientFuturesSharedApi
     {
-        #region Futures Trigger Order Client
+        #region Place Futures Trigger Order
+
+        async Task<ICallResult<SharedId>> IPlaceFuturesTriggerOrder.PlaceFuturesTriggerOrderAsync(PlaceFuturesTriggerOrderRequest request, CancellationToken ct)
+            => await PlaceFuturesTriggerOrderAsync(request, ct).ConfigureAwait(false);
+
         public PlaceFuturesTriggerOrderOptions PlaceFuturesTriggerOrderOptions { get; } = new PlaceFuturesTriggerOrderOptions(_exchangeName, false)
         {
         };
@@ -44,6 +48,13 @@ namespace CoinEx.Net.Clients.FuturesApi
             // Return
             return HttpResult.Ok(result, new SharedId(clientOrderId));
         }
+
+        #endregion
+
+        #region Get Futures Trigger Order
+
+        async Task<ICallResult<SharedFuturesTriggerOrder>> IGetFuturesTriggerOrder.GetFuturesTriggerOrderAsync(GetOrderRequest request, CancellationToken ct)
+            => await GetFuturesTriggerOrderAsync(request, ct).ConfigureAwait(false);
 
         public GetFuturesTriggerOrderOptions GetFuturesTriggerOrderOptions { get; } = new GetFuturesTriggerOrderOptions(_exchangeName, true)
         {
@@ -96,6 +107,13 @@ namespace CoinEx.Net.Clients.FuturesApi
             });
         }
 
+        #endregion
+
+        #region Cancel Futures Trigger Order
+
+        async Task<ICallResult<SharedId>> ICancelFuturesTriggerOrder.CancelFuturesTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
+            => await CancelFuturesTriggerOrderAsync(request, ct).ConfigureAwait(false);
+
         public CancelFuturesTriggerOrderOptions CancelFuturesTriggerOrderOptions { get; } = new CancelFuturesTriggerOrderOptions(_exchangeName, true);
         public async Task<HttpResult<SharedId>> CancelFuturesTriggerOrderAsync(CancelOrderRequest request, CancellationToken ct)
         {
@@ -112,6 +130,8 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return HttpResult.Ok(order, new SharedId(request.OrderId));
         }
+
+        #endregion
 
         private TriggerPriceType GetTriggerPriceType(PlaceFuturesTriggerOrderRequest request)
         {
@@ -131,6 +151,5 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return request.OrderDirection == SharedTriggerOrderDirection.Enter ? OrderSide.Sell : OrderSide.Buy;
         }
-        #endregion
     }
 }

@@ -17,7 +17,11 @@ namespace CoinEx.Net.Clients.SpotApiV2
 {
     internal partial class CoinExRestClientSpotSharedApi
     {
-        #region Withdrawal client
+
+        #region Get Withdrawal History
+
+        async Task<ICallResult<SharedWithdrawal[]>> IGetWithdrawalHistory.GetWithdrawalHistoryAsync(GetWithdrawalsRequest request, PageRequest? pageRequest, CancellationToken ct)
+            => await GetWithdrawalHistoryAsync(request, pageRequest, ct).ConfigureAwait(false);
 
         Task<HttpResult<SharedWithdrawal[]>> IWithdrawalRestClient.GetWithdrawalsAsync(GetWithdrawalsRequest request, PageRequest? pageRequest, CancellationToken ct)
             => GetWithdrawalHistoryAsync(request, pageRequest, ct);
@@ -72,6 +76,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
                     .ToArray(), nextPageRequest);
         }
 
+        #endregion
+
         private SharedTransferStatus GetWithdrawalStatus(CoinExWithdrawal x)
         {
             if (x.Status == WithdrawStatusV2.Canceled || x.Status == WithdrawStatusV2.Failed)
@@ -91,9 +97,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             return SharedTransferStatus.Unknown;
         }
-        #endregion
 
-        #region Withdraw client
+
+        #region Withdraw
+
+        async Task<ICallResult<SharedId>> IWithdraw.WithdrawAsync(WithdrawRequest request, CancellationToken ct)
+            => await WithdrawAsync(request, ct).ConfigureAwait(false);
 
         public WithdrawOptions WithdrawOptions { get; } = new WithdrawOptions(_exchangeName);
 
@@ -119,5 +128,6 @@ namespace CoinEx.Net.Clients.SpotApiV2
         }
 
         #endregion
+
     }
 }

@@ -17,8 +17,12 @@ namespace CoinEx.Net.Clients.SpotApiV2
 {
     internal partial class CoinExRestClientSpotSharedApi
     {
-        #region Fee Client
         public GetFeeOptions GetFeeOptions { get; } = new GetFeeOptions(_exchangeName, true);
+
+        #region Get Fees
+
+        async Task<ICallResult<SharedFee>> IGetFees.GetFeesAsync(GetFeeRequest request, CancellationToken ct)
+            => await GetFeesAsync(request, ct).ConfigureAwait(false);
 
         public async Task<HttpResult<SharedFee>> GetFeesAsync(GetFeeRequest request, CancellationToken ct)
         {
@@ -34,6 +38,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
             // Return
             return HttpResult.Ok(result, new SharedFee(result.Data.MakerFeeRate * 100, result.Data.TakerFeeRate * 100));
         }
+
         #endregion
     }
 }

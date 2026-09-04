@@ -15,7 +15,8 @@ namespace CoinEx.Net.Clients.FuturesApi
 {
     internal partial class CoinExSocketClientFuturesSharedApi
     {
-        #region Futures Order client
+
+        #region Subscribe To Futures Order Updates
 
         async Task<WebSocketResult<UpdateSubscription>> IFuturesOrderSocketClient.SubscribeToFuturesOrderUpdatesAsync(SubscribeFuturesOrderRequest request, Action<DataEvent<SharedFuturesOrder[]>> handler, CancellationToken ct)
             => await SubscribeToFuturesOrderUpdatesAsync(request, x => handler(x.ToType<SharedFuturesOrder[]>(x.Data)), ct).ConfigureAwait(false);
@@ -53,6 +54,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             return result;
         }
+
         #endregion
 
         private SharedOrderStatus GetOrderStatus(CoinExFuturesOrderUpdate update)

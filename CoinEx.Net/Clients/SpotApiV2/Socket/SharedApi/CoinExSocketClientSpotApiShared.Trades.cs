@@ -16,13 +16,14 @@ namespace CoinEx.Net.Clients.SpotApiV2
 {
     internal partial class CoinExSocketClientSpotSharedApi
     {
-        #region Trade client
 
         public SubscribeTradeOptions SubscribeTradeOptions { get; } = new SubscribeTradeOptions(_exchangeName, false)
         {
             SupportsMultipleSymbols = true,
             MaxSymbolCount = 900
         };
+        #region Subscribe To Trade Updates
+
         public async Task<WebSocketResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(SubscribeTradeRequest request, Action<DataEvent<SharedTrade[]>> handler, CancellationToken ct)
         {
             var validationError = SubscribeTradeOptions.ValidateRequest(request, this);
@@ -49,6 +50,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             return result;
         }
+
         #endregion
     }
 }

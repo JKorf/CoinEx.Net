@@ -16,7 +16,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
 {
     internal partial class CoinExSocketClientSpotSharedApi
     {
-        #region Spot Order client
+
+        #region Subscribe To Spot Order Updates
 
         async Task<WebSocketResult<UpdateSubscription>> ISpotOrderSocketClient.SubscribeToSpotOrderUpdatesAsync(SubscribeSpotOrderRequest request, Action<DataEvent<SharedSpotOrder[]>> handler, CancellationToken ct)
             => await SubscribeToSpotOrderUpdatesAsync(request, x => handler(x.ToType<SharedSpotOrder[]>(x.Data)), ct).ConfigureAwait(false);
@@ -52,6 +53,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
             return result;
         }
+
         #endregion
 
         private SharedOrderStatus GetOrderStatus(CoinExOrderUpdate update)
