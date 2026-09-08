@@ -23,10 +23,9 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public SetFuturesTpSlOptions SetFuturesTpSlOptions { get; } = new SetFuturesTpSlOptions(_exchangeName, true)
         {
-            RequiredRequestParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(PlaceFuturesTriggerOrderRequest.PositionMode), typeof(SharedPositionMode), "PositionMode the account is in", SharedPositionMode.OneWay)
-            }
+            ParameterRuleOverwrites = [
+                RequestParameterRuleOverride<SetTpSlRequest>.Required(x => x.PositionMode)
+            ]
         };
 
         public async Task<HttpResult<SharedId>> SetFuturesTpSlAsync(SetTpSlRequest request, CancellationToken ct)
@@ -46,7 +45,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             }
             else
             {
-                result = await _api.Trading.SetTakeProfitAsync(
+                result = await _api.Trading.SetStopLossAsync(
                                 request.Symbol!.GetSymbol(FormatSymbol),
                                 PriceType.LastPrice,
                                 request.TriggerPrice,
@@ -69,10 +68,9 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public CancelFuturesTpSlOptions CancelFuturesTpSlOptions { get; } = new CancelFuturesTpSlOptions(_exchangeName, true)
         {
-            RequiredRequestParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(CancelTpSlRequest.TpSlSide), typeof(SharedTpSlSide), "Take profit / stop loss side to cancel", SharedTpSlSide.TakeProfit)
-            }
+            ParameterRuleOverwrites = [
+                RequestParameterRuleOverride<CancelTpSlRequest>.Required(x => x.TpSlSide)
+            ]
         };
 
         public async Task<HttpResult<bool>> CancelFuturesTpSlAsync(CancelTpSlRequest request, CancellationToken ct)

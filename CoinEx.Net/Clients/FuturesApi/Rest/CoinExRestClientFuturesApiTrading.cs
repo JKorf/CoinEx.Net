@@ -70,6 +70,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             string? clientOrderId = null,
             bool? hide = null,
             SelfTradePreventionMode? stpMode = null,
+            bool? reduceOnly = null,
             CancellationToken ct = default)
         {
             clientOrderId = LibraryHelpers.ApplyBrokerId(
@@ -91,6 +92,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.Add("price", price);
             parameters.Add("client_id", clientOrderId);
             parameters.Add("is_hide", hide);
+            parameters.Add("is_reduce_only", reduceOnly);
             parameters.Add("stp_mode", stpMode);
             var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "v2/futures/stop-order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
             return await _baseClient.SendAsync<CoinExStopId>(request, parameters, ct).ConfigureAwait(false);
@@ -474,7 +476,16 @@ namespace CoinEx.Net.Clients.FuturesApi
         }
 
         /// <inheritdoc />
-        public async Task<HttpResult<CoinExFuturesOrder>> ClosePositionAsync(string symbol, OrderTypeV2 orderType, decimal? price = null, decimal? quantity = null, string? clientOrderId = null, bool? hidden = null, CancellationToken ct = default)
+        public async Task<HttpResult<CoinExFuturesOrder>> ClosePositionAsync(
+            string symbol,
+            OrderTypeV2 orderType,
+            decimal? price = null, 
+            decimal? quantity = null,
+            string? clientOrderId = null,
+            bool? hidden = null,
+            PositionSide? positionSide = null,
+            SelfTradePreventionMode? stpMode = null,
+            CancellationToken ct = default)
         {
             clientOrderId = LibraryHelpers.ApplyBrokerId(
                 clientOrderId,
@@ -492,6 +503,8 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.Add("amount", quantity);
             parameters.Add("client_id", clientOrderId);
             parameters.Add("is_hide", hidden);
+            parameters.Add("position_side", positionSide);
+            parameters.Add("stp_mode", stpMode);
             var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "v2/futures/close-position", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
             return await _baseClient.SendAsync<CoinExFuturesOrder>(request, parameters, ct).ConfigureAwait(false);
         }

@@ -40,8 +40,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             SetCapabilities(
                 GetKlinesOptions,
                 GetSpotSymbolsOptions,
-                GetSpotTickerOptions,
-                GetAllSpotTickersOptions,
+                GetTickerOptions,
+                GetAllTickersOptions,
                 GetBookTickerOptions,
                 GetRecentTradesOptions,
                 GetBalancesOptions,

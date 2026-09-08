@@ -41,6 +41,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 triggerPrice: request.TriggerPrice,
                 triggerPriceType: GetTriggerPriceType(request),
                 clientOrderId: clientOrderId,
+                reduceOnly: request.ReduceOnly,
                 ct: ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<SharedId>(result);

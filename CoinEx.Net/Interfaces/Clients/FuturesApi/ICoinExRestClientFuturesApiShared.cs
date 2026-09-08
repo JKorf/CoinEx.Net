@@ -34,8 +34,8 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
     /// </summary>
     public interface ICoinExRestClientFuturesSharedApi :
         IGetBalancesRest,
-        IGetFuturesTickerRest,
-        IGetAllFuturesTickersRest,
+        IGetTickerRest,
+        IGetAllTickersRest,
         IGetFuturesSymbolsRest,
         IPlaceFuturesOrderRest,
         IGetFuturesOrderRest,
@@ -45,7 +45,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         IGetFuturesUserTradeHistoryRest,
         ICancelFuturesOrderRest,
         IGetPositionsRest,
-        IClosePositionRest,
+        ICloseFullPositionRest,
         IGetKlinesRest,
         IGetMarkPriceKlinesRest,
         IGetIndexPriceKlinesRest,

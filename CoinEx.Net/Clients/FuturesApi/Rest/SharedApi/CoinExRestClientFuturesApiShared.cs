@@ -38,8 +38,8 @@ namespace CoinEx.Net.Clients.FuturesApi
 
             SetCapabilities(
                 GetBalancesOptions,
-                GetFuturesTickerOptions,
-                GetAllFuturesTickersOptions,
+                GetTickerOptions,
+                GetAllTickersOptions,
                 GetBookTickerOptions,
                 GetFuturesSymbolsOptions,
                 PlaceFuturesOrderOptions,
@@ -50,7 +50,7 @@ namespace CoinEx.Net.Clients.FuturesApi
                 GetFuturesUserTradeHistoryOptions,
                 CancelFuturesOrderOptions,
                 GetPositionsOptions,
-                ClosePositionOptions,
+                CloseFullPositionOptions,
                 GetFuturesOrderByClientOrderIdOptions,
                 CancelFuturesOrderByClientOrderIdOptions,
                 GetKlinesOptions,

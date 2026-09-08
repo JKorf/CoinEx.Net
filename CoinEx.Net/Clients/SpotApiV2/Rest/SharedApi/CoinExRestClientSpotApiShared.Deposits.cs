@@ -24,10 +24,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         public GetDepositAddressesOptions GetDepositAddressesOptions { get; } = new GetDepositAddressesOptions(_exchangeName, true)
         {
-            RequiredRequestParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(GetDepositAddressesRequest.Network), typeof(string), "The network for the deposit address", "ERC20")
-            }
+            ParameterRuleOverwrites = [
+                RequestParameterRuleOverride<GetDepositAddressesRequest>.Required(x => x.Network)
+            ]
         };
 
         public async Task<HttpResult<SharedDepositAddress[]>> GetDepositAddressesAsync(GetDepositAddressesRequest request, CancellationToken ct)
@@ -61,10 +60,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         public GetDepositHistoryOptions GetDepositHistoryOptions { get; } = new GetDepositHistoryOptions(_exchangeName, false, true, false, 100)
         {
-            RequiredRequestParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(GetWithdrawalsRequest.Asset), typeof(string), "Asset the deposits should be retrieved for", "ETH")
-            }
+            ParameterRuleOverwrites = [
+                RequestParameterRuleOverride<GetDepositsRequest>.Required(x => x.Asset)
+            ]
         };
         public async Task<HttpResult<SharedDeposit[]>> GetDepositHistoryAsync(GetDepositsRequest request, PageRequest? pageRequest, CancellationToken ct)
         {

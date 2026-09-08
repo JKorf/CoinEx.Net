@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CoinEx.Net.Objects.Models.V2;
 using System;
 using System.Collections.Generic;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Interfaces.Clients.FuturesApi
 {
@@ -52,6 +53,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="triggerPrice">["<c>trigger_price</c>"] Price to trigger on</param>
         /// <param name="hide">["<c>is_hide</c>"] Hide the order</param>
         /// <param name="stpMode">["<c>stp_mode</c>"] Self trade prevention mode</param>
+        /// <param name="reduceOnly">["<c>is_reduce_only</c>"] Reduce only flag</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
         Task<HttpResult<CoinExStopId>> PlaceStopOrderAsync(
@@ -65,6 +67,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
             string? clientOrderId = null,
             bool? hide = null,
             SelfTradePreventionMode? stpMode = null,
+            bool? reduceOnly = null,
             CancellationToken ct = default);
 
         /// <summary>
@@ -317,9 +320,20 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="quantity">["<c>amount</c>"] Quantity to close</param>
         /// <param name="clientOrderId">["<c>client_id</c>"] Client order id</param>
         /// <param name="hidden">["<c>is_hide</c>"] Is hidden</param>
+        /// <param name="positionSide">["<c>position_side</c>"] Position side</param>
+        /// <param name="stpMode">["<c>stp_mode</c>"] Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
-        Task<HttpResult<CoinExFuturesOrder>> ClosePositionAsync(string symbol, OrderTypeV2 orderType, decimal? price = null, decimal? quantity = null, string? clientOrderId = null, bool? hidden = null, CancellationToken ct = default);
+        Task<HttpResult<CoinExFuturesOrder>> ClosePositionAsync(
+            string symbol,
+            OrderTypeV2 orderType, 
+            decimal? price = null,
+            decimal? quantity = null,
+            string? clientOrderId = null,
+            bool? hidden = null, 
+            PositionSide? positionSide = null,
+            SelfTradePreventionMode? stpMode = null,
+            CancellationToken ct = default);
 
         /// <summary>
         /// Adjust the margin for a position. Positive quantity for increasing, negative quantity for decreasing

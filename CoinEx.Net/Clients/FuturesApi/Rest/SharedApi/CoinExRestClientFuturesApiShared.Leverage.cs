@@ -53,10 +53,9 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public SetLeverageOptions SetLeverageOptions { get; } = new SetLeverageOptions(_exchangeName)
         {
-            RequiredRequestParameters = new List<ParameterDescription>
-            {
-                new ParameterDescription(nameof(SetLeverageRequest.MarginMode), typeof(SharedMarginMode), "Isolated or cross margin", SharedMarginMode.Cross)
-            }
+            ParameterRuleOverwrites = [
+                RequestParameterRuleOverride<SetLeverageRequest>.Required(x => x.MarginMode)
+            ]
         };
         public async Task<HttpResult<SharedLeverage>> SetLeverageAsync(SetLeverageRequest request, CancellationToken ct)
         {
