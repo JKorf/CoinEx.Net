@@ -61,7 +61,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
         public GetDepositHistoryOptions GetDepositHistoryOptions { get; } = new GetDepositHistoryOptions(_exchangeName, false, true, false, 100)
         {
             ParameterRuleOverwrites = [
-                RequestParameterRuleOverride<GetDepositsRequest>.Required(x => x.Asset)
+                RequestParameterRuleOverride<GetDepositsRequest>.Required(x => x.Asset),
+                RequestParameterRuleOverride<GetDepositsRequest>.NotSupported(x => x.StartTime),
+                RequestParameterRuleOverride<GetDepositsRequest>.NotSupported(x => x.EndTime)
             ]
         };
         public async Task<HttpResult<SharedDeposit[]>> GetDepositHistoryAsync(GetDepositsRequest request, PageRequest? pageRequest, CancellationToken ct)

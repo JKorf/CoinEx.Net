@@ -27,7 +27,13 @@ namespace CoinEx.Net.Clients.SpotApiV2
             => GetWithdrawalHistoryAsync(request, pageRequest, ct);
         GetWithdrawalHistoryOptions IWithdrawalRestClient.GetWithdrawalsOptions => GetWithdrawalHistoryOptions;
 
-        public GetWithdrawalHistoryOptions GetWithdrawalHistoryOptions { get; } = new GetWithdrawalHistoryOptions(_exchangeName, false, true, false, 100);
+        public GetWithdrawalHistoryOptions GetWithdrawalHistoryOptions { get; } = new GetWithdrawalHistoryOptions(_exchangeName, false, true, false, 100)
+        {
+            ParameterRuleOverwrites = [
+                RequestParameterRuleOverride<GetWithdrawalsRequest>.NotSupported(x => x.StartTime),
+                RequestParameterRuleOverride<GetWithdrawalsRequest>.NotSupported(x => x.EndTime),
+                ]
+        };
         public async Task<HttpResult<SharedWithdrawal[]>> GetWithdrawalHistoryAsync(GetWithdrawalsRequest request, PageRequest? pageRequest, CancellationToken ct)
         {
             var validationError = GetWithdrawalHistoryOptions.ValidateRequest(request, this);

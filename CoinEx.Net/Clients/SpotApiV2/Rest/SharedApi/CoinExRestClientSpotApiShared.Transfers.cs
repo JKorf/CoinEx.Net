@@ -30,7 +30,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
             SharedAccountType.DeliveryLinearFutures,
             SharedAccountType.DeliveryInverseFutures,
             SharedAccountType.CrossMargin,
-            SharedAccountType.IsolatedMargin]);
+            SharedAccountType.IsolatedMargin])
+        {
+        };
         public async Task<HttpResult<SharedId>> TransferAsync(TransferRequest request, CancellationToken ct)
         {
             var validationError = TransferOptions.ValidateRequest(request, this);

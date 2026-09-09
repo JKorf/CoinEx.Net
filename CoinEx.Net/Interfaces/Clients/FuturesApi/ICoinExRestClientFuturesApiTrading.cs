@@ -25,6 +25,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
         /// <param name="price">["<c>price</c>"] Price of the order</param>
         /// <param name="clientOrderId">["<c>client_id</c>"] Client order id</param>
         /// <param name="hide">["<c>is_hide</c>"] Hide the order</param>
+        /// <param name="reduceOnly">["<c>is_reduce_only</c>"] Reduce only flag</param>
         /// <param name="stpMode">["<c>stp_mode</c>"] Self trade prevention mode</param>
         /// <param name="ct">Cancelation Token</param>
         /// <returns></returns>
@@ -36,6 +37,7 @@ namespace CoinEx.Net.Interfaces.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            bool? reduceOnly = null,
             SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default);
 

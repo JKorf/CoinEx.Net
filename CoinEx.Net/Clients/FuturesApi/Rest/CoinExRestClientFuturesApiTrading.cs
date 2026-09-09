@@ -33,6 +33,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             decimal? price = null,
             string? clientOrderId = null,
             bool? hide = null,
+            bool? reduceOnly = null,
             SelfTradePreventionMode? stpMode = null,
             CancellationToken ct = default)
         {
@@ -52,6 +53,7 @@ namespace CoinEx.Net.Clients.FuturesApi
             parameters.Add("amount", quantity);
             parameters.Add("price", price);
             parameters.Add("client_id", clientOrderId);
+            parameters.Add("is_reduce_only", reduceOnly);
             parameters.Add("is_hide", hide);
             parameters.Add("stp_mode", stpMode);
             var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "v2/futures/order", CoinExExchange.RateLimiter.CoinExRestFuturesOrder, 1, true);
