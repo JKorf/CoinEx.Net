@@ -53,7 +53,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public SetLeverageOptions SetLeverageOptions { get; } = new SetLeverageOptions(_exchangeName)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<SetLeverageRequest>.Required(x => x.MarginMode)
             ]
         };

@@ -24,7 +24,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         public GetDepositAddressesOptions GetDepositAddressesOptions { get; } = new GetDepositAddressesOptions(_exchangeName, true)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<GetDepositAddressesRequest>.Required(x => x.Network)
             ]
         };
@@ -60,7 +60,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         public GetDepositHistoryOptions GetDepositHistoryOptions { get; } = new GetDepositHistoryOptions(_exchangeName, false, true, false, 100)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<GetDepositsRequest>.Required(x => x.Asset),
                 RequestParameterRuleOverride<GetDepositsRequest>.NotSupported(x => x.StartTime),
                 RequestParameterRuleOverride<GetDepositsRequest>.NotSupported(x => x.EndTime)

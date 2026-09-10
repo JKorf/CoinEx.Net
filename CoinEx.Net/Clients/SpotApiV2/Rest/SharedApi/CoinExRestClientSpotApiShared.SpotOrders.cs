@@ -156,7 +156,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
 
         public GetSpotClosedOrdersOptions GetClosedSpotOrdersOptions { get; } = new GetSpotClosedOrdersOptions(_exchangeName, false, true, false, 500)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<GetClosedOrdersRequest>.NotSupported(x => x.StartTime),
                 RequestParameterRuleOverride<GetClosedOrdersRequest>.NotSupported(x => x.EndTime)
                 ]

@@ -23,7 +23,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public SetFuturesTpSlOptions SetFuturesTpSlOptions { get; } = new SetFuturesTpSlOptions(_exchangeName, true)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<SetTpSlRequest>.Required(x => x.PositionMode)
             ]
         };
@@ -68,7 +68,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public CancelFuturesTpSlOptions CancelFuturesTpSlOptions { get; } = new CancelFuturesTpSlOptions(_exchangeName, true)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<CancelTpSlRequest>.Required(x => x.TpSlSide)
             ]
         };

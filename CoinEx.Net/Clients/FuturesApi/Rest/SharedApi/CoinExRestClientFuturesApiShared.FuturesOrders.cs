@@ -36,7 +36,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public PlaceFuturesOrderOptions PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions(_exchangeName, false)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.Leverage),
                 RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.StopLossPrice),
                 RequestParameterRuleOverride<PlaceFuturesOrderRequest>.NotSupported(x => x.TakeProfitPrice),
@@ -159,7 +159,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public GetFuturesClosedOrdersOptions GetClosedFuturesOrdersOptions { get; } = new GetFuturesClosedOrdersOptions(_exchangeName, false, true, false, 50)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<GetClosedOrdersRequest>.NotSupported(x => x.StartTime),
                 RequestParameterRuleOverride<GetClosedOrdersRequest>.NotSupported(x => x.EndTime)
                 ]
@@ -385,7 +385,7 @@ namespace CoinEx.Net.Clients.FuturesApi
 
         public CloseFullPositionOptions CloseFullPositionOptions { get; } = new CloseFullPositionOptions(_exchangeName, true)
         {
-            ParameterRuleOverwrites = [
+            ParameterRuleOverrides = [
                 RequestParameterRuleOverride<CloseFullPositionRequest>.Required(x => x.PositionSide)
             ]
         };
