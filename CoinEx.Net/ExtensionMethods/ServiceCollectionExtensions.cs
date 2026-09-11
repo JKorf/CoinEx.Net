@@ -59,8 +59,9 @@ namespace Microsoft.Extensions.DependencyInjection
             options.Socket.Environment = CoinExEnvironment.GetEnvironmentByName(socketEnvName) ?? options.Socket.Environment!;
             options.Socket.ApiCredentials = options.Socket.ApiCredentials ?? options.ApiCredentials;
 
-            services.AddSingleton(x => Options.Options.Create(options.Rest));
-            services.AddSingleton(x => Options.Options.Create(options.Socket));
+            services.AddSingleton(Options.Options.Create(options.Rest));
+            services.AddSingleton(Options.Options.Create(options.Socket));
+            services.AddSingleton(Options.Options.Create(options));
 
             return AddCoinExCore(services, options.SocketClientLifeTime);
         }
@@ -89,8 +90,9 @@ namespace Microsoft.Extensions.DependencyInjection
             options.Socket.Environment = options.Socket.Environment ?? options.Environment ?? CoinExEnvironment.Live;
             options.Socket.ApiCredentials = options.Socket.ApiCredentials ?? options.ApiCredentials;
 
-            services.AddSingleton(x => Options.Options.Create(options.Rest));
-            services.AddSingleton(x => Options.Options.Create(options.Socket));
+            services.AddSingleton(Options.Options.Create(options.Rest));
+            services.AddSingleton(Options.Options.Create(options.Socket));
+            services.AddSingleton(Options.Options.Create(options));
 
             return AddCoinExCore(services, options.SocketClientLifeTime);
         }
@@ -126,6 +128,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.RegisterSharedApi(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedApi);
             services.RegisterSharedApi(x => x.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedApi);
             services.RegisterSharedApi(x => x.GetRequiredService<ICoinExSocketClient>().FuturesApi.SharedApi);
+
+            services.RegisterSharedApiClientCapabilities<ICoinExSharedApiClient>();
 
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient);

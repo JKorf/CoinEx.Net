@@ -1,11 +1,14 @@
 using CoinEx.Net.Interfaces.Clients;
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using CoinEx.Net.Objects.Options;
+using CryptoExchange.Net.SharedApis;
+using Microsoft.Extensions.Options;
 
 namespace CoinEx.Net.Clients
 {
     /// <inheritdoc />
-    public class CoinExSharedApiClient : ICoinExSharedApiClient
+    public class CoinExSharedApiClient : SharedApiClientBase, ICoinExSharedApiClient
     {
         /// <inheritdoc />
         public ICoinExRestClientSpotSharedApi SpotRest { get; }
@@ -21,7 +24,14 @@ namespace CoinEx.Net.Clients
         /// </summary>
         public CoinExSharedApiClient(
             ICoinExRestClient restClient,
-            ICoinExSocketClient socketClient)
+            ICoinExSocketClient socketClient,
+            IOptions<CoinExOptions> options)
+            : base(options.Value.SharedApi.PreferredTransport,
+                  restClient.SpotApiV2.SharedApi,
+                  restClient.FuturesApi.SharedApi,
+                  socketClient.SpotApiV2.SharedApi,
+                   socketClient.FuturesApi.SharedApi
+                  )
         {
             SpotRest = restClient.SpotApiV2.SharedApi;
             FuturesRest = restClient.FuturesApi.SharedApi;

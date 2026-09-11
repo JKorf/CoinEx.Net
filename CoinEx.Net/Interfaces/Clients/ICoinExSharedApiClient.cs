@@ -1,12 +1,13 @@
 using CoinEx.Net.Interfaces.Clients.FuturesApi;
 using CoinEx.Net.Interfaces.Clients.SpotApiV2;
+using CryptoExchange.Net.SharedApis;
 
 namespace CoinEx.Net.Interfaces.Clients
 {
     /// <summary>
     /// Client for the shared REST and WebSocket API implementations of CoinEx
     /// </summary>
-    public interface ICoinExSharedApiClient
+    public interface ICoinExSharedApiClient : ISharedApiClientBase
     {
         /// <summary>
         /// Spot REST shared API implementations
