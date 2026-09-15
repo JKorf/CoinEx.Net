@@ -8,6 +8,7 @@ using CryptoExchange.Net;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Interfaces.Clients;
+using CryptoExchange.Net.SharedApis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -121,20 +122,20 @@ namespace Microsoft.Extensions.DependencyInjection
                 x.GetRequiredService<ILoggerFactory>(),
                 x.GetRequiredService<IOptions<CoinExRestOptions>>(),
                 x.GetRequiredService<IOptions<CoinExSocketOptions>>()));
-
-            services.AddTransient<ICoinExSharedApiClient, CoinExSharedApiClient>();
-
-            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedApi);
-            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedApi);
-            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedApi);
-            services.RegisterSharedApi(x => x.GetRequiredService<ICoinExSocketClient>().FuturesApi.SharedApi);
-
-            services.RegisterSharedApiClientCapabilities<ICoinExSharedApiClient>();
-
+                        
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient);
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().FuturesApi.SharedClient);
+
+            services.RegisterSharedApiClient<
+                ICoinExSharedApiClient,
+                CoinExSharedApiClient>(sharedApis => sharedApis
+                    .Add(client => client.SpotRest)
+                    .Add(client => client.SpotSocket)
+                    .Add(client => client.FuturesRest)
+                    .Add(client => client.FuturesSocket)
+                    );
 
             return services;
         }
