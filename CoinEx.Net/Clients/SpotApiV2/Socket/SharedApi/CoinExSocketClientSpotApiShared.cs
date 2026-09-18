@@ -29,7 +29,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         public CoinExSocketClientSpotSharedApi(CoinExSocketClientSpotApi api)
             : base(
                   SharedTransport.Socket,
-                  api.Exchange,
+                  api,
                   [TradingMode.Spot],
                   () => api.Authenticated,
                   api.FormatSymbol)

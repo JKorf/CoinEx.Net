@@ -30,7 +30,7 @@ namespace CoinEx.Net.Clients.SpotApiV2
         public CoinExRestClientSpotSharedApi(CoinExRestClientSpotApi api)
             : base(
                   SharedTransport.Rest,
-                  api.Exchange,
+                  api,
                   [TradingMode.Spot],
                   () => api.Authenticated,
                   api.FormatSymbol)

@@ -29,7 +29,7 @@ namespace CoinEx.Net.Clients.FuturesApi
         public CoinExRestClientFuturesSharedApi(CoinExRestClientFuturesApi api)
             : base(
                   SharedTransport.Rest,
-                  api.Exchange,
+                  api,
                   [TradingMode.PerpetualLinear, TradingMode.PerpetualInverse],
                   () => api.Authenticated,
                   api.FormatSymbol)
