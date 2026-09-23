@@ -19,12 +19,17 @@ namespace CoinEx.Net
             string? userIdentifier,
             SpotUserDataTrackerConfig? config) : base(
                 logger,
-                restClient.SpotApiV2.SharedClient,
-                restClient.SpotApiV2.SharedClient,
-                socketClient.SpotApiV2.SharedClient,
-                restClient.SpotApiV2.SharedClient,
-                socketClient.SpotApiV2.SharedClient,
-                socketClient.SpotApiV2.SharedClient,
+                restClient.SpotApiV2.SharedApi,
+
+                restClient.SpotApiV2.SharedApi,
+                socketClient.SpotApiV2.SharedApi,
+
+                restClient.SpotApiV2.SharedApi,
+                restClient.SpotApiV2.SharedApi,
+                socketClient.SpotApiV2.SharedApi,
+
+                restClient.SpotApiV2.SharedApi,
+                socketClient.SpotApiV2.SharedApi,
                 userIdentifier,
                 config ?? new SpotUserDataTrackerConfig())
         {
@@ -46,13 +51,20 @@ namespace CoinEx.Net
             ICoinExSocketClient socketClient,
             string? userIdentifier,
             FuturesUserDataTrackerConfig? config) : base(logger,
-                restClient.FuturesApi.SharedClient,
-                restClient.FuturesApi.SharedClient,
-                socketClient.FuturesApi.SharedClient,
-                restClient.FuturesApi.SharedClient,
-                socketClient.FuturesApi.SharedClient,
-                socketClient.FuturesApi.SharedClient,
-                socketClient.FuturesApi.SharedClient,
+                restClient.FuturesApi.SharedApi,
+
+                restClient.FuturesApi.SharedApi,
+                socketClient.FuturesApi.SharedApi,
+
+                restClient.FuturesApi.SharedApi,
+                restClient.FuturesApi.SharedApi,
+                socketClient.FuturesApi.SharedApi,
+
+                restClient.FuturesApi.SharedApi,
+                socketClient.FuturesApi.SharedApi,
+
+                restClient.FuturesApi.SharedApi,
+                socketClient.FuturesApi.SharedApi,
                 userIdentifier,
                 config ?? new FuturesUserDataTrackerConfig())
         {

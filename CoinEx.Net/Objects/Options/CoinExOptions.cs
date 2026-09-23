@@ -1,5 +1,7 @@
 ﻿using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects.Options;
+using Microsoft.Extensions.Configuration;
+using CryptoExchange.Net.SharedApis;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -21,5 +23,69 @@ namespace CoinEx.Net.Objects.Options
         /// * Toggling this option might fail operations using a clientOrderId parameter for pre-existing orders which were placed before the toggle. Operations on orders placed after the toggle will work as expected. It's advised to toggle when there are no open orders
         /// </summary>
         public bool AllowAppendingClientOrderId { get; set; } = false;
+        /// <summary>
+        /// Options for Shared API usage
+        /// </summary>
+        public SharedApiOptions SharedApi { get; set; } = new();
+        /// <summary>
+        /// Create CoinExOptions instance using the provided configuration action
+        /// </summary>
+        public static CoinExOptions Create(Action<CoinExOptions>? configure = null)
+        {
+            var options = CreateUnconfigured();
+            configure?.Invoke(options);
+            return Normalize(options);
+        }
+
+        /// <summary>
+        /// Create CoinExOptions using the provided IConfiguration
+        /// </summary>
+        public static CoinExOptions CreateFromConfiguration(IConfiguration configuration)
+        {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            var options = CreateUnconfigured();
+            try
+            {
+                configuration.Bind(options);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException("Invalid CoinEx configuration provided", ex);
+            }
+
+            if (options.Environment != null)
+                options.Environment = CoinExEnvironment.GetEnvironmentByName(options.Environment.Name) ?? options.Environment;
+            if (options.Rest?.Environment != null)
+                options.Rest.Environment = CoinExEnvironment.GetEnvironmentByName(options.Rest.Environment.Name) ?? options.Rest.Environment;
+            if (options.Socket?.Environment != null)
+                options.Socket.Environment = CoinExEnvironment.GetEnvironmentByName(options.Socket.Environment.Name) ?? options.Socket.Environment;
+
+            return Normalize(options);
+        }
+
+        private static CoinExOptions CreateUnconfigured()
+        {
+            var options = new CoinExOptions();
+            options.Rest.Environment = null!;
+            options.Socket.Environment = null!;
+            return options;
+        }
+
+        private static CoinExOptions Normalize(CoinExOptions options)
+        {
+            if (options.Rest == null)
+                throw new ArgumentException("REST options cannot be null", nameof(options));
+            if (options.Socket == null)
+                throw new ArgumentException("Socket options cannot be null", nameof(options));
+
+            options.Rest.Environment ??= options.Environment ?? CoinExEnvironment.Live;
+            options.Rest.ApiCredentials ??= options.ApiCredentials;
+            options.Rest.AllowAppendingClientOrderId |= options.AllowAppendingClientOrderId;
+            options.Socket.Environment ??= options.Environment ?? CoinExEnvironment.Live;
+            options.Socket.ApiCredentials ??= options.ApiCredentials;
+            return options;
+        }
     }
 }

@@ -29,6 +29,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
     internal partial class CoinExRestClientSpotApi : RestApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExRestClientSpotApi
     {
         #region fields
+        private readonly CoinExRestClientSpotSharedApi _sharedApi;
+
         /// <inheritdoc />
         public new CoinExRestOptions ClientOptions => (CoinExRestOptions)base.ClientOptions;
 
@@ -56,6 +58,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             Account = new CoinExRestClientSpotApiAccount(this);
             ExchangeData = new CoinExRestClientSpotApiExchangeData(this);
             Trading = new CoinExRestClientSpotApiTrading(this);
+
+            _sharedApi = new CoinExRestClientSpotSharedApi(this);
 
             ParameterPositions[HttpMethod.Delete] = HttpMethodParameterPosition.InUri;
         }
@@ -122,7 +126,9 @@ namespace CoinEx.Net.Clients.SpotApiV2
         protected override async Task<HttpResult<DateTime>> GetServerTimestampAsync() => await ExchangeData.GetServerTimeAsync().ConfigureAwait(false);
 
         /// <inheritdoc />
-        public ICoinExRestClientSpotApiShared SharedClient => this;
+        public ICoinExRestClientSpotApiShared SharedClient => _sharedApi;
+        /// <inheritdoc />
+        public ICoinExRestClientSpotSharedApi SharedApi => _sharedApi;
 
     }
 }

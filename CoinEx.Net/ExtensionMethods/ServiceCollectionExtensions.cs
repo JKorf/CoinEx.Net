@@ -1,4 +1,4 @@
-﻿using CoinEx.Net;
+using CoinEx.Net;
 using CoinEx.Net.Clients;
 using CoinEx.Net.Interfaces;
 using CoinEx.Net.Interfaces.Clients;
@@ -8,6 +8,7 @@ using CryptoExchange.Net;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Interfaces.Clients;
+using CryptoExchange.Net.SharedApis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -34,33 +35,10 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            var options = new CoinExOptions();
-            // Reset environment so we know if they're overridden
-            options.Rest.Environment = null!;
-            options.Socket.Environment = null!;
-
-            try
-            {
-                configuration.Bind(options);
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new InvalidOperationException("Invalid configuration provided", ex);
-            }
-
-            if (options.Rest == null || options.Socket == null)
-                throw new ArgumentException("Options null");
-
-            var restEnvName = options.Rest.Environment?.Name ?? options.Environment?.Name ?? CoinExEnvironment.Live.Name;
-            var socketEnvName = options.Socket.Environment?.Name ?? options.Environment?.Name ?? CoinExEnvironment.Live.Name;
-            options.Rest.Environment = CoinExEnvironment.GetEnvironmentByName(restEnvName) ?? options.Rest.Environment!;
-            options.Rest.ApiCredentials = options.Rest.ApiCredentials ?? options.ApiCredentials;
-            options.Rest.AllowAppendingClientOrderId = options.Rest.AllowAppendingClientOrderId || options.AllowAppendingClientOrderId;
-            options.Socket.Environment = CoinExEnvironment.GetEnvironmentByName(socketEnvName) ?? options.Socket.Environment!;
-            options.Socket.ApiCredentials = options.Socket.ApiCredentials ?? options.ApiCredentials;
-
-            services.AddSingleton(x => Options.Options.Create(options.Rest));
-            services.AddSingleton(x => Options.Options.Create(options.Socket));
+            var options = CoinExOptions.CreateFromConfiguration(configuration);
+            services.AddSingleton(Options.Options.Create(options.Rest));
+            services.AddSingleton(Options.Options.Create(options.Socket));
+            services.AddSingleton(Options.Options.Create(options));
 
             return AddCoinExCore(services, options.SocketClientLifeTime);
         }
@@ -75,22 +53,10 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             Action<CoinExOptions>? optionsDelegate = null)
         {
-            var options = new CoinExOptions();
-            // Reset environment so we know if they're overridden
-            options.Rest.Environment = null!;
-            options.Socket.Environment = null!;
-            optionsDelegate?.Invoke(options);
-            if (options.Rest == null || options.Socket == null)
-                throw new ArgumentException("Options null");
-
-            options.Rest.AllowAppendingClientOrderId = options.Rest.AllowAppendingClientOrderId || options.AllowAppendingClientOrderId;
-            options.Rest.Environment = options.Rest.Environment ?? options.Environment ?? CoinExEnvironment.Live;
-            options.Rest.ApiCredentials = options.Rest.ApiCredentials ?? options.ApiCredentials;
-            options.Socket.Environment = options.Socket.Environment ?? options.Environment ?? CoinExEnvironment.Live;
-            options.Socket.ApiCredentials = options.Socket.ApiCredentials ?? options.ApiCredentials;
-
-            services.AddSingleton(x => Options.Options.Create(options.Rest));
-            services.AddSingleton(x => Options.Options.Create(options.Socket));
+            var options = CoinExOptions.Create(optionsDelegate);
+            services.AddSingleton(Options.Options.Create(options.Rest));
+            services.AddSingleton(Options.Options.Create(options.Socket));
+            services.AddSingleton(Options.Options.Create(options));
 
             return AddCoinExCore(services, options.SocketClientLifeTime);
         }
@@ -119,11 +85,20 @@ namespace Microsoft.Extensions.DependencyInjection
                 x.GetRequiredService<ILoggerFactory>(),
                 x.GetRequiredService<IOptions<CoinExRestOptions>>(),
                 x.GetRequiredService<IOptions<CoinExSocketOptions>>()));
-
+                        
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().SpotApiV2.SharedClient);
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedClient);
             services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<ICoinExSocketClient>().FuturesApi.SharedClient);
+
+            services.RegisterSharedApiClient<
+                ICoinExSharedApiClient,
+                CoinExSharedApiClient>(sharedApis => sharedApis
+                    .Add(client => client.SpotRest)
+                    .Add(client => client.SpotSocket)
+                    .Add(client => client.FuturesRest)
+                    .Add(client => client.FuturesSocket)
+                    );
 
             return services;
         }

@@ -32,6 +32,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
     internal partial class CoinExSocketClientSpotApi : SocketApiClient<CoinExEnvironment, CoinExV2AuthenticationProvider, CoinExCredentials>, ICoinExSocketClientSpotApi
     {
         #region fields
+        private readonly CoinExSocketClientSpotSharedApi _sharedApi;
+
         /// <inheritdoc />
         public new CoinExSocketOptions ClientOptions => (CoinExSocketOptions)base.ClientOptions;
 
@@ -47,6 +49,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
             : base(loggerFactory, CoinExExchange.Metadata.Id, options.Environment.SocketBaseAddress, options, options.SpotOptions)
         {
             KeepAliveInterval = TimeSpan.Zero; // Server doesn't correctly respond to ping frames
+
+            _sharedApi = new CoinExSocketClientSpotSharedApi(this);
 
             RegisterPeriodicQuery(
                 "Ping",
@@ -68,7 +72,8 @@ namespace CoinEx.Net.Clients.SpotApiV2
         protected override CoinExV2AuthenticationProvider CreateAuthenticationProvider(CoinExCredentials credentials)
             => new CoinExV2AuthenticationProvider(credentials);
 
-        public ICoinExSocketClientSpotApiShared SharedClient => this;
+        public ICoinExSocketClientSpotApiShared SharedClient => _sharedApi;
+        public ICoinExSocketClientSpotSharedApi SharedApi => _sharedApi;
 
         /// <inheritdoc />
         public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
