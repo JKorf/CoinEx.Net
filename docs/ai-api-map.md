@@ -157,24 +157,24 @@ Use this file to route common user intents to the correct CoinEx.Net client memb
 
 | User intent | CoinEx.Net member or interface |
 |---|---|
-| Shared spot REST client | `new CoinExRestClient().SpotApiV2.SharedClient` |
-| Shared futures REST client | `new CoinExRestClient().FuturesApi.SharedClient` |
-| Shared spot socket client | `new CoinExSocketClient().SpotApiV2.SharedClient` |
-| Shared futures socket client | `new CoinExSocketClient().FuturesApi.SharedClient` |
-| Discover shared capabilities | `client.SpotApiV2.SharedClient.Discover()` / `client.FuturesApi.SharedClient.Discover()` |
-| Get/filter shared spot symbols | `ISpotSymbolRestClient.GetSpotSymbolsAsync(new GetSymbolsRequest(...))` |
-| Get/filter shared futures symbols | `IFuturesSymbolRestClient.GetFuturesSymbolsAsync(new GetSymbolsRequest(...))` |
-| Read shared spot symbol catalog | `ISpotSymbolRestClient.SpotSymbolCatalog` after a successful `GetSpotSymbolsAsync` call |
-| Read shared futures symbol catalog | `IFuturesSymbolRestClient.FuturesSymbolCatalog` after a successful `GetFuturesSymbolsAsync` call |
-| Shared spot ticker REST | `ISpotTickerRestClient.GetSpotTickerAsync(new GetTickerRequest(symbol))` |
-| Shared futures ticker REST | `IFuturesTickerRestClient.GetFuturesTickerAsync(new GetTickerRequest(symbol))` |
-| Shared spot order REST | `ISpotOrderRestClient.PlaceSpotOrderAsync(...)` |
-| Shared futures order REST | `IFuturesOrderRestClient.PlaceFuturesOrderAsync(...)` |
-| Shared balance REST | `IBalanceRestClient.GetBalancesAsync(...)` |
-| Shared position REST | `IPositionRestClient.GetPositionsAsync(...)` |
-| Shared futures open interest (public) | `IOpenInterestRestClient.GetOpenInterestAsync(new GetOpenInterestRequest(symbol))` |
-| Shared ticker socket | `ITickerSocketClient.SubscribeToTickerUpdatesAsync(...)` |
-| Shared order book socket | `IOrderBookSocketClient.SubscribeToOrderBookUpdatesAsync(...)` |
+| Shared spot REST client | `new CoinExRestClient().SpotApiV2.SharedApi` |
+| Shared futures REST client | `new CoinExRestClient().FuturesApi.SharedApi` |
+| Shared spot socket client | `new CoinExSocketClient().SpotApiV2.SharedApi` |
+| Shared futures socket client | `new CoinExSocketClient().FuturesApi.SharedApi` |
+| Resolve a runtime-selected Shared API capability | `ICoinExSharedApiClient.GetCapability(...)` |
+| Get/filter shared spot symbols | `IGetSpotSymbolsRest.GetSpotSymbolsAsync(new GetSymbolsRequest(...))` |
+| Get/filter shared futures symbols | `IGetFuturesSymbolsRest.GetFuturesSymbolsAsync(new GetSymbolsRequest(...))` |
+| Read shared spot symbol catalog | `IGetSpotSymbolsRest.SpotSymbolCatalog` after a successful `GetSpotSymbolsAsync` call |
+| Read shared futures symbol catalog | `IGetFuturesSymbolsRest.FuturesSymbolCatalog` after a successful `GetFuturesSymbolsAsync` call |
+| Shared spot ticker REST | `IGetTickerRest.GetTickerAsync(new GetTickerRequest(symbol))` |
+| Shared futures ticker REST | `IGetTickerRest.GetTickerAsync(new GetTickerRequest(symbol))` |
+| Shared spot order REST | `IPlaceSpotOrderRest.PlaceSpotOrderAsync(...)` |
+| Shared futures order REST | `IPlaceFuturesOrderRest.PlaceFuturesOrderAsync(...)` |
+| Shared balance REST | `IGetBalancesRest.GetBalancesAsync(...)` |
+| Shared position REST | `IGetPositionsRest.GetPositionsAsync(...)` |
+| Shared futures open interest (public) | `IGetOpenInterestRest.GetOpenInterestAsync(new GetOpenInterestRequest(symbol))` |
+| Shared ticker socket | `ISubscribeTickerSocket.SubscribeToTickerUpdatesAsync(...)` |
+| Shared order book socket | `ISubscribeOrderBookSocket.SubscribeToOrderBookUpdatesAsync(...)` |
 
 Shared REST calls return `HttpResult<T>` / `HttpResult`. Shared socket subscriptions return `WebSocketResult<UpdateSubscription>`. Shared non-I/O symbol/cache helpers such as symbol support checks return `ExchangeCallResult<T>`.
 
@@ -208,4 +208,4 @@ For shared socket subscriptions, keep the concrete socket client and unsubscribe
 | Binance USD-M / COIN-M branches | `FuturesApi` |
 | `FuturesApi.Account.GetPositionsAsync(...)` | `FuturesApi.Trading.GetPositionsAsync(...)` |
 | `.Data` without `.Success` check | Check `.Success` first |
-| `ITickerSocketClient.UnsubscribeAsync(...)` | Keep the concrete socket client and call `socketClient.UnsubscribeAsync(subscription.Data)` |
+| Unsubscribe from a shared subscription | Keep the concrete socket client and call `socketClient.UnsubscribeAsync(subscription.Data)` |

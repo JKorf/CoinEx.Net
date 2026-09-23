@@ -35,7 +35,7 @@ Primary documentation:
 - For futures examples, use `FuturesApi`; CoinEx.Net does not split futures into Binance-style USD-M and COIN-M branches.
 - For spot trading methods, pass `AccountType.Spot` or `AccountType.Margin`.
 - Use `OrderTypeV2` for spot and futures order type values.
-- For multi-exchange code, use `CryptoExchange.Net.SharedApis` interfaces from each API surface's `.SharedClient` and call `.Discover()` to inspect supported shared features.
+- Use the exchange-level `ICoinExSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 - Shared spot/futures symbol results include display names and asset type/subtype metadata. `GetSymbolsRequest` supports filtering on those classifications.
 - Read shared quantities through `SharedOrderQuantity`; CoinEx supplies book-ticker, trade, position, and open-interest quantities in the base asset, and shared order books report `SharedQuantityType.BaseAsset`.
 
@@ -201,12 +201,12 @@ CoinExRestClient
     .ExchangeData
     .Account
     .Trading
-    .SharedClient
+    .SharedApi
   .FuturesApi
     .ExchangeData
     .Account
     .Trading
-    .SharedClient
+    .SharedApi
 ```
 
 WebSocket:
@@ -214,7 +214,7 @@ WebSocket:
 ```text
 CoinExSocketClient
   .SpotApiV2
-    .SharedClient
+    .SharedApi
     SubscribeToTickerUpdatesAsync
     SubscribeToOrderBookUpdatesAsync
     SubscribeToTradeUpdatesAsync
@@ -225,7 +225,7 @@ CoinExSocketClient
     SubscribeToUserTradeUpdatesAsync
     SubscribeToBalanceUpdatesAsync
   .FuturesApi
-    .SharedClient
+    .SharedApi
     SubscribeToTickerUpdatesAsync
     SubscribeToOrderBookUpdatesAsync
     SubscribeToTradeUpdatesAsync
@@ -424,14 +424,12 @@ Use CryptoExchange.Net.SharedApis when the user asks for code that can work agai
 using CoinEx.Net.Clients;
 using CryptoExchange.Net.SharedApis;
 
-ISpotTickerRestClient tickerClient = new CoinExRestClient().SpotApiV2.SharedClient;
-var info = tickerClient.Discover();
-var supported = info.Features.Where(x => x.Supported).Select(x => x.EndpointName);
-Console.WriteLine($"{info.Exchange} {info.TypeName}: {string.Join(", ", supported)}");
+IGetTickerRest tickerClient = new CoinExRestClient().SpotApiV2.SharedApi;
+// Use the exchange-level `ICoinExSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 
 var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
 
-var ticker = await tickerClient.GetSpotTickerAsync(new GetTickerRequest(symbol));
+var ticker = await tickerClient.GetTickerAsync(new GetTickerRequest(symbol));
 if (!ticker.Success)
 {
     Console.WriteLine(ticker.Error);
@@ -444,7 +442,7 @@ Console.WriteLine(ticker.Data.LastPrice);
 Shared symbol clients support asset classification filters and expose a catalog after a successful symbol request:
 
 ```csharp
-ISpotSymbolRestClient symbolClient = new CoinExRestClient().SpotApiV2.SharedClient;
+IGetSpotSymbolsRest symbolClient = new CoinExRestClient().SpotApiV2.SharedApi;
 var symbols = await symbolClient.GetSpotSymbolsAsync(new GetSymbolsRequest(
     baseAssetType: SharedAssetType.TradFi,
     baseAssetSubType: SharedAssetSubType.Equity));
@@ -467,7 +465,7 @@ Shared WebSocket subscriptions return an `UpdateSubscription` in `.Data`. For sh
 
 ```csharp
 var socketClient = new CoinExSocketClient();
-ITickerSocketClient tickerSocket = socketClient.SpotApiV2.SharedClient;
+ISubscribeTickerSocket tickerSocket = socketClient.SpotApiV2.SharedApi;
 
 var sub = await tickerSocket.SubscribeToTickerUpdatesAsync(
     new SubscribeTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")),
@@ -484,7 +482,7 @@ Console.ReadLine();
 await socketClient.UnsubscribeAsync(sub.Data);
 ```
 
-Do not call `tickerSocket.UnsubscribeAsync(...)` on `ITickerSocketClient`; that shared interface does not expose the method.
+Do not call `tickerSocket.UnsubscribeAsync(...)` on `ISubscribeTickerSocket`; that shared interface does not expose the method.
 
 ## Symbol And Precision Handling
 

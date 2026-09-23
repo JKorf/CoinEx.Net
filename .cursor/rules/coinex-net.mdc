@@ -40,8 +40,8 @@ var price = tickers.Data.First().LastPrice;
 - `restClient.FuturesApi.{ExchangeData|Account|Trading}`
 - `socketClient.SpotApiV2` for spot WebSocket subscriptions
 - `socketClient.FuturesApi` for futures WebSocket subscriptions
-- `restClient.SpotApiV2.SharedClient` and `restClient.FuturesApi.SharedClient`
-- `socketClient.SpotApiV2.SharedClient` and `socketClient.FuturesApi.SharedClient`
+- `restClient.SpotApiV2.SharedApi` and `restClient.FuturesApi.SharedApi`
+- `socketClient.SpotApiV2.SharedApi` and `socketClient.FuturesApi.SharedApi`
 
 ## Order placement
 
@@ -79,12 +79,12 @@ For exchange-agnostic code, use `CryptoExchange.Net.SharedApis`:
 ```csharp
 using CryptoExchange.Net.SharedApis;
 
-var shared = new CoinExRestClient().SpotApiV2.SharedClient;
-var ticker = await shared.GetSpotTickerAsync(
+var shared = new CoinExRestClient().SpotApiV2.SharedApi;
+var ticker = await shared.GetTickerAsync(
     new GetTickerRequest(new SharedSymbol(TradingMode.Spot, "BTC", "USDT")));
 ```
 
-Shared `ISpotSymbolRestClient` and `IFuturesSymbolRestClient` results include `DisplayName` and base/quote asset type/subtype metadata. Use those fields in `GetSymbolsRequest` to filter symbols. Their `SpotSymbolCatalog` / `FuturesSymbolCatalog` properties are populated only after the corresponding `Get*SymbolsAsync` call succeeds.
+Shared `IGetSpotSymbolsRest` and `IGetFuturesSymbolsRest` results include `DisplayName` and base/quote asset type/subtype metadata. Use those fields in `GetSymbolsRequest` to filter symbols. Their `SpotSymbolCatalog` / `FuturesSymbolCatalog` properties are populated only after the corresponding `Get*SymbolsAsync` call succeeds.
 
 ## Hard rules
 

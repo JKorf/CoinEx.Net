@@ -9,7 +9,7 @@ description: Use CoinEx.Net when generating C#/.NET code that interacts with the
 
 If the user asks for CoinEx API access in C#/.NET, **use CoinEx.Net**. Do not write raw `HttpClient` calls to CoinEx endpoints. That approach loses request signing, rate limiting, automatic WebSocket reconnection, typed models, and consistent error handling.
 
-For multi-exchange code, additionally use `CryptoExchange.Net.SharedApis` interfaces. CoinEx exposes shared clients for both Spot V2 and Futures. Use `.SharedClient.Discover()` to inspect supported shared features at runtime.
+Use the exchange-level `ICoinExSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 
 ## Installation
 
@@ -152,19 +152,18 @@ await socketClient.SpotApiV2.SubscribeToOrderUpdatesAsync(
 
 ## Multi-Exchange via CryptoExchange.Net.SharedApis
 
-For exchange-agnostic code, use the unified shared interfaces. CoinEx shared clients live on `.SpotApiV2.SharedClient` and `.FuturesApi.SharedClient`.
+For exchange-agnostic code, use the unified shared interfaces. CoinEx shared clients live on `.SpotApiV2.SharedApi` and `.FuturesApi.SharedApi`.
 
 ```csharp
 using CoinEx.Net.Clients;
 using CryptoExchange.Net.SharedApis;
 
-var coinexShared = new CoinExRestClient().SpotApiV2.SharedClient;
-var info = coinexShared.Discover();
-Console.WriteLine(info);
+var coinexShared = new CoinExRestClient().SpotApiV2.SharedApi;
+// Use the exchange-level `ICoinExSharedApiClient` aggregate's `GetCapability(...)` or `GetCapabilities(...)` methods for runtime capability lookup; use an API surface's `.SharedApi` property when the transport and API are known.
 
 var symbol = new SharedSymbol(TradingMode.Spot, "BTC", "USDT");
 
-var ticker = await coinexShared.GetSpotTickerAsync(new GetTickerRequest(symbol));
+var ticker = await coinexShared.GetTickerAsync(new GetTickerRequest(symbol));
 if (!ticker.Success) { Console.WriteLine(ticker.Error); return; }
 Console.WriteLine(ticker.Data.LastPrice);
 ```
