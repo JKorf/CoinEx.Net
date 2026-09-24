@@ -36,10 +36,10 @@ namespace CoinEx.Net.Clients.FuturesApi
             return HttpResult.Ok(resultTicker, new SharedBookTicker(
                 ExchangeSymbolCache.ParseSymbol(_topicId, _api.EnvironmentName, null, resultTicker.Data.Symbol),
                 resultTicker.Data.Symbol,
-                resultTicker.Data.Data.Asks[0].Price,
-                new SharedOrderQuantity(resultTicker.Data.Data.Asks[0].Quantity),
-                resultTicker.Data.Data.Bids[0].Price,
-                new SharedOrderQuantity(resultTicker.Data.Data.Bids[0].Quantity)));
+                resultTicker.Data.Data.Asks.FirstOrDefault()?.Price ?? 0,
+                new SharedOrderQuantity(resultTicker.Data.Data.Asks.FirstOrDefault()?.Quantity ?? 0),
+                resultTicker.Data.Data.Bids.FirstOrDefault()?.Price ?? 0,
+                new SharedOrderQuantity(resultTicker.Data.Data.Bids.FirstOrDefault()?.Quantity ?? 0)));
         }
 
         #endregion
