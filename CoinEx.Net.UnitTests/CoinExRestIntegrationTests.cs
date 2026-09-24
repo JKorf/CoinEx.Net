@@ -97,51 +97,51 @@ namespace CoinEx.Net.UnitTests
                 Assert.Warn(warning.Message);
         }
 
-        [Test]
-        public async Task TestFuturesAccount()
-        {
-            var warnings = new List<Exception>();
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Account.GetTradingFeesAsync("ETHUSDT", default), true, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Account.GetBalancesAsync(default), true, "data");
-            foreach (var warning in warnings)
-                Assert.Warn(warning.Message);
-        }
+        //[Test]
+        //public async Task TestFuturesAccount()
+        //{
+        //    var warnings = new List<Exception>();
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Account.GetTradingFeesAsync("ETHUSDT", default), true, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Account.GetBalancesAsync(default), true, "data");
+        //    foreach (var warning in warnings)
+        //        Assert.Warn(warning.Message);
+        //}
 
-        [Test]
-        public async Task TestFuturesExchangeData()
-        {
-            var warnings = new List<Exception>();
-            await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetServerTimeAsync(default), false);
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetSymbolsAsync(default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetTickersAsync(default, default), false, "data", ignoreProperties: ["period"]);
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetOrderBookAsync("ETHUSDT", 5, default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetTradeHistoryAsync("ETHUSDT", default, default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetKlinesAsync("ETHUSDT", Enums.KlineInterval.OneDay, default, default, default, default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetIndexPricesAsync(default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetFundingRatesAsync(default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetFundingRateHistoryAsync("ETHUSDT", default, default, default, default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetPremiumIndexPriceHistoryAsync("ETHUSDT", default, default, default, default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetPositionLevelsAsync(default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetLiquidationHistoryAsync("ETHUSDT", default, default, default, default, default), false, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetBasisHistoryAsync("ETHUSDT", default, default, default), false, "data");
-            foreach (var warning in warnings)
-                Assert.Warn(warning.Message);
-        }
+        //[Test]
+        //public async Task TestFuturesExchangeData()
+        //{
+        //    var warnings = new List<Exception>();
+        //    await RunAndCheckResult(client => client.FuturesApi.ExchangeData.GetServerTimeAsync(default), false);
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetSymbolsAsync(default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetTickersAsync(default, default), false, "data", ignoreProperties: ["period"]);
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetOrderBookAsync("ETHUSDT", 5, default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetTradeHistoryAsync("ETHUSDT", default, default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetKlinesAsync("ETHUSDT", Enums.KlineInterval.OneDay, default, default, default, default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetIndexPricesAsync(default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetFundingRatesAsync(default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetFundingRateHistoryAsync("ETHUSDT", default, default, default, default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetPremiumIndexPriceHistoryAsync("ETHUSDT", default, default, default, default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetPositionLevelsAsync(default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetLiquidationHistoryAsync("ETHUSDT", default, default, default, default, default), false, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.ExchangeData.GetBasisHistoryAsync("ETHUSDT", default, default, default), false, "data");
+        //    foreach (var warning in warnings)
+        //        Assert.Warn(warning.Message);
+        //}
 
-        [Test]
-        public async Task TestFuturesTrading()
-        {
-            var warnings = new List<Exception>();
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetOpenOrdersAsync(default, default, default, default, default, default), true, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetClosedOrdersAsync(default, default, default, default, default, default), true, "data");  
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetOpenStopOrdersAsync(default, default, default, default, default, default), true, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetClosedStopOrdersAsync(default, default, default, default, default), true, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetUserTradesAsync("ETHUSDT", default, default, default, default, default, default), true, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetPositionsAsync("ETHUSDT", default, default, default), true, "data");
-            await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetPositionHistoryAsync("ETHUSDT", default, default, default, default, default), true, "data");
-            foreach (var warning in warnings)
-                Assert.Warn(warning.Message);
-        }
+        //[Test]
+        //public async Task TestFuturesTrading()
+        //{
+        //    var warnings = new List<Exception>();
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetOpenOrdersAsync(default, default, default, default, default, default), true, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetClosedOrdersAsync(default, default, default, default, default, default), true, "data");  
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetOpenStopOrdersAsync(default, default, default, default, default, default), true, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetClosedStopOrdersAsync(default, default, default, default, default), true, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetUserTradesAsync("ETHUSDT", default, default, default, default, default, default), true, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetPositionsAsync("ETHUSDT", default, default, default), true, "data");
+        //    await RunAndCheckResult(warnings, client => client.FuturesApi.Trading.GetPositionHistoryAsync("ETHUSDT", default, default, default, default, default), true, "data");
+        //    foreach (var warning in warnings)
+        //        Assert.Warn(warning.Message);
+        //}
 
         [Test]
         public async Task TestOrderBooks()

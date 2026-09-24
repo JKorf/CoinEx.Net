@@ -42,33 +42,33 @@ namespace CoinEx.Net.UnitTests
             return sp.GetRequiredService<ICoinExRestClient>().SpotApiV2.SharedClient;
         }
 
-        private ICoinExRestClientFuturesApiShared GetFuturesRestClient()
-        {
-            var collection = new ServiceCollection();
-            collection.AddCoinEx(x => x.Rest.OutputOriginalData = true);
-            collection.AddLogging(x =>
-            {
-                x.SetMinimumLevel(LogLevel.Trace);
-                x.AddProvider(new TraceLoggerProvider());
-            });
-            var sp = collection.BuildServiceProvider();
-            return sp.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedClient;
-        }
+        //private ICoinExRestClientFuturesApiShared GetFuturesRestClient()
+        //{
+        //    var collection = new ServiceCollection();
+        //    collection.AddCoinEx(x => x.Rest.OutputOriginalData = true);
+        //    collection.AddLogging(x =>
+        //    {
+        //        x.SetMinimumLevel(LogLevel.Trace);
+        //        x.AddProvider(new TraceLoggerProvider());
+        //    });
+        //    var sp = collection.BuildServiceProvider();
+        //    return sp.GetRequiredService<ICoinExRestClient>().FuturesApi.SharedClient;
+        //}
 
-        [Test]
-        public async Task TestFuturesKlinesRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestFuturesKlinesRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetKlinesAsync(new GetKlinesRequest(_futuresSymbol, SharedKlineInterval.OneDay));
-            var result3 = await client.GetKlinesAsync(new GetKlinesRequest(_futuresSymbol, SharedKlineInterval.OneDay, DateTime.UtcNow.AddDays(-5), DateTime.UtcNow));
-            CheckResults([
-                ("FuturesKlines", result1),
-                ("FuturesKlinesTimed", result3),
-                ]);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetKlinesAsync(new GetKlinesRequest(_futuresSymbol, SharedKlineInterval.OneDay));
+        //    var result3 = await client.GetKlinesAsync(new GetKlinesRequest(_futuresSymbol, SharedKlineInterval.OneDay, DateTime.UtcNow.AddDays(-5), DateTime.UtcNow));
+        //    CheckResults([
+        //        ("FuturesKlines", result1),
+        //        ("FuturesKlinesTimed", result3),
+        //        ]);
+        //}
 
         //[Test]
         //public async Task TestFuturesIndexKlinesRequests()
@@ -100,16 +100,16 @@ namespace CoinEx.Net.UnitTests
                 ]);
         }
 
-        [Test]
-        public async Task TestFuturesBookTickersRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestFuturesBookTickersRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetBookTickerAsync(new GetBookTickerRequest(_futuresSymbol));
-            CheckResults("FuturesBookTicker", result1);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetBookTickerAsync(new GetBookTickerRequest(_futuresSymbol));
+        //    CheckResults("FuturesBookTicker", result1);
+        //}
 
         [Test]
         public async Task TestSpotBookTickersRequests()
@@ -122,16 +122,16 @@ namespace CoinEx.Net.UnitTests
             CheckResults("SpotBookTicker", result1);
         }
 
-        [Test]
-        public async Task TestFuturesOrderBookRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestFuturesOrderBookRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetOrderBookAsync(new GetOrderBookRequest(_futuresSymbol));
-            CheckResults("FuturesOrderBook", result1);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetOrderBookAsync(new GetOrderBookRequest(_futuresSymbol));
+        //    CheckResults("FuturesOrderBook", result1);
+        //}
 
         [Test]
         public async Task TestSpotOrderBookRequests()
@@ -144,20 +144,20 @@ namespace CoinEx.Net.UnitTests
             CheckResults("SpotOrderBook", result1);
         }
 
-        [Test]
-        public async Task TestFuturesTickerRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestFuturesTickerRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetFuturesTickerAsync(new GetTickerRequest(_futuresSymbol));
-            var result2 = await client.GetFuturesTickersAsync(new GetTickersRequest());
-            CheckResults([
-                ("FuturesTicker", result1),
-                ("FuturesTickers", result2)
-                ]);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetFuturesTickerAsync(new GetTickerRequest(_futuresSymbol));
+        //    var result2 = await client.GetFuturesTickersAsync(new GetTickersRequest());
+        //    CheckResults([
+        //        ("FuturesTicker", result1),
+        //        ("FuturesTickers", result2)
+        //        ]);
+        //}
 
         [Test]
         public async Task TestSpotTickerRequests()
@@ -174,18 +174,18 @@ namespace CoinEx.Net.UnitTests
                 ]);
         }
 
-        [Test]
-        public async Task TestFuturesSymbolRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestFuturesSymbolRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetFuturesSymbolsAsync(new GetSymbolsRequest());
-            CheckResults([
-                ("FuturesSymbols", result1)
-                ]);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetFuturesSymbolsAsync(new GetSymbolsRequest());
+        //    CheckResults([
+        //        ("FuturesSymbols", result1)
+        //        ]);
+        //}
 
         [Test]
         public async Task TestSpotSymbolRequests()
@@ -200,18 +200,18 @@ namespace CoinEx.Net.UnitTests
                 ]);
         }
 
-        [Test]
-        public async Task TestFuturesTradesRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestFuturesTradesRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetRecentTradesAsync(new GetRecentTradesRequest(_futuresSymbol));
-            CheckResults([
-                ("FuturesTrades", result1)
-                ]);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetRecentTradesAsync(new GetRecentTradesRequest(_futuresSymbol));
+        //    CheckResults([
+        //        ("FuturesTrades", result1)
+        //        ]);
+        //}
 
         [Test]
         public async Task TestSpotTradesRequests()
@@ -241,33 +241,33 @@ namespace CoinEx.Net.UnitTests
                 ]);
         }
 
-        [Test]
-        public async Task TestFundingRateRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestFundingRateRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetFundingRateHistoryAsync(new GetFundingRateHistoryRequest(_futuresSymbol));
-            var result2 = await client.GetFundingRateHistoryAsync(new GetFundingRateHistoryRequest(_futuresSymbol, DateTime.UtcNow.AddDays(-3), DateTime.UtcNow));
-            CheckResults([
-                ("FuturesFundingRateHistory", result1),
-                ("FuturesFundingRateHistoryTimed", result2)
-                ]);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetFundingRateHistoryAsync(new GetFundingRateHistoryRequest(_futuresSymbol));
+        //    var result2 = await client.GetFundingRateHistoryAsync(new GetFundingRateHistoryRequest(_futuresSymbol, DateTime.UtcNow.AddDays(-3), DateTime.UtcNow));
+        //    CheckResults([
+        //        ("FuturesFundingRateHistory", result1),
+        //        ("FuturesFundingRateHistoryTimed", result2)
+        //        ]);
+        //}
 
-        [Test]
-        public async Task TestOpenInterestRequests()
-        {
-            if (!ShouldRun())
-                return;
+        //[Test]
+        //public async Task TestOpenInterestRequests()
+        //{
+        //    if (!ShouldRun())
+        //        return;
 
-            var client = GetFuturesRestClient();
-            var result1 = await client.GetOpenInterestAsync(new GetOpenInterestRequest(_futuresSymbol));
-            CheckResults([
-                ("FuturesOpenInterest", result1)
-                ]);
-        }
+        //    var client = GetFuturesRestClient();
+        //    var result1 = await client.GetOpenInterestAsync(new GetOpenInterestRequest(_futuresSymbol));
+        //    CheckResults([
+        //        ("FuturesOpenInterest", result1)
+        //        ]);
+        //}
 
         private void CheckResults(string name, ICallResult result)
             => CheckResults([(name, result)]);

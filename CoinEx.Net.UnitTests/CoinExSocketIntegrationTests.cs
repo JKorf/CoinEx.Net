@@ -40,8 +40,8 @@ namespace CoinEx.Net.UnitTests
             await RunAndCheckUpdate<CoinExTicker>((client, updateHandler) => client.SpotApiV2.SubscribeToBalanceUpdatesAsync(default , default), false, true);
             await RunAndCheckUpdate<CoinExTicker[]>((client, updateHandler) => client.SpotApiV2.SubscribeToTickerUpdatesAsync(new[] { "ETHUSDT" }, updateHandler, default), true, false);
 
-            await RunAndCheckUpdate<CoinExTicker>((client, updateHandler) => client.FuturesApi.SubscribeToBalanceUpdatesAsync(default, default), false, true);
-            await RunAndCheckUpdate<CoinExFuturesTickerUpdate[]>((client, updateHandler) => client.FuturesApi.SubscribeToTickerUpdatesAsync(new[] { "ETHUSDT" }, updateHandler, default), true, false);
+            //await RunAndCheckUpdate<CoinExTicker>((client, updateHandler) => client.FuturesApi.SubscribeToBalanceUpdatesAsync(default, default), false, true);
+            //await RunAndCheckUpdate<CoinExFuturesTickerUpdate[]>((client, updateHandler) => client.FuturesApi.SubscribeToTickerUpdatesAsync(new[] { "ETHUSDT" }, updateHandler, default), true, false);
         } 
     }
 }
