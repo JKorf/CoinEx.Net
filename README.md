@@ -7,6 +7,8 @@
 
 CoinEx.Net is a strongly typed client library for accessing the [CoinEx REST and Websocket API](https://github.com/coinexcom/coinex_exchange_api/wiki).
 
+# CoinEx has announced that it will be shutting down. See https://www.coinex.com/en/announcements/detail/53539656293908
+
 ## Features
 * Response data is mapped to descriptive models
 * Input parameters and response values are mapped to discriptive enum values where possible
